@@ -6,3 +6,4 @@ NAMA ANGGOTA :
 4. Anggie Joelang Prabhata Muliadewi (5)
 5. Salsabila Mulya Ramadhani (28)
 6. Talita Salsabila Prasetya (30)
+7. Viona Nur Amila (32)
