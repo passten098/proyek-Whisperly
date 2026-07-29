@@ -5,3 +5,4 @@ NAMA ANGGOTA :
 3. Angelicha Putri Rifanti (4)
 4. Anggie Joelang Prabhata Muliadewi (5)
 5. Salsabila Mulya Ramadhani (28)
+6. Talita Salsabila Prasetya (30)
