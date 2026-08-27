@@ -3,27 +3,43 @@
 namespace App\Modules\ratings\Models;
 
 use App\Helpers\UsesUuid;
-use Illuminate\Support\Facades\DB;
+use App\Modules\bookings\Models\WhisperlyBooking;
+use App\Modules\pengguna\Models\pengguna;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Modules\Booking\Models\Booking;
-use App\Modules\Pengguna\Models\Pengguna;
-
 
 class ratings extends Model
 {
-	use SoftDeletes;
-	use UsesUuid;
+    use SoftDeletes;
+    use UsesUuid;
 
-	protected $casts      = ['deleted_at' => 'datetime', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
-	protected $table      = 'ratings';
-	protected $fillable   = ['*'];
+    public $incrementing = false;
+    protected $keyType = 'string';
 
-	public function booking(){
-		return $this->belongsTo(Booking::class,"id_booking","id");
-	}
-public function pengguna(){
-		return $this->belongsTo(Pengguna::class,"id_pengguna","id");
-	}
+    protected $casts = [
+        'deleted_at' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'nilai_rating' => 'integer',
+    ];
 
+    protected $table = 'ratings';
+    protected $fillable = [
+        'booking_id',
+        'pengguna_id',
+        'talent_id',
+        'nilai_rating',
+        'ulasan',
+    ];
+
+    public function booking()
+    {
+        return $this->belongsTo(WhisperlyBooking::class, 'booking_id', 'id');
+    }
+
+    public function pengguna()
+    {
+        return $this->belongsTo(pengguna::class, 'pengguna_id', 'id');
+    }
 }
+

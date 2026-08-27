@@ -28,20 +28,31 @@ class LogSuccessfullLogin
      */
     public function handle(Login $event)
     {
+        if ($event->guard !== 'web') {
+            return;
+        }
+
         $user = $event->user;
         try {
             // get user's role
-            $roles = Permission::getRole($user->id);
+            $roles = Permission::getRole($user->getAuthIdentifier());
             if($roles->count() == 0) $this->logout();
             $active_role = $roles->first()->only(['id', 'role']);
 
             // get user's menu
-            $menus = Permission::getMenu($active_role);
+            $menus = Permission::getMenu($active_role['id']);
 
             // get user's privilege
-            $privileges = Permission::getPrivilege($active_role);
+            $privileges = Permission::getPrivilege($active_role['id']);
             $privileges = $privileges->mapWithKeys(function ($item, $key) {
-                                return [$item['module'] => $item->only(['create', 'read', 'show', 'update', 'delete', 'show_menu'])];
+                                return [$item->module => [
+                                    'create' => $item->create,
+                                    'read' => $item->read,
+                                    'show' => $item->show,
+                                    'update' => $item->update,
+                                    'delete' => $item->delete,
+                                    'show_menu' => $item->show_menu,
+                                ]];
                             });
 
             // store to session

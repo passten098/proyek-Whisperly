@@ -1,0 +1,24 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::table('whisperly_conversations', function (Blueprint $table) {
+            $table->time('start_time')->change();
+            $table->time('end_time')->change();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table('whisperly_conversations', function (Blueprint $table) {
+            $table->string('start_time', 5)->change();
+            $table->string('end_time', 5)->change();
+        });
+    }
+};

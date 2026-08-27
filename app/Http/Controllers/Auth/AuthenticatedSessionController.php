@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\WhisperlyLoginRequest;
+use App\Modules\pengguna\Models\pengguna;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
@@ -29,6 +33,56 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         return redirect()->intended(route('dashboard', absolute: false));
+    }
+
+    public function storeWhisperly(WhisperlyLoginRequest $request): RedirectResponse
+    {
+        $request->authenticate();
+
+        $request->session()->regenerate();
+
+        $role = strtolower((string) Auth::guard('whisperly')->user()->role);
+        if (!in_array($role, ['admin', 'talent', 'user'], true)) {
+            Auth::guard('whisperly')->logout();
+
+            throw ValidationException::withMessages([
+                'username' => 'Role akun belum dapat mengakses Whisperly.',
+            ]);
+        }
+
+        return redirect()->route($role);
+    }
+
+    public function secretWhisperly(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'secret_password' => ['required', 'string'],
+        ]);
+
+        $admin = pengguna::query()
+            ->where('role', 'admin')
+            ->get()
+            ->first(fn (pengguna $user) => Hash::check($request->input('secret_password'), $user->password));
+
+        if (!$admin) {
+            throw ValidationException::withMessages([
+                'secret_password' => 'Password rahasia salah.',
+            ]);
+        }
+
+        Auth::guard('whisperly')->login($admin);
+        $request->session()->regenerate();
+
+        return redirect()->route('admin');
+    }
+
+    public function destroyWhisperly(Request $request): RedirectResponse
+    {
+        Auth::guard('whisperly')->logout();
+
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login.baru');
     }
 
     /**

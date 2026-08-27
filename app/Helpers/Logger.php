@@ -2,20 +2,25 @@
 namespace App\Helpers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Modules\Log\Models\Log;
 
 trait Logger{
 
 	public function log(Request $request, $activity, $context = NULL, $data = NULL)
 	{
-		$user = $request->user();
-		$route = $request->route()->getName();
-		$elm = explode('.', $route);
-		$action = end($elm);
+		$route = $request->route()?->getName();
+		$elm = $route ? explode('.', $route) : [];
+		$action = $elm ? end($elm) : null;
+		$webUser = Auth::guard('web')->user();
+
+		if (! $webUser) {
+			return;
+		}
 
 		$log = $this->log;
-		$log->id_user = @$user->id;
-		$log->name = @$user->name ?? 'Guest';
+		$log->id_user = $webUser->id;
+		$log->name = $webUser->name ?? 'Guest';
 		$log->aktivitas = $activity;
 		$log->route = $route;
 		$log->action = $action;

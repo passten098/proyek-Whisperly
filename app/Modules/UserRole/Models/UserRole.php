@@ -14,5 +14,5 @@ class UserRole extends Model
 
 	protected $casts      = ['deleted_at' => 'datetime', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
 	protected $table      = 'user_role';
-	protected $fillable   = ['*'];
+	protected $fillable   = ['id_user', 'id_role', 'created_by', 'updated_by', 'deleted_by'];
 }

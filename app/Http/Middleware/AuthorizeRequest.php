@@ -20,7 +20,35 @@ class AuthorizeRequest
      */
     public function handle(Request $request, Closure $next)
     {
-        $route = $request->route()->getName();
+        $route = $request->route()?->getName();
+        $path = $request->path();
+
+        $whisperlyRoutes = [
+            'login.baru',
+            'register.baru',
+            'logout.baru',
+            'whisperly',
+            'whisperly.home',
+            'whisperly.chat.index',
+            'whisperly.chat.show',
+            'whisperly.chat.store',
+            'whisperly.bookings.store',
+            'selamat',
+            'user',
+            'talent',
+            'admin',
+            'pengaduan',
+            'booking',
+        ];
+
+        if ($route && (preg_match('/^(login\.baru|register\.baru|logout\.baru|whisperly|selamat|user|talent|admin|pengaduan|booking)/', $route) || in_array($route, $whisperlyRoutes, true))) {
+            return $next($request);
+        }
+
+        if (is_string($path) && str_starts_with($path, 'whisperly')) {
+            return $next($request);
+        }
+
         $user = $request->user();
 
         $can = Permission::can($route);

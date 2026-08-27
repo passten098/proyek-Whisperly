@@ -8,6 +8,7 @@ use App\Modules\pengguna\Models\pengguna;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class penggunaController extends Controller
 {
@@ -40,7 +41,7 @@ class penggunaController extends Controller
 			'username' => ['label' => 'Username', 'type' => 'text', 'value' => old("username"), 'required' => true],
 			'email' => ['label' => 'Email', 'type' => 'text', 'value' => old("email"), 'required' => true],
 			'password' => ['label' => 'Password', 'type' => 'text', 'value' => old("password"), 'required' => true],
-			'role' => ['label' => 'Role', 'type' => 'text', 'value' => old("role"), 'required' => true],
+			'role' => ['label' => 'Role', 'type' => 'select', 'options' => ['user' => 'User', 'admin' => 'Admin', 'talent' => 'Talent'], 'value' => old("role"), 'required' => true],
 			
 		);
 
@@ -51,17 +52,17 @@ class penggunaController extends Controller
 	function store(Request $request)
 	{
 		$this->validate($request, [
-			'username' => 'required',
-			'email' => 'required',
-			'password' => 'required',
-			'role' => 'required',
+			'username' => 'required|unique:pengguna,username',
+			'email' => 'required|email|unique:pengguna,email',
+			'password' => 'required|min:8',
+			'role' => 'required|in:user,admin,talent',
 			
 		]);
 
 		$pengguna = new pengguna();
 		$pengguna->username = $request->input("username");
 		$pengguna->email = $request->input("email");
-		$pengguna->password = $request->input("password");
+		$pengguna->password = Hash::make($request->input("password"));
 		$pengguna->role = $request->input("role");
 		
 		$pengguna->created_by = Auth::id();
@@ -89,8 +90,8 @@ class penggunaController extends Controller
 		$data['forms'] = array(
 			'username' => ['label' => 'Username', 'type' => 'text', 'value' => $pengguna->username, 'required' => true, 'id' => 'username'],
 			'email' => ['label' => 'Email', 'type' => 'text', 'value' => $pengguna->email, 'required' => true, 'id' => 'email'],
-			'password' => ['label' => 'Password', 'type' => 'text', 'value' => $pengguna->password, 'required' => true, 'id' => 'password'],
-			'role' => ['label' => 'Role', 'type' => 'text', 'value' => $pengguna->role, 'required' => true, 'id' => 'role'],
+			'password' => ['label' => 'Password (kosongkan jika tidak diubah)', 'type' => 'text', 'value' => '', 'required' => false, 'id' => 'password'],
+			'role' => ['label' => 'Role', 'type' => 'select', 'options' => ['user' => 'User', 'admin' => 'Admin', 'talent' => 'Talent'], 'value' => $pengguna->role, 'required' => true, 'id' => 'role'],
 			
 		);
 
@@ -102,17 +103,19 @@ class penggunaController extends Controller
 	public function update(Request $request, $id)
 	{
 		$this->validate($request, [
-			'username' => 'required',
-			'email' => 'required',
-			'password' => 'required',
-			'role' => 'required',
+			'username' => 'required|unique:pengguna,username,'.$id,
+			'email' => 'required|email|unique:pengguna,email,'.$id,
+			'password' => 'nullable|min:8',
+			'role' => 'required|in:user,admin,talent',
 			
 		]);
 
 		$pengguna = pengguna::find($id);
 		$pengguna->username = $request->input("username");
 		$pengguna->email = $request->input("email");
-		$pengguna->password = $request->input("password");
+		if ($request->filled('password')) {
+			$pengguna->password = Hash::make($request->input("password"));
+		}
 		$pengguna->role = $request->input("role");
 		
 		$pengguna->updated_by = Auth::id();

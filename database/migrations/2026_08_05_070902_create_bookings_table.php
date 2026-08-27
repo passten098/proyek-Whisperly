@@ -13,16 +13,19 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->string('id', 36)->primary();
-            $table->unsignedBigInteger('id_pengguna');
-            $table->unsignedBigInteger('id_talent');
+            $table->string('id_pengguna', 36);
+            $table->string('id_talent', 36);
             $table->date('tanggal_booking');
-            $table->integer('durasi_jam');
+            $table->decimal('durasi_jam', 5, 2)->default(0);
             $table->string('status');
             $table->timestamps();
             $table->softDeletes();
             $table->string('created_by', 36)->nullable();
             $table->string('updated_by', 36)->nullable();
             $table->string('deleted_by', 36)->nullable();
+            $table->string('source_booking_id', 36)->nullable()->unique();
+            $table->string('pengguna_username', 255)->nullable();
+            $table->string('talent_username', 255)->nullable();
         });
     }
 

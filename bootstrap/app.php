@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Middleware\AuthorizeRequest;
+use App\Http\Middleware\RedirectWhisperlyAuthenticated;
+use App\Http\Middleware\RedirectWhisperlyGuest;
+use App\Http\Middleware\WhisperlyRole;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -15,6 +18,11 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->web(append: [
             AuthorizeRequest::class,
+        ]);
+        $middleware->alias([
+            'whisperly.auth.redirect' => RedirectWhisperlyAuthenticated::class,
+            'whisperly.guest.redirect' => RedirectWhisperlyGuest::class,
+            'whisperly.role' => WhisperlyRole::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
