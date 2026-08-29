@@ -35,14 +35,27 @@ class AuthenticatedSessionController extends Controller
         return redirect()->intended(route('dashboard', absolute: false));
     }
 
+    /**
+     * Login Whisperly
+     */
     public function storeWhisperly(WhisperlyLoginRequest $request): RedirectResponse
     {
         $request->authenticate();
 
         $request->session()->regenerate();
 
-        $role = strtolower((string) Auth::guard('whisperly')->user()->role);
+        $user = Auth::guard('whisperly')->user();
+
+        $role = strtolower((string) $user->role);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Pastikan role akun valid
+        |--------------------------------------------------------------------------
+        */
+
         if (!in_array($role, ['admin', 'talent', 'user'], true)) {
+
             Auth::guard('whisperly')->logout();
 
             throw ValidationException::withMessages([
@@ -50,9 +63,23 @@ class AuthenticatedSessionController extends Controller
             ]);
         }
 
-        return redirect()->route($role);
+        /*
+        |--------------------------------------------------------------------------
+        | Setelah login SEMUA role masuk ke halaman utama Whisperly
+        |--------------------------------------------------------------------------
+        |
+        | User  -> /whisperly
+        | Talent -> /whisperly
+        | Admin -> /whisperly
+        |
+        */
+
+        return redirect()->route('whisperly.home');
     }
 
+    /**
+     * Login admin menggunakan password rahasia.
+     */
     public function secretWhisperly(Request $request): RedirectResponse
     {
         $request->validate([
@@ -62,7 +89,13 @@ class AuthenticatedSessionController extends Controller
         $admin = pengguna::query()
             ->where('role', 'admin')
             ->get()
-            ->first(fn (pengguna $user) => Hash::check($request->input('secret_password'), $user->password));
+            ->first(
+                fn (pengguna $user) =>
+                    Hash::check(
+                        $request->input('secret_password'),
+                        $user->password
+                    )
+            );
 
         if (!$admin) {
             throw ValidationException::withMessages([
@@ -71,11 +104,15 @@ class AuthenticatedSessionController extends Controller
         }
 
         Auth::guard('whisperly')->login($admin);
+
         $request->session()->regenerate();
 
-        return redirect()->route('admin');
+        return redirect()->route('whisperly.home');
     }
 
+    /**
+     * Logout Whisperly.
+     */
     public function destroyWhisperly(Request $request): RedirectResponse
     {
         Auth::guard('whisperly')->logout();

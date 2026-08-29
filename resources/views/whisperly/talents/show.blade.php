@@ -1,108 +1,621 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ ucfirst($talent->pengguna->username) }} | Whisperly</title>
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {{ ucfirst($talent->pengguna->username) }} - Whisperly
+    </title>
+
     <style>
-        * { box-sizing: border-box; }
-        body { min-height: 100vh; margin: 0; padding: 130px 28px 40px; background: #f4c5d2; color: #241b31; font-family: Arial, sans-serif; }
-        main { width: min(760px, 100%); margin: auto; }
-        .back { display: inline-block; margin-bottom: 22px; color: #65455d; text-decoration: none; }
-        .card { padding: clamp(22px, 5vw, 48px); border-radius: 24px; background: rgba(255,255,255,.82); box-shadow: 0 20px 50px rgba(94,45,76,.15); }
-        .photo { width: min(300px, 100%); aspect-ratio: 1; display: grid; place-items: center; margin-bottom: 24px; border-radius: 20px; background: #d7a9bf; color: #65455d; overflow: hidden; font: 600 12px Arial, sans-serif; text-transform: uppercase; }
-        .photo img { width: 100%; height: 100%; object-fit: cover; }
-        h1 { margin: 0 0 12px; font: 400 clamp(40px, 8vw, 74px) Georgia, serif; }
-        .description { color: #65455d; line-height: 1.65; }
-        h2 { margin: 30px 0 12px; font: 400 28px Georgia, serif; }
-        .schedule { display: grid; gap: 8px; }
-        .slot { display: flex; justify-content: space-between; gap: 20px; padding: 13px 15px; border-radius: 12px; background: #f8e5ea; }
-        .status { font-weight: 700; text-transform: capitalize; }
-        .available { color: #34734a; } .unavailable { color: #9a5264; } .booked { color: #8a651e; }
-        .status { display: inline-flex; align-items: center; gap: 8px; }
-        .booking { margin-top: 18px; }
-        .booking input { position: absolute; opacity: 0; }
-        .booking label { display: flex; justify-content: space-between; gap: 20px; padding: 13px 15px; border-radius: 12px; background: #f8e5ea; cursor: pointer; }
-        .booking input:checked + label { outline: 2px solid #65455d; background: #efd0db; }
-        .confirm { margin-top: 16px; padding: 13px 19px; border: 0; border-radius: 99px; color: #fff; background: #241b31; cursor: pointer; font-weight: 700; }
-        .flash { margin-bottom: 18px; padding: 12px 15px; border-radius: 12px; color: #34734a; background: #e2f1e4; }
-        .popup { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(25, 17, 35, .45); z-index: 30; }
-        .popup-card { width: min(420px, calc(100% - 24px)); padding: 28px 22px; border-radius: 20px; background: #fff; box-shadow: 0 24px 60px rgba(40, 24, 46, .2); text-align: center; }
-        .popup-card h3 { margin: 0 0 12px; font-size: 28px; color: #241b31; }
-        .popup-card p { margin: 0 0 20px; color: #65455d; }
-        .popup-actions { display: flex; justify-content: center; gap: 12px; }
-        .popup-actions a, .popup-actions button { padding: 12px 18px; border: 0; border-radius: 99px; font-weight: 700; text-decoration: none; cursor: pointer; }
-        .popup-actions a { background: #241b31; color: #fff; }
-        .popup-actions button { background: #f2dfe8; color: #241b31; }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 30px;
+            background: #f08baa;
+            color: #321b27;
+            font-family: Georgia, serif;
+        }
+
+        main {
+            width: min(900px, 100%);
+            margin: 60px auto;
+        }
+
+        .eyebrow {
+            color: #71364e;
+            font: 600 12px Arial, sans-serif;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin: 14px 0 8px;
+            font-size: clamp(42px, 7vw, 72px);
+            font-weight: 400;
+        }
+
+        .subtitle {
+            color: #71364e;
+            font: 16px Arial, sans-serif;
+        }
+
+        .card {
+            margin-top: 30px;
+            padding: 30px;
+            border-radius: 24px;
+            background: rgba(255,255,255,.88);
+            box-shadow: 0 20px 45px rgba(94,45,76,.15);
+        }
+
+        .profile {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .photo {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #f8dce5;
+        }
+
+        .photo-empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 140px;
+            height: 140px;
+
+            border-radius: 50%;
+
+            background: #f8dce5;
+            color: #71364e;
+
+            font: 13px Arial, sans-serif;
+            text-align: center;
+        }
+
+        .profile-info h2 {
+            margin: 0 0 8px;
+            font-size: 30px;
+        }
+
+        .profile-info p {
+            margin: 4px 0;
+            color: #71364e;
+            font: 14px Arial, sans-serif;
+        }
+
+        .description {
+            margin-top: 28px;
+            padding: 20px;
+            border-radius: 16px;
+            background: #f8dce5;
+            color: #71364e;
+            font: 15px/1.6 Arial, sans-serif;
+        }
+
+        .schedule-title {
+            margin-top: 32px;
+            font-size: 25px;
+        }
+
+        .schedule {
+            display: grid;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .schedule-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding: 15px;
+
+            border-radius: 13px;
+            background: #f8dce5;
+        }
+
+        .time {
+            font: 600 14px Arial, sans-serif;
+        }
+
+        .status {
+            padding: 8px 12px;
+            border-radius: 9px;
+            font: 700 12px Arial, sans-serif;
+        }
+
+        .available {
+            background: #d8f0dc;
+            color: #2e6a3b;
+        }
+
+        .unavailable {
+            background: #ead3dc;
+            color: #8a3d59;
+        }
+
+        .booked {
+            background: #ead8a8;
+            color: #765b1d;
+        }
+
+        .booking-box {
+            margin-top: 35px;
+            padding: 24px;
+
+            border-radius: 18px;
+
+            background: #fff;
+            border: 1px solid #e7bfd0;
+        }
+
+        .booking-box h2 {
+            margin-top: 0;
+            font-size: 24px;
+        }
+
+        .booking-box p {
+            color: #71364e;
+            font: 14px/1.5 Arial, sans-serif;
+        }
+
+        .booking-form {
+            margin-top: 20px;
+        }
+
+        .booking-form select {
+            width: 100%;
+
+            padding: 13px 14px;
+
+            border: 1px solid #e3b5c4;
+            border-radius: 12px;
+
+            background: white;
+
+            font: 14px Arial, sans-serif;
+
+            outline: none;
+        }
+
+        .booking-form select:focus {
+            border-color: #9b536e;
+        }
+
+        .confirm-button {
+            width: 100%;
+
+            margin-top: 15px;
+
+            padding: 14px 20px;
+
+            border: 0;
+            border-radius: 99px;
+
+            background: #321b27;
+            color: white;
+
+            font: 700 14px Arial, sans-serif;
+
+            cursor: pointer;
+
+            transition: .2s;
+        }
+
+        .confirm-button:hover {
+            transform: translateY(-1px);
+            background: #512d3e;
+        }
+
+        .confirm-button:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+
+        .success {
+            margin-bottom: 20px;
+
+            padding: 15px 18px;
+
+            border-radius: 13px;
+
+            background: #d8f0dc;
+            color: #2e6a3b;
+
+            font: 14px Arial, sans-serif;
+        }
+
+        .error {
+            margin-bottom: 20px;
+
+            padding: 15px 18px;
+
+            border-radius: 13px;
+
+            background: #f8d6d6;
+            color: #8a3333;
+
+            font: 14px Arial, sans-serif;
+        }
+
+        .back {
+            display: inline-flex;
+
+            margin-top: 20px;
+
+            padding: 12px 18px;
+
+            border-radius: 99px;
+
+            background: #e7bfd0;
+            color: #321b27;
+
+            font: 700 13px Arial, sans-serif;
+
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 15px;
+            }
+
+            main {
+                margin-top: 30px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .profile {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .schedule-item {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+
     </style>
+
 </head>
+
+
 <body>
-    @include('whisperly.navbar')
-    @if (session('booking_success') && session('booking_id'))
-        <div class="popup" id="booking-popup">
-            <div class="popup-card">
-                <h3>Booking berhasil!</h3>
-                <p>Jadwal Anda telah dikonfirmasi.</p>
-                <div class="popup-actions">
-                    <a href="{{ route('whisperly.chat.show', session('booking_id')) }}">Mulai Chat</a>
-                    <button type="button" onclick="document.getElementById('booking-popup').style.display='none'">Tutup</button>
-                </div>
-            </div>
+
+@include('whisperly.navbar')
+
+
+<main>
+
+    <div class="eyebrow">
+        Whisperly / Talent
+    </div>
+
+
+    <h1>
+        {{ ucfirst($talent->pengguna->username) }}
+    </h1>
+
+
+    <p class="subtitle">
+        Profil Talent
+    </p>
+
+
+    {{-- ========================================================= --}}
+    {{-- PESAN BOOKING BERHASIL --}}
+    {{-- ========================================================= --}}
+
+    @if (session('booking_success'))
+
+        <div class="success">
+
+            <strong>Booking berhasil!</strong>
+
+            <br>
+
+            {{ session('status') }}
+
         </div>
+
     @endif
-    <main>
-        <a class="back" href="{{ route('whisperly.talents.index') }}">← Semua Talent</a>
-        @if (session('status'))
-            <div class="flash">{{ session('status') }}</div>
-        @endif
-        <article class="card">
-            <div class="photo">
-                @if ($talent->photo)
-                    <img src="{{ Storage::url($talent->photo) }}" alt="Foto {{ $talent->pengguna->username }}">
-                @else
-                    {{ $talent->pengguna->username }}
-                @endif
-            </div>
-            <h1>{{ ucfirst($talent->pengguna->username) }}</h1>
-            <p class="description">{{ $talent->deskripsi }}</p>
-            <div style="margin: 18px 0 0; padding: 12px 14px; border-radius: 12px; background: #f8e5ea; color: #241b31; font-weight: 700;">
-                ⭐ {{ number_format($talent->averageRating(), 1) }} / 5
-                <span style="opacity: 0.75; font-weight: 500;">({{ $talent->ratingCount() }} rating)</span>
-            </div>
-            <h2>Jadwal</h2>
-            @if (auth('whisperly')->user()->role === 'user')
-                <form class="booking" method="POST" action="{{ route('whisperly.bookings.store', $talent->pengguna->username) }}">
-                    @csrf
-                    <div class="schedule">
-                        @foreach ($talent->schedules as $schedule)
-                            @if ($schedule->status === 'available')
-                                <input id="schedule-{{ $schedule->id }}" type="radio" name="schedule_id" value="{{ $schedule->id }}" required>
-                                <label for="schedule-{{ $schedule->id }}">
-                                    <span>{{ substr($schedule->start_time, 0, 5) }} - {{ substr($schedule->end_time, 0, 5) }}</span>
-                                    <span class="status available">Tersedia</span>
-                                </label>
-                            @else
-                                <div class="slot">
-                                    <span>{{ substr($schedule->start_time, 0, 5) }} - {{ substr($schedule->end_time, 0, 5) }}</span>
-                                    <span class="status {{ $schedule->status }}">{{ $schedule->status === 'booked' ? 'Terbooking' : 'Tidak tersedia' }}</span>
-                                </div>
-                            @endif
-                        @endforeach
-                    </div>
-                    @error('schedule_id') <p class="description">{{ $message }}</p> @enderror
-                    <button class="confirm" type="submit">Confirm Booking</button>
-                </form>
+
+
+    {{-- ========================================================= --}}
+    {{-- ERROR --}}
+    {{-- ========================================================= --}}
+
+    @if ($errors->any())
+
+        <div class="error">
+
+            <strong>Booking gagal:</strong>
+
+            <ul>
+
+                @foreach ($errors->all() as $error)
+
+                    <li>
+                        {{ $error }}
+                    </li>
+
+                @endforeach
+
+            </ul>
+
+        </div>
+
+    @endif
+
+
+    <section class="card">
+
+
+        {{-- ===================================================== --}}
+        {{-- PROFIL --}}
+        {{-- ===================================================== --}}
+
+        <div class="profile">
+
+            @if ($talent->photo)
+
+                <img
+                    class="photo"
+                    src="{{ asset('storage/' . $talent->photo) }}"
+                    alt="Foto {{ $talent->pengguna->username }}"
+                >
+
             @else
-                <div class="schedule">
-                    @foreach ($talent->schedules as $schedule)
-                        <div class="slot">
-                            <span>{{ substr($schedule->start_time, 0, 5) }} - {{ substr($schedule->end_time, 0, 5) }}</span>
-                            <span class="status {{ $schedule->status }}">{{ $schedule->status === 'available' ? 'Tersedia' : ($schedule->status === 'booked' ? 'Terbooking' : 'Tidak tersedia') }}</span>
-                        </div>
-                    @endforeach
+
+                <div class="photo-empty">
+
+                    Belum ada<br>
+                    foto profil
+
                 </div>
+
             @endif
-        </article>
-    </main>
+
+
+            <div class="profile-info">
+
+                <h2>
+                    {{ ucfirst($talent->pengguna->username) }}
+                </h2>
+
+                <p>
+                    {{ $talent->pengguna->email }}
+                </p>
+
+                <p>
+                    Talent Whisperly
+                </p>
+
+            </div>
+
+        </div>
+
+
+        {{-- ===================================================== --}}
+        {{-- DESKRIPSI --}}
+        {{-- ===================================================== --}}
+
+        <div class="description">
+
+            {{ $talent->deskripsi ?: 'Talent belum menambahkan deskripsi.' }}
+
+        </div>
+
+
+        {{-- ===================================================== --}}
+        {{-- JADWAL --}}
+        {{-- ===================================================== --}}
+
+        <h2 class="schedule-title">
+            Jadwal Talent
+        </h2>
+
+
+        <div class="schedule">
+
+            @forelse ($talent->schedules as $schedule)
+
+                <div class="schedule-item">
+
+                    <span class="time">
+
+                        {{ substr($schedule->start_time, 0, 5) }}
+
+                        -
+
+                        {{ substr($schedule->end_time, 0, 5) }}
+
+                    </span>
+
+
+                    @if ($schedule->status === 'available')
+
+                        <span class="status available">
+                            Tersedia
+                        </span>
+
+                    @elseif ($schedule->status === 'booked')
+
+                        <span class="status booked">
+                            Sudah Dibooking
+                        </span>
+
+                    @else
+
+                        <span class="status unavailable">
+                            Tidak Tersedia
+                        </span>
+
+                    @endif
+
+                </div>
+
+            @empty
+
+                <p>
+                    Belum ada jadwal tersedia.
+                </p>
+
+            @endforelse
+
+        </div>
+
+
+        {{-- ===================================================== --}}
+        {{-- CONFIRM BOOKING --}}
+        {{-- ===================================================== --}}
+
+        @if (
+            auth('whisperly')->check() &&
+            auth('whisperly')->user()->role === 'user'
+        )
+
+            <div class="booking-box">
+
+                <h2>
+                    Booking Talent
+                </h2>
+
+                <p>
+                    Pilih jadwal yang masih tersedia,
+                    kemudian tekan Confirm Booking.
+                </p>
+
+
+                <form
+                    class="booking-form"
+                    method="POST"
+                    action="{{ route(
+                        'whisperly.bookings.store',
+                        ['username' => $talent->pengguna->username]
+                    ) }}"
+                >
+
+                    @csrf
+
+
+                    <select
+                        name="schedule_id"
+                        id="schedule_id"
+                        required
+                    >
+
+                        <option value="">
+                            -- Pilih Jadwal --
+                        </option>
+
+
+                        @foreach ($talent->schedules as $schedule)
+
+                            @if ($schedule->status === 'available')
+
+                                <option
+                                    value="{{ $schedule->id }}"
+                                >
+
+                                    {{ substr($schedule->start_time, 0, 5) }}
+                                    -
+                                    {{ substr($schedule->end_time, 0, 5) }}
+
+                                </option>
+
+                            @endif
+
+                        @endforeach
+
+                    </select>
+
+
+                    <button
+                        type="submit"
+                        class="confirm-button"
+                        id="confirm-button"
+                    >
+                        Confirm Booking
+                    </button>
+
+                </form>
+
+            </div>
+
+        @endif
+
+
+        <a
+            href="{{ route('whisperly.talents.index') }}"
+            class="back"
+        >
+            ← Kembali ke Daftar Talent
+        </a>
+
+
+    </section>
+
+</main>
+
+
+<script>
+
+    const scheduleSelect =
+        document.getElementById('schedule_id');
+
+    const confirmButton =
+        document.getElementById('confirm-button');
+
+
+    if (scheduleSelect && confirmButton) {
+
+        function checkSchedule() {
+
+            confirmButton.disabled =
+                scheduleSelect.value === '';
+
+        }
+
+
+        scheduleSelect.addEventListener(
+            'change',
+            checkSchedule
+        );
+
+
+        checkSchedule();
+
+    }
+
+</script>
+
+
 </body>
+
 </html>

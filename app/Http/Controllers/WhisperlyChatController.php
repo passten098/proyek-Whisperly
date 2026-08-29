@@ -7,6 +7,7 @@ use App\Modules\chat\Models\WhisperlyConversation;
 use App\Modules\pengguna\Models\pengguna;
 use App\Modules\talents\Models\talents;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -14,30 +15,16 @@ use Illuminate\View\View;
 
 class WhisperlyChatController extends Controller
 {
-    public function index(Request $request): View
+    public function index(Request $request): View|RedirectResponse
     {
         $user = $request->user('whisperly');
-        $query = WhisperlyBooking::query()
-            ->with(['pengguna', 'talent.pengguna', 'schedule', 'conversation.messages.sender'])
-            ->orderByDesc('created_at');
+        $bookings = $this->bookingsForUser($user);
 
-        if ($user->role === 'user') {
-            $query->where('pengguna_id', $user->id);
-        } elseif ($user->role === 'talent') {
-            $profile = talents::query()->where('pengguna_id', $user->id)->first();
-            if ($profile) {
-                $query->where('talent_id', $profile->id);
-            } else {
-                $query->whereRaw('0 = 1');
-            }
-        } else {
-            abort(403);
+        // Otomatis buka room pertama, sesuai alur "room pertama otomatis dipilih".
+        // Jika tidak ada booking sama sekali, tetap tampilkan view index seperti sebelumnya.
+        if ($bookings->isNotEmpty()) {
+            return redirect()->route('whisperly.chat.show', $bookings->first()->id);
         }
-
-        $bookings = $query->get()->map(function (WhisperlyBooking $booking) {
-            $booking->syncChatStatus();
-            return $booking;
-        });
 
         return view('whisperly.chat.index', compact('bookings'));
     }
@@ -84,6 +71,10 @@ class WhisperlyChatController extends Controller
         $canChat = $status === 'active';
         $notice = $this->chatNotice($booking, $status);
 
+        // Daftar seluruh room milik user yang login, untuk kolom "Riwayat Percakapan".
+        // Query-nya sama persis dengan yang dipakai index(), tidak ada tabel/relasi baru.
+        $bookings = $this->bookingsForUser($user);
+
         return view('whisperly.chat.show', [
             'booking' => $booking,
             'conversation' => $conversation,
@@ -91,6 +82,7 @@ class WhisperlyChatController extends Controller
             'status' => $status,
             'canChat' => $canChat,
             'notice' => $notice,
+            'bookings' => $bookings,
         ]);
     }
 
@@ -126,6 +118,37 @@ class WhisperlyChatController extends Controller
 
         return redirect()->route('whisperly.chat.show', $booking->id)
             ->with('status', 'Pesan terkirim.');
+    }
+
+    /**
+     * Semua booking (room chat) milik user yang sedang login, dengan relasi
+     * yang dibutuhkan untuk kolom "Riwayat Percakapan" (avatar, preview pesan
+     * terakhir, waktu, status). Sebelumnya logic ini hanya ada di index();
+     * sekarang diekstrak agar show() bisa memakainya juga tanpa duplikasi.
+     */
+    private function bookingsForUser(pengguna $user): Collection
+    {
+        $query = WhisperlyBooking::query()
+            ->with(['pengguna', 'talent.pengguna', 'schedule', 'conversation.messages.sender'])
+            ->orderByDesc('created_at');
+
+        if ($user->role === 'user') {
+            $query->where('pengguna_id', $user->id);
+        } elseif ($user->role === 'talent') {
+            $profile = talents::query()->where('pengguna_id', $user->id)->first();
+            if ($profile) {
+                $query->where('talent_id', $profile->id);
+            } else {
+                $query->whereRaw('0 = 1');
+            }
+        } else {
+            abort(403);
+        }
+
+        return $query->get()->map(function (WhisperlyBooking $booking) {
+            $booking->syncChatStatus();
+            return $booking;
+        });
     }
 
     private function authorizeBookingAccess(pengguna $user, WhisperlyBooking $booking): void

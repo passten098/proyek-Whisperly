@@ -6,26 +6,26 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('talents', function (Blueprint $table) {
             $table->string('id', 36)->primary();
-            $table->unsignedBigInteger('id_user');
-            $table->text('deskripsi');
+
+            // Relasi ke tabel pengguna
+            $table->string('pengguna_id', 36);
+
+            $table->text('deskripsi')->nullable();
+            $table->string('photo')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
+
             $table->string('created_by', 36)->nullable();
             $table->string('updated_by', 36)->nullable();
             $table->string('deleted_by', 36)->nullable();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('talents');
