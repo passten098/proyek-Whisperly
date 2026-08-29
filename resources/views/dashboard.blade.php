@@ -452,7 +452,7 @@
 
                     <div class="card-body">
 
-                        <a href="{{ route('admin.menfess.index') }}"
+                        <a href="{{ route('menfess.admin') }}"
                            class="btn btn-primary w-100">
 
                             <i class="bi bi-chat-left-text me-2"></i>

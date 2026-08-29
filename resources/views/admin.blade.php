@@ -230,7 +230,7 @@
         <div class="buttons">
 
             {{-- TOMBOL RUANG PENGADUAN --}}
-      <a href="{{ route('admin.menfess.index') }}"
+      <a href="{{ route('menfess.admin') }}"
    class="admin-button"
    id="menfessButton">
     Ruang Pengaduan

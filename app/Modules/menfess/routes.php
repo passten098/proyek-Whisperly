@@ -10,9 +10,10 @@ Route::middleware(['web', 'auth:whisperly'])->group(function () {
 });
 
 Route::middleware(['web', 'auth:whisperly', 'whisperly.role:admin'])->group(function () {
-    Route::get('/admin/menfess', [menfessController::class, 'adminIndex'])->name('admin.menfess.index');
-    Route::post('/pengaduan/{menfess}/approve', [menfessController::class, 'approve'])->name('pengaduan.approve');
-    Route::post('/pengaduan/{menfess}/reject', [menfessController::class, 'reject'])->name('pengaduan.reject');
+    Route::get('/admin/menfess', [menfessController::class, 'adminIndex'])->name('menfess.admin');
+    Route::patch('/admin/menfess/{menfess}/approve', [menfessController::class, 'approve'])->name('menfess.approve');
+    Route::patch('/admin/menfess/{menfess}/reject', [menfessController::class, 'reject'])->name('menfess.reject');
+    Route::delete('/admin/menfess/{id}', [menfessController::class, 'destroy'])->name('menfess.destroy');
 });
 
 Route::controller(menfessController::class)->middleware(['web', 'auth'])->name('menfess.')->group(function () {
@@ -23,5 +24,4 @@ Route::controller(menfessController::class)->middleware(['web', 'auth'])->name('
     Route::get('/menfess/{menfess}', 'show')->name('show');
     Route::get('/menfess/{menfess}/edit', 'edit')->name('edit');
     Route::patch('/menfess/{menfess}', 'update')->name('update');
-    Route::get('/menfess/{menfess}/delete', 'destroy')->name('destroy');
 });

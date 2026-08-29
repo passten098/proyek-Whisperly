@@ -320,7 +320,7 @@
 
                 <a
                     class="nav-action"
-                    href="{{ route('admin.menfess.index') }}"
+                    href="{{ route('menfess.admin') }}"
                 >
                     Lihat Menfess
                 </a>

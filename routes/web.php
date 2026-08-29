@@ -251,7 +251,7 @@ Route::middleware([
     Route::get('/admin/menfess', [
         menfessController::class,
         'adminIndex'
-    ])->name('admin.menfess.index');
+    ])->name('menfess.admin');
 
 
     /*
@@ -260,10 +260,10 @@ Route::middleware([
     |--------------------------------------------------------------------------
     */
 
-    Route::post('/admin/menfess/{menfess}/approve', [
+    Route::patch('/admin/menfess/{menfess}/approve', [
         menfessController::class,
         'approve'
-    ])->name('pengaduan.approve');
+    ])->name('menfess.approve');
 
 
     /*
@@ -272,10 +272,15 @@ Route::middleware([
     |--------------------------------------------------------------------------
     */
 
-    Route::post('/admin/menfess/{menfess}/reject', [
+    Route::patch('/admin/menfess/{menfess}/reject', [
         menfessController::class,
         'reject'
-    ])->name('pengaduan.reject');
+    ])->name('menfess.reject');
+
+    Route::delete('/admin/menfess/{id}', [
+        menfessController::class,
+        'destroy'
+    ])->name('menfess.destroy');
 });
 
 
