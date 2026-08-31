@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers\Auth;
+
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Modules\Role\Models\Role;
@@ -14,12 +16,26 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+
 class RegisteredUserController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | REGISTER PAGE
+    |--------------------------------------------------------------------------
+    */
+
     public function create(): View
     {
         return view('auth.register');
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | REGISTER LARALAG
+    |--------------------------------------------------------------------------
+    */
 
     public function store(Request $request): RedirectResponse
     {
@@ -28,13 +44,59 @@ class RegisteredUserController extends Controller
         return redirect(route('dashboard', absolute: false));
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | REGISTER WHISPERLY
+    |--------------------------------------------------------------------------
+    |
+    | Setelah berhasil daftar:
+    |
+    | 1. Data pengguna dibuat
+    | 2. User langsung login
+    | 3. Session diregenerate
+    | 4. Langsung diarahkan ke /whisperly
+    |
+    */
+
     public function storeWhisperly(Request $request): RedirectResponse
     {
+        /*
+        |----------------------------------------------------------------------
+        | VALIDASI
+        |----------------------------------------------------------------------
+        */
+
         $request->validate([
-            'username' => ['required', 'string', 'max:255', 'unique:pengguna,username'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:pengguna,email'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'username' => [
+                'required',
+                'string',
+                'max:255',
+                'unique:pengguna,username'
+            ],
+
+            'email' => [
+                'required',
+                'string',
+                'lowercase',
+                'email',
+                'max:255',
+                'unique:pengguna,email'
+            ],
+
+            'password' => [
+                'required',
+                'confirmed',
+                Rules\Password::defaults()
+            ],
         ]);
+
+
+        /*
+        |----------------------------------------------------------------------
+        | BUAT AKUN WHISPERLY
+        |----------------------------------------------------------------------
+        */
 
         $user = pengguna::create([
             'username' => $request->username,
@@ -43,54 +105,186 @@ class RegisteredUserController extends Controller
             'role' => 'user',
         ]);
 
+
+        /*
+        |----------------------------------------------------------------------
+        | LOGIN OTOMATIS
+        |----------------------------------------------------------------------
+        */
+
         Auth::guard('whisperly')->login($user);
+
         $request->session()->regenerate();
 
-        return redirect()->route('selamat');
+
+        /*
+        |----------------------------------------------------------------------
+        | REDIRECT KE HOME WHISPERLY
+        |----------------------------------------------------------------------
+        |
+        | Sebelumnya:
+        |
+        | return redirect()->route('selamat');
+        |
+        | Sekarang langsung:
+        |
+        | /whisperly
+        |
+        */
+
+        return redirect()->route('whisperly.home');
     }
 
-    private function registerUser(Request $request, bool $syncPengguna = false): User
-    {
-        $usernameRules = ['required', 'string', 'max:255', 'unique:users,username'];
-        $emailRules = ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'];
+
+    /*
+    |--------------------------------------------------------------------------
+    | REGISTER LARALAG + SYNCHRONIZE PENGGUNA
+    |--------------------------------------------------------------------------
+    */
+
+    private function registerUser(
+        Request $request,
+        bool $syncPengguna = false
+    ): User {
+
+        /*
+        |----------------------------------------------------------------------
+        | VALIDATION RULES
+        |----------------------------------------------------------------------
+        */
+
+        $usernameRules = [
+            'required',
+            'string',
+            'max:255',
+            'unique:users,username'
+        ];
+
+        $emailRules = [
+            'required',
+            'string',
+            'lowercase',
+            'email',
+            'max:255',
+            'unique:users,email'
+        ];
+
+
+        /*
+        |----------------------------------------------------------------------
+        | JIKA SYNCHRONIZE KE TABEL PENGGUNA
+        |----------------------------------------------------------------------
+        */
 
         if ($syncPengguna) {
-            $usernameRules[] = 'unique:pengguna,username';
-            $emailRules[] = 'unique:pengguna,email';
+
+            $usernameRules[] =
+                'unique:pengguna,username';
+
+            $emailRules[] =
+                'unique:pengguna,email';
         }
 
-        $request->validate([
-            'username' => $usernameRules,
-            'email' => $emailRules,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
-        $user = DB::transaction(function () use ($request, $syncPengguna) {
-            $user = User::create([
-                'name' => $request->username,
-                'username' => $request->username,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-            ]);
 
-            if ($syncPengguna) {
-                pengguna::create([
+        /*
+        |----------------------------------------------------------------------
+        | VALIDATE REQUEST
+        |----------------------------------------------------------------------
+        */
+
+        $request->validate([
+
+            'username' => $usernameRules,
+
+            'email' => $emailRules,
+
+            'password' => [
+                'required',
+                'confirmed',
+                Rules\Password::defaults()
+            ],
+
+        ]);
+
+
+        /*
+        |----------------------------------------------------------------------
+        | CREATE USER
+        |----------------------------------------------------------------------
+        */
+
+        $user = DB::transaction(
+            function () use ($request, $syncPengguna) {
+
+                /*
+                |--------------------------------------------------------------
+                | USER
+                |--------------------------------------------------------------
+                */
+
+                $user = User::create([
+                    'name' => $request->username,
                     'username' => $request->username,
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
-                    'role' => 'user',
                 ]);
+
+
+                /*
+                |--------------------------------------------------------------
+                | PENGGUNA
+                |--------------------------------------------------------------
+                */
+
+                if ($syncPengguna) {
+
+                    pengguna::create([
+                        'username' => $request->username,
+                        'email' => $request->email,
+                        'password' => Hash::make($request->password),
+                        'role' => 'user',
+                    ]);
+                }
+
+
+                /*
+                |--------------------------------------------------------------
+                | USER ROLE
+                |--------------------------------------------------------------
+                */
+
+                UserRole::create([
+                    'id_user' => $user->id,
+
+                    'id_role' => Role::where(
+                        'role',
+                        'Admin'
+                    )->firstOrFail()->id,
+                ]);
+
+
+                return $user;
             }
+        );
 
-            UserRole::create([
-                'id_user' => $user->id,
-                'id_role' => Role::where('role', 'Admin')->firstOrFail()->id,
-            ]);
 
-            return $user;
-        });
+        /*
+        |----------------------------------------------------------------------
+        | REGISTERED EVENT
+        |----------------------------------------------------------------------
+        */
 
         event(new Registered($user));
+
+
+        /*
+        |----------------------------------------------------------------------
+        | LOGIN LARALAG
+        |----------------------------------------------------------------------
+        */
+
         Auth::login($user);
+
 
         return $user;
     }

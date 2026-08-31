@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WhisperlyTalentController;
 use App\Http\Controllers\WhisperlyBookingController;
+use App\Http\Controllers\WhisperlyChatController;
 use App\Modules\menfess\Controllers\menfessController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,13 +27,21 @@ Route::view('/', 'welcome')
 |--------------------------------------------------------------------------
 */
 
+/*
+|--------------------------------------------------------------------------
+| LOGIN
+|--------------------------------------------------------------------------
+*/
+
 Route::view('/login-baru', 'login')
     ->name('login.baru');
+
 
 Route::post('/login-baru', [
     AuthenticatedSessionController::class,
     'storeWhisperly'
 ])->name('login.baru.store');
+
 
 Route::post('/login-baru/secret', [
     AuthenticatedSessionController::class,
@@ -40,6 +49,7 @@ Route::post('/login-baru/secret', [
 ])
     ->middleware('throttle:5,1')
     ->name('login.baru.secret');
+
 
 Route::post('/logout-baru', [
     AuthenticatedSessionController::class,
@@ -56,6 +66,7 @@ Route::post('/logout-baru', [
 Route::view('/register-baru', 'register-baru')
     ->name('register.baru');
 
+
 Route::post('/register-baru', [
     RegisteredUserController::class,
     'storeWhisperly'
@@ -67,14 +78,15 @@ Route::post('/register-baru', [
 | WHISPERLY UMUM
 |--------------------------------------------------------------------------
 |
-| Semua user yang sudah login bisa mengakses bagian umum.
+| Semua user yang login menggunakan guard whisperly
+| dapat mengakses halaman umum Whisperly.
 |
 */
 
 Route::middleware([
-    'whisperly.guest.redirect',
     'auth:whisperly'
 ])->group(function () {
+
 
     /*
     |--------------------------------------------------------------------------
@@ -88,40 +100,8 @@ Route::middleware([
 
     /*
     |--------------------------------------------------------------------------
-    | SELAMAT / REDIRECT SESUAI ROLE
-    |--------------------------------------------------------------------------
-    |
-    | PENTING:
-    |
-    | User   -> /user
-    | Talent -> /talent/edit
-    | Admin  -> /admin
-    |
-    */
-
-    Route::get('/selamat', [
-        WhisperlyTalentController::class,
-        'landing'
-    ])->name('selamat');
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | BOOKING
-    |--------------------------------------------------------------------------
-    */
-
-    Route::view('/booking', 'whisperly.booking')
-        ->name('booking');
-
-
-    /*
-    |--------------------------------------------------------------------------
     | DAFTAR TALENT
     |--------------------------------------------------------------------------
-    |
-    | Ini digunakan oleh USER untuk melihat talent.
-    |
     */
 
     Route::get('/whisperly/talents', [
@@ -144,24 +124,82 @@ Route::middleware([
 
     /*
     |--------------------------------------------------------------------------
+    | RUANG PENGADUAN - USER / TALENT
+    |--------------------------------------------------------------------------
+    |
+    | INI ROUTE YANG SEBELUMNYA BELUM ADA.
+    |
+    | Route ini memanggil:
+    |
+    | menfessController@publicIndex
+    |
+    */
+
+    Route::get('/whisperly/pengaduan', [
+        menfessController::class,
+        'publicIndex'
+    ])->name('pengaduan');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | KIRIM PENGADUAN / MENFESS
+    |--------------------------------------------------------------------------
+    */
+
+    Route::post('/whisperly/pengaduan', [
+        menfessController::class,
+        'store'
+    ])->name('pengaduan.store');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | DETAIL MENFESS
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/whisperly/pengaduan/{menfess}', [
+        menfessController::class,
+        'show'
+    ])->name('pengaduan.show');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | KOMENTAR MENFESS
+    |--------------------------------------------------------------------------
+    */
+
+    Route::post('/whisperly/pengaduan/{menfess}/comment', [
+        menfessController::class,
+        'addComment'
+    ])->name('pengaduan.comment');
+
+
+    /*
+    |--------------------------------------------------------------------------
     | CHAT
     |--------------------------------------------------------------------------
     */
 
     Route::get('/whisperly/chat', [
-        \App\Http\Controllers\WhisperlyChatController::class,
+        WhisperlyChatController::class,
         'index'
     ])->name('whisperly.chat.index');
 
+
     Route::get('/whisperly/chat/{booking}', [
-        \App\Http\Controllers\WhisperlyChatController::class,
+        WhisperlyChatController::class,
         'show'
     ])->name('whisperly.chat.show');
 
+
     Route::post('/whisperly/chat/{booking}', [
-        \App\Http\Controllers\WhisperlyChatController::class,
+        WhisperlyChatController::class,
         'store'
     ])->name('whisperly.chat.store');
+
 });
 
 
@@ -170,15 +208,15 @@ Route::middleware([
 | WHISPERLY USER
 |--------------------------------------------------------------------------
 |
-| Hanya role USER yang bisa melakukan booking dan rating.
+| Khusus role USER.
 |
 */
 
 Route::middleware([
-    'whisperly.guest.redirect',
     'auth:whisperly',
     'whisperly.role:user'
 ])->group(function () {
+
 
     /*
     |--------------------------------------------------------------------------
@@ -212,6 +250,7 @@ Route::middleware([
 
     Route::view('/user', 'user')
         ->name('user');
+
 });
 
 
@@ -220,15 +259,15 @@ Route::middleware([
 | WHISPERLY ADMIN
 |--------------------------------------------------------------------------
 |
-| Hanya role ADMIN yang bisa masuk.
+| Khusus role ADMIN.
 |
 */
 
 Route::middleware([
-    'whisperly.guest.redirect',
     'auth:whisperly',
     'whisperly.role:admin'
 ])->group(function () {
+
 
     /*
     |--------------------------------------------------------------------------
@@ -244,8 +283,11 @@ Route::middleware([
 
     /*
     |--------------------------------------------------------------------------
-    | MODERASI MENFESS
+    | MENFESS ADMIN
     |--------------------------------------------------------------------------
+    |
+    | Halaman ini khusus admin.
+    |
     */
 
     Route::get('/admin/menfess', [
@@ -277,10 +319,18 @@ Route::middleware([
         'reject'
     ])->name('menfess.reject');
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | HAPUS MENFESS
+    |--------------------------------------------------------------------------
+    */
+
     Route::delete('/admin/menfess/{id}', [
         menfessController::class,
         'destroy'
     ])->name('menfess.destroy');
+
 });
 
 
@@ -289,19 +339,19 @@ Route::middleware([
 | WHISPERLY TALENT
 |--------------------------------------------------------------------------
 |
-| Hanya role TALENT yang bisa mengakses bagian ini.
+| Khusus role TALENT.
 |
 */
 
 Route::middleware([
-    'whisperly.guest.redirect',
     'auth:whisperly',
     'whisperly.role:talent'
 ])->group(function () {
 
+
     /*
     |--------------------------------------------------------------------------
-    | HALAMAN PROFIL TALENT SENDIRI
+    | PROFIL TALENT SENDIRI
     |--------------------------------------------------------------------------
     */
 
@@ -315,9 +365,6 @@ Route::middleware([
     |--------------------------------------------------------------------------
     | EDIT PROFIL TALENT
     |--------------------------------------------------------------------------
-    |
-    | Talent hanya bisa mengedit profilnya sendiri.
-    |
     */
 
     Route::get('/talent/edit', [
@@ -336,6 +383,7 @@ Route::middleware([
         WhisperlyTalentController::class,
         'update'
     ])->name('talent.update');
+
 });
 
 
@@ -344,11 +392,14 @@ Route::middleware([
 | LARALAG DASHBOARD
 |--------------------------------------------------------------------------
 |
-| Dashboard Laralag menggunakan guard "web".
+| Bagian ini menggunakan guard "web".
 |
 */
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware([
+    'auth'
+])->group(function () {
+
 
     /*
     |--------------------------------------------------------------------------
@@ -397,15 +448,18 @@ Route::middleware(['auth'])->group(function () {
         'edit'
     ])->name('profile.edit');
 
+
     Route::patch('/profile', [
         ProfileController::class,
         'update'
     ])->name('profile.update');
 
+
     Route::delete('/profile', [
         ProfileController::class,
         'destroy'
     ])->name('profile.destroy');
+
 });
 
 
@@ -415,4 +469,4 @@ Route::middleware(['auth'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

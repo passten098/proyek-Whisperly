@@ -12,6 +12,12 @@ use Illuminate\View\View;
 
 class WhisperlyTalentController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | SLOT JADWAL DEFAULT
+    |--------------------------------------------------------------------------
+    */
+
     private const SLOTS = [
         ['08:00', '09:00'],
         ['09:00', '10:00'],
@@ -41,15 +47,20 @@ class WhisperlyTalentController extends Controller
             ->where('role', 'talent')
             ->orderBy('username')
             ->get()
-            ->map(fn (pengguna $user) => $this->profileFor($user));
+            ->map(function (pengguna $user) {
+                return $this->profileFor($user);
+            });
 
-        return view('whisperly.talents.index', compact('talents'));
+        return view(
+            'whisperly.talents.index',
+            compact('talents')
+        );
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | DETAIL TALENT
+    | DETAIL / LIHAT PROFIL TALENT
     |--------------------------------------------------------------------------
     */
 
@@ -68,17 +79,18 @@ class WhisperlyTalentController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | HALAMAN SENDIRI TALENT
+    | PROFIL SENDIRI MILIK TALENT
     |--------------------------------------------------------------------------
-    |
-    | Talent tidak melihat daftar talent.
-    | Talent langsung melihat profil miliknya sendiri.
-    |
     */
 
     public function own(Request $request): View
     {
         $user = $request->user('whisperly');
+
+        abort_unless(
+            $user && $user->role === 'talent',
+            403
+        );
 
         return view('talent', [
             'talent' => $this->profileFor($user),
@@ -99,7 +111,9 @@ class WhisperlyTalentController extends Controller
             ->where('role', 'talent')
             ->orderBy('username')
             ->get()
-            ->map(fn (pengguna $user) => $this->profileFor($user));
+            ->map(function (pengguna $user) {
+                return $this->profileFor($user);
+            });
 
         return view('admin', compact('talents'));
     }
@@ -107,13 +121,18 @@ class WhisperlyTalentController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | EDIT PROFIL TALENT
+    | HALAMAN EDIT PROFIL
     |--------------------------------------------------------------------------
     */
 
     public function edit(Request $request): View
     {
         $user = $request->user('whisperly');
+
+        abort_unless(
+            $user && $user->role === 'talent',
+            403
+        );
 
         $talent = $this->profileFor($user);
 
@@ -126,50 +145,62 @@ class WhisperlyTalentController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | UPDATE PROFIL + JADWAL
+    | UPDATE PROFIL + FOTO + JADWAL
     |--------------------------------------------------------------------------
     */
 
     public function update(Request $request): RedirectResponse
     {
-        $request->validate([
+        $user = $request->user('whisperly');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Pastikan yang mengakses memang talent
+        |--------------------------------------------------------------------------
+        */
+
+        abort_unless(
+            $user && $user->role === 'talent',
+            403
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | VALIDASI
+        |--------------------------------------------------------------------------
+        */
+
+        $validated = $request->validate([
+
             'description' => [
                 'required',
                 'string',
-                'max:2000'
+                'max:2000',
             ],
 
             'photo' => [
                 'nullable',
                 'image',
                 'mimes:jpg,jpeg,png,webp',
-                'max:2048'
+                'max:2048',
             ],
 
             'schedule' => [
-                'required',
-                'array'
+                'nullable',
+                'array',
             ],
 
             'schedule.*' => [
-                'required',
-                'in:available,unavailable,booked'
+                'nullable',
+                'in:available,unavailable,booked',
             ],
         ]);
 
 
         /*
         |--------------------------------------------------------------------------
-        | USER LOGIN TALENT
-        |--------------------------------------------------------------------------
-        */
-
-        $user = $request->user('whisperly');
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | AMBIL PROFIL TALENT MILIK USER LOGIN
+        | AMBIL PROFIL TALENT
         |--------------------------------------------------------------------------
         */
 
@@ -189,9 +220,8 @@ class WhisperlyTalentController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $talent->deskripsi = $request
-            ->string('description')
-            ->toString();
+        $talent->deskripsi =
+            $validated['description'];
 
 
         /*
@@ -202,19 +232,40 @@ class WhisperlyTalentController extends Controller
 
         if ($request->hasFile('photo')) {
 
-            if ($talent->photo) {
-                Storage::disk('public')->delete($talent->photo);
+            /*
+            | Hapus foto custom lama
+            */
+
+            if (
+                $talent->photo &&
+                Storage::disk('public')->exists(
+                    $talent->photo
+                )
+            ) {
+
+                Storage::disk('public')->delete(
+                    $talent->photo
+                );
             }
 
-            $talent->photo = $request
-                ->file('photo')
-                ->store('talent-profiles', 'public');
+
+            /*
+            | Simpan foto baru
+            */
+
+            $talent->photo =
+                $request
+                    ->file('photo')
+                    ->store(
+                        'talent-profiles',
+                        'public'
+                    );
         }
 
 
         /*
         |--------------------------------------------------------------------------
-        | SIMPAN PROFIL
+        | SIMPAN TALENT
         |--------------------------------------------------------------------------
         */
 
@@ -227,29 +278,62 @@ class WhisperlyTalentController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        foreach ($talent->schedules as $schedule) {
+        if (
+            isset($validated['schedule']) &&
+            is_array($validated['schedule'])
+        ) {
 
-            $field = "schedule.{$schedule->id}";
+            foreach ($talent->schedules as $schedule) {
 
-            if ($request->has($field)) {
+                $scheduleId = $schedule->id;
+
+
+                if (
+                    !array_key_exists(
+                        $scheduleId,
+                        $validated['schedule']
+                    )
+                ) {
+                    continue;
+                }
+
 
                 /*
-                | Jangan ubah slot yang sudah dibooking.
+                | Jadwal yang sudah dibooking
+                | tidak boleh diubah.
                 */
 
-                if ($schedule->status !== 'booked') {
-
-                    $schedule->update([
-                        'status' => $request->input($field)
-                    ]);
+                if (
+                    $schedule->status === 'booked'
+                ) {
+                    continue;
                 }
+
+
+                $newStatus =
+                    $validated['schedule'][$scheduleId];
+
+
+                /*
+                | Jangan izinkan status booked
+                | dibuat manual dari halaman edit.
+                */
+
+                if ($newStatus === 'booked') {
+                    continue;
+                }
+
+
+                $schedule->update([
+                    'status' => $newStatus,
+                ]);
             }
         }
 
 
         /*
         |--------------------------------------------------------------------------
-        | KEMBALI KE EDIT PROFIL
+        | KEMBALI KE HALAMAN EDIT
         |--------------------------------------------------------------------------
         */
 
@@ -257,7 +341,7 @@ class WhisperlyTalentController extends Controller
             ->route('talent.edit')
             ->with(
                 'status',
-                'Profil dan jadwal berhasil diperbarui.'
+                'Profil, foto, dan jadwal berhasil diperbarui.'
             );
     }
 
@@ -268,27 +352,30 @@ class WhisperlyTalentController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    private function profileFor(pengguna $user): talents
-    {
+    private function profileFor(
+        pengguna $user
+    ): talents {
+
         /*
         |--------------------------------------------------------------------------
-        | CARI PROFIL BERDASARKAN PENGGUNA_ID
+        | Ambil / buat profil talent
         |--------------------------------------------------------------------------
         */
 
         $profile = talents::firstOrCreate(
             [
-                'pengguna_id' => $user->id
+                'pengguna_id' => $user->id,
             ],
             [
-                'deskripsi' => 'Belum ada deskripsi talent.'
+                'deskripsi' =>
+                    'Belum ada deskripsi talent.',
             ]
         );
 
 
         /*
         |--------------------------------------------------------------------------
-        | BUAT SLOT JADWAL
+        | Buat slot jadwal default
         |--------------------------------------------------------------------------
         */
 
@@ -296,12 +383,18 @@ class WhisperlyTalentController extends Controller
 
             TalentSchedule::firstOrCreate(
                 [
-                    'talent_id' => $profile->id,
-                    'start_time' => $start,
-                    'end_time' => $end,
+                    'talent_id' =>
+                        $profile->id,
+
+                    'start_time' =>
+                        $start,
+
+                    'end_time' =>
+                        $end,
                 ],
                 [
-                    'status' => 'unavailable'
+                    'status' =>
+                        'unavailable',
                 ]
             );
         }
@@ -309,14 +402,14 @@ class WhisperlyTalentController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | LOAD RELATIONSHIP
+        | Load relasi
         |--------------------------------------------------------------------------
         */
 
         return $profile->load([
             'pengguna',
             'schedules',
-            'ratings'
+            'ratings',
         ]);
     }
 }

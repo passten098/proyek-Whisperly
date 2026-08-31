@@ -1,2 +1,0 @@
-<!DOCTYPE html>
-<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Booking | Whisperly</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#e29aaf;color:#17172f;font-family:Arial,sans-serif}main{width:min(680px,calc(100% - 40px))}a{color:#4b315e;text-decoration:none}h1{font:400 64px Georgia,serif}</style></head><body><main><a href="{{ route('whisperly.home') }}">← Kembali</a><h1>Booking</h1><p>Pilih ruang konsultasi yang sesuai untuk Anda.</p></main></body></html>

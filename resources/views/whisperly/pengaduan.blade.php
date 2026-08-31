@@ -131,7 +131,6 @@
 
             background: rgba(255,255,255,.90);
 
-            /* SEMUA GARIS DIHAPUS */
             border: none !important;
             outline: none !important;
 
@@ -577,27 +576,29 @@
         }
 
         /* =========================
-           CARD
+           CARD (MENFESS) — COMPACT
         ========================= */
 
         .feed {
             display: grid;
-            gap: 15px;
+            gap: 10px;
         }
 
         .card {
-            padding: 14px 16px 12px;
+            /* padding sangat ringkas, tinggi mengikuti isi */
+            padding: 12px 14px;
+            height: auto;
 
             background: rgba(255,255,255,.85);
 
             border: none !important;
             outline: none !important;
 
-            border-radius: 16px;
+            border-radius: 14px;
 
             box-shadow:
-                0 4px 14px
-                rgba(45,53,53,.11);
+                0 3px 10px
+                rgba(45,53,53,.08);
 
             transition: .2s ease;
         }
@@ -613,9 +614,9 @@
 
             justify-content: space-between;
 
-            gap: 15px;
+            gap: 10px;
 
-            margin-bottom: 9px;
+            margin-bottom: 6px;
         }
 
         .author-block {
@@ -623,7 +624,7 @@
 
             align-items: center;
 
-            gap: 10px;
+            gap: 8px;
         }
 
         /* =========================
@@ -631,8 +632,8 @@
         ========================= */
 
         .avatar {
-            width: 42px;
-            height: 42px;
+            width: 30px;
+            height: 30px;
 
             flex-shrink: 0;
 
@@ -652,7 +653,7 @@
                 Arial,
                 sans-serif;
 
-            font-size: 15px;
+            font-size: 11px;
             font-weight: 800;
 
             border: none !important;
@@ -662,7 +663,7 @@
         .author {
             color: #302a26;
 
-            font-size: 16px;
+            font-size: 13px;
 
             font-weight: 700;
         }
@@ -672,9 +673,9 @@
 
             align-items: center;
 
-            gap: 6px;
+            gap: 5px;
 
-            margin-top: 2px;
+            margin-top: 1px;
 
             color: #92867c;
 
@@ -692,9 +693,9 @@
             align-items: center;
             justify-content: center;
 
-            min-height: 31px;
+            min-height: 22px;
 
-            padding: 0 14px;
+            padding: 0 10px;
 
             border-radius: 999px;
 
@@ -707,7 +708,7 @@
                 Arial,
                 sans-serif;
 
-            font-size: 13px;
+            font-size: 11px;
 
             font-weight: 700;
 
@@ -723,15 +724,15 @@
         .message {
             width: 100%;
 
-            margin: 8px 0 14px;
+            margin: 4px 0 8px;
 
             color: #3f3934;
 
-            font-size: 20px;
+            font-size: 13.5px;
 
-            font-weight: 500;
+            font-weight: 400;
 
-            line-height: 1.6;
+            line-height: 1.45;
 
             white-space: pre-wrap;
 
@@ -745,9 +746,8 @@
         ========================= */
 
         .reply-box {
-            padding-top: 10px;
+            padding-top: 4px;
 
-            /* GARIS PUTIH / GARIS ATAS DIHAPUS */
             border: none !important;
             border-top: none !important;
         }
@@ -757,11 +757,11 @@
 
             align-items: center;
 
-            min-height: 27px;
+            min-height: 20px;
 
-            padding: 0 11px;
+            padding: 0 9px;
 
-            margin-bottom: 9px;
+            margin-bottom: 6px;
 
             border-radius: 999px;
 
@@ -784,31 +784,31 @@
         .comment-list {
             display: grid;
 
-            gap: 8px;
+            gap: 5px;
 
-            margin-bottom: 10px;
+            margin-bottom: 6px;
         }
 
         .comment {
             display: flex;
 
-            gap: 9px;
+            gap: 7px;
 
-            padding: 10px 12px;
+            padding: 6px 9px;
 
             background: rgba(255,255,255,.57);
 
             border: none !important;
             outline: none !important;
 
-            border-radius: 11px;
+            border-radius: 10px;
         }
 
         .comment .avatar {
-            width: 31px;
-            height: 31px;
+            width: 22px;
+            height: 22px;
 
-            font-size: 10px;
+            font-size: 9px;
 
             border: none !important;
         }
@@ -823,17 +823,17 @@
                 Arial,
                 sans-serif;
 
-            font-size: 14px;
+            font-size: 12px;
 
             font-weight: 700;
         }
 
         /* =========================
-           FONT JAWABAN DIPERBESAR
+           FONT JAWABAN
         ========================= */
 
         .comment-text {
-            margin-top: 3px;
+            margin-top: 1px;
 
             color: #756d66;
 
@@ -842,9 +842,9 @@
                 Arial,
                 sans-serif;
 
-            font-size: 15px !important;
+            font-size: 12.5px !important;
 
-            line-height: 1.6;
+            line-height: 1.4;
 
             font-weight: 400;
         }
@@ -858,7 +858,7 @@
 
             align-items: stretch;
 
-            gap: 8px;
+            gap: 7px;
         }
 
         .reply-form textarea {
@@ -866,14 +866,14 @@
 
             min-width: 0;
 
-            min-height: 45px;
+            min-height: 34px;
 
-            padding: 11px 12px;
+            padding: 7px 9px;
 
             border: none !important;
             outline: none !important;
 
-            border-radius: 11px;
+            border-radius: 10px;
 
             background: rgba(255,255,255,.78);
 
@@ -892,9 +892,9 @@
         .reply-form button {
             flex-shrink: 0;
 
-            width: 58px;
+            width: 38px;
 
-            min-height: 45px;
+            min-height: 34px;
 
             border: none !important;
             outline: none !important;
@@ -920,8 +920,8 @@
         }
 
         .send-icon {
-            width: 23px;
-            height: 23px;
+            width: 17px;
+            height: 17px;
 
             fill: none;
 
@@ -1503,12 +1503,11 @@
             }
 
             .message {
-                font-size: 18px;
+                font-size: 13px;
             }
 
-            /* Font jawaban tetap lebih besar */
             .comment-text {
-                font-size: 15px !important;
+                font-size: 12.5px !important;
             }
         }
 
@@ -1529,11 +1528,11 @@
             }
 
             .reply-form button {
-                width: 50px;
+                width: 38px;
             }
 
             .comment-text {
-                font-size: 15px !important;
+                font-size: 12.5px !important;
             }
         }
     </style>
@@ -1989,13 +1988,21 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                                     <div class="comment">
 
                                         <div class="avatar">
-                                            A
+                                            {{
+                                                strtoupper(
+                                                    substr(
+                                                        $comment->pengguna?->username ?? 'P',
+                                                        0,
+                                                        1
+                                                    )
+                                                )
+                                            }}
                                         </div>
 
                                         <div>
 
                                             <strong>
-                                                Anonim
+                                                {{ $comment->pengguna?->username ?? 'Pengguna' }}
                                             </strong>
 
                                             <div class="comment-text">
