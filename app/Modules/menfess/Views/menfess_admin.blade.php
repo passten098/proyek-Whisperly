@@ -635,24 +635,15 @@
         ========================================= */
 
         .message {
-            width: 100%;
+                margin: 0 0 14px 0 !important;
+                padding: 0 !important;
 
-            margin: 8px 0 14px;
+                font-size: 20px !important;
+                font-weight: 500 !important;
+                line-height: 1.6 !important;
 
-            color: #3f3934;
-
-            font-size: 20px;
-
-            font-weight: 500;
-
-            line-height: 1.6;
-
-            white-space: pre-line;
-
-            word-break: break-word;
-
-            text-align: left;
-        }
+                text-align: left !important;
+            }
 
         /* =========================================
            STATUS PENDING

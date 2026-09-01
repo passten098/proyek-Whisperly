@@ -8,6 +8,7 @@
     <title>Ruang Pengaduan | Whisperly</title>
 
     <style>
+
         * {
             box-sizing: border-box;
         }
@@ -26,8 +27,8 @@
 
             --purple: #756dcc;
 
-            --shadow: 0 5px 16px rgba(45, 53, 53, .12);
-            --shadow-small: 0 3px 9px rgba(45, 53, 53, .08);
+            --shadow: 0 5px 16px rgba(45,53,53,.12);
+            --shadow-small: 0 3px 9px rgba(45,53,53,.08);
         }
 
         body {
@@ -54,9 +55,10 @@
             background-attachment: fixed;
         }
 
-        /* =========================
+
+        /* =====================================================
            BACKGROUND
-        ========================= */
+        ===================================================== */
 
         body.theme-random {
             background-image:
@@ -114,9 +116,10 @@
             background-attachment: fixed;
         }
 
-        /* =========================
+
+        /* =====================================================
            HEADER
-        ========================= */
+        ===================================================== */
 
         .top-header {
             width: 100%;
@@ -188,9 +191,10 @@
             white-space: nowrap;
         }
 
-        /* =========================
+
+        /* =====================================================
            PAGE
-        ========================= */
+        ===================================================== */
 
         .page {
             width: min(1500px, calc(100% - 48px));
@@ -224,9 +228,10 @@
             line-height: 1.5;
         }
 
-        /* =========================
+
+        /* =====================================================
            CONTENT
-        ========================= */
+        ===================================================== */
 
         .content-grid {
             display: grid;
@@ -240,9 +245,10 @@
             align-items: start;
         }
 
-        /* =========================
+
+        /* =====================================================
            LEFT PANEL
-        ========================= */
+        ===================================================== */
 
         .composer-panel {
             position: sticky;
@@ -309,9 +315,10 @@
             line-height: 1.5;
         }
 
-        /* =========================
+
+        /* =====================================================
            FORM
-        ========================= */
+        ===================================================== */
 
         .composer-card {
             padding: 22px;
@@ -396,9 +403,10 @@
             box-shadow: none !important;
         }
 
-        /* =========================
+
+        /* =====================================================
            BUTTON
-        ========================= */
+        ===================================================== */
 
         .submit-btn {
             width: 100%;
@@ -433,9 +441,10 @@
             transform: translateY(-1px);
         }
 
-        /* =========================
+
+        /* =====================================================
            ALERT
-        ========================= */
+        ===================================================== */
 
         .form-alert {
             margin-top: 16px;
@@ -466,9 +475,10 @@
             color: #2c7446;
         }
 
-        /* =========================
+
+        /* =====================================================
            BOARD
-        ========================= */
+        ===================================================== */
 
         .board {
             min-width: 0;
@@ -523,9 +533,10 @@
             font-size: 15px;
         }
 
-        /* =========================
+
+        /* =====================================================
            CATEGORY
-        ========================= */
+        ===================================================== */
 
         .category-bar {
             display: flex;
@@ -575,30 +586,46 @@
             transform: translateY(-1px);
         }
 
-        /* =========================
-           CARD (MENFESS) — COMPACT
-        ========================= */
+
+        /* =====================================================
+           MENFESS
+        ===================================================== */
 
         .feed {
             display: grid;
-            gap: 10px;
+
+            gap: 15px;
+
+            align-items: start;
         }
 
         .card {
-            /* padding sangat ringkas, tinggi mengikuti isi */
-            padding: 12px 14px;
-            height: auto;
+            padding: 14px 16px 16px;
 
-            background: rgba(255,255,255,.85);
+            min-height: 0 !important;
+            height: auto !important;
 
-            border: none !important;
+            display: block !important;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(198,224,220,.88),
+                    rgba(226,238,222,.89) 52%,
+                    rgba(247,239,207,.84)
+                );
+
+            border:
+                1px solid
+                rgba(116,170,172,.52);
+
             outline: none !important;
 
-            border-radius: 14px;
+            border-radius: 16px;
 
             box-shadow:
-                0 3px 10px
-                rgba(45,53,53,.08);
+                0 4px 14px
+                rgba(45,53,53,.11);
 
             transition: .2s ease;
         }
@@ -614,9 +641,11 @@
 
             justify-content: space-between;
 
-            gap: 10px;
+            gap: 15px;
 
-            margin-bottom: 6px;
+            margin: 0 0 6px 0 !important;
+
+            padding: 0 !important;
         }
 
         .author-block {
@@ -624,16 +653,17 @@
 
             align-items: center;
 
-            gap: 8px;
+            gap: 10px;
         }
 
-        /* =========================
+
+        /* =====================================================
            AVATAR
-        ========================= */
+        ===================================================== */
 
         .avatar {
-            width: 30px;
-            height: 30px;
+            width: 42px;
+            height: 42px;
 
             flex-shrink: 0;
 
@@ -644,26 +674,38 @@
 
             border-radius: 50%;
 
-            background: #6179c7;
+            background:
+                linear-gradient(
+                    135deg,
+                    #83aaa7,
+                    #5d858e
+                );
 
-            color: #1c2c60;
+            color: #264f56;
 
             font-family:
                 "Segoe UI",
                 Arial,
                 sans-serif;
 
-            font-size: 11px;
+            font-size: 15px;
+
             font-weight: 800;
 
-            border: none !important;
-            outline: none !important;
+            border:
+                2px solid
+                rgba(255,255,255,.75);
         }
+
+
+        /* =====================================================
+           AUTHOR
+        ===================================================== */
 
         .author {
             color: #302a26;
 
-            font-size: 13px;
+            font-size: 16px;
 
             font-weight: 700;
         }
@@ -673,9 +715,9 @@
 
             align-items: center;
 
-            gap: 5px;
+            gap: 6px;
 
-            margin-top: 1px;
+            margin-top: 2px;
 
             color: #92867c;
 
@@ -687,28 +729,38 @@
             font-size: 10px;
         }
 
+
+        /* =====================================================
+           CHIP
+        ===================================================== */
+
         .chip {
             display: inline-flex;
 
             align-items: center;
             justify-content: center;
 
-            min-height: 22px;
+            min-height: 31px;
 
-            padding: 0 10px;
+            padding: 0 14px;
 
             border-radius: 999px;
 
-            background: var(--green-soft);
+            background:
+                linear-gradient(
+                    135deg,
+                    #d4ebe0,
+                    #b8d8d2
+                );
 
-            color: var(--green-dark);
+            color: #3e7770;
 
             font-family:
                 "Segoe UI",
                 Arial,
                 sans-serif;
 
-            font-size: 11px;
+            font-size: 13px;
 
             font-weight: 700;
 
@@ -717,36 +769,55 @@
             border: none !important;
         }
 
-        /* =========================
-           MESSAGE
-        ========================= */
+
+        /* =====================================================
+           ISI MENFESS
+        ===================================================== */
 
         .message {
             width: 100%;
 
-            margin: 4px 0 8px;
+            margin: 0 0 14px 0 !important;
+
+            padding: 0 !important;
+
+            min-height: 0 !important;
+            height: auto !important;
+
+            display: block !important;
 
             color: #3f3934;
 
-            font-size: 13.5px;
+            font-family:
+                "Cambria",
+                Georgia,
+                "Times New Roman",
+                serif;
 
-            font-weight: 400;
+            font-size: 20px;
 
-            line-height: 1.45;
+            font-weight: 500;
 
-            white-space: pre-wrap;
+            line-height: 1.6;
+
+            white-space: pre-line;
 
             word-break: break-word;
 
             text-align: left !important;
+
+            vertical-align: top !important;
         }
 
-        /* =========================
+
+        /* =====================================================
            REPLY
-        ========================= */
+        ===================================================== */
 
         .reply-box {
-            padding-top: 4px;
+            padding-top: 0 !important;
+
+            margin-top: 0 !important;
 
             border: none !important;
             border-top: none !important;
@@ -828,10 +899,6 @@
             font-weight: 700;
         }
 
-        /* =========================
-           FONT JAWABAN
-        ========================= */
-
         .comment-text {
             margin-top: 1px;
 
@@ -849,9 +916,10 @@
             font-weight: 400;
         }
 
-        /* =========================
+
+        /* =====================================================
            REPLY FORM
-        ========================= */
+        ===================================================== */
 
         .reply-form {
             display: flex;
@@ -933,9 +1001,10 @@
             stroke-linejoin: round;
         }
 
-        /* =========================
+
+        /* =====================================================
            EMPTY
-        ========================= */
+        ===================================================== */
 
         .empty {
             min-height: 160px;
@@ -964,9 +1033,10 @@
                 sans-serif;
         }
 
-        /* ==================================================
+
+        /* =====================================================
            LOVE
-        ================================================== */
+        ===================================================== */
 
         body.theme-love .top-header {
             background:
@@ -1077,9 +1147,10 @@
             color: #633d38;
         }
 
-        /* ==================================================
+
+        /* =====================================================
            SAD
-        ================================================== */
+        ===================================================== */
 
         body.theme-sad .top-header {
             background:
@@ -1185,9 +1256,10 @@
             color: #4f5548;
         }
 
-        /* ==================================================
+
+        /* =====================================================
            HORROR
-        ================================================== */
+        ===================================================== */
 
         body.theme-horror .top-header {
             background:
@@ -1314,9 +1386,10 @@
             color: #2e1814;
         }
 
-        /* ==================================================
+
+        /* =====================================================
            RANDOM
-        ================================================== */
+        ===================================================== */
 
         body.theme-random .top-header {
             background:
@@ -1427,9 +1500,10 @@
             color: #264f56;
         }
 
-        /* ==================================================
-           PENGHAPUS GARIS GLOBAL
-        ================================================== */
+
+        /* =====================================================
+           PENGHAPUS GARIS
+        ===================================================== */
 
         header,
         div,
@@ -1444,9 +1518,10 @@
             border-color: transparent !important;
         }
 
-        /* =========================
+
+        /* =====================================================
            RESPONSIVE
-        ========================= */
+        ===================================================== */
 
         @media (max-width: 1050px) {
 
@@ -1465,6 +1540,7 @@
                 justify-content: flex-start;
             }
         }
+
 
         @media (max-width: 760px) {
 
@@ -1503,13 +1579,21 @@
             }
 
             .message {
-                font-size: 13px;
+                margin: 0 0 14px 0 !important;
+                padding: 0 !important;
+
+                font-size: 20px !important;
+                font-weight: 500 !important;
+                line-height: 1.6 !important;
+
+                text-align: left !important;
             }
 
             .comment-text {
                 font-size: 12.5px !important;
             }
         }
+
 
         @media (max-width: 430px) {
 
@@ -1531,46 +1615,48 @@
                 width: 38px;
             }
 
+            .message {
+                margin: 0 0 14px 0 !important;
+                padding: 0 !important;
+
+                font-size: 18px !important;
+
+                text-align: left !important;
+            }
+
             .comment-text {
                 font-size: 12.5px !important;
             }
         }
+
     </style>
 </head>
 
-@php
 
-    /*
-    |--------------------------------------------------------------------------
-    | KATEGORI AKTIF
-    |--------------------------------------------------------------------------
-    */
+@php
 
     $currentCategory = strtolower(
         trim($selectedCategory ?? 'random')
     );
 
-    /*
-    |--------------------------------------------------------------------------
-    | NORMALISASI KATEGORI
-    |--------------------------------------------------------------------------
-    */
-
     if ($currentCategory === 'horor') {
+
         $currentCategory = 'horror';
+
     } elseif ($currentCategory === 'cinta') {
+
         $currentCategory = 'love';
+
     } elseif ($currentCategory === 'sedih') {
+
         $currentCategory = 'sad';
+
     } elseif ($currentCategory === 'campuran') {
+
         $currentCategory = 'random';
+
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | THEME
-    |--------------------------------------------------------------------------
-    */
 
     if ($currentCategory === 'horror') {
 
@@ -1594,7 +1680,9 @@
 
 @endphp
 
+
 <body class="{{ $theme }}">
+
 
 <header class="top-header">
 
@@ -1605,13 +1693,16 @@
         ← Kembali
     </a>
 
+
     <h1 class="page-title">
         Ruang Pengaduan
     </h1>
 
 </header>
 
+
 <div class="page">
+
 
     <div class="intro">
 
@@ -1621,19 +1712,21 @@
 
     </div>
 
+
     <div class="content-grid">
 
-        <!-- =========================
-             FORM MENFESS
-        ========================= -->
+
+        <!-- FORM MENFESS -->
 
         <aside class="composer-panel">
+
 
             <div class="info-box">
 
                 <h3>
                     Sebelum mulai cerita, baca ini dulu ya
                 </h3>
+
 
                 <ul>
 
@@ -1657,7 +1750,9 @@
 
             </div>
 
+
             <div class="composer-card">
+
 
                 <h2 class="composer-title">
 
@@ -1681,6 +1776,7 @@
 
                 </h2>
 
+
                 <form
                     method="POST"
                     action="{{ route('pengaduan.store') }}"
@@ -1688,13 +1784,16 @@
 
                     @csrf
 
+
                     <input
                         type="hidden"
                         name="id_kategori"
                         value="{{ $activeCategory->id ?? '' }}"
                     >
 
+
                     <div class="field">
+
 
                         <label for="isi_pesan">
 
@@ -1718,6 +1817,7 @@
 
                         </label>
 
+
                         <textarea
                             id="isi_pesan"
                             name="isi_pesan"
@@ -1733,7 +1833,9 @@ Ceritakan apa saja yang ingin kamu sampaikan...
 @endif"
                         >{{ old('isi_pesan') }}</textarea>
 
+
                     </div>
+
 
                     <button
                         type="submit"
@@ -1742,7 +1844,9 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                         Kirim Menfess
                     </button>
 
+
                 </form>
+
 
                 @if ($errors->any())
 
@@ -1760,25 +1864,31 @@ Ceritakan apa saja yang ingin kamu sampaikan...
 
                 @endif
 
+
                 @if (session('message_success'))
 
                     <div class="form-alert success">
+
                         {{ session('message_success') }}
+
                     </div>
 
                 @endif
 
+
             </div>
+
 
         </aside>
 
-        <!-- =========================
-             BOARD
-        ========================= -->
+
+        <!-- BOARD -->
 
         <main class="board">
 
+
             <div class="board-header">
+
 
                 <div class="board-info">
 
@@ -1786,13 +1896,16 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                         Broadcast Publik
                     </span>
 
+
                     <span class="board-subtitle">
                         Semua cerita di sini sudah diverifikasi admin.
                     </span>
 
                 </div>
 
+
                 <div class="category-bar">
+
 
                     <a
                         class="category-toggle {{ $currentCategory === 'random' ? 'active' : '' }}"
@@ -1801,12 +1914,14 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                         Random
                     </a>
 
+
                     <a
                         class="category-toggle {{ $currentCategory === 'love' ? 'active' : '' }}"
                         href="{{ route('pengaduan', ['kategori' => 'love']) }}"
                     >
                         Love
                     </a>
+
 
                     <a
                         class="category-toggle {{ $currentCategory === 'horror' ? 'active' : '' }}"
@@ -1815,6 +1930,7 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                         Horror
                     </a>
 
+
                     <a
                         class="category-toggle {{ $currentCategory === 'sad' ? 'active' : '' }}"
                         href="{{ route('pengaduan', ['kategori' => 'sad']) }}"
@@ -1822,17 +1938,20 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                         Sad
                     </a>
 
+
                 </div>
+
 
             </div>
 
-            <!-- =========================
-                 LIST MENFESS
-            ========================= -->
+
+            <!-- LIST MENFESS -->
 
             <section class="feed">
 
+
                 @forelse ($items as $item)
+
 
                     @php
 
@@ -1842,27 +1961,34 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                             )
                         );
 
+
                         if ($tone === 'campuran') {
+
                             $tone = 'random';
+
                         }
+
 
                         if ($tone === 'cinta') {
+
                             $tone = 'love';
+
                         }
+
 
                         if ($tone === 'horor') {
+
                             $tone = 'horror';
+
                         }
+
 
                         if ($tone === 'sedih') {
+
                             $tone = 'sad';
+
                         }
 
-                        /*
-                        |--------------------------------------------------------------------------
-                        | KODE ANONIM
-                        |--------------------------------------------------------------------------
-                        */
 
                         $anonymousCode = strtoupper(
                             substr(
@@ -1875,61 +2001,79 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                             )
                         );
 
+
                         $anonymousName =
                             'Anonim-' . $anonymousCode;
 
                     @endphp
+
 
                     <article
                         class="card"
                         data-tone="{{ $tone }}"
                     >
 
-                        <!-- =========================
-                             HEADER MENFESS
-                        ========================= -->
+
+                        <!-- HEADER MENFESS -->
 
                         <div class="card-head">
 
+
                             <div class="author-block">
+
 
                                 <div class="avatar">
                                     A
                                 </div>
 
+
                                 <div>
 
+
                                     <div class="author">
+
                                         {{ $anonymousName }}
+
                                     </div>
+
 
                                     <div class="meta">
 
+
                                         <span>
+
                                             {{
                                                 $item->created_at
                                                 ?->translatedFormat('d M, H:i')
                                                 ?? $item->created_at
                                             }}
+
                                         </span>
+
 
                                         <span>
                                             •
                                         </span>
 
+
                                         <span>
                                             Anonim
                                         </span>
 
+
                                     </div>
+
 
                                 </div>
 
+
                             </div>
+
 
                             <!-- KATEGORI -->
 
                             <span class="chip">
+
 
                                 @if ($tone === 'horror')
 
@@ -1953,25 +2097,22 @@ Ceritakan apa saja yang ingin kamu sampaikan...
 
                                 @endif
 
+
                             </span>
 
-                        </div>
-
-                        <!-- =========================
-                             ISI MENFESS
-                        ========================= -->
-
-                        <div class="message">
-
-                            {{ $item->isi_pesan }}
 
                         </div>
 
-                        <!-- =========================
-                             BALASAN
-                        ========================= -->
+
+                        <!-- ISI MENFESS -->
+
+                        <div class="message">{{ $item->isi_pesan }}</div>
+
+
+                        <!-- BALASAN -->
 
                         <div class="reply-box">
+
 
                             <div class="reply-count">
 
@@ -1981,29 +2122,52 @@ Ceritakan apa saja yang ingin kamu sampaikan...
 
                             </div>
 
+
                             <div class="comment-list">
+
 
                                 @foreach ($item->comments as $comment)
 
+
+                                    @php
+
+                                        $commentAnonymousCode = strtoupper(
+                                            substr(
+                                                hash(
+                                                    'sha256',
+                                                    'whisperly-comment-' . $comment->id
+                                                ),
+                                                0,
+                                                4
+                                            )
+                                        );
+
+
+                                        $commentAnonymousName =
+                                            'Anonim-' . $commentAnonymousCode;
+
+                                    @endphp
+
+
                                     <div class="comment">
 
+
                                         <div class="avatar">
-                                            {{
-                                                strtoupper(
-                                                    substr(
-                                                        $comment->pengguna?->username ?? 'P',
-                                                        0,
-                                                        1
-                                                    )
-                                                )
-                                            }}
+
+                                            A
+
                                         </div>
+
 
                                         <div>
 
+
                                             <strong>
-                                                {{ $comment->pengguna?->username ?? 'Pengguna' }}
+
+                                                {{ $commentAnonymousName }}
+
                                             </strong>
+
 
                                             <div class="comment-text">
 
@@ -2011,17 +2175,20 @@ Ceritakan apa saja yang ingin kamu sampaikan...
 
                                             </div>
 
+
                                         </div>
+
 
                                     </div>
 
+
                                 @endforeach
+
 
                             </div>
 
-                            <!-- =========================
-                                 FORM BALAS
-                            ========================= -->
+
+                            <!-- FORM BALAS -->
 
                             <form
                                 method="POST"
@@ -2031,17 +2198,20 @@ Ceritakan apa saja yang ingin kamu sampaikan...
 
                                 @csrf
 
+
                                 <textarea
                                     name="komentar"
                                     placeholder="Tulis tanggapanmu..."
                                     required
                                 ></textarea>
 
+
                                 <button
                                     type="submit"
                                     aria-label="Kirim balasan"
                                     title="Kirim balasan"
                                 >
+
 
                                     <svg
                                         class="send-icon"
@@ -2057,15 +2227,21 @@ Ceritakan apa saja yang ingin kamu sampaikan...
 
                                     </svg>
 
+
                                 </button>
+
 
                             </form>
 
+
                         </div>
+
 
                     </article>
 
+
                 @empty
+
 
                     <div class="empty">
 
@@ -2073,15 +2249,21 @@ Ceritakan apa saja yang ingin kamu sampaikan...
 
                     </div>
 
+
                 @endforelse
+
 
             </section>
 
+
         </main>
+
 
     </div>
 
+
 </div>
+
 
 </body>
 
