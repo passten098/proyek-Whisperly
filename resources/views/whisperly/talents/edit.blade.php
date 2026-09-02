@@ -1018,14 +1018,16 @@
 
                     @forelse ($talent->schedules as $schedule)
 
+                        @php
+                            $status = $schedule->resolveStatusForDate(now(config('app.timezone'))->toDateString());
+                        @endphp
 
                         <div
                             class="
                                 schedule-row
-                                {{ $schedule->status === 'booked' ? 'booked' : '' }}
+                                {{ $status === 'booked' ? 'booked' : '' }}
                             "
                         >
-
 
                             <span class="schedule-time">
 
@@ -1037,17 +1039,13 @@
 
                             </span>
 
-
-                            @if ($schedule->status === 'booked')
-
+                            @if ($status === 'booked')
 
                                 <span class="booked-label">
                                     Sudah Dibooking
                                 </span>
 
-
                             @else
-
 
                                 <select
                                     name="schedule[{{ $schedule->id }}]"
@@ -1055,24 +1053,21 @@
 
                                     <option
                                         value="available"
-                                        {{ $schedule->status === 'available' ? 'selected' : '' }}
+                                        {{ $status === 'available' ? 'selected' : '' }}
                                     >
                                         Tersedia
                                     </option>
 
-
                                     <option
                                         value="unavailable"
-                                        {{ $schedule->status === 'unavailable' ? 'selected' : '' }}
+                                        {{ $status === 'unavailable' ? 'selected' : '' }}
                                     >
                                         Tidak Tersedia
                                     </option>
 
                                 </select>
 
-
                             @endif
-
 
                         </div>
 

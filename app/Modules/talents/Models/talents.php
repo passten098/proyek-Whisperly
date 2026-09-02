@@ -60,7 +60,9 @@ class talents extends Model
             TalentSchedule::class,
             'talent_id',
             'id'
-        )->orderBy('start_time');
+        )
+            ->whereDate('schedule_date', today(config('app.timezone')))
+            ->orderBy('start_time');
     }
 
 

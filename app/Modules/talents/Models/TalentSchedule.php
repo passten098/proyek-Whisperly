@@ -15,16 +15,15 @@ class TalentSchedule extends Model
 
     protected $fillable = [
         'talent_id',
+        'schedule_date',
         'start_time',
         'end_time',
         'status',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | RELASI KE TALENT
-    |--------------------------------------------------------------------------
-    */
+    protected $casts = [
+        'schedule_date' => 'date:Y-m-d',
+    ];
 
     public function talent()
     {
@@ -34,208 +33,83 @@ class TalentSchedule extends Model
         );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | STATUS JADWAL UNTUK HARI INI
-    |--------------------------------------------------------------------------
-    |
-    | Status yang digunakan oleh tampilan:
-    |
-    | available   = hijau
-    | booked      = merah
-    | unavailable = abu-abu
-    |
-    | Penting:
-    | kolom status database tidak langsung dianggap sebagai status
-    | tampilan karena jadwal berulang setiap hari.
-    |
-    */
-
-    public function getTodayStatusAttribute(): string
+    public function scopeForDate($query, string $date)
     {
-        /*
-        |--------------------------------------------------------------------------
-        | WAKTU SEKARANG
-        |--------------------------------------------------------------------------
-        */
+        return $query->whereDate('schedule_date', $date);
+    }
 
-        $now = Carbon::now();
+    public function resolveStatusForDate(string $date): string
+    {
+        $targetDate = Carbon::parse(
+            $date,
+            config('app.timezone')
+        )->toDateString();
 
-        /*
-        |--------------------------------------------------------------------------
-        | AMBIL JAM MULAI DAN SELESAI
-        |--------------------------------------------------------------------------
-        */
-
-        $startTime = $this->parseTime(
-            $this->start_time,
-            $now
-        );
-
-        $endTime = $this->parseTime(
-            $this->end_time,
-            $now
-        );
-
-        /*
-        |--------------------------------------------------------------------------
-        | JIKA JAM SUDAH LEWAT
-        |--------------------------------------------------------------------------
-        |
-        | Contoh:
-        |
-        | sekarang 10:00
-        |
-        | 08:00 - 09:00 => unavailable
-        | 09:00 - 10:00 => unavailable
-        |
-        */
-
-        if ($now->greaterThanOrEqualTo($endTime)) {
+        if (
+            !$this->schedule_date ||
+            $this->schedule_date->toDateString() !== $targetDate
+        ) {
             return 'unavailable';
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | JIKA DATABASE MASIH MENYIMPAN BOOKED
-        |--------------------------------------------------------------------------
-        |
-        | Status booked nantinya akan disinkronkan kembali berdasarkan
-        | booking hari ini.
-        |
-        */
-
-        if ($this->status === 'booked') {
-            return 'booked';
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | JIKA BELUM LEWAT DAN BELUM BOOKED
-        |--------------------------------------------------------------------------
-        */
-
-        return 'available';
+        return match ($this->status) {
+            'available' => 'available',
+            'booked' => 'booked',
+            default => 'unavailable',
+        };
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | STATUS CLASS UNTUK BLADE
-    |--------------------------------------------------------------------------
-    */
+    public function getTodayStatusAttribute(): string
+    {
+        return $this->resolveStatusForDate(
+            Carbon::now(config('app.timezone'))->toDateString()
+        );
+    }
 
     public function getStatusClassAttribute(): string
     {
         return match ($this->today_status) {
-
-            'available' =>
-                'available',
-
-            'booked' =>
-                'booked',
-
-            default =>
-                'unavailable',
+            'available' => 'available',
+            'booked' => 'booked',
+            default => 'unavailable',
         };
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | CEK APAKAH MASIH BISA DIBOOKING HARI INI
-    |--------------------------------------------------------------------------
-    */
 
     public function getIsBookableTodayAttribute(): bool
     {
         return $this->today_status === 'available';
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | CEK APAKAH WAKTU SUDAH LEWAT
-    |--------------------------------------------------------------------------
-    */
-
     public function getIsExpiredTodayAttribute(): bool
     {
-        $now = Carbon::now();
+        $now = Carbon::now(config('app.timezone'));
 
-        $endTime = $this->parseTime(
+        if (
+            !$this->schedule_date ||
+            $this->schedule_date->toDateString() !== $now->toDateString()
+        ) {
+            return true;
+        }
+
+        $endTime = Carbon::parse(
             $this->end_time,
-            $now
+            config('app.timezone')
+        )->setDate(
+            $now->year,
+            $now->month,
+            $now->day
         );
 
         return $now->greaterThanOrEqualTo($endTime);
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | FORMAT JAM
-    |--------------------------------------------------------------------------
-    */
-
     public function getStartTimeFormattedAttribute(): string
     {
-        return Carbon::parse(
-            $this->start_time
-        )->format('H:i');
+        return Carbon::parse($this->start_time)->format('H:i');
     }
 
     public function getEndTimeFormattedAttribute(): string
     {
-        return Carbon::parse(
-            $this->end_time
-        )->format('H:i');
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | PARSE JAM KE TANGGAL HARI INI
-    |--------------------------------------------------------------------------
-    */
-
-    private function parseTime(
-        mixed $time,
-        Carbon $date
-    ): Carbon {
-
-        /*
-        |--------------------------------------------------------------------------
-        | Jika sudah berupa Carbon
-        |--------------------------------------------------------------------------
-        */
-
-        if ($time instanceof Carbon) {
-
-            return $time->copy()
-                ->setDate(
-                    $date->year,
-                    $date->month,
-                    $date->day
-                );
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Ambil hanya bagian jam
-        |--------------------------------------------------------------------------
-        */
-
-        $timeString = substr(
-            (string) $time,
-            0,
-            8
-        );
-
-        /*
-        |--------------------------------------------------------------------------
-        | Gabungkan dengan tanggal hari ini
-        |--------------------------------------------------------------------------
-        */
-
-        return Carbon::createFromFormat(
-            'Y-m-d H:i:s',
-            $date->format('Y-m-d') . ' ' . $timeString
-        );
+        return Carbon::parse($this->end_time)->format('H:i');
     }
 }

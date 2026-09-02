@@ -1453,24 +1453,12 @@
 
                 @forelse ($talent->schedules as $schedule)
 
-
                     @php
-
-                        $isAvailable =
-                            $schedule->status === 'available';
-
-                        $isBooked =
-                            $schedule->status === 'booked';
-
-                        $statusClass =
-                            $isAvailable
-                                ? 'available'
-                                : ($isBooked
-                                    ? 'booked'
-                                    : 'unavailable');
-
+                        $status = $schedule->resolveStatusForDate(now(config('app.timezone'))->toDateString());
+                        $isAvailable = $status === 'available';
+                        $isBooked = $status === 'booked';
+                        $statusClass = $isAvailable ? 'available' : ($isBooked ? 'booked' : 'unavailable');
                     @endphp
-
 
                     <button
                         type="button"

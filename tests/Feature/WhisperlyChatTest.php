@@ -258,4 +258,60 @@ class WhisperlyChatTest extends TestCase
             'talent_username' => $talentUser->username,
         ]);
     }
+
+    public function test_schedule_status_is_scoped_by_date_and_not_carried_forward(): void
+    {
+        $now = Carbon::parse('2026-09-01 08:30:00', 'Asia/Jakarta');
+        Carbon::setTestNow($now);
+
+        $user = pengguna::create([
+            'username' => 'user-1',
+            'email' => 'user1@example.com',
+            'password' => bcrypt('secret123'),
+            'role' => 'user',
+        ]);
+
+        $talentUser = pengguna::create([
+            'username' => 'talent-1',
+            'email' => 'talent1@example.com',
+            'password' => bcrypt('secret123'),
+            'role' => 'talent',
+        ]);
+
+        $talentProfile = talents::create([
+            'pengguna_id' => $talentUser->id,
+            'deskripsi' => 'Talent test',
+        ]);
+
+        $todaySchedule = TalentSchedule::create([
+            'talent_id' => $talentProfile->id,
+            'schedule_date' => $now->toDateString(),
+            'start_time' => '09:00',
+            'end_time' => '10:00',
+            'status' => 'available',
+        ]);
+
+        $yesterdaySchedule = TalentSchedule::create([
+            'talent_id' => $talentProfile->id,
+            'schedule_date' => $now->copy()->subDay()->toDateString(),
+            'start_time' => '09:00',
+            'end_time' => '10:00',
+            'status' => 'booked',
+        ]);
+
+        $booking = WhisperlyBooking::create([
+            'pengguna_id' => $user->id,
+            'talent_id' => $talentProfile->id,
+            'schedule_id' => $yesterdaySchedule->id,
+            'status' => 'completed',
+        ]);
+
+        $this->assertSame('available', $todaySchedule->resolveStatusForDate($now->toDateString()));
+        $this->assertSame('booked', $yesterdaySchedule->resolveStatusForDate($now->copy()->subDay()->toDateString()));
+        $this->assertDatabaseHas('whisperly_bookings', [
+            'id' => $booking->id,
+            'schedule_id' => $yesterdaySchedule->id,
+            'talent_id' => $talentProfile->id,
+        ]);
+    }
 }

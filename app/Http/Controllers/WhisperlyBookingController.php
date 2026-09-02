@@ -135,181 +135,52 @@ class WhisperlyBookingController extends Controller
                         $profile
                     ) {
 
-
-                        /*
-                        |--------------------------------------------------------------------------
-                        | LOCK JADWAL
-                        |--------------------------------------------------------------------------
-                        */
-
-                        $schedule =
-                            TalentSchedule::query()
-                                ->where(
-                                    'id',
-                                    $request->input(
-                                        'schedule_id'
-                                    )
-                                )
-                                ->where(
-                                    'talent_id',
-                                    $profile->id
-                                )
-                                ->lockForUpdate()
-                                ->first();
-
-
-                        /*
-                        |--------------------------------------------------------------------------
-                        | JADWAL TIDAK DITEMUKAN
-                        |--------------------------------------------------------------------------
-                        */
+                        $schedule = TalentSchedule::query()
+                            ->where('id', $request->input('schedule_id'))
+                            ->where('talent_id', $profile->id)
+                            ->whereDate('schedule_date', today(config('app.timezone')))
+                            ->lockForUpdate()
+                            ->first();
 
                         if (!$schedule) {
+                            return null;
+                        }
+
+                        if (! in_array($schedule->status, ['available'], true)) {
+                            return null;
+                        }
+
+                        $now = now(config('app.timezone'));
+                        $endTime = \Carbon\Carbon::parse($schedule->end_time, config('app.timezone'))
+                            ->setDate($now->year, $now->month, $now->day);
+
+                        if ($endTime->lessThanOrEqualTo($now)) {
+                            return null;
+                        }
+
+                        $existingBooking = WhisperlyBooking::query()
+                            ->where('schedule_id', $schedule->id)
+                            ->whereNull('deleted_at')
+                            ->lockForUpdate()
+                            ->first();
+
+                        if ($existingBooking) {
+                            if ($existingBooking->pengguna_id === $user->id) {
+                                return $existingBooking;
+                            }
 
                             return null;
                         }
 
-
-                        /*
-                        |--------------------------------------------------------------------------
-                        | CEK WAKTU SEKARANG
-                        |--------------------------------------------------------------------------
-                        */
-
-                        $now =
-                            now();
-
-
-                        $startTime =
-                            \Carbon\Carbon::today()
-                                ->setTimeFromTimeString(
-                                    $schedule->start_time
-                                );
-
-
-                        $endTime =
-                            \Carbon\Carbon::today()
-                                ->setTimeFromTimeString(
-                                    $schedule->end_time
-                                );
-
-
-                        /*
-                        |--------------------------------------------------------------------------
-                        | JADWAL SUDAH LEWAT
-                        |--------------------------------------------------------------------------
-                        */
-
-                        if (
-                            $endTime
-                                ->lessThanOrEqualTo($now)
-                        ) {
-
-                            return null;
-                        }
-
-
-                        /*
-                        |--------------------------------------------------------------------------
-                        | CARI BOOKING AKTIF HARI INI
-                        |
-                        | BOOKING KEMARIN TIDAK DIHITUNG.
-                        |--------------------------------------------------------------------------
-                        */
-
-                        $existingBooking =
-                            WhisperlyBooking::query()
-                                ->where(
-                                    'schedule_id',
-                                    $schedule->id
-                                )
-                                ->whereDate(
-                                    'created_at',
-                                    today()
-                                )
-                                ->whereNull(
-                                    'deleted_at'
-                                )
-                                ->lockForUpdate()
-                                ->first();
-
-
-                        /*
-                        |--------------------------------------------------------------------------
-                        | SUDAH DIBOOKING USER LAIN
-                        |--------------------------------------------------------------------------
-                        */
-
-                        if (
-                            $existingBooking &&
-                            $existingBooking->pengguna_id
-                                !== $user->id
-                        ) {
-
-                            return null;
-                        }
-
-
-                        /*
-                        |--------------------------------------------------------------------------
-                        | USER YANG SAMA SUDAH BOOKING
-                        |--------------------------------------------------------------------------
-                        */
-
-                        if (
-                            $existingBooking &&
-                            $existingBooking->pengguna_id
-                                === $user->id
-                        ) {
-
-                            return $existingBooking;
-                        }
-
-
-                        /*
-                        |--------------------------------------------------------------------------
-                        | BUAT BOOKING BARU
-                        |--------------------------------------------------------------------------
-                        */
-
-                        $booking =
-                            WhisperlyBooking::create([
-                                'pengguna_id' =>
-                                    $user->id,
-
-                                'talent_id' =>
-                                    $profile->id,
-
-                                'schedule_id' =>
-                                    $schedule->id,
-
-                                'status' =>
-                                    'upcoming',
-                            ]);
-
-
-                        /*
-                        |--------------------------------------------------------------------------
-                        | UPDATE STATUS SCHEDULE
-                        |--------------------------------------------------------------------------
-                        */
-
-                        $schedule->update([
-                            'status' =>
-                                'booked',
+                        $booking = WhisperlyBooking::create([
+                            'pengguna_id' => $user->id,
+                            'talent_id' => $profile->id,
+                            'schedule_id' => $schedule->id,
+                            'status' => 'upcoming',
                         ]);
 
-
-                        /*
-                        |--------------------------------------------------------------------------
-                        | SINKRONISASI KE LARALAG
-                        |--------------------------------------------------------------------------
-                        */
-
-                        $booking->syncLaralagBooking(
-                            true
-                        );
-
+                        $schedule->update(['status' => 'booked']);
+                        $booking->syncLaralagBooking(true);
 
                         return $booking;
                     }

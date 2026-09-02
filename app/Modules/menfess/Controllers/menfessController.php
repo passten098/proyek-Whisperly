@@ -115,25 +115,32 @@ class menfessController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | NORMALISASI NAMA KATEGORI
+        | NORMALISASI KATEGORI URL
         |--------------------------------------------------------------------------
+        |
+        | random   = campuran
+        | love     = cinta
+        | horror   = horror
+        | sad      = sedih
+        |
         */
 
-        if ($selectedCategory === 'campuran') {
-            $selectedCategory = 'random';
-        }
+        $selectedCategory = match ($selectedCategory) {
 
-        if ($selectedCategory === 'cinta') {
-            $selectedCategory = 'love';
-        }
+            'random',
+            'campuran' => 'random',
 
-        if ($selectedCategory === 'horor') {
-            $selectedCategory = 'horror';
-        }
+            'love',
+            'cinta' => 'love',
 
-        if ($selectedCategory === 'sedih') {
-            $selectedCategory = 'sad';
-        }
+            'horror',
+            'horor' => 'horror',
+
+            'sad',
+            'sedih' => 'sad',
+
+            default => 'random',
+        };
 
 
         /*
@@ -162,15 +169,15 @@ class menfessController extends Controller
 
         $categoryName = match ($selectedCategory) {
 
-            'random' => 'random',
+            'random' => 'campuran',
 
             'love' => 'cinta',
 
-            'horror' => 'horor',
+            'horror' => 'horror',
 
             'sad' => 'sedih',
 
-            default => 'random',
+            default => 'campuran',
         };
 
 
@@ -183,14 +190,14 @@ class menfessController extends Controller
         $category = categories::query()
             ->whereRaw(
                 'LOWER(TRIM(jenis_kategori)) = ?',
-                [$categoryName]
+                [strtolower($categoryName)]
             )
             ->first();
 
 
         /*
         |--------------------------------------------------------------------------
-        | FILTER KATEGORI
+        | FILTER MENFESS
         |--------------------------------------------------------------------------
         */
 
@@ -211,7 +218,7 @@ class menfessController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | AMBIL DATA
+        | AMBIL DATA MENFESS
         |--------------------------------------------------------------------------
         */
 
@@ -406,34 +413,16 @@ class menfessController extends Controller
         ];
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | KATEGORI
-        |--------------------------------------------------------------------------
-        */
-
         $data['categories'] = categories::query()
             ->orderBy('jenis_kategori')
             ->get();
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | LOG
-        |--------------------------------------------------------------------------
-        */
 
         $this->log(
             $request,
             'membuka form tambah ' . $this->title
         );
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | VIEW
-        |--------------------------------------------------------------------------
-        */
 
         return view(
             'menfess::menfess_create',
@@ -466,7 +455,6 @@ class menfessController extends Controller
             'id_kategori' =>
                 'required|string',
 
-            // DIUBAH DARI min:5 MENJADI min:1
             'isi_pesan' =>
                 'required|string|min:1|max:2000',
         ]);
@@ -478,22 +466,71 @@ class menfessController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $category = categories::query()
-            ->where(
-                'id',
-                $request->input(
+        $categoryInput = strtolower(
+            trim(
+                (string) $request->input(
                     'id_kategori'
                 )
             )
-            ->orWhere(
-                'jenis_kategori',
-                strtolower(
-                    (string) $request->input(
-                        'id_kategori'
-                    )
-                )
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | NORMALISASI INPUT KATEGORI
+        |--------------------------------------------------------------------------
+        |
+        | ID kategori tetap diterima.
+        | Nama kategori juga diterima.
+        |
+        */
+
+        $category = categories::query()
+            ->where(
+                'id',
+                $request->input('id_kategori')
+            )
+            ->orWhereRaw(
+                'LOWER(TRIM(jenis_kategori)) = ?',
+                [$categoryInput]
             )
             ->first();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | JIKA BELUM DITEMUKAN, COBA ALIAS
+        |--------------------------------------------------------------------------
+        */
+
+        if (!$category) {
+
+            $categoryName = match ($categoryInput) {
+
+                'random' => 'campuran',
+
+                'love' => 'cinta',
+
+                'horror' => 'horror',
+
+                'horor' => 'horror',
+
+                'sad' => 'sedih',
+
+                default => null,
+            };
+
+
+            if ($categoryName) {
+
+                $category = categories::query()
+                    ->whereRaw(
+                        'LOWER(TRIM(jenis_kategori)) = ?',
+                        [$categoryName]
+                    )
+                    ->first();
+            }
+        }
 
 
         /*
@@ -508,36 +545,6 @@ class menfessController extends Controller
                 ->withErrors([
                     'id_kategori' =>
                         'Kategori tidak valid.'
-                ])
-                ->withInput();
-        }
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | RANDOM / KATEGORI SENDIRI
-        |--------------------------------------------------------------------------
-        */
-
-        $categoryType = strtolower(
-            trim(
-                (string) $category->jenis_kategori
-            )
-        );
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | CAMPURAN SUDAH TIDAK DIGUNAKAN
-        |--------------------------------------------------------------------------
-        */
-
-        if ($categoryType === 'campuran') {
-
-            return back()
-                ->withErrors([
-                    'id_kategori' =>
-                        'Kategori Campuran tidak digunakan. Pilih Random, Love, Horror, atau Sad.'
                 ])
                 ->withInput();
         }

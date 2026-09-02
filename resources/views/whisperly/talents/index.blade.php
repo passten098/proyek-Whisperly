@@ -31,28 +31,22 @@
 
             --panel-light: #202344;
 
-
             --text: #f7f5ff;
 
             --muted: #9ea3c7;
-
 
             --indigo: #8b7cff;
 
             --indigo-light: #b9b1ff;
 
-
             --line: rgba(255,255,255,.09);
-
 
             --shadow:
                 0 30px 80px rgba(0,0,0,.45);
 
-
             --shadow-active:
                 0 35px 90px rgba(104,91,255,.28);
         }
-
 
 
         /* =====================================================
@@ -75,7 +69,6 @@
         }
 
 
-
         /* =====================================================
            BODY
         ===================================================== */
@@ -87,7 +80,6 @@
             overflow-x: hidden;
 
             color: var(--text);
-
 
             background:
 
@@ -105,7 +97,6 @@
 
                 var(--bg);
 
-
             font-family:
                 Arial,
                 Helvetica,
@@ -113,12 +104,8 @@
         }
 
 
-
         /* =====================================================
            PAGE
-           
-           Navbar sekarang fixed dan MENEMPEL di atas.
-           Jadi page diberi padding-top agar tidak tertutup.
         ===================================================== */
 
         .page {
@@ -129,12 +116,10 @@
 
             flex-direction: column;
 
-
             padding-top: 145px;
 
             padding-bottom: 80px;
         }
-
 
 
         /* =====================================================
@@ -149,7 +134,6 @@
                     calc(100% - 48px)
                 );
 
-
             margin:
                 0 auto 25px;
         }
@@ -160,22 +144,17 @@
             margin:
                 0 0 10px;
 
-
             color:
                 var(--indigo-light);
-
 
             font-size:
                 12px;
 
-
             font-weight:
                 800;
 
-
             letter-spacing:
                 .16em;
-
 
             text-transform:
                 uppercase;
@@ -184,14 +163,11 @@
 
         .heading h1 {
 
-            margin:
-                0;
-
+            margin: 0;
 
             font-family:
                 Georgia,
                 serif;
-
 
             font-size:
                 clamp(
@@ -200,14 +176,11 @@
                     76px
                 );
 
-
             font-weight:
                 400;
 
-
             letter-spacing:
                 -.035em;
-
 
             line-height:
                 .95;
@@ -219,23 +192,18 @@
             max-width:
                 600px;
 
-
             margin:
                 16px 0 0;
-
 
             color:
                 var(--muted);
 
-
             font-size:
                 15px;
-
 
             line-height:
                 1.7;
         }
-
 
 
         /* =====================================================
@@ -247,18 +215,14 @@
             position:
                 relative;
 
-
             width:
                 100%;
-
 
             margin-top:
                 15px;
 
-
             overflow:
                 hidden;
-
 
             mask-image:
                 linear-gradient(
@@ -271,7 +235,6 @@
         }
 
 
-
         /* =====================================================
            CAROUSEL
         ===================================================== */
@@ -281,54 +244,41 @@
             width:
                 100%;
 
-
             display:
                 flex;
-
 
             align-items:
                 center;
 
-
             gap:
                 26px;
-
 
             padding-top:
                 55px;
 
-
             padding-bottom:
                 55px;
-
 
             padding-left:
                 calc(50vw - 170px);
 
-
             padding-right:
                 calc(50vw - 170px);
-
 
             overflow-x:
                 auto;
 
-
             overflow-y:
                 hidden;
-
 
             scroll-behavior:
                 auto;
 
-
             scrollbar-width:
                 none;
 
-
             overscroll-behavior-x:
                 contain;
-
 
             cursor:
                 grab;
@@ -336,16 +286,13 @@
 
 
         .carousel::-webkit-scrollbar {
-            display:
-                none;
+            display: none;
         }
 
 
         .carousel:active {
-            cursor:
-                grabbing;
+            cursor: grabbing;
         }
-
 
 
         /* =====================================================
@@ -357,64 +304,51 @@
             position:
                 relative;
 
-
             flex:
                 0 0 340px;
-
 
             min-height:
                 465px;
 
-
             padding:
                 18px;
 
-
             border:
-                1px solid rgba(
+                1px solid
+                rgba(
                     255,
                     255,
                     255,
                     .08
                 );
 
-
             border-radius:
                 28px;
 
-
             background:
-
                 linear-gradient(
                     145deg,
                     rgba(36,39,72,.96),
                     rgba(19,21,43,.98)
                 );
 
-
             box-shadow:
                 var(--shadow);
-
 
             cursor:
                 pointer;
 
-
             opacity:
                 .58;
 
-
             filter:
                 blur(1px);
-
 
             transform:
                 translateY(0)
                 scale(.92);
 
-
             transition:
-
                 transform .45s
                     cubic-bezier(.2,.8,.2,1),
 
@@ -428,7 +362,6 @@
         }
 
 
-
         /* =====================================================
            CENTER CARD
         ===================================================== */
@@ -438,16 +371,13 @@
             opacity:
                 .82;
 
-
             filter:
                 blur(0);
-
 
             transform:
                 translateY(-8px)
                 scale(.96);
         }
-
 
 
         /* =====================================================
@@ -459,15 +389,12 @@
             opacity:
                 1;
 
-
             filter:
                 blur(0);
-
 
             transform:
                 translateY(-25px)
                 scale(1);
-
 
             border-color:
                 rgba(
@@ -477,11 +404,9 @@
                     .55
                 );
 
-
             box-shadow:
                 var(--shadow-active);
         }
-
 
 
         /* =====================================================
@@ -494,11 +419,9 @@
             opacity:
                 .25;
 
-
             filter:
                 blur(3px);
         }
-
 
 
         /* =====================================================
@@ -510,25 +433,19 @@
             position:
                 relative;
 
-
             width:
                 100%;
-
 
             height:
                 270px;
 
-
             overflow:
                 hidden;
-
 
             border-radius:
                 20px;
 
-
             background:
-
                 linear-gradient(
                     135deg,
                     #272a50,
@@ -542,18 +459,14 @@
             width:
                 100%;
 
-
             height:
                 100%;
-
 
             display:
                 block;
 
-
             object-fit:
                 cover;
-
 
             transition:
                 transform .5s ease;
@@ -568,7 +481,6 @@
         }
 
 
-
         /* =====================================================
            PHOTO PLACEHOLDER
         ===================================================== */
@@ -578,43 +490,33 @@
             width:
                 100%;
 
-
             height:
                 100%;
-
 
             display:
                 flex;
 
-
             align-items:
                 center;
-
 
             justify-content:
                 center;
 
-
             color:
                 var(--indigo-light);
-
 
             font-size:
                 13px;
 
-
             font-weight:
                 700;
-
 
             text-transform:
                 uppercase;
 
-
             letter-spacing:
                 .08em;
         }
-
 
 
         /* =====================================================
@@ -633,42 +535,38 @@
             margin:
                 0;
 
-
             color:
                 #fff;
-
 
             font-family:
                 Georgia,
                 serif;
 
-
             font-size:
                 29px;
 
-
             font-weight:
                 400;
-
 
             line-height:
                 1;
         }
 
 
+        /* =====================================================
+           USERNAME
+        ===================================================== */
+
         .talent-username {
 
             margin-top:
                 8px;
 
-
             color:
                 var(--indigo-light);
 
-
             font-size:
                 12px;
-
 
             font-weight:
                 700;
@@ -680,30 +578,22 @@
             min-height:
                 46px;
 
-
             margin:
                 14px 0 20px;
-
 
             color:
                 var(--muted);
 
-
             font-size:
                 13px;
-
 
             line-height:
                 1.6;
         }
 
 
-
         /* =====================================================
            PROFILE BUTTON
-           
-           Sekarang mengikuti konsep button global:
-           rounded / pill / tidak kotak.
         ===================================================== */
 
         .profile-button {
@@ -711,50 +601,38 @@
             width:
                 100%;
 
-
             min-height:
                 44px;
-
 
             display:
                 flex;
 
-
             align-items:
                 center;
-
 
             justify-content:
                 center;
 
-
             border:
                 0;
-
 
             border-radius:
                 999px;
 
-
             color:
                 #17172f;
-
 
             background:
                 var(--indigo-light);
 
-
             text-decoration:
                 none;
-
 
             font-size:
                 13px;
 
-
             font-weight:
                 800;
-
 
             box-shadow:
                 0 6px 16px
@@ -765,10 +643,11 @@
                     .18
                 );
 
-
             transition:
                 transform .2s ease,
+
                 background .2s ease,
+
                 box-shadow .2s ease;
         }
 
@@ -778,10 +657,8 @@
             background:
                 #d8d2ff;
 
-
             transform:
                 translateY(-2px);
-
 
             box-shadow:
                 0 8px 20px
@@ -801,7 +678,6 @@
         }
 
 
-
         /* =====================================================
            HINT
         ===================================================== */
@@ -811,18 +687,14 @@
             margin-top:
                 18px;
 
-
             text-align:
                 center;
-
 
             color:
                 #73799f;
 
-
             font-size:
                 12px;
-
 
             letter-spacing:
                 .04em;
@@ -834,11 +706,9 @@
             color:
                 var(--indigo-light);
 
-
             font-weight:
                 700;
         }
-
 
 
         /* =====================================================
@@ -853,18 +723,14 @@
                     calc(100% - 40px)
                 );
 
-
             margin:
                 50px auto;
-
 
             padding:
                 40px;
 
-
             text-align:
                 center;
-
 
             border:
                 1px dashed
@@ -875,14 +741,11 @@
                     .12
                 );
 
-
             border-radius:
                 24px;
 
-
             color:
                 var(--muted);
-
 
             background:
                 rgba(
@@ -892,7 +755,6 @@
                     .025
                 );
         }
-
 
 
         /* =====================================================
@@ -934,10 +796,8 @@
                 gap:
                     18px;
 
-
                 padding-left:
                     calc(50vw - 140px);
-
 
                 padding-right:
                     calc(50vw - 140px);
@@ -948,7 +808,6 @@
 
                 flex-basis:
                     280px;
-
 
                 min-height:
                     420px;
@@ -986,12 +845,10 @@
 
     {{-- =====================================================
          GLOBAL NAVBAR
-         
-         JANGAN buat navbar sendiri di halaman ini.
+         Navbar tetap menggunakan file terpisah.
     ====================================================== --}}
 
     @include('whisperly.navbar')
-
 
 
     {{-- =====================================================
@@ -1028,17 +885,12 @@
         </section>
 
 
-
         {{-- =================================================
-             TALENT TERSEDIA
+             TALENT
         ================================================== --}}
 
         @if ($talents->count())
 
-
-            {{-- =============================================
-                 CAROUSEL WRAPPER
-            ============================================== --}}
 
             <div
                 class="carousel-wrapper"
@@ -1062,11 +914,8 @@
 
                         <article
                             class="talent-card"
-
                             tabindex="0"
-
                             data-index="{{ $loop->index }}"
-
                             data-url="{{ route(
                                 'whisperly.talents.show',
                                 $talent->pengguna->username
@@ -1080,26 +929,25 @@
 
                             <div class="talent-photo">
 
+
                                 @if ($talent->photo)
 
                                     <img
-                                        src="{{ Storage::url($talent->photo) }}"
-
+                                        src="{{ \Illuminate\Support\Facades\Storage::url($talent->photo) }}"
                                         alt="Foto {{ $talent->pengguna->username }}"
                                     >
 
                                 @else
 
-                                    <div
-                                        class="photo-placeholder"
-                                    >
-                                        {{ $talent->pengguna->username }}
+                                    <div class="photo-placeholder">
+
+                                  
                                     </div>
 
                                 @endif
 
-                            </div>
 
+                            </div>
 
 
                             {{-- =============================
@@ -1108,6 +956,8 @@
 
                             <div class="talent-content">
 
+
+                                {{-- NAMA --}}
 
                                 <h2 class="talent-name">
 
@@ -1118,22 +968,17 @@
                                 </h2>
 
 
-                                <div class="talent-username">
 
-                                    @{{ $talent->pengguna->username }}
-
-                                </div>
-
+                                {{-- DESKRIPSI --}}
 
                                 <p class="talent-description">
 
                                     {{ Str::limit(
-                                        $talent->deskripsi,
+                                        $talent->deskripsi ?? 'Belum ada deskripsi talent.',
                                         100
                                     ) }}
 
                                 </p>
-
 
 
                                 {{-- =========================
@@ -1142,17 +987,19 @@
 
                                 <a
                                     class="profile-button"
-
                                     href="{{ route(
                                         'whisperly.talents.show',
                                         $talent->pengguna->username
                                     ) }}"
                                 >
+
                                     Lihat Profil
+
                                 </a>
 
 
                             </div>
+
 
                         </article>
 
@@ -1162,8 +1009,8 @@
 
                 </div>
 
-            </div>
 
+            </div>
 
 
             {{-- =================================================
@@ -1172,17 +1019,26 @@
 
             <div class="interaction-hint">
 
-                <span>Scroll</span>
+                <span>
+                    Scroll
+                </span>
+
                 mouse / dua jari touchpad
 
                 &nbsp;•&nbsp;
 
-                <span>Geser</span>
+                <span>
+                    Geser
+                </span>
+
                 kanan / kiri
 
                 &nbsp;•&nbsp;
 
-                <span>Enter</span>
+                <span>
+                    Enter
+                </span>
+
                 untuk membuka profil
 
             </div>
@@ -1206,7 +1062,6 @@
 
 
     </main>
-
 
 
     {{-- =====================================================
@@ -1243,7 +1098,6 @@
             let scrollTimer = null;
 
             let isScrolling = false;
-
 
 
             /* =================================================
@@ -1290,14 +1144,15 @@
 
                         closest =
                             card;
+
                     }
 
                 });
 
 
                 return closest;
-            }
 
+            }
 
 
             /* =================================================
@@ -1342,7 +1197,6 @@
             }
 
 
-
             /* =================================================
                SELECT CARD
             ================================================= */
@@ -1372,7 +1226,6 @@
                         'is-selected'
                     );
 
-
                     item.classList.remove(
                         'is-center'
                     );
@@ -1392,7 +1245,6 @@
                 }
 
             }
-
 
 
             /* =================================================
@@ -1434,7 +1286,6 @@
                 );
 
             }
-
 
 
             /* =================================================
@@ -1492,7 +1343,6 @@
             }
 
 
-
             /* =================================================
                WHEEL EVENT
             ================================================= */
@@ -1508,7 +1358,6 @@
                 );
 
             }
-
 
 
             /* =================================================
@@ -1548,7 +1397,6 @@
                 );
 
 
-
                 /* =============================================
                    ENTER PADA CARD
                 ============================================== */
@@ -1557,23 +1405,26 @@
                     'keydown',
                     function(event) {
 
+
                         if (
-                            event.key === 'Enter'
+                            event.key !== 'Enter'
                         ) {
 
-                            event.preventDefault();
-
-
-                            window.location.href =
-                                card.dataset.url;
+                            return;
 
                         }
+
+
+                        event.preventDefault();
+
+
+                        window.location.href =
+                            card.dataset.url;
 
                     }
                 );
 
             });
-
 
 
             /* =================================================
@@ -1583,6 +1434,7 @@
             carousel.addEventListener(
                 'keydown',
                 function(event) {
+
 
                     if (
                         event.key !== 'Enter'
@@ -1612,7 +1464,6 @@
             );
 
 
-
             /* =================================================
                RESIZE
             ================================================= */
@@ -1620,6 +1471,7 @@
             window.addEventListener(
                 'resize',
                 function() {
+
 
                     if (!selectedCard) {
                         return;
@@ -1632,6 +1484,27 @@
 
                 }
             );
+
+
+            /* =================================================
+               INITIAL CARD
+            ================================================= */
+
+            if (cards.length > 0) {
+
+                const initialCard =
+                    getCenterCard();
+
+
+                if (initialCard) {
+
+                    initialCard.classList.add(
+                        'is-center'
+                    );
+
+                }
+
+            }
 
         }
 

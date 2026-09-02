@@ -14,7 +14,7 @@ class WhisperlyTalentController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | SLOT JADWAL DEFAULT
+    | SLOT JADWAL
     |--------------------------------------------------------------------------
     */
 
@@ -23,6 +23,7 @@ class WhisperlyTalentController extends Controller
         ['09:00', '10:00'],
         ['10:00', '11:00'],
         ['11:00', '12:00'],
+
         ['13:00', '14:00'],
         ['14:00', '15:00'],
         ['15:00', '16:00'],
@@ -60,7 +61,7 @@ class WhisperlyTalentController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | DETAIL / LIHAT PROFIL TALENT
+    | DETAIL TALENT
     |--------------------------------------------------------------------------
     */
 
@@ -79,7 +80,7 @@ class WhisperlyTalentController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | PROFIL SENDIRI MILIK TALENT
+    | PROFIL TALENT SENDIRI
     |--------------------------------------------------------------------------
     */
 
@@ -121,7 +122,7 @@ class WhisperlyTalentController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | HALAMAN EDIT PROFIL
+    | EDIT PROFIL TALENT
     |--------------------------------------------------------------------------
     */
 
@@ -134,10 +135,8 @@ class WhisperlyTalentController extends Controller
             403
         );
 
-        $talent = $this->profileFor($user);
-
         return view('whisperly.talents.edit', [
-            'talent' => $talent,
+            'talent' => $this->profileFor($user),
             'user' => $user,
         ]);
     }
@@ -153,17 +152,10 @@ class WhisperlyTalentController extends Controller
     {
         $user = $request->user('whisperly');
 
-        /*
-        |--------------------------------------------------------------------------
-        | Pastikan yang mengakses memang talent
-        |--------------------------------------------------------------------------
-        */
-
         abort_unless(
             $user && $user->role === 'talent',
             403
         );
-
 
         /*
         |--------------------------------------------------------------------------
@@ -172,7 +164,6 @@ class WhisperlyTalentController extends Controller
         */
 
         $validated = $request->validate([
-
             'description' => [
                 'required',
                 'string',
@@ -193,14 +184,14 @@ class WhisperlyTalentController extends Controller
 
             'schedule.*' => [
                 'nullable',
-                'in:available,unavailable,booked',
+                'in:available,unavailable',
             ],
         ]);
 
 
         /*
         |--------------------------------------------------------------------------
-        | AMBIL PROFIL TALENT
+        | AMBIL / BUAT PROFIL TALENT
         |--------------------------------------------------------------------------
         */
 
@@ -220,8 +211,7 @@ class WhisperlyTalentController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $talent->deskripsi =
-            $validated['description'];
+        $talent->deskripsi = $validated['description'];
 
 
         /*
@@ -232,108 +222,161 @@ class WhisperlyTalentController extends Controller
 
         if ($request->hasFile('photo')) {
 
-            /*
-            | Hapus foto custom lama
-            */
-
             if (
                 $talent->photo &&
-                Storage::disk('public')->exists(
-                    $talent->photo
-                )
+                Storage::disk('public')->exists($talent->photo)
             ) {
-
                 Storage::disk('public')->delete(
                     $talent->photo
                 );
             }
 
-
-            /*
-            | Simpan foto baru
-            */
-
-            $talent->photo =
-                $request
-                    ->file('photo')
-                    ->store(
-                        'talent-profiles',
-                        'public'
-                    );
+            $talent->photo = $request
+                ->file('photo')
+                ->store(
+                    'talent-profiles',
+                    'public'
+                );
         }
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | SIMPAN TALENT
-        |--------------------------------------------------------------------------
-        */
 
         $talent->save();
 
 
         /*
         |--------------------------------------------------------------------------
-        | UPDATE JADWAL
+        | TANGGAL HARI INI
         |--------------------------------------------------------------------------
+        |
+        | Jadwal yang diedit talent hanya untuk hari ini.
+        |
         */
 
-        if (
-            isset($validated['schedule']) &&
-            is_array($validated['schedule'])
-        ) {
-
-            foreach ($talent->schedules as $schedule) {
-
-                $scheduleId = $schedule->id;
+        $today = now(
+            config('app.timezone')
+        )->toDateString();
 
 
-                if (
-                    !array_key_exists(
-                        $scheduleId,
-                        $validated['schedule']
-                    )
-                ) {
-                    continue;
-                }
+        /*
+        |--------------------------------------------------------------------------
+        | PASTIKAN SLOT HARI INI ADA
+        |--------------------------------------------------------------------------
+        |
+        | PENTING:
+        | Query selalu menggunakan:
+        |
+        | talent_id
+        | schedule_date
+        | start_time
+        | end_time
+        |
+        | Jadi jadwal talent A tidak bercampur dengan talent B
+        | dan jadwal kemarin tidak bercampur dengan hari ini.
+        |
+        */
+
+        foreach (self::SLOTS as [$start, $end]) {
+
+            $schedule = TalentSchedule::query()
+                ->where('talent_id', $talent->id)
+                ->whereDate('schedule_date', $today)
+                ->where('start_time', $start)
+                ->where('end_time', $end)
+                ->first();
 
 
-                /*
-                | Jadwal yang sudah dibooking
-                | tidak boleh diubah.
-                */
+            /*
+            |--------------------------------------------------------------------------
+            | Kalau belum ada, buat.
+            |--------------------------------------------------------------------------
+            */
 
-                if (
-                    $schedule->status === 'booked'
-                ) {
-                    continue;
-                }
+            if (!$schedule) {
 
+                $schedule = new TalentSchedule();
 
-                $newStatus =
-                    $validated['schedule'][$scheduleId];
+                $schedule->talent_id = $talent->id;
+                $schedule->schedule_date = $today;
+                $schedule->start_time = $start;
+                $schedule->end_time = $end;
+                $schedule->status = 'unavailable';
 
-
-                /*
-                | Jangan izinkan status booked
-                | dibuat manual dari halaman edit.
-                */
-
-                if ($newStatus === 'booked') {
-                    continue;
-                }
-
-
-                $schedule->update([
-                    'status' => $newStatus,
-                ]);
+                $schedule->save();
             }
         }
 
 
         /*
         |--------------------------------------------------------------------------
-        | KEMBALI KE HALAMAN EDIT
+        | AMBIL SLOT HARI INI
+        |--------------------------------------------------------------------------
+        */
+
+        $schedules = TalentSchedule::query()
+            ->where('talent_id', $talent->id)
+            ->whereDate('schedule_date', $today)
+            ->orderBy('start_time')
+            ->get();
+
+
+        $selected = $validated['schedule'] ?? [];
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | UPDATE STATUS JADWAL
+        |--------------------------------------------------------------------------
+        */
+
+        foreach ($schedules as $schedule) {
+
+            /*
+            |--------------------------------------------------------------------------
+            | JIKA SUDAH BOOKED
+            |--------------------------------------------------------------------------
+            |
+            | Talent tidak boleh mengubah slot yang sudah dibooking.
+            |
+            */
+
+            if ($schedule->status === 'booked') {
+                continue;
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | STATUS YANG DIPILIH TALENT
+            |--------------------------------------------------------------------------
+            */
+
+            $desired = $selected[$schedule->id]
+                ?? 'unavailable';
+
+
+            if (
+                !in_array(
+                    $desired,
+                    [
+                        'available',
+                        'unavailable',
+                    ],
+                    true
+                )
+            ) {
+                $desired = 'unavailable';
+            }
+
+
+            $schedule->status = $desired;
+
+            $schedule->save();
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | SELESAI
         |--------------------------------------------------------------------------
         */
 
@@ -358,7 +401,7 @@ class WhisperlyTalentController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | Ambil / buat profil talent
+        | AMBIL / BUAT PROFIL
         |--------------------------------------------------------------------------
         */
 
@@ -375,41 +418,98 @@ class WhisperlyTalentController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | Buat slot jadwal default
+        | TANGGAL HARI INI
         |--------------------------------------------------------------------------
+        */
+
+        $today = now(
+            config('app.timezone')
+        )->toDateString();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | AMBIL SLOT YANG SUDAH ADA HARI INI
+        |--------------------------------------------------------------------------
+        */
+
+        $existingSchedules = TalentSchedule::query()
+            ->where('talent_id', $profile->id)
+            ->whereDate('schedule_date', $today)
+            ->get()
+            ->keyBy(function ($schedule) {
+
+                return
+                    substr($schedule->start_time, 0, 5)
+                    . '-'
+                    . substr($schedule->end_time, 0, 5);
+            });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | BUAT SLOT YANG BELUM ADA
+        |--------------------------------------------------------------------------
+        |
+        | Jangan gunakan firstOrCreate berdasarkan unique index lama.
+        | Kita cek berdasarkan tanggal secara eksplisit.
+        |
         */
 
         foreach (self::SLOTS as [$start, $end]) {
 
-            TalentSchedule::firstOrCreate(
-                [
-                    'talent_id' =>
-                        $profile->id,
+            $key = $start . '-' . $end;
 
-                    'start_time' =>
-                        $start,
 
-                    'end_time' =>
-                        $end,
-                ],
-                [
-                    'status' =>
-                        'unavailable',
-                ]
-            );
+            if ($existingSchedules->has($key)) {
+                continue;
+            }
+
+
+            $schedule = new TalentSchedule();
+
+            $schedule->talent_id = $profile->id;
+            $schedule->schedule_date = $today;
+            $schedule->start_time = $start;
+            $schedule->end_time = $end;
+            $schedule->status = 'unavailable';
+
+            $schedule->save();
         }
 
 
         /*
         |--------------------------------------------------------------------------
-        | Load relasi
+        | LOAD ULANG JADWAL HARI INI SAJA
         |--------------------------------------------------------------------------
         */
 
-        return $profile->load([
+        $profile->load([
             'pengguna',
-            'schedules',
             'ratings',
         ]);
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | LOAD SCHEDULE
+        |--------------------------------------------------------------------------
+        |
+        | Jangan load semua jadwal lama.
+        | Yang ditampilkan di halaman talent adalah jadwal hari ini.
+        |
+        */
+
+        $profile->setRelation(
+            'schedules',
+            TalentSchedule::query()
+                ->where('talent_id', $profile->id)
+                ->whereDate('schedule_date', $today)
+                ->orderBy('start_time')
+                ->get()
+        );
+
+
+        return $profile;
     }
 }
