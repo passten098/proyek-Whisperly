@@ -1125,7 +1125,7 @@
                     type="text"
                     class="search-box"
                     id="chat-search"
-                    placeholder="Cari percakapan..."
+                    placeholder="Cari Obrolan..."
                 >
 
 
