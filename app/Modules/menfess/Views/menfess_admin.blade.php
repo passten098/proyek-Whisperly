@@ -1287,16 +1287,11 @@
 @endphp
 
 <body class="{{ $theme }}">
+    @include('whisperly.navbar')
 
     <!-- HEADER -->
     <header class="top-header">
 
-        <a
-            href="{{ route('whisperly.home') }}"
-            class="back-button"
-        >
-            ← Kembali
-        </a>
 
         <h1 class="page-title">
             Ruang Pengaduan

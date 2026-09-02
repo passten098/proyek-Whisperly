@@ -101,9 +101,6 @@ class menfessController extends Controller
         |--------------------------------------------------------------------------
         | KATEGORI YANG DIPILIH
         |--------------------------------------------------------------------------
-        |
-        | Default = random
-        |
         */
 
         $selectedCategory = strtolower(
@@ -195,9 +192,6 @@ class menfessController extends Controller
         |--------------------------------------------------------------------------
         | FILTER KATEGORI
         |--------------------------------------------------------------------------
-        |
-        | Hanya mengambil menfess dari kategori yang sedang dipilih.
-        |
         */
 
         if ($category) {
@@ -208,12 +202,6 @@ class menfessController extends Controller
             );
 
         } else {
-
-            /*
-            |--------------------------------------------------------------------------
-            | JIKA KATEGORI TIDAK ADA
-            |--------------------------------------------------------------------------
-            */
 
             $query->whereRaw(
                 '1 = 0'
@@ -316,13 +304,6 @@ class menfessController extends Controller
     |--------------------------------------------------------------------------
     | ADMIN - MENFESS
     |--------------------------------------------------------------------------
-    |
-    | ADMIN TOOLS
-    | = pending
-    |
-    | MENFESS MASUK
-    | = approved
-    |
     */
 
     public function adminIndex(Request $request): View
@@ -361,17 +342,25 @@ class menfessController extends Controller
             $request,
             'melihat halaman admin menfess',
             [
-                'pending_count' => $pendingItems->count(),
-                'approved_count' => $approvedItems->count(),
+                'pending_count' =>
+                    $pendingItems->count(),
+
+                'approved_count' =>
+                    $approvedItems->count(),
             ]
         );
 
         return view(
             'menfess::menfess_admin',
             [
-                'title' => 'Moderasi Menfess',
-                'pendingItems' => $pendingItems,
-                'approvedItems' => $approvedItems,
+                'title' =>
+                    'Moderasi Menfess',
+
+                'pendingItems' =>
+                    $pendingItems,
+
+                'approvedItems' =>
+                    $approvedItems,
             ]
         );
     }
@@ -477,8 +466,9 @@ class menfessController extends Controller
             'id_kategori' =>
                 'required|string',
 
+            // DIUBAH DARI min:5 MENJADI min:1
             'isi_pesan' =>
-                'required|string|min:5|max:2000',
+                'required|string|min:1|max:2000',
         ]);
 
 
@@ -527,10 +517,6 @@ class menfessController extends Controller
         |--------------------------------------------------------------------------
         | RANDOM / KATEGORI SENDIRI
         |--------------------------------------------------------------------------
-        |
-        | Random adalah kategori sendiri.
-        | Boleh digunakan untuk membuat menfess.
-        |
         */
 
         $categoryType = strtolower(
@@ -629,12 +615,6 @@ class menfessController extends Controller
             $menfess;
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | LOG
-        |--------------------------------------------------------------------------
-        */
-
         $this->log(
             $request,
             'melihat detail ' . $this->title,
@@ -644,12 +624,6 @@ class menfessController extends Controller
             ]
         );
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | VIEW
-        |--------------------------------------------------------------------------
-        */
 
         return view(
             'menfess::menfess_detail',
@@ -687,18 +661,21 @@ class menfessController extends Controller
         );
 
         $menfess->update([
-            'status' => 'approved'
+            'status' =>
+                'approved'
         ]);
 
         $this->log(
             $request,
             'menyetujui ' . $this->title,
             [
-                'menfess.id' => $menfess->id
+                'menfess.id' =>
+                    $menfess->id
             ]
         );
 
-        return redirect()->route('menfess.admin')
+        return redirect()
+            ->route('menfess.admin')
             ->with(
                 'message_success',
                 'Menfess berhasil disetujui.'
@@ -729,18 +706,21 @@ class menfessController extends Controller
         );
 
         $menfess->update([
-            'status' => 'rejected'
+            'status' =>
+                'rejected'
         ]);
 
         $this->log(
             $request,
             'menolak ' . $this->title,
             [
-                'menfess.id' => $menfess->id
+                'menfess.id' =>
+                    $menfess->id
             ]
         );
 
-        return redirect()->route('menfess.admin')
+        return redirect()
+            ->route('menfess.admin')
             ->with(
                 'message_success',
                 'Menfess berhasil ditolak.'
@@ -834,12 +814,6 @@ class menfessController extends Controller
         ];
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | LOG
-        |--------------------------------------------------------------------------
-        */
-
         $this->log(
             $request,
             'membuka form edit ' . $this->title,
@@ -849,12 +823,6 @@ class menfessController extends Controller
             ]
         );
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | VIEW
-        |--------------------------------------------------------------------------
-        */
 
         return view(
             'menfess::menfess_update',
@@ -898,12 +866,6 @@ class menfessController extends Controller
         );
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | CARI MENFESS
-        |--------------------------------------------------------------------------
-        */
-
         $menfess =
             menfess::find($id);
 
@@ -917,12 +879,6 @@ class menfessController extends Controller
                 );
         }
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | UPDATE DATA
-        |--------------------------------------------------------------------------
-        */
 
         $menfess->id_pengguna =
             $request->input(
@@ -951,12 +907,6 @@ class menfessController extends Controller
         $menfess->save();
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | LOG
-        |--------------------------------------------------------------------------
-        */
-
         $this->log(
             $request,
             'mengedit ' . $this->title,
@@ -966,12 +916,6 @@ class menfessController extends Controller
             ]
         );
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | REDIRECT
-        |--------------------------------------------------------------------------
-        */
 
         return redirect()
             ->route('menfess.index')
@@ -993,12 +937,6 @@ class menfessController extends Controller
         $id
     ) {
 
-        /*
-        |--------------------------------------------------------------------------
-        | CEK ADMIN
-        |--------------------------------------------------------------------------
-        */
-
         abort_unless(
             strtolower(
                 (string) (
@@ -1011,12 +949,6 @@ class menfessController extends Controller
             'Hanya admin yang dapat menghapus menfess.'
         );
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | CARI MENFESS
-        |--------------------------------------------------------------------------
-        */
 
         $menfess =
             menfess::find($id);
@@ -1032,12 +964,6 @@ class menfessController extends Controller
         }
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | SIMPAN ID ADMIN YANG MENGHAPUS
-        |--------------------------------------------------------------------------
-        */
-
         $menfess->deleted_by =
             Auth::guard('whisperly')->id()
             ?? Auth::id();
@@ -1046,20 +972,8 @@ class menfessController extends Controller
         $menfess->save();
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | SOFT DELETE
-        |--------------------------------------------------------------------------
-        */
-
         $menfess->delete();
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | LOG
-        |--------------------------------------------------------------------------
-        */
 
         $this->log(
             $request,
@@ -1070,12 +984,6 @@ class menfessController extends Controller
             ]
         );
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | KEMBALI KE ADMIN
-        |--------------------------------------------------------------------------
-        */
 
         return back()
             ->with(
@@ -1096,12 +1004,6 @@ class menfessController extends Controller
         menfess $menfess
     ): RedirectResponse {
 
-        /*
-        |--------------------------------------------------------------------------
-        | VALIDASI
-        |--------------------------------------------------------------------------
-        */
-
         $request->validate([
             'komentar' => [
                 'required',
@@ -1111,12 +1013,6 @@ class menfessController extends Controller
             ],
         ]);
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | BUAT KOMENTAR
-        |--------------------------------------------------------------------------
-        */
 
         comments::create([
 
@@ -1138,12 +1034,6 @@ class menfessController extends Controller
                 'active',
         ]);
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | KEMBALI
-        |--------------------------------------------------------------------------
-        */
 
         return back()
             ->with(

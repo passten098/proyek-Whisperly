@@ -1682,16 +1682,9 @@
 
 
 <body class="{{ $theme }}">
-
+@include('whisperly.navbar')
 
 <header class="top-header">
-
-    <a
-        class="back-button"
-        href="{{ route('whisperly.home') }}"
-    >
-        ← Kembali
-    </a>
 
 
     <h1 class="page-title">
