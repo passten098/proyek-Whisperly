@@ -3,18 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Modules\bookings\Models\WhisperlyBooking;
+use App\Modules\chat\Models\WhisperlyChatUserState;
 use App\Modules\chat\Models\WhisperlyConversation;
 use App\Modules\pengguna\Models\pengguna;
 use App\Modules\talents\Models\talents;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class WhisperlyChatController extends Controller
 {
+<<<<<<< HEAD
     public function index(Request $request): View|RedirectResponse
     {
         $user = $request->user('whisperly');
@@ -27,50 +31,493 @@ class WhisperlyChatController extends Controller
         }
 
         return view('whisperly.chat.index', compact('bookings'));
-    }
+=======
+    /*
+    |--------------------------------------------------------------------------
+    | LIST CHAT
+    |--------------------------------------------------------------------------
+    */
 
-    public function show(Request $request, WhisperlyBooking $booking): View
+    public function index(Request $request): View
     {
         $user = $request->user('whisperly');
-        $guard = $request->user() ? 'web' : 'whisperly';
 
-        Log::info('WhisperlyChat::show: access check start', [
-            'guard' => $guard,
-            'route' => $request->route()?->getName(),
-            'authenticated_user_id' => $user?->id,
-            'authenticated_username' => $user?->username,
-            'authenticated_role' => $user?->role,
-            'booking_id' => $booking?->id,
-            'booking_user_id' => $booking?->pengguna_id,
-            'booking_talent_id' => $booking?->talent_id,
-        ]);
+        abort_unless($user, 403);
 
-        $this->authorizeBookingAccess($user, $booking);
+        /*
+        |--------------------------------------------------------------------------
+        | AMBIL BOOKING
+        |--------------------------------------------------------------------------
+        */
+
+        $query = WhisperlyBooking::query()
+            ->with([
+                'pengguna',
+                'talent.pengguna',
+                'schedule',
+                'conversation.messages.sender',
+            ])
+            ->orderByDesc('created_at');
+
+        if ($user->role === 'user') {
+
+            $query->where(
+                'pengguna_id',
+                $user->id
+            );
+
+        } elseif ($user->role === 'talent') {
+
+            $profile = talents::query()
+                ->where(
+                    'pengguna_id',
+                    $user->id
+                )
+                ->first();
+
+            if ($profile) {
+
+                $query->where(
+                    'talent_id',
+                    $profile->id
+                );
+
+            } else {
+
+                $query->whereRaw('0 = 1');
+            }
+
+        } else {
+
+            abort(403);
+        }
+
+        $allBookings = $query->get();
+
+        $allBookings = $allBookings
+            ->filter(function (WhisperlyBooking $booking) use ($user) {
+                $state = $this->chatUserState($user, $booking);
+
+                return ! $state?->archived_at && ! $state?->deleted_at;
+            })
+            ->values();
+
+        /*
+        |--------------------------------------------------------------------------
+        | SINKRON STATUS BOOKING
+        |--------------------------------------------------------------------------
+        */
+
+        $allBookings = $allBookings->map(
+            function (WhisperlyBooking $booking) {
+
+                $booking->syncChatStatus();
+
+                return $booking;
+            }
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | SATUKAN ROOM BERDASARKAN LAWAN CHAT
+        |
+        | USER:
+        |    1 talent = 1 room
+        |
+        | TALENT:
+        |    1 user = 1 room
+        |--------------------------------------------------------------------------
+        */
+
+        $bookings = $allBookings
+            ->groupBy(function (WhisperlyBooking $booking) use ($user) {
+
+                if ($user->role === 'user') {
+
+                    return 'talent:' . $booking->talent_id;
+                }
+
+                return 'user:' . $booking->pengguna_id;
+            })
+            ->map(function (Collection $roomBookings) {
+
+                /*
+                | Booking terbaru dijadikan representasi room.
+                */
+                return $roomBookings
+                    ->sortByDesc('created_at')
+                    ->first();
+            })
+            ->values();
+
+        /*
+        |--------------------------------------------------------------------------
+        | HITUNG UNREAD
+        |--------------------------------------------------------------------------
+        */
+
+        $readTimes = session()->get(
+            'whisperly_chat_read',
+            []
+        );
+
+        $bookings = $bookings->map(
+            function (WhisperlyBooking $booking) use (
+                $user,
+                $allBookings,
+                $readTimes
+            ) {
+
+                $roomKey = $this->roomKey(
+                    $user,
+                    $booking
+                );
+
+                $userChatState = $this->chatUserState($user, $booking);
+
+                /*
+                | Ambil semua booking dalam room yang sama.
+                */
+
+                $roomBookings = $allBookings
+                    ->filter(function (WhisperlyBooking $item) use (
+                        $user,
+                        $booking
+                    ) {
+
+                        return $this->roomKey(
+                            $user,
+                            $item
+                        ) === $this->roomKey(
+                            $user,
+                            $booking
+                        );
+                    });
+
+                /*
+                | Ambil semua conversation dari room tersebut.
+                */
+
+                $conversationIds = $roomBookings
+                    ->pluck('conversation')
+                    ->filter()
+                    ->pluck('id')
+                    ->values();
+
+                $unreadCount = 0;
+
+                /*
+                |----------------------------------------------------------------
+                | PESAN TERAKHIR SUNGGUHAN DALAM ROOM
+                |
+                | Booking representatif (hasil sortByDesc('created_at') di atas)
+                | belum tentu booking yang punya pesan paling baru. Maka pesan
+                | terakhir harus dicari dari SELURUH booking dalam room ini,
+                | supaya sinkron dengan yang ditampilkan di room chat.
+                |----------------------------------------------------------------
+                */
+
+                $lastMessage = null;
+
+                if ($conversationIds->isNotEmpty()) {
+
+                    foreach ($roomBookings as $roomBooking) {
+
+                        $conversation =
+                            $roomBooking->conversation;
+
+                        if (! $conversation) {
+                            continue;
+                        }
+
+                        $messages =
+                            $conversation
+                                ->messages()
+                                ->when(
+                                    $userChatState?->cleared_at,
+                                    function ($query, $clearedAt) use ($userChatState) {
+                                        $query->where('created_at', '>', $clearedAt);
+                                    }
+                                )
+                                ->get();
+
+                        foreach ($messages as $message) {
+
+                            if (
+                                ! $lastMessage
+                                ||
+                                (
+                                    $message->created_at
+                                    &&
+                                    $message->created_at->gt(
+                                        $lastMessage->created_at
+                                    )
+                                )
+                            ) {
+
+                                $lastMessage = $message;
+                            }
+
+                            /*
+                            | Pesan dari lawan chat = unread
+                            */
+
+                            if (
+                                (string) $message->sender_id
+                                ===
+                                (string) $user->id
+                            ) {
+                                continue;
+                            }
+
+                            $messageTime =
+                                $message->created_at;
+
+                            $lastRead =
+                                $readTimes[$roomKey] ?? null;
+
+                            if (
+                                ! $lastRead
+                                ||
+                                (
+                                    $messageTime
+                                    &&
+                                    $messageTime->gt(
+                                        Carbon::parse($lastRead)
+                                    )
+                                )
+                            ) {
+
+                                $unreadCount++;
+                            }
+                        }
+                    }
+                }
+
+                $booking->unread_count =
+                    $unreadCount;
+
+                $booking->last_message =
+                    $lastMessage;
+
+                $booking->last_message_is_read =
+                    $lastMessage
+                    && (string) $lastMessage->sender_id === (string) $user->id
+                    && isset($readTimes[$roomKey])
+                    && $lastMessage->created_at->lte(
+                        Carbon::parse($readTimes[$roomKey])
+                    );
+
+                return $booking;
+            }
+        );
+
+        return view(
+            'whisperly.chat.index',
+            compact('bookings')
+        );
+>>>>>>> 04feb1e (Mengedit Bagian Chat)
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | ROOM CHAT
+    |--------------------------------------------------------------------------
+    */
+
+    public function show(
+        Request $request,
+        WhisperlyBooking $booking
+    ): View {
+
+        $user =
+            $request->user('whisperly');
+
+        abort_unless($user, 403);
+
+        /*
+        |--------------------------------------------------------------------------
+        | CEK AKSES
+        |--------------------------------------------------------------------------
+        */
+
+        $this->authorizeBookingAccess(
+            $user,
+            $booking
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | STATUS BOOKING YANG DIPILIH
+        |--------------------------------------------------------------------------
+        */
 
         $booking->syncChatStatus();
-        $conversation = $booking->conversation()->firstOrCreate([
-            'booking_id' => $booking->id,
-            'user_id' => $booking->pengguna_id,
-            'talent_id' => $booking->talent_id,
-        ], [
-            'start_time' => $booking->schedule?->start_time ?? '00:00',
-            'end_time' => $booking->schedule?->end_time ?? '00:00',
-            'status' => $this->chatState($booking),
-        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | AMBIL SEMUA BOOKING DENGAN ORANG YANG SAMA
+        |
+        | INI BAGIAN PALING PENTING.
+        |
+        | Booking lama dan booking baru tetap berbeda,
+        | tetapi ditampilkan dalam room chat yang sama.
+        |--------------------------------------------------------------------------
+        */
+
+        $roomBookingsQuery =
+            WhisperlyBooking::query()
+                ->with([
+                    'pengguna',
+                    'talent.pengguna',
+                    'schedule',
+                    'conversation.messages.sender',
+                ])
+                ->orderBy('created_at');
+
+        if ($user->role === 'user') {
+
+            $roomBookingsQuery
+                ->where(
+                    'pengguna_id',
+                    $user->id
+                )
+                ->where(
+                    'talent_id',
+                    $booking->talent_id
+                );
+
+        } elseif ($user->role === 'talent') {
+
+            $roomBookingsQuery
+                ->where(
+                    'pengguna_id',
+                    $booking->pengguna_id
+                )
+                ->where(
+                    'talent_id',
+                    $booking->talent_id
+                );
+        }
+
+        $roomBookings =
+            $roomBookingsQuery->get();
+
+        $userChatState = $this->chatUserState($user, $booking);
+
+            abort_if($userChatState?->deleted_at, 404);
+
+        /*
+        |--------------------------------------------------------------------------
+        | SINKRON STATUS SEMUA BOOKING DI ROOM
+        |--------------------------------------------------------------------------
+        */
+
+        $roomBookings =
+            $roomBookings->map(
+                function (WhisperlyBooking $item) {
+
+                    $item->syncChatStatus();
+
+                    return $item;
+                }
+            );
+
+        /*
+        |--------------------------------------------------------------------------
+        | BUAT / AMBIL CONVERSATION UNTUK BOOKING AKTIF
+        |
+        | PENTING:
+        | Kita TIDAK membuat conversation baru berdasarkan room.
+        | Conversation tetap terhubung dengan booking masing-masing.
+        |
+        | Nanti semua conversation tersebut digabung saat ditampilkan.
+        |--------------------------------------------------------------------------
+        */
+
+        $conversation =
+            $booking
+                ->conversation()
+                ->firstOrCreate(
+                    [
+                        'booking_id' =>
+                            $booking->id,
+
+                        'user_id' =>
+                            $booking->pengguna_id,
+
+                        'talent_id' =>
+                            $booking->talent_id,
+                    ],
+                    [
+                        'start_time' =>
+                            $booking
+                                ->schedule
+                                ?->start_time
+                            ?? '00:00',
+
+                        'end_time' =>
+                            $booking
+                                ->schedule
+                                ?->end_time
+                            ?? '00:00',
+
+                        'status' =>
+                            $this->chatState(
+                                $booking
+                            ),
+                    ]
+                );
+
+        /*
+        |--------------------------------------------------------------------------
+        | SINKRON CONVERSATION BOOKING AKTIF
+        |--------------------------------------------------------------------------
+        */
 
         if ($booking->schedule) {
+
             $conversation->update([
-                'start_time' => $booking->schedule->start_time,
-                'end_time' => $booking->schedule->end_time,
-                'status' => $this->chatState($booking),
+
+                'start_time' =>
+                    $booking
+                        ->schedule
+                        ->start_time,
+
+                'end_time' =>
+                    $booking
+                        ->schedule
+                        ->end_time,
+
+                'status' =>
+                    $this->chatState(
+                        $booking
+                    ),
             ]);
         }
 
-        $messages = $conversation->messages()->with('sender')->get();
-        $status = $this->chatState($booking);
-        $canChat = $status === 'active';
-        $notice = $this->chatNotice($booking, $status);
+        /*
+        |--------------------------------------------------------------------------
+        | AMBIL SEMUA PESAN DARI SEMUA BOOKING
+        |--------------------------------------------------------------------------
+        |
+        | roomMessages berbentuk:
+        |
+        | [
+        |     [
+        |         'booking' => booking lama,
+        |         'messages' => [...]
+        |     ],
+        |     [
+        |         'booking' => booking baru,
+        |         'messages' => [...]
+        |     ]
+        | ]
+        |
+        */
 
+<<<<<<< HEAD
         // Daftar seluruh room milik user yang login, untuk kolom "Riwayat Percakapan".
         // Query-nya sama persis dengan yang dipakai index(), tidak ada tabel/relasi baru.
         $bookings = $this->bookingsForUser($user);
@@ -85,32 +532,37 @@ class WhisperlyChatController extends Controller
             'bookings' => $bookings,
         ]);
     }
+=======
+        $roomMessages = collect();
+>>>>>>> 04feb1e (Mengedit Bagian Chat)
 
-    public function store(Request $request, WhisperlyBooking $booking): RedirectResponse
-    {
-        $user = $request->user('whisperly');
-        $this->authorizeBookingAccess($user, $booking);
+        foreach ($roomBookings as $roomBooking) {
 
-        $request->validate([
-            'message' => ['required', 'string', 'max:2000'],
-        ]);
+            $roomConversation =
+                $roomBooking->conversation;
 
-        $booking->syncChatStatus();
+            if (! $roomConversation) {
+                continue;
+            }
 
-        if ($this->chatState($booking) !== 'active') {
-            abort(403, 'Booking telah selesai. Chat ini sudah ditutup.');
-        }
+            $messages =
+                $roomConversation
+                    ->messages()
+                    ->with('sender')
+                    ->when(
+                        $userChatState?->cleared_at,
+                        function ($query, $clearedAt) use ($userChatState) {
+                            $query->where('created_at', '>', $clearedAt);
+                        }
+                    )
+                    ->orderBy('created_at')
+                    ->get();
 
-        $conversation = $booking->conversation()->firstOrCreate([
-            'booking_id' => $booking->id,
-            'user_id' => $booking->pengguna_id,
-            'talent_id' => $booking->talent_id,
-        ], [
-            'start_time' => $booking->schedule?->start_time ?? '00:00',
-            'end_time' => $booking->schedule?->end_time ?? '00:00',
-            'status' => 'active',
-        ]);
+            $roomMessages->push([
+                'booking' =>
+                    $roomBooking,
 
+<<<<<<< HEAD
         $conversation->messages()->create([
             'sender_id' => $user->id,
             'message' => trim((string) $request->input('message')),
@@ -175,72 +627,878 @@ class WhisperlyChatController extends Controller
                 'user_id' => $user->id,
                 'booking_user_id' => $booking->pengguna_id,
                 'booking_id' => $booking->id,
+=======
+                'messages' =>
+                    $messages,
+>>>>>>> 04feb1e (Mengedit Bagian Chat)
             ]);
-            abort(403, 'Anda tidak memiliki akses ke chat ini.');
         }
 
-        if ($user->role === 'talent') {
-            $talentProfile = talents::query()->where('pengguna_id', $user->id)->first();
-            if (! $talentProfile || $booking->talent_id !== $talentProfile->id) {
-                Log::warning('WhisperlyChat::authorizeBookingAccess: talent forbidden (profile mismatch)', [
-                    'user_id' => $user->id,
-                    'talent_profile_id' => $talentProfile?->id,
-                    'booking_talent_id' => $booking->talent_id,
-                    'booking_id' => $booking->id,
-                ]);
-                abort(403, 'Anda tidak memiliki akses ke chat ini.');
+        /*
+        |--------------------------------------------------------------------------
+        | PESAN FLAT
+        |
+        | Tetap disediakan supaya kode Blade lama yang memakai
+        | $messages tidak error.
+        |--------------------------------------------------------------------------
+        */
+
+        $messages =
+            $roomMessages
+                ->pluck('messages')
+                ->flatten()
+                ->sortBy('created_at')
+                ->values();
+
+        /*
+        |--------------------------------------------------------------------------
+        | STATUS CHAT BOOKING AKTIF
+        |--------------------------------------------------------------------------
+        */
+
+        $status =
+            $this->chatState(
+                $booking
+            );
+
+        $canChat =
+            $status === 'active';
+
+        $notice =
+            $this->chatNotice(
+                $booking,
+                $status
+            );
+
+        /*
+        |--------------------------------------------------------------------------
+        | PROFILE LAWAN CHAT
+        |--------------------------------------------------------------------------
+        */
+
+        if ($user->role === 'user') {
+
+            $pengguna =
+                $booking
+                    ->talent
+                    ?->pengguna;
+
+            $talent =
+                $booking->talent;
+
+        } else {
+
+            $pengguna =
+                $booking->pengguna;
+
+            $talent =
+                null;
+        }
+
+        $contactStatus = 'Offline';
+
+        if ($pengguna?->typing_until?->isFuture()) {
+            $contactStatus = 'Mengetik...';
+        } elseif ($pengguna?->last_seen_at?->gt(now()->subSeconds(30))) {
+            $contactStatus = 'Online';
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | TANDAI ROOM SUDAH DIBACA
+        |--------------------------------------------------------------------------
+        */
+
+        $roomKey =
+            $this->roomKey(
+                $user,
+                $booking
+            );
+
+        $readTimes =
+            session()->get(
+                'whisperly_chat_read',
+                []
+            );
+
+        $readTimes[$roomKey] =
+            now()->toIso8601String();
+
+        session()->put(
+            'whisperly_chat_read',
+            $readTimes
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | SIDEBAR
+        |--------------------------------------------------------------------------
+        */
+
+        $allBookings =
+            WhisperlyBooking::query()
+                ->with([
+                    'pengguna',
+                    'talent.pengguna',
+                    'schedule',
+                    'conversation.messages.sender',
+                ])
+                ->orderByDesc('created_at')
+                ->get();
+
+        $allBookings = $allBookings
+            ->filter(function (WhisperlyBooking $item) use ($user) {
+                $state = $this->chatUserState($user, $item);
+
+                return ! $state?->archived_at && ! $state?->deleted_at;
+            })
+            ->values();
+
+        if ($user->role === 'user') {
+
+            $allBookings
+                ->where(
+                    'pengguna_id',
+                    $user->id
+                );
+
+        } elseif ($user->role === 'talent') {
+
+            $profile =
+                talents::query()
+                    ->where(
+                        'pengguna_id',
+                        $user->id
+                    )
+                    ->first();
+
+            if ($profile) {
+
+                $allBookings
+                    ->where(
+                        'talent_id',
+                        $profile->id
+                    );
+
+            } else {
+
+                $allBookings
+                    ->whereRaw('0 = 1');
             }
         }
 
-        if (! in_array($user->role, ['user', 'talent'], true)) {
-            Log::warning('WhisperlyChat::authorizeBookingAccess: forbidden role', [
-                'role' => $user->role,
+        $allBookings =
+            $allBookings->map(
+                function (WhisperlyBooking $item) {
+
+                    $item->syncChatStatus();
+
+                    return $item;
+                }
+            );
+
+        /*
+        |--------------------------------------------------------------------------
+        | SATUKAN SIDEBAR MENJADI 1 ROOM / ORANG
+        |--------------------------------------------------------------------------
+        */
+
+        $bookings =
+            $allBookings
+                ->groupBy(
+                    function (
+                        WhisperlyBooking $item
+                    ) use ($user) {
+
+                        return $this->roomKey(
+                            $user,
+                            $item
+                        );
+                    }
+                )
+                ->map(
+                    function (
+                        Collection $room
+                    ) {
+
+                        return $room
+                            ->sortByDesc(
+                                'created_at'
+                            )
+                            ->first();
+                    }
+                )
+                ->values();
+
+        /*
+        |--------------------------------------------------------------------------
+        | HITUNG UNREAD SIDEBAR
+        |--------------------------------------------------------------------------
+        */
+
+        $readTimes =
+            session()->get(
+                'whisperly_chat_read',
+                []
+            );
+
+        $bookings =
+            $bookings->map(
+                function (
+                    WhisperlyBooking $item
+                ) use (
+                    $user,
+                    $allBookings,
+                    $readTimes
+                ) {
+
+                    $key =
+                        $this->roomKey(
+                            $user,
+                            $item
+                        );
+
+                    $userChatState = $this->chatUserState($user, $item);
+
+                    $roomBookings =
+                        $allBookings->filter(
+                            function (
+                                WhisperlyBooking $roomItem
+                            ) use (
+                                $user,
+                                $item
+                            ) {
+
+                                return
+                                    $this->roomKey(
+                                        $user,
+                                        $roomItem
+                                    )
+                                    ===
+                                    $this->roomKey(
+                                        $user,
+                                        $item
+                                    );
+                            }
+                        );
+
+                    $unread = 0;
+
+                    /*
+                    |------------------------------------------------------------
+                    | PESAN TERAKHIR SUNGGUHAN DALAM ROOM
+                    |
+                    | Sama seperti di index(): booking representatif belum
+                    | tentu booking dengan pesan paling baru, jadi pesan
+                    | terakhir dicari dari SEMUA booking dalam room ini agar
+                    | sinkron dengan room chat di sebelah kanan.
+                    |------------------------------------------------------------
+                    */
+
+                    $lastMessage = null;
+
+                    foreach (
+                        $roomBookings
+                        as $roomBooking
+                    ) {
+
+                        $conversation =
+                            $roomBooking
+                                ->conversation;
+
+                        if (! $conversation) {
+                            continue;
+                        }
+
+                        $roomMessages =
+                            $conversation
+                                ->messages()
+                                ->when(
+                                    $userChatState?->cleared_at,
+                                    function ($query, $clearedAt) use ($userChatState) {
+                                        $query->where('created_at', '>', $clearedAt);
+                                    }
+                                )
+                                ->get();
+
+                        foreach (
+                            $roomMessages
+                            as $message
+                        ) {
+
+                            if (
+                                ! $lastMessage
+                                ||
+                                (
+                                    $message->created_at
+                                    &&
+                                    $message
+                                        ->created_at
+                                        ->gt(
+                                            $lastMessage->created_at
+                                        )
+                                )
+                            ) {
+
+                                $lastMessage = $message;
+                            }
+
+                            /*
+                            | Pesan milik sendiri bukan unread.
+                            */
+
+                            if (
+                                (string)
+                                $message->sender_id
+                                ===
+                                (string)
+                                $user->id
+                            ) {
+                                continue;
+                            }
+
+                            $lastRead =
+                                $readTimes[$key]
+                                ?? null;
+
+                            if (! $lastRead) {
+
+                                $unread++;
+
+                                continue;
+                            }
+
+                            if (
+                                $message->created_at
+                                &&
+                                $message
+                                    ->created_at
+                                    ->gt(
+                                        Carbon::parse(
+                                            $lastRead
+                                        )
+                                    )
+                            ) {
+
+                                $unread++;
+                            }
+                        }
+                    }
+
+                    $item->unread_count =
+                        $unread;
+
+                    $item->last_message =
+                        $lastMessage;
+
+                        $item->last_message_is_read =
+                            $lastMessage
+                            && (string) $lastMessage->sender_id === (string) $user->id
+                            && isset($readTimes[$key])
+                            && $lastMessage->created_at->lte(
+                                Carbon::parse($readTimes[$key])
+                            );
+
+                    return $item;
+                }
+            );
+
+        /*
+        |--------------------------------------------------------------------------
+        | RETURN VIEW
+        |--------------------------------------------------------------------------
+        */
+
+        return view(
+            'whisperly.chat.show',
+            [
+                'booking' =>
+                    $booking,
+
+                'bookings' =>
+                    $bookings,
+
+                'roomBookings' =>
+                    $roomBookings,
+
+                'roomMessages' =>
+                    $roomMessages,
+
+                'conversation' =>
+                    $conversation,
+
+                'messages' =>
+                    $messages,
+
+                'status' =>
+                    $status,
+
+                'canChat' =>
+                    $canChat,
+
+                'notice' =>
+                    $notice,
+
+                'pengguna' =>
+                    $pengguna,
+
+                'talent' =>
+                    $talent,
+
+                'contactStatus' =>
+                    $contactStatus,
+            ]
+        );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | KIRIM PESAN
+    |--------------------------------------------------------------------------
+    */
+
+    public function archive(Request $request, WhisperlyBooking $booking): RedirectResponse
+    {
+        $user = $request->user('whisperly');
+
+        abort_unless($user, 403);
+        $this->authorizeBookingAccess($user, $booking);
+
+        $this->chatUserState($user, $booking)->update([
+            'archived_at' => now(),
+            'deleted_at' => null,
+        ]);
+
+        return redirect()->route('whisperly.chat.index');
+    }
+
+    public function deleteChat(Request $request, WhisperlyBooking $booking): RedirectResponse
+    {
+        $user = $request->user('whisperly');
+
+        abort_unless($user, 403);
+        $this->authorizeBookingAccess($user, $booking);
+
+        $this->chatUserState($user, $booking)->update([
+            'deleted_at' => now(),
+        ]);
+
+        return redirect()->route('whisperly.chat.index');
+    }
+
+    public function clearChat(Request $request, WhisperlyBooking $booking): RedirectResponse
+    {
+        $user = $request->user('whisperly');
+
+        abort_unless($user, 403);
+        $this->authorizeBookingAccess($user, $booking);
+
+        $this->chatUserState($user, $booking)->update([
+            'cleared_at' => now(),
+        ]);
+
+        return redirect()->route('whisperly.chat.show', $booking->id);
+    }
+
+    public function store(
+        Request $request,
+        WhisperlyBooking $booking
+    ): RedirectResponse {
+
+        $user =
+            $request->user('whisperly');
+
+        $this->authorizeBookingAccess(
+            $user,
+            $booking
+        );
+
+        $request->validate([
+            'message' => [
+                'required',
+                'string',
+                'max:2000',
+            ],
+        ]);
+
+        $booking->syncChatStatus();
+
+        if (
+            $this->chatState($booking)
+            !== 'active'
+        ) {
+
+            abort(
+                403,
+                'Booking telah selesai. Chat ini sudah ditutup.'
+            );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | PESAN TETAP DISIMPAN KE CONVERSATION BOOKING AKTIF
+        |--------------------------------------------------------------------------
+        */
+
+        $conversation =
+            $booking
+                ->conversation()
+                ->firstOrCreate(
+                    [
+                        'booking_id' =>
+                            $booking->id,
+
+                        'user_id' =>
+                            $booking->pengguna_id,
+
+                        'talent_id' =>
+                            $booking->talent_id,
+                    ],
+                    [
+                        'start_time' =>
+                            $booking
+                                ->schedule
+                                ?->start_time
+                            ?? '00:00',
+
+                        'end_time' =>
+                            $booking
+                                ->schedule
+                                ?->end_time
+                            ?? '00:00',
+
+                        'status' =>
+                            'active',
+                    ]
+                );
+
+        $conversation
+            ->messages()
+            ->create([
+                'sender_id' =>
+                    $user->id,
+
+                'message' =>
+                    trim(
+                        (string)
+                        $request->input(
+                            'message'
+                        )
+                    ),
             ]);
-            abort(403, 'Akses chat tidak tersedia untuk role ini.');
+
+        return redirect()
+            ->route(
+                'whisperly.chat.show',
+                $booking->id
+            )
+            ->with(
+                'status',
+                'Pesan terkirim.'
+            );
+    }
+
+    public function heartbeat(Request $request): JsonResponse
+    {
+        $user = $request->user('whisperly');
+
+        abort_unless($user, 403);
+
+        $user->forceFill([
+            'last_seen_at' => now(),
+        ])->save();
+
+        return response()->json(['ok' => true]);
+    }
+
+    public function typing(Request $request): JsonResponse
+    {
+        $user = $request->user('whisperly');
+
+        abort_unless($user, 403);
+
+        $user->forceFill([
+            'last_seen_at' => now(),
+            'typing_until' => $request->boolean('typing')
+                ? now()->addSeconds(5)
+                : null,
+        ])->save();
+
+        return response()->json(['ok' => true]);
+    }
+
+    public function presence(Request $request, WhisperlyBooking $booking): JsonResponse
+    {
+        $user = $request->user('whisperly');
+
+        abort_unless($user, 403);
+        $this->authorizeBookingAccess($user, $booking);
+
+        $other = $user->role === 'user'
+            ? $booking->talent?->pengguna
+            : $booking->pengguna;
+
+        $status = 'Offline';
+
+        if ($other?->typing_until?->isFuture()) {
+            $status = 'Mengetik...';
+        } elseif ($other?->last_seen_at?->gt(now()->subSeconds(30))) {
+            $status = 'Online';
+        }
+
+        return response()->json(['status' => $status]);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | ROOM KEY
+    |--------------------------------------------------------------------------
+    |
+    | Inilah yang membuat booking berkali-kali dengan orang yang sama
+    | dianggap sebagai SATU ROOM.
+    |--------------------------------------------------------------------------
+    */
+
+    private function roomKey(
+        pengguna $user,
+        WhisperlyBooking $booking
+    ): string {
+
+        if ($user->role === 'user') {
+
+            return
+                'user:'
+                . $user->id
+                . ':talent:'
+                . $booking->talent_id;
+        }
+
+        return
+            'talent:'
+            . $user->id
+            . ':user:'
+            . $booking->pengguna_id;
+    }
+
+    private function contactUserId(
+        pengguna $user,
+        WhisperlyBooking $booking
+    ): ?string {
+        return $user->role === 'user'
+            ? $booking->talent?->pengguna_id
+            : $booking->pengguna_id;
+    }
+
+    private function chatUserState(
+        pengguna $user,
+        WhisperlyBooking $booking
+    ): ?WhisperlyChatUserState {
+        $contactUserId = $this->contactUserId($user, $booking);
+
+        if (! $contactUserId) {
+            return null;
+        }
+
+        return WhisperlyChatUserState::firstOrCreate([
+            'user_id' => $user->id,
+            'contact_user_id' => $contactUserId,
+        ]);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | CEK AKSES BOOKING
+    |--------------------------------------------------------------------------
+    */
+
+    private function authorizeBookingAccess(
+        pengguna $user,
+        WhisperlyBooking $booking
+    ): void {
+
+        $role =
+            $user->role;
+
+        if (
+            $role === 'user'
+            &&
+            $booking->pengguna_id
+                !== $user->id
+        ) {
+
+            abort(
+                403,
+                'Anda tidak memiliki akses ke chat ini.'
+            );
+        }
+
+        if ($role === 'talent') {
+
+            $talentProfile =
+                talents::query()
+                    ->where(
+                        'pengguna_id',
+                        $user->id
+                    )
+                    ->first();
+
+            if (
+                ! $talentProfile
+                ||
+                $booking->talent_id
+                    !== $talentProfile->id
+            ) {
+
+                abort(
+                    403,
+                    'Anda tidak memiliki akses ke chat ini.'
+                );
+            }
+        }
+
+        if (
+            ! in_array(
+                $role,
+                [
+                    'user',
+                    'talent',
+                ],
+                true
+            )
+        ) {
+
+            abort(
+                403,
+                'Akses chat tidak tersedia untuk role ini.'
+            );
         }
     }
 
-    private function chatState(WhisperlyBooking $booking): string
-    {
+
+    /*
+    |--------------------------------------------------------------------------
+    | STATUS CHAT
+    |--------------------------------------------------------------------------
+    */
+
+    private function chatState(
+        WhisperlyBooking $booking
+    ): string {
+
         if (! $booking->schedule) {
+
             return 'closed';
         }
 
-        $now = now()->setTimezone('Asia/Jakarta');
-        $start = Carbon::parse($booking->schedule->start_time, 'Asia/Jakarta')
-            ->setDate($now->year, $now->month, $now->day);
-        $end = Carbon::parse($booking->schedule->end_time, 'Asia/Jakarta')
-            ->setDate($now->year, $now->month, $now->day);
+        $now =
+            now()->setTimezone(
+                'Asia/Jakarta'
+            );
+
+        $start =
+            Carbon::parse(
+                $booking
+                    ->schedule
+                    ->start_time,
+                'Asia/Jakarta'
+            )->setDate(
+                $now->year,
+                $now->month,
+                $now->day
+            );
+
+        $end =
+            Carbon::parse(
+                $booking
+                    ->schedule
+                    ->end_time,
+                'Asia/Jakarta'
+            )->setDate(
+                $now->year,
+                $now->month,
+                $now->day
+            );
 
         if ($now->lt($start)) {
+
             return 'upcoming';
         }
 
         if ($now->gte($end)) {
-            if ($booking->status !== 'completed') {
-                $booking->update(['status' => 'completed']);
-                $booking->conversation?->update(['status' => 'closed']);
+
+            if (
+                $booking->status
+                !== 'completed'
+            ) {
+
+                $booking->update([
+                    'status' =>
+                        'completed',
+                ]);
             }
+
+            $booking
+                ->conversation
+                ?->update([
+                    'status' =>
+                        'closed',
+                ]);
 
             return 'completed';
         }
 
-        if ($booking->status !== 'active') {
-            $booking->update(['status' => 'active']);
-            $booking->conversation?->update(['status' => 'active']);
+        if (
+            $booking->status
+            !== 'active'
+        ) {
+
+            $booking->update([
+                'status' =>
+                    'active',
+            ]);
         }
+
+        $booking
+            ->conversation
+            ?->update([
+                'status' =>
+                    'active',
+            ]);
 
         return 'active';
     }
 
-    private function chatNotice(WhisperlyBooking $booking, string $status): string
-    {
+
+    /*
+    |--------------------------------------------------------------------------
+    | PESAN STATUS CHAT
+    |--------------------------------------------------------------------------
+    */
+
+    private function chatNotice(
+        WhisperlyBooking $booking,
+        string $status
+    ): string {
+
         if ($status === 'upcoming') {
-            return 'Chat akan tersedia mulai pukul ' . $booking->schedule?->start_time . ' WIB.';
+
+            return
+                'Chat akan tersedia mulai pukul '
+                .
+                $booking
+                    ->schedule
+                    ?->start_time
+                .
+                ' WIB.';
         }
 
         if ($status === 'completed') {
-            return 'Booking telah selesai. Chat ini sudah ditutup.';
+
+            return
+                'Booking telah selesai. Chat ini sudah ditutup.';
         }
 
         return '';

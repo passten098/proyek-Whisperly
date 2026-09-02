@@ -7,6 +7,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WhisperlyTalentController;
 use App\Http\Controllers\WhisperlyBookingController;
 use App\Http\Controllers\WhisperlyChatController;
+<<<<<<< HEAD
+=======
+use App\Http\Controllers\WhisperlyProfileController;
+>>>>>>> 04feb1e (Mengedit Bagian Chat)
 use App\Modules\menfess\Controllers\menfessController;
 use Illuminate\Support\Facades\Route;
 
@@ -188,6 +192,33 @@ Route::middleware([
         'index'
     ])->name('whisperly.chat.index');
 
+<<<<<<< HEAD
+=======
+    Route::post('/whisperly/chat/{booking}/delete', [
+        \App\Http\Controllers\WhisperlyChatController::class,
+        'deleteChat'
+    ])->name('whisperly.chat.delete');
+
+    Route::post('/whisperly/chat/{booking}/clear', [
+        \App\Http\Controllers\WhisperlyChatController::class,
+        'clearChat'
+    ])->name('whisperly.chat.clear');
+
+    Route::post('/whisperly/chat/heartbeat', [
+        \App\Http\Controllers\WhisperlyChatController::class,
+        'heartbeat'
+    ])->name('whisperly.chat.heartbeat');
+
+    Route::post('/whisperly/chat/typing', [
+        \App\Http\Controllers\WhisperlyChatController::class,
+        'typing'
+    ])->name('whisperly.chat.typing');
+
+    Route::get('/whisperly/chat/{booking}/presence', [
+        \App\Http\Controllers\WhisperlyChatController::class,
+        'presence'
+    ])->name('whisperly.chat.presence');
+>>>>>>> 04feb1e (Mengedit Bagian Chat)
 
     Route::get('/whisperly/chat/{booking}', [
         WhisperlyChatController::class,
@@ -200,6 +231,13 @@ Route::middleware([
         'store'
     ])->name('whisperly.chat.store');
 
+<<<<<<< HEAD
+=======
+    Route::get('/whisperly/profile/{booking}', [
+        \App\Http\Controllers\WhisperlyProfileController::class,
+        'show'
+    ])->name('whisperly.profile.show');
+>>>>>>> 04feb1e (Mengedit Bagian Chat)
 });
 
 
