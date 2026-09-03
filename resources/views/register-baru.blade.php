@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -12,8 +11,11 @@
 
     <title>Whisperly - Register</title>
 
-
     <style>
+
+        /* =========================================================
+           RESET
+        ========================================================= */
 
         * {
             margin: 0;
@@ -22,58 +24,36 @@
         }
 
 
-        /* =====================================
+        /* =========================================================
            BODY
-        ===================================== */
+        ========================================================= */
 
         body {
-
             width: 100%;
             min-height: 100vh;
-
             position: relative;
 
             font-family: Arial, sans-serif;
 
-            background: #fafaf5;
+            /* BACKGROUND SAMA SEPERTI LOGIN */
+            background-image: url("/assets/images/BG.jpg");
+            background-size: 90% auto;
+            background-position: left center;
+            background-repeat: no-repeat;
+            background-color: #ffffff;
 
             overflow: hidden;
         }
 
 
-        /* =====================================
-           BACKGROUND
-        ===================================== */
-
-        .bg-image {
-
-            position: fixed;
-
-            left: 0;
-            top: 50%;
-
-            transform: translateY(-50%);
-
-            width: 560px;
-            height: auto;
-
-            pointer-events: none;
-            user-select: none;
-
-            z-index: 0;
-        }
-
-
-        /* =====================================
+        /* =========================================================
            REGISTER CONTAINER
-        ===================================== */
+        ========================================================= */
 
         .register-container {
-
             position: fixed;
 
             right: 6cm;
-
             top: 50%;
 
             transform: translateY(-50%);
@@ -83,73 +63,74 @@
             z-index: 2;
         }
 
-
         .register-form {
-
             width: 100%;
         }
 
 
-        /* =====================================
-           INPUT
-        ===================================== */
+        /* =========================================================
+           INPUT BOX
+        ========================================================= */
 
         .input-box {
-
             position: relative;
 
             width: 100%;
             height: 52px;
 
-            margin-bottom: 18px;
+            margin-bottom: 20px;
 
             display: flex;
             align-items: center;
 
-            background: rgba(255, 255, 255, 0.78);
+            background: rgba(255, 255, 255, 0.82);
 
-            border-radius: 30px;
+            border: 1px solid rgba(76, 94, 58, 0.18);
 
-            backdrop-filter: blur(5px);
+            border-radius: 999px;
 
-            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(9px);
+            -webkit-backdrop-filter: blur(9px);
 
             box-shadow:
+                0 6px 18px rgba(48, 65, 38, 0.07);
 
-                inset 5px 5px 10px rgba(0, 0, 0, 0.07),
+            transition: 0.25s ease;
+        }
 
-                inset -5px -5px 10px rgba(255, 255, 255, 0.95),
 
-                0 3px 8px rgba(0, 0, 0, 0.04);
+        .input-box:hover {
+            background: rgba(255, 255, 255, 0.92);
 
-            transition: 0.3s ease;
+            border-color:
+                rgba(76, 94, 58, 0.28);
+
+            box-shadow:
+                0 8px 22px rgba(48, 65, 38, 0.09);
         }
 
 
         .input-box:focus-within {
+            background: rgba(255, 255, 255, 0.96);
+
+            border-color:
+                rgba(73, 96, 54, 0.48);
 
             box-shadow:
-
-                inset 5px 5px 10px rgba(0, 0, 0, 0.05),
-
-                inset -5px -5px 10px rgba(255, 255, 255, 0.95),
-
-                0 0 12px rgba(120, 169, 66, 0.20);
+                0 8px 22px rgba(48, 65, 38, 0.09),
+                0 0 0 4px rgba(76, 101, 57, 0.06);
         }
 
 
-        /* =====================================
+        /* =========================================================
            ICON
-        ===================================== */
+        ========================================================= */
 
         .icon {
-
-            width: 48px;
+            width: 50px;
 
             display: flex;
-
             justify-content: center;
-
             align-items: center;
 
             flex-shrink: 0;
@@ -157,39 +138,36 @@
 
 
         .icon svg {
-
             width: 19px;
             height: 19px;
 
             fill: none;
 
-            stroke: #697363;
+            stroke: #607051;
 
             stroke-width: 1.7;
 
             stroke-linecap: round;
-
             stroke-linejoin: round;
         }
 
 
-        /* =====================================
-           INPUT TEXT
-        ===================================== */
+        /* =========================================================
+           INPUT
+        ========================================================= */
 
         .input-box input {
-
             flex: 1;
 
+            width: 100%;
             height: 100%;
 
             border: none;
-
             outline: none;
 
             background: transparent;
 
-            color: #4d5549;
+            color: #414a3b;
 
             font-size: 14px;
 
@@ -198,172 +176,193 @@
 
 
         .input-box input::placeholder {
-
-            color: #697064;
-
+            color: #788073;
             opacity: 1;
         }
 
 
-        /* =====================================
+        /* =========================================================
+           CHROME AUTOFILL
+        ========================================================= */
+
+        .input-box input:-webkit-autofill,
+        .input-box input:-webkit-autofill:hover,
+        .input-box input:-webkit-autofill:focus,
+        .input-box input:-webkit-autofill:active {
+
+            -webkit-box-shadow:
+                0 0 0 1000px #ffffff inset !important;
+
+            -webkit-text-fill-color:
+                #414a3b !important;
+
+            caret-color:
+                #414a3b !important;
+
+            transition:
+                background-color 9999s ease-in-out 0s;
+        }
+
+
+        /* =========================================================
            PASSWORD EYE
-        ===================================== */
+        ========================================================= */
 
         .eye-btn {
+            width: 42px;
+            height: 100%;
 
             border: none;
 
             background: transparent;
 
-            cursor: pointer;
+            color: #68735f;
 
-            margin-right: 15px;
+            cursor: pointer;
 
             font-size: 14px;
 
-            opacity: 0.55;
+            opacity: 0.50;
 
-            transition: 0.2s;
+            transition: 0.2s ease;
         }
 
 
         .eye-btn:hover {
-
             opacity: 1;
+
+            transform: scale(1.08);
         }
 
 
-        /* =====================================
-           REGISTER BUTTON
-        ===================================== */
+        /* =========================================================
+           ERROR
+        ========================================================= */
+
+        .error-message {
+            margin-top: -12px;
+
+            margin-bottom: 12px;
+
+            padding-left: 18px;
+
+            color: #b04f4f;
+
+            font-size: 12px;
+        }
+
+
+        /* =========================================================
+           CREATE ACCOUNT BUTTON
+           SAMA SEPERTI LOGIN BUTTON
+        ========================================================= */
 
         .register-btn {
-
             width: 100%;
-
             height: 52px;
+
+            margin-top: 3px;
 
             border: none;
 
-            border-radius: 30px;
+            border-radius: 999px;
 
-            background: #79a943;
+            background:
+                linear-gradient(
+                    135deg,
+                    #52663f 0%,
+                    #3d5230 100%
+                );
 
-            color: white;
+            color: #ffffff;
 
-            font-size: 16px;
+            font-size: 15px;
 
             font-weight: 600;
+
+            letter-spacing: 0.2px;
 
             cursor: pointer;
 
             box-shadow:
+                0 8px 20px rgba(54, 75, 43, 0.20);
 
-                0 5px 12px rgba(73, 105, 43, 0.25);
-
-            transition:
-
-                transform 0.15s ease,
-
-                background 0.3s ease,
-
-                box-shadow 0.3s ease;
+            transition: 0.25s ease;
         }
 
 
-        /* =====================================
+        /* =========================================================
            BUTTON HOVER
-        ===================================== */
+        ========================================================= */
 
         .register-btn:hover {
+            background:
+                linear-gradient(
+                    135deg,
+                    #607649 0%,
+                    #465e37 100%
+                );
 
-            background: #6f9d3d;
+            transform: translateY(-2px);
 
             box-shadow:
-
-                0 7px 16px rgba(73, 105, 43, 0.30);
+                0 11px 25px rgba(54, 75, 43, 0.25);
         }
 
 
-        /* =====================================
-           BUTTON CLICK GLOW
-        ===================================== */
+        /* =========================================================
+           BUTTON ACTIVE
+        ========================================================= */
 
         .register-btn:active {
-
-            transform: scale(0.98);
+            transform: translateY(0);
 
             box-shadow:
-
-                0 0 7px rgba(255, 255, 255, 0.95),
-
-                0 0 15px rgba(120, 169, 66, 0.85),
-
-                0 0 28px rgba(120, 169, 66, 0.60),
-
-                0 0 45px rgba(160, 205, 110, 0.40);
+                0 5px 13px rgba(54, 75, 43, 0.18);
         }
 
 
-        /* =====================================
+        /* =========================================================
            BACK TO LOGIN
-        ===================================== */
+        ========================================================= */
 
         .login-text {
-
             margin-top: 18px;
 
             text-align: center;
 
-            color: #777c73;
+            color: #858b80;
 
             font-size: 12px;
         }
 
 
         .login-text a {
-
-            color: #66705d;
+            color: #536641;
 
             font-weight: 600;
 
             text-decoration: none;
+
+            transition: 0.2s ease;
         }
 
 
         .login-text a:hover {
+            color: #354b2d;
 
             text-decoration: underline;
         }
 
 
-        /* =====================================
-           VALIDATION ERROR
-        ===================================== */
-
-        .error-message {
-
-            color: #c45b5b;
-
-            font-size: 11px;
-
-            margin-top: -10px;
-
-            margin-bottom: 10px;
-
-            padding-left: 15px;
-        }
-
-
-        /* =====================================
-           MOBILE
-        ===================================== */
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
 
         @media (max-width: 1100px) {
 
             .register-container {
-
-                right: 7%;
+                right: 8%;
 
                 width: 330px;
             }
@@ -372,25 +371,21 @@
 
         @media (max-width: 700px) {
 
-            .bg-image {
-
-                width: 450px;
-
-                left: -30px;
+            body {
+                background-position: left center;
+                background-size: auto 100%;
             }
-
 
             .register-container {
-
                 left: 50%;
-
                 right: auto;
 
-                transform: translate(-50%, -50%);
+                transform:
+                    translate(-50%, -50%);
 
-                width: min(330px, 80%);
+                width:
+                    min(330px, 80%);
             }
-
         }
 
     </style>
@@ -401,20 +396,9 @@
 <body>
 
 
-    <!-- =====================================
-         BACKGROUND
-    ===================================== -->
-
-    <img
-        src="{{ asset('assets/images/jep.jpeg') }}"
-        class="bg-image"
-        alt="Whisperly Background"
-    >
-
-
-    <!-- =====================================
+    <!-- =========================================================
          REGISTER FORM
-    ===================================== -->
+    ========================================================= -->
 
     <div class="register-container">
 
@@ -427,7 +411,9 @@
             @csrf
 
 
-            <!-- USERNAME -->
+            <!-- =================================================
+                 USERNAME
+            ================================================= -->
 
             <div class="input-box">
 
@@ -438,12 +424,12 @@
                         <circle
                             cx="12"
                             cy="8"
-                            r="4">
-                        </circle>
+                            r="4"
+                        ></circle>
 
                         <path
-                            d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8">
-                        </path>
+                            d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"
+                        ></path>
 
                     </svg>
 
@@ -461,14 +447,19 @@
 
             </div>
 
+
             @error('username')
+
                 <div class="error-message">
                     {{ $message }}
                 </div>
+
             @enderror
 
 
-            <!-- EMAIL -->
+            <!-- =================================================
+                 EMAIL
+            ================================================= -->
 
             <div class="input-box">
 
@@ -481,12 +472,12 @@
                             y="5"
                             width="18"
                             height="14"
-                            rx="2">
-                        </rect>
+                            rx="2"
+                        ></rect>
 
                         <polyline
-                            points="3,7 12,13 21,7">
-                        </polyline>
+                            points="3,7 12,13 21,7"
+                        ></polyline>
 
                     </svg>
 
@@ -504,14 +495,19 @@
 
             </div>
 
+
             @error('email')
+
                 <div class="error-message">
                     {{ $message }}
                 </div>
+
             @enderror
 
 
-            <!-- PASSWORD -->
+            <!-- =================================================
+                 PASSWORD
+            ================================================= -->
 
             <div class="input-box">
 
@@ -524,12 +520,12 @@
                             y="10"
                             width="14"
                             height="10"
-                            rx="2">
-                        </rect>
+                            rx="2"
+                        ></rect>
 
                         <path
-                            d="M8 10V7a4 4 0 0 1 8 0v3">
-                        </path>
+                            d="M8 10V7a4 4 0 0 1 8 0v3"
+                        ></path>
 
                     </svg>
 
@@ -550,20 +546,26 @@
                     type="button"
                     class="eye-btn"
                     onclick="togglePassword('password', this)"
+                    aria-label="Tampilkan password"
                 >
                     👁
                 </button>
 
             </div>
 
+
             @error('password')
+
                 <div class="error-message">
                     {{ $message }}
                 </div>
+
             @enderror
 
 
-            <!-- CONFIRM PASSWORD -->
+            <!-- =================================================
+                 CONFIRM PASSWORD
+            ================================================= -->
 
             <div class="input-box">
 
@@ -576,12 +578,12 @@
                             y="10"
                             width="14"
                             height="10"
-                            rx="2">
-                        </rect>
+                            rx="2"
+                        ></rect>
 
                         <path
-                            d="M8 10V7a4 4 0 0 1 8 0v3">
-                        </path>
+                            d="M8 10V7a4 4 0 0 1 8 0v3"
+                        ></path>
 
                     </svg>
 
@@ -602,6 +604,7 @@
                     type="button"
                     class="eye-btn"
                     onclick="togglePassword('confirm-password', this)"
+                    aria-label="Tampilkan password"
                 >
                     👁
                 </button>
@@ -609,7 +612,9 @@
             </div>
 
 
-            <!-- CREATE ACCOUNT -->
+            <!-- =================================================
+                 CREATE ACCOUNT
+            ================================================= -->
 
             <button
                 type="submit"
@@ -619,7 +624,9 @@
             </button>
 
 
-            <!-- LOGIN -->
+            <!-- =================================================
+                 LOGIN
+            ================================================= -->
 
             <p class="login-text">
 
@@ -631,15 +638,14 @@
 
             </p>
 
-
         </form>
 
     </div>
 
 
-    <!-- =====================================
+    <!-- =========================================================
          JAVASCRIPT
-    ===================================== -->
+    ========================================================= -->
 
     <script>
 
@@ -655,14 +661,22 @@
 
                 button.textContent = "🙈";
 
+                button.setAttribute(
+                    "aria-label",
+                    "Sembunyikan password"
+                );
+
             } else {
 
                 password.type = "password";
 
                 button.textContent = "👁";
 
+                button.setAttribute(
+                    "aria-label",
+                    "Tampilkan password"
+                );
             }
-
         }
 
     </script>

@@ -682,7 +682,7 @@ class menfessController extends Controller
         );
 
         return redirect()
-            ->route('menfess.admin')
+            ->route('admin.menfess.index')
             ->with(
                 'message_success',
                 'Menfess berhasil disetujui.'
