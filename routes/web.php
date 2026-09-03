@@ -147,10 +147,7 @@ Route::middleware([
         'store'
     ])->name('whisperly.chat.store');
 
-    Route::get('/whisperly/profile/{booking}', [
-        \App\Http\Controllers\WhisperlyProfileController::class,
-        'show'
-    ])->name('whisperly.profile.show');
+
 });
 
 

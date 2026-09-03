@@ -1845,11 +1845,10 @@
 
                         {{-- PENGADUAN / MENFESS ADMIN --}}
 
-                        <a
-                            href="{{ route('menfess.admin') }}"
-                            class="whisperly-dropdown-item"
-                        >
-
+                       <a
+    href="{{ route('admin.menfess.index') }}"
+    class="whisperly-dropdown-item"
+>
                             <span class="whisperly-dropdown-icon">
 
                                 <svg

@@ -2043,7 +2043,7 @@
                             <!-- PENGADUAN -->
 
                             <a
-                                href="{{ route('menfess.admin') }}"
+                                href="{{ route('admin.menfess.index') }}"
                                 class="dropdown-item"
                             >
 
@@ -2172,7 +2172,7 @@
 
                     <a
                         class="action alt"
-                        href="{{ route('menfess.admin') }}"
+                        href="{{ route('admin.menfess.index') }}"
                     >
                         Ruang Pengaduan
                     </a>
