@@ -968,8 +968,8 @@
             font-size:
                 clamp(
                     60px,
-                    12vw,
-                    148px
+                    9vw,
+                    170px
                 );
 
             font-weight: 400;
