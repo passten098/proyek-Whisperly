@@ -230,11 +230,13 @@
         <div class="buttons">
 
             {{-- TOMBOL RUANG PENGADUAN --}}
-      <a href="{{ route('menfess.admin') }}"
-   class="admin-button"
-   id="menfessButton">
-    Ruang Pengaduan
-</a>
+            <a
+                href="{{ route('admin.menfess.index') }}"
+                class="admin-button"
+                id="menfessButton"
+            >
+                Ruang Pengaduan
+            </a>
 
         </div>
 
@@ -287,11 +289,13 @@
         const menfessButton =
             document.getElementById('menfessButton');
 
-        menfessButton.addEventListener('click', function () {
+        if (menfessButton) {
+            menfessButton.addEventListener('click', function () {
 
-            this.classList.add('clicked');
+                this.classList.add('clicked');
 
-        });
+            });
+        }
 
     </script>
 
