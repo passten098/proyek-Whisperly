@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 
@@ -439,10 +440,6 @@
         }
 
 
-        /* =========================================================
-           LOCK BODY
-        ========================================================= */
-
         .lock-body {
 
             position: absolute;
@@ -458,10 +455,6 @@
             border-radius: 3px;
         }
 
-
-        /* =========================================================
-           LOCK SHACKLE
-        ========================================================= */
 
         .lock-shackle {
 
@@ -485,10 +478,6 @@
         }
 
 
-        /* =========================================================
-           KEYHOLE
-        ========================================================= */
-
         .lock-hole {
 
             position: absolute;
@@ -507,10 +496,6 @@
         }
 
 
-        /* =========================================================
-           KEYHOLE ROUND PART
-        ========================================================= */
-
         .lock-hole::before {
 
             content: "";
@@ -528,10 +513,6 @@
             background: #ffffff;
         }
 
-
-        /* =========================================================
-           HOVER LOCK
-        ========================================================= */
 
         .secret-login:hover .lock-hole,
         .secret-login:hover .lock-hole::before {
@@ -602,7 +583,7 @@
 
         .secret-box h2 {
 
-            margin-bottom: 18px;
+            margin-bottom: 8px;
 
             color: #4d5845;
 
@@ -610,9 +591,53 @@
         }
 
 
+        .secret-description {
+
+            margin-bottom: 18px;
+
+            color: #858b80;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================================================
+           SECRET FIELD
+        ========================================================= */
+
+        .secret-field {
+
+            margin-bottom: 13px;
+        }
+
+
+        .secret-label {
+
+            display: block;
+
+            margin: 0 0 7px 14px;
+
+            color: #59634f;
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+
         /* =========================================================
            SECRET INPUT
         ========================================================= */
+
+        .secret-input-wrap {
+
+            position: relative;
+
+            width: 100%;
+        }
+
 
         .secret-box input {
 
@@ -646,6 +671,54 @@
         }
 
 
+        .secret-box input::placeholder {
+
+            color: #969c91;
+        }
+
+
+        /* =========================================================
+           SECRET PASSWORD EYE
+        ========================================================= */
+
+        .secret-eye {
+
+            position: absolute;
+
+            top: 50%;
+            right: 14px;
+
+            transform: translateY(-50%);
+
+            width: 32px;
+            height: 32px;
+
+            border: none;
+
+            background: transparent;
+
+            color: #68735f;
+
+            cursor: pointer;
+
+            opacity: 0.55;
+
+            font-size: 14px;
+
+            transition: 0.2s ease;
+        }
+
+
+        .secret-eye:hover {
+
+            opacity: 1;
+
+            transform:
+                translateY(-50%)
+                scale(1.08);
+        }
+
+
         /* =========================================================
            SECRET SUBMIT
         ========================================================= */
@@ -656,7 +729,7 @@
 
             height: 46px;
 
-            margin-top: 14px;
+            margin-top: 5px;
 
             border: none;
 
@@ -687,6 +760,14 @@
                     #60784a,
                     #476238
                 );
+
+            transform: translateY(-1px);
+        }
+
+
+        .secret-submit:active {
+
+            transform: translateY(0);
         }
 
 
@@ -735,7 +816,9 @@
 
         .secret-error {
 
-            margin-top: 10px;
+            margin-top: 8px;
+
+            margin-left: 14px;
 
             color: #b04f4f;
 
@@ -991,7 +1074,7 @@
     ========================================================= -->
 
     <div
-        class="secret-modal {{ $errors->has('secret_password') ? 'is-open' : '' }}"
+        class="secret-modal {{ $errors->has('secret_password') || $errors->has('secret_username') ? 'is-open' : '' }}"
         id="secret-modal"
         role="dialog"
         aria-modal="true"
@@ -1014,8 +1097,13 @@
 
 
             <h2 id="secret-title">
-                Password Rahasia
+                Admin Access
             </h2>
+
+
+            <p class="secret-description">
+                Masukkan USN dan password admin untuk melanjutkan.
+            </p>
 
 
             <form
@@ -1026,28 +1114,94 @@
                 @csrf
 
 
-                <input
-                    type="password"
-                    name="secret_password"
-                    placeholder="Masukkan password"
-                    required
-                >
+                <!-- USN -->
+
+                <div class="secret-field">
+
+                    <label
+                        for="secret_username"
+                        class="secret-label"
+                    >
+                        USN
+                    </label>
 
 
-                @error('secret_password')
+                    <input
+                        type="text"
+                        id="secret_username"
+                        name="secret_username"
+                        placeholder="Masukkan username admin"
+                        autocomplete="username"
+                        value="{{ old('secret_username') }}"
+                        required
+                    >
 
-                    <div class="secret-error">
-                        {{ $message }}
+
+                    @error('secret_username')
+
+                        <div class="secret-error">
+                            {{ $message }}
+                        </div>
+
+                    @enderror
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="secret-field">
+
+                    <label
+                        for="secret_password"
+                        class="secret-label"
+                    >
+                        Password
+                    </label>
+
+
+                    <div class="secret-input-wrap">
+
+                        <input
+                            type="password"
+                            id="secret_password"
+                            name="secret_password"
+                            placeholder="Masukkan password admin"
+                            autocomplete="current-password"
+                            required
+                        >
+
+
+                        <button
+                            type="button"
+                            class="secret-eye"
+                            onclick="toggleSecretPassword()"
+                            aria-label="Tampilkan password admin"
+                        >
+                            👁
+                        </button>
+
                     </div>
 
-                @enderror
 
+                    @error('secret_password')
+
+                        <div class="secret-error">
+                            {{ $message }}
+                        </div>
+
+                    @enderror
+
+                </div>
+
+
+                <!-- SUBMIT -->
 
                 <button
                     type="submit"
                     class="secret-submit"
                 >
-                    Masuk
+                    Masuk sebagai Admin
                 </button>
 
             </form>
@@ -1066,7 +1220,7 @@
 
 
         /* =========================================================
-           SHOW / HIDE PASSWORD
+           SHOW / HIDE LOGIN PASSWORD
         ========================================================= */
 
         function togglePassword() {
@@ -1106,6 +1260,46 @@
 
 
         /* =========================================================
+           SHOW / HIDE ADMIN PASSWORD
+        ========================================================= */
+
+        function toggleSecretPassword() {
+
+            const password =
+                document.getElementById("secret_password");
+
+            const eye =
+                document.querySelector(".secret-eye");
+
+
+            if (password.type === "password") {
+
+                password.type = "text";
+
+                eye.textContent = "🙈";
+
+                eye.setAttribute(
+                    "aria-label",
+                    "Sembunyikan password admin"
+                );
+
+            } else {
+
+                password.type = "password";
+
+                eye.textContent = "👁";
+
+                eye.setAttribute(
+                    "aria-label",
+                    "Tampilkan password admin"
+                );
+
+            }
+
+        }
+
+
+        /* =========================================================
            OPEN SECRET MODAL
         ========================================================= */
 
@@ -1115,6 +1309,14 @@
                 .getElementById("secret-modal")
                 .classList
                 .add("is-open");
+
+            setTimeout(function() {
+
+                document
+                    .getElementById("secret_username")
+                    .focus();
+
+            }, 100);
 
         }
 
@@ -1176,3 +1378,4 @@
 </body>
 
 </html>
+```
