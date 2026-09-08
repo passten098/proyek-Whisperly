@@ -3373,6 +3373,23 @@
             accountInfoPanel.classList.add('active');
         }
 
+        // ENTER UNTUK MENGIRIM PESAN
+if (messageInput) {
+
+    messageInput.addEventListener('keydown', function(e) {
+
+        if (e.key === 'Enter' && !e.shiftKey) {
+
+            e.preventDefault();
+
+            this.form.requestSubmit();
+
+        }
+
+    });
+
+}
+
     </script>
 
 </body>
