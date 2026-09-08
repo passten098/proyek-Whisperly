@@ -41,9 +41,9 @@
 
             background-image:
                 linear-gradient(
-                    rgba(225, 241, 255, 0.58),
-                    rgba(225, 241, 255, 0.58)
-                ),
+            rgba(183,216,246,0.55),
+            rgba(183,216,246,0.55)
+        ),
                 url('{{ asset('assets/images/chat-background.jpg') }}');
 
             background-size: cover;
@@ -195,12 +195,30 @@
            SEARCH
         ========================================================= */
 
+.search-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.search-icon {
+    position: absolute;
+    left: 17px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    color: #4285c5;
+    font-size: 17px;
+
+    pointer-events: none;
+    z-index: 2;
+}
+
         .search-box {
 
             width: 100%;
 
             padding:
-                14px 16px;
+                14px 16px 14px 48px;
 
             border:
                 1px solid
@@ -653,19 +671,9 @@
 
             background-image:
                 linear-gradient(
-                    rgba(
-                        183,
-                        216,
-                        246,
-                        0.55
-                    ),
-                    rgba(
-                        183,
-                        216,
-                        246,
-                        0.55
-                    )
-                ),
+            rgba(183,216,246,0.55),
+            rgba(183,216,246,0.55)
+        ),
                 url('{{ asset('assets/images/chat-background.jpg') }}');
 
             background-size:
@@ -1087,11 +1095,8 @@
          NAVBAR WHISPERLY
     ========================================================= --}}
 
-    <div class="navbar-wrapper">
-
+  
         @include('whisperly.navbar')
-
-    </div>
 
 
 
@@ -1121,12 +1126,18 @@
 
                 {{-- SEARCH --}}
 
-                <input
-                    type="text"
-                    class="search-box"
-                    id="chat-search"
-                    placeholder="Cari Obrolan..."
-                >
+                <div class="search-wrapper">
+
+    <span class="search-icon">⌕</span>
+
+    <input
+        type="text"
+        class="search-box"
+        id="chat-search"
+        placeholder="Cari Obrolan..."
+    >
+
+</div>
 
 
 
@@ -1222,7 +1233,11 @@
                             */
 
                             $lastMessage = $booking->last_message;
-                            $unreadCount = $booking->unread_count ?? 0;
+    $unreadCount = $booking->unread_count ?? 0;
+
+    $isLastMessageFromCurrentUser =
+        $lastMessage &&
+        (string) $lastMessage->sender_id === (string) auth('whisperly')->id();
 
 
                             /*
@@ -1258,7 +1273,6 @@
                             |--------------------------------------------------------------------------
                             */
 
-                            $isLastMessageFromCurrentUser = false;
                             $lastMessageIsRead =
                                 $booking->last_message_is_read ?? false;
 

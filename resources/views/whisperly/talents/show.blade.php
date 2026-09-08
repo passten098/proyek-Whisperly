@@ -1343,12 +1343,6 @@
                 </h1>
 
 
-                <p class="username">
-
-                    @{{ $talent->pengguna->username }}
-
-                </p>
-
 
                 <p class="email">
 

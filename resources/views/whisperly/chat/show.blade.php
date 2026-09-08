@@ -47,6 +47,10 @@
             background-color: #a9d2f5;
 
             background-image:
+            linear-gradient(
+            rgba(183,216,246,0.55),
+            rgba(183,216,246,0.55)
+        ),
                 url('{{ asset('assets/images/chat-background.jpg') }}');
 
             background-size: cover;
@@ -67,7 +71,7 @@
 
             max-width: 1700px;
 
-            margin: 135px auto 35px;
+            margin: 10px auto 5px;
 
             height: calc(100vh - 170px);
 
@@ -458,38 +462,27 @@
         ========================================================== */
 
         .room {
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 
-            min-width: 0;
+    background-color: #a9d2f5;
 
-            min-height: 0;
+    background-image:
+        linear-gradient(
+            rgba(183,216,246,0.55),
+            rgba(183,216,246,0.55)
+        ),
+        url('{{ asset('assets/images/chat-background.jpg') }}');
 
-            display: flex;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 
-            flex-direction: column;
-
-            overflow: hidden;
-
-            background-color: #a9d2f5;
-
-            background-image:
-
-                linear-gradient(
-                    rgba(225, 241, 255, 0.58),
-                    rgba(225, 241, 255, 0.58)
-                ),
-
-                url('{{ asset('assets/images/chat-background.jpg') }}');
-
-            background-size: cover;
-
-            background-position: center;
-
-            background-attachment: fixed;
-
-            background-repeat: no-repeat;
-
-            position: relative;
-        }
+    position: relative;
+}
 
 
         /* ==========================================================
@@ -1553,9 +1546,7 @@
         }
 
 
-        .composer textarea {
-
-            flex: 1;
+        .composer textarea {flex: 1;
 
             width: 100%;
 
@@ -2054,7 +2045,7 @@
                     <input
                         type="text"
                         id="searchChat"
-                        placeholder="Cari percakapan..."
+                        placeholder="Cari Obrolan..."
                     >
 
                 </div>
@@ -2796,8 +2787,7 @@
 
                             Chat sudah ditutup
                             karena waktu booking
-                            telah selesai. Silahkan pesan booking lagi
-                            jika Anda ingin menghubungi talent ini.
+                            telah selesai.
 
                         </span>
 

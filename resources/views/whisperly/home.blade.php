@@ -2,6 +2,7 @@
 <html lang="id">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -18,6 +19,7 @@
         ========================================================= */
 
         :root {
+
             --bg-dark: #11101f;
             --bg-soft: #1b1930;
 
@@ -31,8 +33,13 @@
             --lavender: #c9b9ef;
             --lavender-soft: #ded5f6;
 
+            --champagne: #f5e4c4;
+            --champagne-soft: #fff4dc;
+
             --border: rgba(255,255,255,.11);
+
             --glass: rgba(21, 20, 40, .91);
+
         }
 
 
@@ -41,22 +48,24 @@
         ========================================================= */
 
         * {
+
             box-sizing: border-box;
+
         }
+
 
         html,
         body {
+
             margin: 0;
             width: 100%;
             min-height: 100%;
+
         }
 
 
-        /* =========================================================
-           BODY
-        ========================================================= */
-
         body {
+
             min-height: 100vh;
 
             color: var(--white);
@@ -71,13 +80,22 @@
                 Georgia,
                 "Times New Roman",
                 serif;
+
+            overflow-x: hidden;
+
         }
 
 
+        /* =========================================================
+           CINEMATIC OVERLAY
+        ========================================================= */
+
         body::before {
+
             content: "";
 
             position: fixed;
+
             inset: 0;
 
             z-index: 0;
@@ -85,12 +103,45 @@
             background:
                 linear-gradient(
                     180deg,
-                    rgba(13,12,28,.72),
-                    rgba(24,21,47,.46) 45%,
-                    rgba(8,7,19,.88)
+                    rgba(13,12,28,.74),
+                    rgba(24,21,47,.48) 42%,
+                    rgba(8,7,19,.94)
                 );
 
             pointer-events: none;
+
+        }
+
+
+        body::after {
+
+            content: "";
+
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 0;
+
+            pointer-events: none;
+
+            background:
+                radial-gradient(
+                    circle at 18% 20%,
+                    rgba(231,162,182,.10),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 80% 24%,
+                    rgba(201,185,239,.12),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 60% 90%,
+                    rgba(245,228,196,.06),
+                    transparent 28%
+                );
+
         }
 
 
@@ -99,6 +150,7 @@
         ========================================================= */
 
         .shell {
+
             position: relative;
 
             z-index: 1;
@@ -106,7 +158,9 @@
             min-height: 100vh;
 
             display: flex;
+
             flex-direction: column;
+
         }
 
 
@@ -115,6 +169,7 @@
         ========================================================= */
 
         .nav {
+
             position: sticky;
 
             top: 0;
@@ -149,6 +204,7 @@
             box-shadow:
                 0 10px 35px
                 rgba(0,0,0,.16);
+
         }
 
 
@@ -157,6 +213,7 @@
         ========================================================= */
 
         .brand {
+
             position: relative;
 
             display: inline-flex;
@@ -176,13 +233,16 @@
             transition:
                 transform .25s ease,
                 color .25s ease;
+
         }
 
 
         .brand::before {
+
             content: "";
 
             width: 7px;
+
             height: 7px;
 
             margin-right: 10px;
@@ -199,14 +259,17 @@
             box-shadow:
                 0 0 16px
                 rgba(231,162,182,.65);
+
         }
 
 
         .brand:hover {
+
             color: var(--lavender-soft);
 
             transform:
                 translateY(-1px);
+
         }
 
 
@@ -215,11 +278,13 @@
         ========================================================= */
 
         .nav-right {
+
             display: flex;
 
             align-items: center;
 
             gap: 10px;
+
         }
 
 
@@ -228,6 +293,7 @@
         ========================================================= */
 
         .user-pill {
+
             display: flex;
 
             align-items: center;
@@ -250,15 +316,18 @@
 
             transition:
                 .25s ease;
+
         }
 
 
         .user-pill:hover {
+
             background:
                 rgba(255,255,255,.075);
 
             border-color:
                 rgba(255,255,255,.17);
+
         }
 
 
@@ -267,12 +336,15 @@
         ========================================================= */
 
         .user-avatar {
+
             width: 32px;
+
             height: 32px;
 
             display: flex;
 
             align-items: center;
+
             justify-content: center;
 
             flex-shrink: 0;
@@ -296,10 +368,12 @@
             box-shadow:
                 0 4px 14px
                 rgba(0,0,0,.18);
+
         }
 
 
         .username {
+
             max-width: 125px;
 
             overflow: hidden;
@@ -315,6 +389,7 @@
                 600 12px
                 Arial,
                 sans-serif;
+
         }
 
 
@@ -323,7 +398,9 @@
         ========================================================= */
 
         .menu-wrapper {
+
             position: relative;
+
         }
 
 
@@ -332,14 +409,17 @@
         ========================================================= */
 
         .menu-button {
+
             position: relative;
 
             width: 45px;
+
             height: 45px;
 
             display: flex;
 
             align-items: center;
+
             justify-content: center;
 
             padding: 0;
@@ -362,10 +442,12 @@
                 border-color .25s ease,
                 transform .25s ease,
                 box-shadow .25s ease;
+
         }
 
 
         .menu-button:hover {
+
             background:
                 rgba(201,185,239,.13);
 
@@ -378,15 +460,18 @@
             box-shadow:
                 0 12px 30px
                 rgba(0,0,0,.24);
+
         }
 
 
         .menu-button.active {
+
             background:
                 rgba(231,162,182,.10);
 
             border-color:
                 rgba(231,162,182,.32);
+
         }
 
 
@@ -395,17 +480,22 @@
         ========================================================= */
 
         .dots {
+
             display: flex;
 
             align-items: center;
+
             justify-content: center;
 
             gap: 4px;
+
         }
 
 
         .dots span {
+
             width: 4px;
+
             height: 4px;
 
             border-radius: 50%;
@@ -416,33 +506,42 @@
             transition:
                 transform .25s ease,
                 opacity .25s ease;
+
         }
 
 
         .menu-button.active .dots {
+
             gap: 0;
+
         }
 
 
         .menu-button.active
         .dots span:nth-child(1) {
+
             transform:
                 translate(3px, 0)
                 rotate(45deg);
+
         }
 
 
         .menu-button.active
         .dots span:nth-child(2) {
+
             opacity: 0;
+
         }
 
 
         .menu-button.active
         .dots span:nth-child(3) {
+
             transform:
                 translate(-3px, 0)
                 rotate(-45deg);
+
         }
 
 
@@ -451,6 +550,7 @@
         ========================================================= */
 
         .dropdown-menu {
+
             position: absolute;
 
             top:
@@ -502,10 +602,12 @@
                 opacity .22s ease,
                 visibility .22s ease,
                 transform .22s ease;
+
         }
 
 
         .dropdown-menu.show {
+
             opacity: 1;
 
             visibility: visible;
@@ -513,22 +615,26 @@
             transform:
                 translateY(0)
                 scale(1);
+
         }
 
 
         /* =========================================================
-           DECORATIVE GLOW
+           DROPDOWN DECORATION
         ========================================================= */
 
         .dropdown-menu::before {
+
             content: "";
 
             position: absolute;
 
             width: 180px;
+
             height: 180px;
 
             top: -100px;
+
             right: -70px;
 
             border-radius: 50%;
@@ -540,18 +646,22 @@
                 blur(25px);
 
             pointer-events: none;
+
         }
 
 
         .dropdown-menu::after {
+
             content: "";
 
             position: absolute;
 
             width: 130px;
+
             height: 130px;
 
             bottom: -90px;
+
             left: -60px;
 
             border-radius: 50%;
@@ -563,6 +673,7 @@
                 blur(25px);
 
             pointer-events: none;
+
         }
 
 
@@ -571,6 +682,7 @@
         ========================================================= */
 
         .menu-profile {
+
             position: relative;
 
             display: flex;
@@ -583,16 +695,20 @@
                 10px 10px 13px;
 
             z-index: 2;
+
         }
 
 
         .menu-profile-avatar {
+
             width: 38px;
+
             height: 38px;
 
             display: flex;
 
             align-items: center;
+
             justify-content: center;
 
             flex-shrink: 0;
@@ -612,10 +728,12 @@
                 700 12px
                 Arial,
                 sans-serif;
+
         }
 
 
         .menu-profile-info {
+
             min-width: 0;
 
             display: flex;
@@ -623,10 +741,12 @@
             flex-direction: column;
 
             gap: 3px;
+
         }
 
 
         .menu-profile-name {
+
             overflow: hidden;
 
             text-overflow: ellipsis;
@@ -640,10 +760,12 @@
                 600 13px
                 Arial,
                 sans-serif;
+
         }
 
 
         .menu-profile-role {
+
             color:
                 rgba(255,255,255,.36);
 
@@ -657,6 +779,7 @@
 
             text-transform:
                 uppercase;
+
         }
 
 
@@ -665,6 +788,7 @@
         ========================================================= */
 
         .dropdown-divider {
+
             position: relative;
 
             height: 1px;
@@ -676,6 +800,7 @@
                 rgba(255,255,255,.07);
 
             z-index: 2;
+
         }
 
 
@@ -684,6 +809,7 @@
         ========================================================= */
 
         .dropdown-item {
+
             position: relative;
 
             display: flex;
@@ -714,20 +840,25 @@
             transition:
                 background .25s ease,
                 transform .25s ease;
+
         }
 
 
         .dropdown-item:last-child {
+
             margin-bottom: 0;
+
         }
 
 
         .dropdown-item:hover {
+
             background:
                 rgba(255,255,255,.065);
 
             transform:
                 translateX(3px);
+
         }
 
 
@@ -736,6 +867,7 @@
         ========================================================= */
 
         .dropdown-item::before {
+
             content: "";
 
             position: absolute;
@@ -743,6 +875,7 @@
             left: 0;
 
             top: 10px;
+
             bottom: 10px;
 
             width: 2px;
@@ -764,14 +897,17 @@
             transition:
                 opacity .25s ease,
                 transform .25s ease;
+
         }
 
 
         .dropdown-item:hover::before {
+
             opacity: 1;
 
             transform:
                 scaleY(1);
+
         }
 
 
@@ -780,12 +916,15 @@
         ========================================================= */
 
         .dropdown-icon {
+
             width: 40px;
+
             height: 40px;
 
             display: flex;
 
             align-items: center;
+
             justify-content: center;
 
             flex-shrink: 0;
@@ -804,17 +943,22 @@
 
             transition:
                 .25s ease;
+
         }
 
 
         .dropdown-icon svg {
+
             width: 18px;
+
             height: 18px;
+
         }
 
 
         .dropdown-item:hover
         .dropdown-icon {
+
             color:
                 var(--pink-soft);
 
@@ -826,6 +970,7 @@
 
             transform:
                 scale(1.06);
+
         }
 
 
@@ -834,6 +979,7 @@
         ========================================================= */
 
         .dropdown-text {
+
             display: flex;
 
             flex-direction: column;
@@ -841,10 +987,12 @@
             gap: 3px;
 
             min-width: 0;
+
         }
 
 
         .dropdown-text strong {
+
             color:
                 rgba(255,250,247,.94);
 
@@ -852,10 +1000,12 @@
                 600 12px
                 Arial,
                 sans-serif;
+
         }
 
 
         .dropdown-text small {
+
             color:
                 rgba(255,255,255,.34);
 
@@ -868,13 +1018,16 @@
 
             transition:
                 color .25s ease;
+
         }
 
 
         .dropdown-item:hover
         .dropdown-text small {
+
             color:
                 rgba(255,255,255,.52);
+
         }
 
 
@@ -883,6 +1036,7 @@
         ========================================================= */
 
         .dropdown-arrow {
+
             margin-left: auto;
 
             color:
@@ -895,37 +1049,325 @@
 
             transition:
                 .25s ease;
+
         }
 
 
         .dropdown-item:hover
         .dropdown-arrow {
+
             color:
                 var(--pink-soft);
 
             transform:
                 translateX(4px);
+
         }
 
 
         /* =========================================================
-           HERO
+           PREMIUM HOME / DASHBOARD
         ========================================================= */
 
-        .hero {
+        .premium-home {
+
+            position: relative;
+
             flex: 1;
+
+            min-height:
+                calc(100vh - 78px);
+
+            width: 100%;
 
             display: flex;
 
-            align-items: center;
+            align-items: flex-start;
 
-            width:
-                min(900px, 100%);
+            justify-content: center;
 
             padding:
-                9vh
-                5vw
-                12vh;
+                10px 6vw 80px;
+
+            overflow: visible;
+
+        }
+
+
+        /* =========================================================
+           AMBIENT ORBS
+        ========================================================= */
+
+        .ambient {
+
+            position: absolute;
+
+            border-radius: 50%;
+
+            pointer-events: none;
+
+            filter:
+                blur(2px);
+
+            opacity: .55;
+
+        }
+
+
+        .ambient-one {
+
+            width: 420px;
+
+            height: 420px;
+
+            top: -170px;
+
+            left: -130px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(231,162,182,.18),
+                    transparent 68%
+                );
+
+            animation:
+                ambientFloatOne 9s ease-in-out infinite;
+
+        }
+
+
+        .ambient-two {
+
+            width: 500px;
+
+            height: 500px;
+
+            right: -180px;
+
+            top: 40px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(201,185,239,.17),
+                    transparent 68%
+                );
+
+            animation:
+                ambientFloatTwo 11s ease-in-out infinite;
+
+        }
+
+
+        .ambient-three {
+
+            width: 380px;
+
+            height: 380px;
+
+            left: 42%;
+
+            bottom: -220px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(245,228,196,.09),
+                    transparent 70%
+                );
+
+            animation:
+                ambientFloatThree 12s ease-in-out infinite;
+
+        }
+
+
+        @keyframes ambientFloatOne {
+
+            0%,
+            100% {
+
+                transform:
+                    translate(0,0)
+                    scale(1);
+
+            }
+
+            50% {
+
+                transform:
+                    translate(30px,25px)
+                    scale(1.08);
+
+            }
+
+        }
+
+
+        @keyframes ambientFloatTwo {
+
+            0%,
+            100% {
+
+                transform:
+                    translate(0,0)
+                    scale(1);
+
+            }
+
+            50% {
+
+                transform:
+                    translate(-35px,35px)
+                    scale(1.1);
+
+            }
+
+        }
+
+
+        @keyframes ambientFloatThree {
+
+            0%,
+            100% {
+
+                transform:
+                    translateY(0);
+
+            }
+
+            50% {
+
+                transform:
+                    translateY(-35px);
+
+            }
+
+        }
+
+
+        /* =========================================================
+           PREMIUM CONTAINER
+           SUDAH DIPERBAIKI AGAR JUDUL TIDAK TERPOTONG
+        ========================================================= */
+
+        .premium-container {
+
+            position: relative;
+
+            width:
+                min(1400px, 100%);
+
+            min-height: 650px;
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(650px, 1.15fr)
+                minmax(420px, .85fr);
+
+            align-items: center;
+
+            gap: 50px;
+
+            padding:
+                50px;
+
+            border: none;
+
+            border-radius: 0;
+
+            background: transparent;
+
+            box-shadow: none;
+
+            backdrop-filter: none;
+
+            -webkit-backdrop-filter: none;
+
+            overflow: visible;
+
+        }
+
+
+        /* =========================================================
+           LEFT CONTENT
+        ========================================================= */
+
+        .premium-content {
+
+            position: relative;
+
+            z-index: 5;
+
+            min-width: 0;
+
+            overflow: visible;
+
+        }
+
+
+        /* =========================================================
+           PREMIUM LABEL
+        ========================================================= */
+
+        .premium-label {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 24px;
+
+            padding:
+                8px 13px;
+
+            border:
+                1px solid
+                rgba(245,228,196,.20);
+
+            border-radius: 999px;
+
+            background:
+                rgba(245,228,196,.055);
+
+            color:
+                var(--champagne-soft);
+
+            font:
+                600 10px
+                Arial,
+                sans-serif;
+
+            letter-spacing:
+                .18em;
+
+            text-transform:
+                uppercase;
+
+        }
+
+
+        .premium-label::before {
+
+            content: "";
+
+            width: 6px;
+
+            height: 6px;
+
+            border-radius: 50%;
+
+            background:
+                var(--champagne);
+
+            box-shadow:
+                0 0 14px
+                rgba(245,228,196,.8);
+
         }
 
 
@@ -933,55 +1375,120 @@
            WELCOME
         ========================================================= */
 
-        .welcome {
+        .premium-welcome {
+
             margin:
-                0 0 12px;
+                0 0 14px;
 
             color:
-                var(--pink);
+                var(--pink-soft);
 
             font:
-                600 14px
+                600 13px
                 Arial,
                 sans-serif;
 
             letter-spacing:
-                .10em;
+                .12em;
 
             text-transform:
                 uppercase;
+
         }
 
 
         /* =========================================================
-           TITLE
+           PREMIUM TITLE
+           FIX HURUF Y
         ========================================================= */
 
-        h1 {
-            max-width: 780px;
+        .premium-title {
 
             margin: 0;
+
+            width: 100%;
+
+            max-width: none;
 
             color:
                 var(--white);
 
             font-size:
-                clamp(
-                    60px,
-                    9vw,
-                    170px
-                );
+                clamp(62px, 7vw, 105px);
 
             font-weight: 400;
 
-            line-height: .84;
+            line-height:
+                .86;
 
-            letter-spacing: .01em;
+            letter-spacing:
+                -.035em;
+
+            overflow: visible;
+
         }
 
 
-        h1 strong {
+        .premium-title strong {
+
+            display: block;
+
+            width: max-content;
+
+            max-width: none;
+
+            margin-top: 9px;
+
+            white-space: nowrap;
+
             font-weight: 700;
+
+            background:
+                linear-gradient(
+                    110deg,
+                    #fffaf7 10%,
+                    #f5e4c4 38%,
+                    #e7a2b6 68%,
+                    #c9b9ef 92%
+                );
+
+            -webkit-background-clip:
+                text;
+
+            background-clip:
+                text;
+
+            color:
+                transparent;
+
+            text-shadow:
+                0 10px 45px
+                rgba(201,185,239,.12);
+
+        }
+
+
+        /* =========================================================
+           LINE
+        ========================================================= */
+
+        .premium-line {
+
+            width: 115px;
+
+            height: 1px;
+
+            margin:
+                28px 0 22px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--champagne),
+                    var(--pink),
+                    transparent
+                );
+
         }
 
 
@@ -989,45 +1496,56 @@
            DESCRIPTION
         ========================================================= */
 
-        .description {
-            max-width: 540px;
+        .premium-description {
 
-            margin:
-                30px 0 28px;
+            max-width: 550px;
+
+            margin: 0;
 
             color:
-                var(--text-soft);
+                rgba(255,250,247,.63);
 
             font:
-                16px/1.65
+                15px/1.8
                 Arial,
                 sans-serif;
+
         }
 
 
         /* =========================================================
-           ACTIONS
+           BUTTONS
         ========================================================= */
 
-        .actions {
+        .premium-actions {
+
             display: flex;
 
             flex-wrap: wrap;
 
             gap: 12px;
+
+            margin-top: 30px;
+
         }
 
 
-        .action {
+        .premium-action {
+
+            position: relative;
+
+            min-height: 51px;
+
             display: inline-flex;
 
             align-items: center;
+
             justify-content: center;
 
-            min-height: 50px;
+            gap: 9px;
 
             padding:
-                0 24px;
+                0 23px;
 
             border:
                 1px solid
@@ -1035,111 +1553,1145 @@
 
             border-radius: 999px;
 
-            color:
-                var(--bg-dark);
-
-            background:
-                var(--white);
+            text-decoration: none;
 
             font:
-                700 13px
+                700 12px
                 Arial,
                 sans-serif;
 
-            text-decoration: none;
-
-            cursor: pointer;
-
-            box-shadow:
-                0 8px 25px
-                rgba(0,0,0,.14);
+            letter-spacing:
+                .03em;
 
             transition:
-                .25s ease;
+                transform .25s ease,
+                box-shadow .25s ease,
+                background .25s ease,
+                border-color .25s ease;
+
         }
 
 
-        .action:hover {
-            transform:
-                translateY(-3px);
+        .premium-action.primary {
+
+            color:
+                #282031;
 
             background:
-                #ffffff;
+                linear-gradient(
+                    135deg,
+                    #fffaf7,
+                    #f5e4c4
+                );
 
             box-shadow:
-                0 13px 32px
-                rgba(0,0,0,.25);
+                0 15px 35px
+                rgba(245,228,196,.13);
+
         }
 
 
-        .action.alt {
+        .premium-action.primary:hover {
+
+            transform:
+                translateY(-4px);
+
+            box-shadow:
+                0 20px 45px
+                rgba(245,228,196,.22);
+
+        }
+
+
+        .premium-action.secondary {
+
             color:
                 var(--white);
 
             background:
-                rgba(23,23,47,.55);
+                rgba(255,255,255,.045);
 
-            border:
-                1px solid
-                rgba(255,255,255,.20);
+            border-color:
+                rgba(255,255,255,.15);
 
-            box-shadow: none;
         }
 
 
-        .action.alt:hover {
+        .premium-action.secondary:hover {
+
+            transform:
+                translateY(-4px);
+
             background:
-                rgba(201,185,239,.12);
+                rgba(201,185,239,.10);
 
             border-color:
-                rgba(201,185,239,.42);
+                rgba(201,185,239,.35);
 
             box-shadow:
-                0 10px 25px
-                rgba(0,0,0,.16);
+                0 15px 35px
+                rgba(0,0,0,.20);
+
+        }
+
+
+        .premium-action span {
+
+            font-size: 16px;
+
+            line-height: 1;
+
         }
 
 
         /* =========================================================
-           MOBILE
+           RIGHT PREMIUM DISPLAY
+        ========================================================= */
+
+        .premium-visual {
+
+            position: relative;
+
+            min-height: 520px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            z-index: 3;
+
+        }
+
+
+        /* =========================================================
+           ORBIT
+        ========================================================= */
+
+        .orbit {
+
+            position: absolute;
+
+            width: 420px;
+
+            height: 420px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.09);
+
+            border-radius: 50%;
+
+            transform:
+                rotate(-18deg);
+
+        }
+
+
+        .orbit::before {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 45px;
+
+            border:
+                1px solid
+                rgba(201,185,239,.10);
+
+            border-radius: 50%;
+
+        }
+
+
+        .orbit::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 8px;
+
+            height: 8px;
+
+            top: 27px;
+
+            left: 85px;
+
+            border-radius: 50%;
+
+            background:
+                var(--pink-soft);
+
+            box-shadow:
+                0 0 18px
+                rgba(231,162,182,.85);
+
+        }
+
+
+        .orbit-one {
+
+            animation:
+                orbitRotate 18s linear infinite;
+
+        }
+
+
+        .orbit-two {
+
+            width: 330px;
+
+            height: 330px;
+
+            transform:
+                rotate(45deg);
+
+            border-color:
+                rgba(231,162,182,.08);
+
+            animation:
+                orbitRotateReverse 15s linear infinite;
+
+        }
+
+
+        .orbit-two::after {
+
+            top: auto;
+
+            bottom: 14px;
+
+            left: 70px;
+
+            background:
+                var(--lavender);
+
+            box-shadow:
+                0 0 18px
+                rgba(201,185,239,.8);
+
+        }
+
+
+        @keyframes orbitRotate {
+
+            from {
+
+                transform:
+                    rotate(0deg);
+
+            }
+
+            to {
+
+                transform:
+                    rotate(360deg);
+
+            }
+
+        }
+
+
+        @keyframes orbitRotateReverse {
+
+            from {
+
+                transform:
+                    rotate(360deg);
+
+            }
+
+            to {
+
+                transform:
+                    rotate(0deg);
+
+            }
+
+        }
+
+
+        /* =========================================================
+           CRYSTAL
+        ========================================================= */
+
+        .crystal-wrapper {
+
+            position: relative;
+
+            width: 245px;
+
+            height: 300px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            animation:
+                crystalFloat 5s ease-in-out infinite;
+
+        }
+
+
+        @keyframes crystalFloat {
+
+            0%,
+            100% {
+
+                transform:
+                    translateY(0)
+                    rotate(-1deg);
+
+            }
+
+            50% {
+
+                transform:
+                    translateY(-16px)
+                    rotate(2deg);
+
+            }
+
+        }
+
+
+        .crystal-glow {
+
+            position: absolute;
+
+            width: 220px;
+
+            height: 220px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(201,185,239,.34),
+                    rgba(231,162,182,.10) 35%,
+                    transparent 70%
+                );
+
+            filter:
+                blur(18px);
+
+            animation:
+                glowPulse 4s ease-in-out infinite;
+
+        }
+
+
+        @keyframes glowPulse {
+
+            0%,
+            100% {
+
+                transform:
+                    scale(.92);
+
+                opacity:
+                    .65;
+
+            }
+
+            50% {
+
+                transform:
+                    scale(1.08);
+
+                opacity:
+                    1;
+
+            }
+
+        }
+
+
+        .crystal {
+
+            position: relative;
+
+            width: 150px;
+
+            height: 230px;
+
+            clip-path:
+                polygon(
+                    50% 0%,
+                    87% 20%,
+                    100% 73%,
+                    61% 100%,
+                    37% 100%,
+                    0% 73%,
+                    13% 20%
+                );
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.88),
+                    rgba(222,213,246,.68) 28%,
+                    rgba(201,185,239,.38) 56%,
+                    rgba(231,162,182,.38) 78%,
+                    rgba(255,255,255,.16)
+                );
+
+            box-shadow:
+                0 0 70px
+                rgba(201,185,239,.24);
+
+            transform:
+                rotate(1deg);
+
+            filter:
+                drop-shadow(
+                    0 35px 40px
+                    rgba(0,0,0,.28)
+                );
+
+        }
+
+
+        .crystal::before {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    105deg,
+                    transparent 28%,
+                    rgba(255,255,255,.72) 29%,
+                    rgba(255,255,255,.08) 40%,
+                    transparent 41%,
+                    transparent 58%,
+                    rgba(255,255,255,.32) 59%,
+                    transparent 70%
+                );
+
+            clip-path:
+                polygon(
+                    50% 0%,
+                    87% 20%,
+                    100% 73%,
+                    61% 100%,
+                    37% 100%,
+                    0% 73%,
+                    13% 20%
+                );
+
+        }
+
+
+        .crystal::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 35px;
+
+            height: 150px;
+
+            left: 52px;
+
+            top: 20px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255,255,255,.26);
+
+            filter:
+                blur(10px);
+
+            transform:
+                rotate(17deg);
+
+        }
+
+
+        .crystal-core {
+
+            position: absolute;
+
+            width: 35px;
+
+            height: 35px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle at 35% 30%,
+                    #ffffff,
+                    var(--champagne) 35%,
+                    var(--pink) 70%,
+                    var(--lavender)
+                );
+
+            box-shadow:
+                0 0 40px
+                rgba(245,228,196,.85);
+
+            animation:
+                corePulse 3s ease-in-out infinite;
+
+        }
+
+
+        @keyframes corePulse {
+
+            0%,
+            100% {
+
+                transform:
+                    scale(.9);
+
+            }
+
+            50% {
+
+                transform:
+                    scale(1.18);
+
+            }
+
+        }
+
+
+        /* =========================================================
+           FLOATING BADGE
+        ========================================================= */
+
+        .floating-badge {
+
+            position: absolute;
+
+            top: 45px;
+
+            right: 8px;
+
+            width: 190px;
+
+            padding:
+                17px 18px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.13);
+
+            border-radius: 19px;
+
+            background:
+                rgba(17,16,31,.52);
+
+            box-shadow:
+                0 20px 45px
+                rgba(0,0,0,.24);
+
+            backdrop-filter:
+                blur(18px);
+
+            -webkit-backdrop-filter:
+                blur(18px);
+
+            animation:
+                badgeFloat 6s ease-in-out infinite;
+
+        }
+
+
+        @keyframes badgeFloat {
+
+            0%,
+            100% {
+
+                transform:
+                    translateY(0);
+
+            }
+
+            50% {
+
+                transform:
+                    translateY(-10px);
+
+            }
+
+        }
+
+
+        .floating-badge small {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color:
+                var(--champagne);
+
+            font:
+                600 8px
+                Arial,
+                sans-serif;
+
+            letter-spacing:
+                .18em;
+
+        }
+
+
+        .floating-badge strong {
+
+            color:
+                rgba(255,250,247,.90);
+
+            font:
+                600 13px/1.45
+                Arial,
+                sans-serif;
+
+        }
+
+
+        /* =========================================================
+           DASHBOARD CARD
+        ========================================================= */
+
+        .dashboard-card {
+
+            position: absolute;
+
+            left: 0;
+
+            bottom: 28px;
+
+            width: 255px;
+
+            padding:
+                18px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.12);
+
+            border-radius: 22px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(28,27,49,.76),
+                    rgba(11,10,24,.76)
+                );
+
+            box-shadow:
+                0 25px 55px
+                rgba(0,0,0,.32);
+
+            backdrop-filter:
+                blur(20px);
+
+            -webkit-backdrop-filter:
+                blur(20px);
+
+            animation:
+                dashboardFloat 7s ease-in-out infinite;
+
+        }
+
+
+        @keyframes dashboardFloat {
+
+            0%,
+            100% {
+
+                transform:
+                    translateY(0);
+
+            }
+
+            50% {
+
+                transform:
+                    translateY(9px);
+
+            }
+
+        }
+
+
+        .dashboard-top {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .dashboard-brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            color:
+                rgba(255,250,247,.88);
+
+            font:
+                700 10px
+                Arial,
+                sans-serif;
+
+            letter-spacing:
+                .12em;
+
+        }
+
+
+        .dashboard-brand-dot {
+
+            width: 7px;
+
+            height: 7px;
+
+            border-radius: 50%;
+
+            background:
+                var(--pink);
+
+            box-shadow:
+                0 0 12px
+                rgba(231,162,182,.7);
+
+        }
+
+
+        .dashboard-status {
+
+            padding:
+                5px 8px;
+
+            border:
+                1px solid
+                rgba(201,185,239,.16);
+
+            border-radius: 999px;
+
+            color:
+                var(--lavender-soft);
+
+            background:
+                rgba(201,185,239,.06);
+
+            font:
+                600 7px
+                Arial,
+                sans-serif;
+
+            letter-spacing:
+                .08em;
+
+            text-transform:
+                uppercase;
+
+        }
+
+
+        .dashboard-title {
+
+            margin-bottom: 5px;
+
+            color:
+                rgba(255,250,247,.94);
+
+            font:
+                600 16px
+                Georgia,
+                serif;
+
+        }
+
+
+        .dashboard-subtitle {
+
+            margin-bottom: 18px;
+
+            color:
+                rgba(255,255,255,.40);
+
+            font:
+                400 10px/1.5
+                Arial,
+                sans-serif;
+
+        }
+
+
+        .dashboard-line {
+
+            position: relative;
+
+            height: 5px;
+
+            overflow: hidden;
+
+            border-radius: 999px;
+
+            background:
+                rgba(255,255,255,.07);
+
+        }
+
+
+        .dashboard-line span {
+
+            display: block;
+
+            width: 72%;
+
+            height: 100%;
+
+            border-radius: inherit;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--pink),
+                    var(--lavender)
+                );
+
+            box-shadow:
+                0 0 15px
+                rgba(201,185,239,.30);
+
+        }
+
+
+        /* =========================================================
+           DECORATIVE STARS
+        ========================================================= */
+
+        .star {
+
+            position: absolute;
+
+            width: 4px;
+
+            height: 4px;
+
+            border-radius: 50%;
+
+            background:
+                var(--white);
+
+            box-shadow:
+                0 0 12px
+                rgba(255,255,255,.8);
+
+            animation:
+                starPulse 3s ease-in-out infinite;
+
+        }
+
+
+        .star-one {
+
+            top: 105px;
+
+            left: 70px;
+
+        }
+
+
+        .star-two {
+
+            right: 85px;
+
+            bottom: 105px;
+
+            width: 3px;
+
+            height: 3px;
+
+            animation-delay:
+                .8s;
+
+        }
+
+
+        .star-three {
+
+            right: 25px;
+
+            top: 190px;
+
+            width: 5px;
+
+            height: 5px;
+
+            animation-delay:
+                1.5s;
+
+        }
+
+
+        .star-four {
+
+            left: 135px;
+
+            bottom: 70px;
+
+            width: 3px;
+
+            height: 3px;
+
+            animation-delay:
+                2s;
+
+        }
+
+
+        @keyframes starPulse {
+
+            0%,
+            100% {
+
+                opacity:
+                    .25;
+
+                transform:
+                    scale(.8);
+
+            }
+
+            50% {
+
+                opacity:
+                    1;
+
+                transform:
+                    scale(1.35);
+
+            }
+
+        }
+
+
+        /* =========================================================
+           SMALL INFO
+        ========================================================= */
+
+        .premium-note {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-top: 28px;
+
+            color:
+                rgba(255,255,255,.30);
+
+            font:
+                400 9px
+                Arial,
+                sans-serif;
+
+            letter-spacing:
+                .04em;
+
+        }
+
+
+        .premium-note::before {
+
+            content: "";
+
+            width: 28px;
+
+            height: 1px;
+
+            background:
+                rgba(255,255,255,.18);
+
+        }
+
+
+        /* =========================================================
+           RESPONSIVE 1100px
+        ========================================================= */
+
+        @media (max-width: 1100px) {
+
+            .premium-home {
+
+                padding:
+                    50px 4vw 70px;
+
+            }
+
+
+            .premium-container {
+
+                grid-template-columns:
+                    1fr;
+
+                gap: 20px;
+
+                padding:
+                    50px;
+
+            }
+
+
+            .premium-content {
+
+                text-align: center;
+
+            }
+
+
+            .premium-label {
+
+                margin-left: auto;
+
+                margin-right: auto;
+
+            }
+
+
+            .premium-line {
+
+                margin-left: auto;
+
+                margin-right: auto;
+
+            }
+
+
+            .premium-description {
+
+                margin-left: auto;
+
+                margin-right: auto;
+
+            }
+
+
+            .premium-actions {
+
+                justify-content: center;
+
+            }
+
+
+            .premium-note {
+
+                justify-content: center;
+
+            }
+
+
+            .premium-visual {
+
+                min-height: 470px;
+
+            }
+
+
+            .premium-title {
+
+                width: 100%;
+
+            }
+
+
+            .premium-title strong {
+
+                width: max-content;
+
+                max-width: 100%;
+
+                margin-left: auto;
+
+                margin-right: auto;
+
+            }
+
+        }
+
+
+        /* =========================================================
+           RESPONSIVE 700px
         ========================================================= */
 
         @media (max-width: 700px) {
 
             .nav {
+
                 min-height: 68px;
 
                 padding:
                     11px 17px;
+
             }
 
 
             .brand {
+
                 font-size: 20px;
 
                 letter-spacing:
                     .12em;
+
             }
 
 
             .username {
+
                 display: none;
+
             }
 
 
             .user-pill {
+
                 padding:
                     5px;
+
             }
 
 
             .menu-button {
+
                 width: 43px;
+
                 height: 43px;
+
             }
 
 
             .dropdown-menu {
+
                 width:
                     min(
                         300px,
@@ -1147,103 +2699,299 @@
                     );
 
                 right: -2px;
+
             }
 
 
-            .hero {
-                width: 100%;
+            .premium-home {
+
+                min-height:
+                    calc(100vh - 68px);
 
                 padding:
-                    12vh
-                    7vw
-                    8vh;
+                    30px 15px 50px;
+
             }
 
 
-            h1 {
+            .premium-container {
+
+                min-height:
+                    auto;
+
+                padding:
+                    35px 23px 20px;
+
+                border-radius:
+                    0;
+
+            }
+
+
+            .premium-title {
+
+                width: 100%;
+
                 font-size:
                     clamp(
-                        54px,
-                        18vw,
-                        92px
+                        52px,
+                        15vw,
+                        78px
                     );
+
             }
 
 
-            .description {
-                font-size: 14px;
+            .premium-title strong {
 
-                max-width: 450px;
+                width: max-content;
+
+                max-width: 100%;
+
             }
 
 
-            .actions {
+            .premium-description {
+
+                font-size:
+                    13px;
+
+                line-height:
+                    1.7;
+
+            }
+
+
+            .premium-actions {
+
+                flex-direction:
+                    column;
+
+            }
+
+
+            .premium-action {
+
                 width: 100%;
+
             }
 
 
-            .action {
-                width: 100%;
+            .premium-visual {
+
+                min-height:
+                    410px;
+
+                transform:
+                    scale(.88);
+
+                margin-top:
+                    -15px;
+
+                margin-bottom:
+                    -25px;
+
             }
+
+
+            .floating-badge {
+
+                right:
+                    -8px;
+
+                top:
+                    25px;
+
+            }
+
+
+            .dashboard-card {
+
+                left:
+                    -8px;
+
+                bottom:
+                    12px;
+
+            }
+
+
+            .orbit {
+
+                width:
+                    350px;
+
+                height:
+                    350px;
+
+            }
+
+
+            .orbit-two {
+
+                width:
+                    285px;
+
+                height:
+                    285px;
+
+            }
+
         }
 
+
+        /* =========================================================
+           RESPONSIVE 420px
+        ========================================================= */
 
         @media (max-width: 420px) {
 
             .nav {
+
                 padding:
                     10px 14px;
+
             }
 
 
             .brand {
-                font-size: 18px;
+
+                font-size:
+                    18px;
+
             }
 
 
             .dropdown-menu {
+
                 width:
                     calc(100vw - 24px);
 
-                right: -3px;
+                right:
+                    -3px;
+
             }
 
 
-            .hero {
+            .premium-home {
+
                 padding:
-                    10vh
-                    6vw
-                    8vh;
+                    25px 10px 45px;
+
             }
 
 
-            .welcome {
-                font-size: 11px;
+            .premium-container {
+
+                padding:
+                    30px 17px 10px;
+
+                border-radius:
+                    0;
+
             }
 
 
-            h1 {
+            .premium-label {
+
                 font-size:
-                    clamp(
-                        48px,
-                        17vw,
-                        78px
-                    );
+                    8px;
+
             }
 
 
-            .description {
-                margin-top: 24px;
+            .premium-welcome {
 
-                font-size: 13px;
+                font-size:
+                    10px;
+
             }
+
+
+            .premium-title {
+
+                font-size:
+                    49px;
+
+            }
+
+
+            .premium-title strong {
+
+                width:
+                    max-content;
+
+                max-width:
+                    100%;
+
+            }
+
+
+            .premium-description {
+
+                font-size:
+                    12px;
+
+            }
+
+
+            .premium-visual {
+
+                transform:
+                    scale(.73);
+
+                margin-top:
+                    -45px;
+
+                margin-bottom:
+                    -70px;
+
+            }
+
+
+            .premium-note {
+
+                font-size:
+                    8px;
+
+            }
+
+        }
+
+
+        /* =========================================================
+           REDUCED MOTION
+        ========================================================= */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+
+                animation-duration:
+                    .01ms !important;
+
+                animation-iteration-count:
+                    1 !important;
+
+                transition-duration:
+                    .01ms !important;
+
+                scroll-behavior:
+                    auto !important;
+
+            }
+
         }
 
     </style>
+
 </head>
 
 
 <body>
+
 
 <div class="shell">
 
@@ -1261,7 +3009,9 @@
             class="brand"
             href="{{ route('whisperly.home') }}"
         >
+
             WHISPERLY
+
         </a>
 
 
@@ -1270,8 +3020,10 @@
         <div class="nav-right">
 
             @php
+
                 $currentUser =
                     auth('whisperly')->user();
+
             @endphp
 
 
@@ -1283,6 +3035,7 @@
                 <div class="user-pill">
 
                     <div class="user-avatar">
+
                         {{ strtoupper(
                             substr(
                                 $currentUser->username,
@@ -1290,10 +3043,13 @@
                                 1
                             )
                         ) }}
+
                     </div>
 
                     <span class="username">
+
                         {{ $currentUser->username }}
+
                     </span>
 
                 </div>
@@ -1315,17 +3071,17 @@
                     >
 
                         <span class="dots">
+
                             <span></span>
                             <span></span>
                             <span></span>
+
                         </span>
 
                     </button>
 
 
-                    <!-- =================================================
-                         DROPDOWN
-                    ================================================== -->
+                    <!-- DROPDOWN -->
 
                     <div
                         class="dropdown-menu"
@@ -1338,6 +3094,7 @@
                         <div class="menu-profile">
 
                             <div class="menu-profile-avatar">
+
                                 {{ strtoupper(
                                     substr(
                                         $currentUser->username,
@@ -1345,16 +3102,21 @@
                                         1
                                     )
                                 ) }}
+
                             </div>
 
                             <div class="menu-profile-info">
 
                                 <span class="menu-profile-name">
+
                                     {{ $currentUser->username }}
+
                                 </span>
 
                                 <span class="menu-profile-role">
+
                                     {{ $currentUser->role }}
+
                                 </span>
 
                             </div>
@@ -1365,14 +3127,10 @@
                         <div class="dropdown-divider"></div>
 
 
-                        <!-- =================================================
-                             USER MENU
-                        ================================================== -->
+                        <!-- USER MENU -->
 
                         @if ($currentUser->role === 'user')
 
-
-                            <!-- HOME -->
 
                             <a
                                 href="{{ route('whisperly.home') }}"
@@ -1417,8 +3175,6 @@
 
                             </a>
 
-
-                            <!-- CHAT -->
 
                             <a
                                 href="{{ route('whisperly.chat.index') }}"
@@ -1477,8 +3233,6 @@
 
                             </a>
 
-
-                            <!-- TALENT -->
 
                             <a
                                 href="{{ route('whisperly.talents.index') }}"
@@ -1532,8 +3286,6 @@
                             </a>
 
 
-                            <!-- PENGADUAN -->
-
                             <a
                                 href="{{ route('pengaduan') }}"
                                 class="dropdown-item"
@@ -1595,15 +3347,10 @@
                         @endif
 
 
-
-                        <!-- =================================================
-                             TALENT MENU
-                        ================================================== -->
+                        <!-- TALENT MENU -->
 
                         @if ($currentUser->role === 'talent')
 
-
-                            <!-- HOME -->
 
                             <a
                                 href="{{ route('whisperly.home') }}"
@@ -1648,8 +3395,6 @@
 
                             </a>
 
-
-                            <!-- TALENT -->
 
                             <a
                                 href="{{ route('whisperly.talents.index') }}"
@@ -1703,8 +3448,6 @@
                             </a>
 
 
-                            <!-- EDIT PROFILE -->
-
                             <a
                                 href="{{ route('talent.edit') }}"
                                 class="dropdown-item"
@@ -1753,63 +3496,6 @@
                                 </span>
 
                             </a>
-
-
-                            <!-- PROFILE -->
-
-                            <a
-                                href="{{ route('talent') }}"
-                                class="dropdown-item"
-                            >
-
-                                <span class="dropdown-icon">
-
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                    >
-
-                                        <circle
-                                            cx="12"
-                                            cy="8"
-                                            r="3"
-                                            stroke="currentColor"
-                                            stroke-width="1.6"
-                                        />
-
-                                        <path
-                                            d="M5.5 20C5.9 16.1 8 14 12 14C16 14 18.1 16.1 18.5 20"
-                                            stroke="currentColor"
-                                            stroke-width="1.6"
-                                            stroke-linecap="round"
-                                        />
-
-                                    </svg>
-
-                                </span>
-
-
-                                <span class="dropdown-text">
-
-                                    <strong>
-                                        Profil
-                                    </strong>
-
-                                    <small>
-                                        Lihat profil talent
-                                    </small>
-
-                                </span>
-
-
-                                <span class="dropdown-arrow">
-                                    →
-                                </span>
-
-                            </a>
-
-
-                            <!-- PENGADUAN -->
 
                             <a
                                 href="{{ route('pengaduan') }}"
@@ -1868,8 +3554,6 @@
 
                             </a>
 
-
-                            <!-- CHAT -->
 
                             <a
                                 href="{{ route('whisperly.chat.index') }}"
@@ -1932,15 +3616,10 @@
                         @endif
 
 
-
-                        <!-- =================================================
-                             ADMIN MENU
-                        ================================================== -->
+                        <!-- ADMIN MENU -->
 
                         @if ($currentUser->role === 'admin')
 
-
-                            <!-- HOME -->
 
                             <a
                                 href="{{ route('admin') }}"
@@ -1985,8 +3664,6 @@
 
                             </a>
 
-
-                            <!-- TALENT -->
 
                             <a
                                 href="{{ route('whisperly.talents.index') }}"
@@ -2039,8 +3716,6 @@
 
                             </a>
 
-
-                            <!-- PENGADUAN -->
 
                             <a
                                 href="{{ route('admin.menfess.index') }}"
@@ -2107,6 +3782,7 @@
 
                 </div>
 
+
             @endif
 
         </div>
@@ -2116,82 +3792,249 @@
 
 
     <!-- =========================================================
-         HERO
+         PREMIUM HOME
     ========================================================== -->
 
-    <main class="hero">
-
-        <section>
+    <main class="premium-home">
 
 
-            @if ($currentUser)
+        <!-- AMBIENT LIGHT -->
 
-                <p class="welcome">
-                    Selamat datang,
-                    {{ ucfirst($currentUser->username) }}
-                </p>
+        <div class="ambient ambient-one"></div>
 
-            @endif
+        <div class="ambient ambient-two"></div>
 
-
-            <h1>
-                Welcome to<br>
-
-                <strong>
-                    WHISPERLY
-                </strong>
-            </h1>
+        <div class="ambient ambient-three"></div>
 
 
-            <p class="description">
-                Layanan konsultasi non-profesional —
-                hadir sebagai teman sehari-hari yang
-                bisa didengar.
-            </p>
+
+        <!-- PREMIUM CONTAINER -->
+
+        <div class="premium-container">
 
 
-            <div class="actions">
+            <!-- =====================================================
+                 LEFT SIDE
+            ====================================================== -->
+
+            <section class="premium-content">
 
 
-                <!-- LIHAT TALENT -->
-
-                <a
-                    class="action"
-                    href="{{ route('whisperly.talents.index') }}"
-                >
-                    Lihat Talent
-                </a>
+                <div class="premium-label">
+                    PRIVATE SPACE
+                </div>
 
 
-                <!-- RUANG PENGADUAN -->
+                @if ($currentUser)
 
-                @if (
-                    $currentUser &&
-                    $currentUser->role === 'admin'
-                )
+                    <p class="premium-welcome">
 
-                    <a
-                        class="action alt"
-                        href="{{ route('admin.menfess.index') }}"
-                    >
-                        Ruang Pengaduan
-                    </a>
+                        Selamat datang,
+                        {{ ucfirst($currentUser->username) }}
 
-                @else
-
-                    <a
-                        class="action alt"
-                        href="{{ route('pengaduan') }}"
-                    >
-                        Ruang Pengaduan
-                    </a>
+                    </p>
 
                 @endif
 
 
-            </div>
+                <h1 class="premium-title">
 
-        </section>
+                    Welcome to
+
+                    <strong>
+                        WHISPERLY
+                    </strong>
+
+                </h1>
+
+
+                <div class="premium-line"></div>
+
+
+                <p class="premium-description">
+
+                    Layanan konsultasi non-profesional —
+                    hadir sebagai teman sehari-hari yang
+                    bisa didengar. Temukan ruang yang nyaman
+                    untuk berbagi cerita, berbicara, dan
+                    menemukan seseorang yang siap mendengarkan.
+
+                </p>
+
+
+                <div class="premium-actions">
+
+
+                    <!-- LIHAT TALENT -->
+
+                    <a
+                        class="premium-action primary"
+                        href="{{ route('whisperly.talents.index') }}"
+                    >
+
+                        Lihat Talent
+
+                    </a>
+
+
+                    <!-- RUANG PENGADUAN -->
+
+                    @if (
+                        $currentUser &&
+                        $currentUser->role === 'admin'
+                    )
+
+                        <a
+                            class="premium-action secondary"
+                            href="{{ route('admin.menfess.index') }}"
+                        >
+
+                            Ruang Pengaduan
+                        </a>
+
+                    @else
+
+                        <a
+                            class="premium-action secondary"
+                            href="{{ route('pengaduan') }}"
+                        >
+
+                            Ruang Pengaduan
+
+
+                        </a>
+
+                    @endif
+
+
+                </div>
+
+
+                <div class="premium-note">
+
+                    Tempat tenang untuk setiap suara.
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =====================================================
+                 RIGHT SIDE
+            ====================================================== -->
+
+            <section class="premium-visual">
+
+
+                <!-- ORBIT -->
+
+                <div class="orbit orbit-one"></div>
+
+                <div class="orbit orbit-two"></div>
+
+
+                <!-- STARS -->
+
+                <span class="star star-one"></span>
+
+                <span class="star star-two"></span>
+
+                <span class="star star-three"></span>
+
+                <span class="star star-four"></span>
+
+
+
+                <!-- FLOATING BADGE -->
+
+                <div class="floating-badge">
+
+                    <small>
+                        RUANG UNTUK DIDENGAR
+                    </small>
+
+                    <strong>
+                        Ceritamu berarti.
+                    </strong>
+
+                </div>
+
+
+
+                <!-- CRYSTAL -->
+
+                <div class="crystal-wrapper">
+
+                    <div class="crystal-glow"></div>
+
+                    <div class="crystal"></div>
+
+                    <div class="crystal-core"></div>
+
+                </div>
+
+
+
+                <!-- PREMIUM DASHBOARD -->
+
+                <div class="dashboard-card">
+
+
+                    <div class="dashboard-top">
+
+
+                        <div class="dashboard-brand">
+
+                            <span
+                                class="dashboard-brand-dot"
+                            ></span>
+
+                            WHISPERLY SPACE
+
+                        </div>
+
+
+                        <div class="dashboard-status">
+
+                            Active
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="dashboard-title">
+
+                        Ruang pribadimu
+
+                    </div>
+
+
+                    <div class="dashboard-subtitle">
+
+                        Tempat di mana setiap suara berarti.
+
+                    </div>
+
+
+                    <div class="dashboard-line">
+
+                        <span></span>
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+        </div>
+
 
     </main>
 
@@ -2206,8 +4049,10 @@
 
 <script>
 
+
     const menuButton =
         document.getElementById('menuButton');
+
 
     const dropdownMenu =
         document.getElementById('dropdownMenu');
@@ -2352,6 +4197,7 @@
 
             }
         );
+
 
     }
 
