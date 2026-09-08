@@ -7,8 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Modules\Pengguna\Models\Pengguna;
-use App\Modules\Talent\Models\Talent;
-
+use App\Modules\talents\Models\talents;
 
 class bookings extends Model
 {
@@ -23,7 +22,7 @@ class bookings extends Model
 		return $this->belongsTo(Pengguna::class,"id_pengguna","id");
 	}
 public function talent(){
-		return $this->belongsTo(Talent::class,"id_talent","id");
+		return $this->belongsTo(talents::class,"id_talent","id");
 	}
 
 }

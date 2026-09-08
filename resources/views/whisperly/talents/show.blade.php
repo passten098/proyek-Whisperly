@@ -1224,6 +1224,300 @@
 
         }
 
+
+        /* =========================================================
+           BOOKING SUCCESS MODAL
+        ========================================================= */
+
+        .booking-success-modal-overlay {
+
+            position:
+                fixed;
+
+            top:
+                0;
+
+            left:
+                0;
+
+            width:
+                100%;
+
+            height:
+                100%;
+
+            background:
+                rgba(0, 0, 0, 0.45);
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            opacity:
+                0;
+
+            visibility:
+                hidden;
+
+            transition:
+                opacity .25s ease,
+                visibility .25s ease;
+
+            z-index:
+                9999;
+        }
+
+
+        .booking-success-modal-overlay.show {
+
+            opacity:
+                1;
+
+            visibility:
+                visible;
+        }
+
+
+        .booking-success-modal {
+
+            position:
+                relative;
+
+            background:
+                white;
+
+            border-radius:
+                24px;
+
+            padding:
+                40px 35px;
+
+            max-width:
+                420px;
+
+            width:
+                calc(100% - 30px);
+
+            box-shadow:
+                0 20px 60px
+                rgba(0, 0, 0, 0.2);
+
+            transform:
+                scale(.95);
+
+            opacity:
+                0;
+
+            transition:
+                transform .25s ease,
+                opacity .25s ease;
+        }
+
+
+        .booking-success-modal-overlay.show
+            .booking-success-modal {
+
+            transform:
+                scale(1);
+
+            opacity:
+                1;
+        }
+
+
+        .booking-success-icon {
+
+            font-size:
+                48px;
+
+            text-align:
+                center;
+
+            margin-bottom:
+                20px;
+        }
+
+
+        .booking-success-title {
+
+            margin:
+                0 0 12px;
+
+            color:
+                var(--text-dark);
+
+            font-size:
+                24px;
+
+            font-weight:
+                700;
+
+            line-height:
+                1.3;
+
+            text-align:
+                center;
+        }
+
+
+        .booking-success-message {
+
+            margin:
+                0 0 25px;
+
+            color:
+                var(--text);
+
+            font-size:
+                14px;
+
+            line-height:
+                1.6;
+
+            text-align:
+                center;
+        }
+
+
+        .booking-success-actions {
+
+            display:
+                flex;
+
+            gap:
+                12px;
+
+            align-items:
+                center;
+        }
+
+
+        .booking-success-btn {
+
+            flex:
+                1;
+
+            padding:
+                12px 16px;
+
+            border:
+                none;
+
+            border-radius:
+                999px;
+
+            font:
+                600 13px
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            cursor:
+                pointer;
+
+            transition:
+                .18s ease;
+        }
+
+
+        .booking-success-btn-primary {
+
+            background:
+                var(--blue-dark);
+
+            color:
+                white;
+
+            box-shadow:
+                0 8px 18px
+                rgba(73, 147, 183, .22);
+        }
+
+
+        .booking-success-btn-primary:hover {
+
+            background:
+                #4d99c5;
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 12px 24px
+                rgba(73, 147, 183, .28);
+        }
+
+
+        .booking-success-btn-secondary {
+
+            background:
+                #f0f3f6;
+
+            color:
+                #6f8792;
+
+            border:
+                1px solid
+                var(--border);
+        }
+
+
+        .booking-success-btn-secondary:hover {
+
+            background:
+                #e5ecf1;
+
+            transform:
+                translateY(-2px);
+        }
+
+
+        /* =========================================================
+           MODAL RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 480px) {
+
+            .booking-success-modal {
+
+                padding:
+                    30px 20px;
+            }
+
+
+            .booking-success-title {
+
+                font-size:
+                    20px;
+            }
+
+
+            .booking-success-message {
+
+                font-size:
+                    13px;
+            }
+
+
+            .booking-success-actions {
+
+                flex-direction:
+                    column;
+            }
+
+
+            .booking-success-btn {
+
+                width:
+                    100%;
+            }
+        }
+
     </style>
 
 </head>
@@ -1592,6 +1886,56 @@
     </div>
 
 
+    {{-- =========================================================
+         BOOKING SUCCESS MODAL
+    ========================================================== --}}
+
+    <div
+        class="booking-success-modal-overlay"
+        id="bookingSuccessModal"
+    >
+
+        <div class="booking-success-modal">
+
+            <div class="booking-success-icon">
+                🎉
+            </div>
+
+            <h2 class="booking-success-title">
+                Booking Berhasil!
+            </h2>
+
+            <p class="booking-success-message">
+                Talent sudah berhasil kamu booking.
+                <br>
+                Sekarang kamu bisa mulai chat dengan talent.
+            </p>
+
+            <div class="booking-success-actions">
+
+                <button
+                    type="button"
+                    class="booking-success-btn booking-success-btn-secondary"
+                    id="bookingNantiBtn"
+                >
+                    Nanti
+                </button>
+
+                <button
+                    type="button"
+                    class="booking-success-btn booking-success-btn-primary"
+                    id="bookingChatBtn"
+                >
+                    Mulai Chat
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
 </main>
 
 
@@ -1732,6 +2076,163 @@
 
                 }
             );
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | BOOKING SUCCESS MODAL
+            |--------------------------------------------------------------------------
+            */
+
+            const bookingSuccessModal =
+                document.getElementById(
+                    'bookingSuccessModal'
+                );
+
+
+            const bookingChatBtn =
+                document.getElementById(
+                    'bookingChatBtn'
+                );
+
+
+            const bookingNantiBtn =
+                document.getElementById(
+                    'bookingNantiBtn'
+                );
+
+
+            /*
+            |--------------------------------------------------
+            | CEK SESSION BOOKING_SUCCESS
+            |--------------------------------------------------
+            */
+
+            const hasBookingSuccess =
+                {!! json_encode(session('booking_success', false)) !!};
+
+
+            const bookingId =
+                {!! json_encode(session('booking_id', '')) !!};
+
+
+            /*
+            |--------------------------------------------------
+            | DEBUG - Cek booking ID
+            |--------------------------------------------------
+            */
+
+            if (hasBookingSuccess && bookingId) {
+
+                console.log(
+                    '[Booking Success] Booking ID: ' + bookingId
+                );
+
+            }
+
+
+            if (
+                hasBookingSuccess === true &&
+                bookingId !== '' &&
+                bookingSuccessModal
+            ) {
+
+                /*
+                |--------------------------------------------------
+                | TAMPILKAN MODAL
+                |--------------------------------------------------
+                | Session flash sudah otomatis hilang setelah
+                | render, jadi popup hanya muncul sekali.
+                |--------------------------------------------------
+                */
+
+                setTimeout(
+                    function () {
+
+                        bookingSuccessModal.classList.add(
+                            'show'
+                        );
+
+                    },
+                    300
+                );
+            }
+
+
+            /*
+            |--------------------------------------------------
+            | TOMBOL MULAI CHAT
+            |--------------------------------------------------
+            */
+
+            if (bookingChatBtn) {
+
+                bookingChatBtn.addEventListener(
+                    'click',
+                    function () {
+
+                        if (bookingId && bookingId.trim() !== '') {
+
+                            const chatUrl =
+                                '/whisperly/chat/' +
+                                bookingId;
+
+                            /*
+                            |--------------------------------------------------
+                            | DEBUG - Cek URL yang dihasilkan
+                            |--------------------------------------------------
+                            */
+
+                            console.log(
+                                '[Chat Redirect] URL: ' + chatUrl
+                            );
+
+                            /*
+                            |--------------------------------------------------
+                            | Redirect ke halaman chat dengan booking ID
+                            | Route: /whisperly/chat/{booking}
+                            |--------------------------------------------------
+                            */
+
+                            window.location.href = chatUrl;
+
+                        } else {
+
+                            console.error(
+                                '[Chat Error] Booking ID tidak ditemukan: ' +
+                                bookingId
+                            );
+
+                        }
+
+                    }
+                );
+            }
+
+
+            /*
+            |--------------------------------------------------
+            | TOMBOL NANTI
+            |--------------------------------------------------
+            */
+
+            if (bookingNantiBtn) {
+
+                bookingNantiBtn.addEventListener(
+                    'click',
+                    function () {
+
+                        if (bookingSuccessModal) {
+
+                            bookingSuccessModal.classList.remove(
+                                'show'
+                            );
+
+                        }
+
+                    }
+                );
+            }
 
         }
     );

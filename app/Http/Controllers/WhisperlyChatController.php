@@ -621,13 +621,20 @@ class WhisperlyChatController extends Controller
                 []
             );
 
-        $readTimes[$roomKey] =
-            now()->toIso8601String();
+        $hasUnreadMessageInCurrentRoom = $messages->contains(
+    function ($message) use ($user) {
+        return (string) $message->sender_id !== (string) $user->id;
+    }
+);
 
-        session()->put(
-            'whisperly_chat_read',
-            $readTimes
-        );
+if ($hasUnreadMessageInCurrentRoom) {
+    $readTimes[$roomKey] = now()->toIso8601String();
+
+    session()->put(
+        'whisperly_chat_read',
+        $readTimes
+    );
+}
 
         /*
         |--------------------------------------------------------------------------
@@ -654,38 +661,28 @@ class WhisperlyChatController extends Controller
             })
             ->values();
 
-        if ($user->role === 'user') {
+if ($user->role === 'user') {
 
-            $allBookings
-                ->where(
-                    'pengguna_id',
-                    $user->id
-                );
+    $allBookings = $allBookings->filter(
+        fn (WhisperlyBooking $item) =>
+            (string) $item->pengguna_id === (string) $user->id
+    );
 
-        } elseif ($user->role === 'talent') {
+} elseif ($user->role === 'talent') {
 
-            $profile =
-                talents::query()
-                    ->where(
-                        'pengguna_id',
-                        $user->id
-                    )
-                    ->first();
+    $profile = talents::query()
+        ->where('pengguna_id', $user->id)
+        ->first();
 
-            if ($profile) {
-
-                $allBookings
-                    ->where(
-                        'talent_id',
-                        $profile->id
-                    );
-
-            } else {
-
-                $allBookings
-                    ->whereRaw('0 = 1');
-            }
-        }
+    if ($profile) {
+        $allBookings = $allBookings->filter(
+            fn (WhisperlyBooking $item) =>
+                (string) $item->talent_id === (string) $profile->id
+        );
+    } else {
+        $allBookings = collect();
+    }
+}
 
         $allBookings =
             $allBookings->map(
@@ -694,8 +691,14 @@ class WhisperlyChatController extends Controller
                     $item->syncChatStatus();
 
                     return $item;
-                }
-            );
+                } );
+
+                $allBookings = $allBookings->filter(
+    function (WhisperlyBooking $item) {
+        return $item->conversation
+            && $item->conversation->messages->isNotEmpty();
+    }
+)->values();
 
         /*
         |--------------------------------------------------------------------------
