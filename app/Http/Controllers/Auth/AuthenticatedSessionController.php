@@ -32,21 +32,27 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(
+            route('dashboard', absolute: false)
+        );
     }
 
     /**
-     * Login Whisperly
+     * Login Whisperly.
      */
-    public function storeWhisperly(WhisperlyLoginRequest $request): RedirectResponse
-    {
+    public function storeWhisperly(
+        WhisperlyLoginRequest $request
+    ): RedirectResponse {
+
         $request->authenticate();
 
         $request->session()->regenerate();
 
         $user = Auth::guard('whisperly')->user();
 
-        $role = strtolower((string) $user->role);
+        $role = strtolower(
+            (string) $user->role
+        );
 
         /*
         |--------------------------------------------------------------------------
@@ -54,79 +60,175 @@ class AuthenticatedSessionController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        if (!in_array($role, ['admin', 'talent', 'user'], true)) {
+        if (!in_array(
+            $role,
+            ['admin', 'talent', 'user'],
+            true
+        )) {
 
             Auth::guard('whisperly')->logout();
 
             throw ValidationException::withMessages([
-                'username' => 'Role akun belum dapat mengakses Whisperly.',
+                'username' =>
+                    'Role akun belum dapat mengakses Whisperly.',
             ]);
         }
 
         /*
         |--------------------------------------------------------------------------
-        | Setelah login SEMUA role masuk ke halaman utama Whisperly
+        | Setelah login semua role masuk ke halaman utama Whisperly
         |--------------------------------------------------------------------------
         |
-        | User  -> /whisperly
+        | User   -> /whisperly
         | Talent -> /whisperly
-        | Admin -> /whisperly
+        | Admin  -> /whisperly
         |
         */
 
-        return redirect()->route('whisperly.home');
+        return redirect()->route(
+            'whisperly.home'
+        );
     }
 
     /**
-     * Login admin menggunakan password rahasia.
+     * Login admin menggunakan username + password.
      */
-    public function secretWhisperly(Request $request): RedirectResponse
-    {
+    public function secretWhisperly(
+        Request $request
+    ): RedirectResponse {
+
+        /*
+        |--------------------------------------------------------------------------
+        | VALIDASI INPUT ADMIN
+        |--------------------------------------------------------------------------
+        */
+
         $request->validate([
-            'secret_password' => ['required', 'string'],
+            'secret_username' => [
+                'required',
+                'string',
+            ],
+
+            'secret_password' => [
+                'required',
+                'string',
+            ],
         ]);
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | CARI AKUN ADMIN BERDASARKAN USERNAME
+        |--------------------------------------------------------------------------
+        */
+
         $admin = pengguna::query()
+            ->whereRaw(
+                'LOWER(username) = ?',
+                [
+                    strtolower(
+                        trim(
+                            $request->input(
+                                'secret_username'
+                            )
+                        )
+                    ),
+                ]
+            )
             ->where('role', 'admin')
-            ->get()
-            ->first(
-                fn (pengguna $user) =>
-                    Hash::check(
-                        $request->input('secret_password'),
-                        $user->password
-                    )
-            );
+            ->first();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | USERNAME ADMIN TIDAK DITEMUKAN
+        |--------------------------------------------------------------------------
+        */
 
         if (!$admin) {
+
             throw ValidationException::withMessages([
-                'secret_password' => 'Password rahasia salah.',
+                'secret_username' =>
+                    'Username admin tidak ditemukan.',
             ]);
         }
 
-        Auth::guard('whisperly')->login($admin);
+
+        /*
+        |--------------------------------------------------------------------------
+        | CEK PASSWORD ADMIN
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            !$admin->password ||
+            !Hash::check(
+                $request->input('secret_password'),
+                $admin->password
+            )
+        ) {
+
+            throw ValidationException::withMessages([
+                'secret_password' =>
+                    'Password admin salah.',
+            ]);
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | LOGIN ADMIN KE GUARD WHISPERLY
+        |--------------------------------------------------------------------------
+        */
+
+        Auth::guard('whisperly')->login(
+            $admin
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | REGENERATE SESSION
+        |--------------------------------------------------------------------------
+        */
 
         $request->session()->regenerate();
 
-        return redirect()->route('whisperly.home');
+
+        /*
+        |--------------------------------------------------------------------------
+        | MASUK KE HOME WHISPERLY
+        |--------------------------------------------------------------------------
+        */
+
+        return redirect()->route(
+            'whisperly.home'
+        );
     }
 
     /**
      * Logout Whisperly.
      */
-    public function destroyWhisperly(Request $request): RedirectResponse
-    {
+    public function destroyWhisperly(
+        Request $request
+    ): RedirectResponse {
+
         Auth::guard('whisperly')->logout();
 
         $request->session()->regenerateToken();
 
-        return redirect()->route('login.baru');
+        return redirect()->route(
+            'login.baru'
+        );
     }
 
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): RedirectResponse
-    {
+    public function destroy(
+        Request $request
+    ): RedirectResponse {
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

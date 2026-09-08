@@ -2,13 +2,23 @@
      WHISPERLY GLOBAL NAVBAR
      File:
      resources/views/whisperly/navbar.blade.php
+
+     PERUBAHAN:
+     - PROFIL / PROFIL SAYA DIHAPUS
+     - TALENT MENDAPAT MENU EDIT PROFIL
+     - LIHAT TALENT TETAP ADA
+     - CHAT TETAP ADA
+     - PENGADUAN TETAP ADA
+     - LOGOUT TETAP ADA
 ============================================================ --}}
 
 @php
     $currentUser = auth('whisperly')->user();
 @endphp
 
+
 <style>
+
     /* =========================================================
        RESET
     ========================================================= */
@@ -364,10 +374,6 @@
             opacity .25s ease;
     }
 
-
-    /* =========================================================
-       ACTIVE DOT -> X
-    ========================================================= */
 
     .whisperly-menu-button.active
     .whisperly-dots {
@@ -1044,6 +1050,7 @@
             height: 38px;
         }
     }
+
 </style>
 
 
@@ -1053,21 +1060,17 @@
 
 <header class="whisperly-nav">
 
-    {{-- =========================================================
-         BRAND
-    ========================================================== --}}
+    {{-- BRAND --}}
 
     <a
-        href="{{ route('whisperly.home') }}"
+        href="{{ url('/whisperly') }}"
         class="whisperly-brand"
     >
         WHISPERLY
     </a>
 
 
-    {{-- =========================================================
-         RIGHT NAV
-    ========================================================== --}}
+    {{-- RIGHT NAVIGATION --}}
 
     <div class="whisperly-nav-right">
 
@@ -1105,14 +1108,10 @@
 
 
             {{-- =================================================
-                 MENU WRAPPER
+                 MENU
             ================================================== --}}
 
             <div class="whisperly-menu-wrapper">
-
-                {{-- =================================================
-                     MENU BUTTON
-                ================================================== --}}
 
                 <button
                     type="button"
@@ -1141,7 +1140,7 @@
                 >
 
                     {{-- =================================================
-                         PROFILE HEADER
+                         HEADER USER
                     ================================================== --}}
 
                     <div class="whisperly-menu-profile">
@@ -1157,7 +1156,6 @@
                             ) }}
 
                         </div>
-
 
                         <div class="whisperly-menu-profile-info">
 
@@ -1178,7 +1176,7 @@
 
 
                     {{-- =================================================
-                         USER MENU
+                         USER
                     ================================================== --}}
 
                     @if ($currentUser->role === 'user')
@@ -1186,7 +1184,7 @@
                         {{-- HOME --}}
 
                         <a
-                            href="{{ route('whisperly.home') }}"
+                            href="{{ url('/whisperly') }}"
                             class="whisperly-dropdown-item"
                         >
 
@@ -1206,7 +1204,6 @@
 
                             </span>
 
-
                             <span class="whisperly-dropdown-text">
 
                                 <strong>
@@ -1218,7 +1215,6 @@
                                 </small>
 
                             </span>
-
 
                             <span class="whisperly-dropdown-arrow">
                                 →
@@ -1266,7 +1262,6 @@
 
                             </span>
 
-
                             <span class="whisperly-dropdown-text">
 
                                 <strong>
@@ -1278,175 +1273,6 @@
                                 </small>
 
                             </span>
-
-
-                            <span class="whisperly-dropdown-arrow">
-                                →
-                            </span>
-
-                        </a>
-
-
-                        {{-- TALENT --}}
-
-                        <a
-                            href="{{ route('whisperly.talents.index') }}"
-                            class="whisperly-dropdown-item"
-                        >
-
-                            <span class="whisperly-dropdown-icon">
-
-                                <svg
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                >
-
-                                    <circle
-                                        cx="12"
-                                        cy="8"
-                                        r="3"
-                                        stroke="currentColor"
-                                        stroke-width="1.6"
-                                    />
-
-                                    <path
-                                        d="M5.5 20C5.9 16.1 8 14 12 14C16 14 18.1 16.1 18.5 20"
-                                        stroke="currentColor"
-                                        stroke-width="1.6"
-                                        stroke-linecap="round"
-                                    />
-
-                                </svg>
-
-                            </span>
-
-
-                            <span class="whisperly-dropdown-text">
-
-                                <strong>
-                                    Lihat Talent
-                                </strong>
-
-                                <small>
-                                    Temukan talent yang tersedia
-                                </small>
-
-                            </span>
-
-
-                            <span class="whisperly-dropdown-arrow">
-                                →
-                            </span>
-
-                        </a>
-
-
-                        {{-- PENGADUAN --}}
-
-                        <a
-                            href="{{ route('pengaduan') }}"
-                            class="whisperly-dropdown-item"
-                        >
-
-                            <span class="whisperly-dropdown-icon">
-
-                                <svg
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                >
-
-                                    <path
-                                        d="M5 4.5H19V16H9L5 19.5V4.5Z"
-                                        stroke="currentColor"
-                                        stroke-width="1.6"
-                                        stroke-linejoin="round"
-                                    />
-
-                                    <path
-                                        d="M8.5 9H15.5"
-                                        stroke="currentColor"
-                                        stroke-width="1.6"
-                                        stroke-linecap="round"
-                                    />
-
-                                    <path
-                                        d="M8.5 12H13"
-                                        stroke="currentColor"
-                                        stroke-width="1.6"
-                                        stroke-linecap="round"
-                                    />
-
-                                </svg>
-
-                            </span>
-
-
-                            <span class="whisperly-dropdown-text">
-
-                                <strong>
-                                    Pengaduan
-                                </strong>
-
-                                <small>
-                                    Sampaikan ceritamu
-                                </small>
-
-                            </span>
-
-
-                            <span class="whisperly-dropdown-arrow">
-                                →
-                            </span>
-
-                        </a>
-
-                    @endif
-
-
-                    {{-- =================================================
-                         TALENT MENU
-                    ================================================== --}}
-
-                    @if ($currentUser->role === 'talent')
-
-                        {{-- HOME --}}
-
-                        <a
-                            href="{{ route('whisperly.home') }}"
-                            class="whisperly-dropdown-item"
-                        >
-
-                            <span class="whisperly-dropdown-icon">
-
-                                <svg
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                >
-
-                                    <path
-                                        d="M3.5 10.7L12 3.7L20.5 10.7V20H14.8V14.4H9.2V20H3.5V10.7Z"
-                                        stroke="currentColor"
-                                        stroke-width="1.6"
-                                        stroke-linejoin="round"
-                                    />
-
-                                </svg>
-
-                            </span>
-
-
-                            <span class="whisperly-dropdown-text">
-
-                                <strong>
-                                    Home
-                                </strong>
-
-                                <small>
-                                    Kembali ke halaman utama
-                                </small>
-
-                            </span>
-
 
                             <span class="whisperly-dropdown-arrow">
                                 →
@@ -1488,7 +1314,6 @@
 
                             </span>
 
-
                             <span class="whisperly-dropdown-text">
 
                                 <strong>
@@ -1496,117 +1321,10 @@
                                 </strong>
 
                                 <small>
-                                    Lihat daftar talent
+                                    Temukan talent yang tersedia
                                 </small>
 
                             </span>
-
-
-                            <span class="whisperly-dropdown-arrow">
-                                →
-                            </span>
-
-                        </a>
-
-
-                        {{-- EDIT PROFIL --}}
-
-                        <a
-                            href="{{ route('talent.edit') }}"
-                            class="whisperly-dropdown-item"
-                        >
-
-                            <span class="whisperly-dropdown-icon">
-
-                                <svg
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                >
-
-                                    <path
-                                        d="M4 20L8.2 19.1L18.8 8.5C19.6 7.7 19.6 6.4 18.8 5.6C18 4.8 16.7 4.8 15.9 5.6L5.3 16.2L4 20Z"
-                                        stroke="currentColor"
-                                        stroke-width="1.6"
-                                        stroke-linejoin="round"
-                                    />
-
-                                    <path
-                                        d="M14.8 6.7L17.3 9.2"
-                                        stroke="currentColor"
-                                        stroke-width="1.6"
-                                    />
-
-                                </svg>
-
-                            </span>
-
-
-                            <span class="whisperly-dropdown-text">
-
-                                <strong>
-                                    Edit Profil
-                                </strong>
-
-                                <small>
-                                    Perbarui profilmu
-                                </small>
-
-                            </span>
-
-
-                            <span class="whisperly-dropdown-arrow">
-                                →
-                            </span>
-
-                        </a>
-
-
-                        {{-- PROFIL --}}
-
-                        <a
-                            href="{{ route('talent') }}"
-                            class="whisperly-dropdown-item"
-                        >
-
-                            <span class="whisperly-dropdown-icon">
-
-                                <svg
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                >
-
-                                    <circle
-                                        cx="12"
-                                        cy="8"
-                                        r="3"
-                                        stroke="currentColor"
-                                        stroke-width="1.6"
-                                    />
-
-                                    <path
-                                        d="M5.5 20C5.9 16.1 8 14 12 14C16 14 18.1 16.1 18.5 20"
-                                        stroke="currentColor"
-                                        stroke-width="1.6"
-                                        stroke-linecap="round"
-                                    />
-
-                                </svg>
-
-                            </span>
-
-
-                            <span class="whisperly-dropdown-text">
-
-                                <strong>
-                                    Profil
-                                </strong>
-
-                                <small>
-                                    Lihat profil talent
-                                </small>
-
-                            </span>
-
 
                             <span class="whisperly-dropdown-arrow">
                                 →
@@ -1654,7 +1372,6 @@
 
                             </span>
 
-
                             <span class="whisperly-dropdown-text">
 
                                 <strong>
@@ -1667,6 +1384,178 @@
 
                             </span>
 
+                            <span class="whisperly-dropdown-arrow">
+                                →
+                            </span>
+
+                        </a>
+
+                    @endif
+
+
+                    {{-- =================================================
+                         TALENT
+                         
+                         TIDAK ADA:
+                         - Profil
+                         - Profil Saya
+                         
+                         ADA:
+                         - Home
+                         - Lihat Talent
+                         - Pengaduan
+                         - Chat
+                         - Edit Profil
+                    ================================================== --}}
+
+                    @if ($currentUser->role === 'talent')
+
+                        {{-- HOME --}}
+
+                        <a
+                            href="{{ url('/whisperly') }}"
+                            class="whisperly-dropdown-item"
+                        >
+
+                            <span class="whisperly-dropdown-icon">
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                >
+
+                                    <path
+                                        d="M3.5 10.7L12 3.7L20.5 10.7V20H14.8V14.4H9.2V20H3.5V10.7Z"
+                                        stroke="currentColor"
+                                        stroke-width="1.6"
+                                        stroke-linejoin="round"
+                                    />
+
+                                </svg>
+
+                            </span>
+
+                            <span class="whisperly-dropdown-text">
+
+                                <strong>
+                                    Home
+                                </strong>
+
+                                <small>
+                                    Kembali ke halaman utama
+                                </small>
+
+                            </span>
+
+                            <span class="whisperly-dropdown-arrow">
+                                →
+                            </span>
+
+                        </a>
+
+
+                        {{-- LIHAT TALENT --}}
+
+                        <a
+                            href="{{ route('whisperly.talents.index') }}"
+                            class="whisperly-dropdown-item"
+                        >
+
+                            <span class="whisperly-dropdown-icon">
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                >
+
+                                    <circle
+                                        cx="12"
+                                        cy="8"
+                                        r="3"
+                                        stroke="currentColor"
+                                        stroke-width="1.6"
+                                    />
+
+                                    <path
+                                        d="M5.5 20C5.9 16.1 8 14 12 14C16 14 18.1 16.1 18.5 20"
+                                        stroke="currentColor"
+                                        stroke-width="1.6"
+                                        stroke-linecap="round"
+                                    />
+
+                                </svg>
+
+                            </span>
+
+                            <span class="whisperly-dropdown-text">
+
+                                <strong>
+                                    Lihat Talent
+                                </strong>
+
+                                <small>
+                                    Lihat daftar talent
+                                </small>
+
+                            </span>
+
+                            <span class="whisperly-dropdown-arrow">
+                                →
+                            </span>
+
+                        </a>
+
+
+                        {{-- PENGADUAN --}}
+
+                        <a
+                            href="{{ route('pengaduan') }}"
+                            class="whisperly-dropdown-item"
+                        >
+
+                            <span class="whisperly-dropdown-icon">
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                >
+
+                                    <path
+                                        d="M5 4.5H19V16H9L5 19.5V4.5Z"
+                                        stroke="currentColor"
+                                        stroke-width="1.6"
+                                        stroke-linejoin="round"
+                                    />
+
+                                    <path
+                                        d="M8.5 9H15.5"
+                                        stroke="currentColor"
+                                        stroke-width="1.6"
+                                        stroke-linecap="round"
+                                    />
+
+                                    <path
+                                        d="M8.5 12H13"
+                                        stroke="currentColor"
+                                        stroke-width="1.6"
+                                        stroke-linecap="round"
+                                    />
+
+                                </svg>
+
+                            </span>
+
+                            <span class="whisperly-dropdown-text">
+
+                                <strong>
+                                    Pengaduan
+                                </strong>
+
+                                <small>
+                                    Sampaikan ceritamu
+                                </small>
+
+                            </span>
 
                             <span class="whisperly-dropdown-arrow">
                                 →
@@ -1714,7 +1603,6 @@
 
                             </span>
 
-
                             <span class="whisperly-dropdown-text">
 
                                 <strong>
@@ -1727,6 +1615,58 @@
 
                             </span>
 
+                            <span class="whisperly-dropdown-arrow">
+                                →
+                            </span>
+
+                        </a>
+
+
+                        {{-- =================================================
+                             EDIT PROFIL
+                        ================================================== --}}
+
+                        <a
+                            href="{{ route('talent.edit') }}"
+                            class="whisperly-dropdown-item"
+                        >
+
+                            <span class="whisperly-dropdown-icon">
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                >
+
+                                    <path
+                                        d="M4.5 19.5L5.4 15.2L15.8 4.8C16.6 4 17.9 4 18.7 4.8L19.2 5.3C20 6.1 20 7.4 19.2 8.2L8.8 18.6L4.5 19.5Z"
+                                        stroke="currentColor"
+                                        stroke-width="1.6"
+                                        stroke-linejoin="round"
+                                    />
+
+                                    <path
+                                        d="M14.8 5.8L18.2 9.2"
+                                        stroke="currentColor"
+                                        stroke-width="1.6"
+                                        stroke-linecap="round"
+                                    />
+
+                                </svg>
+
+                            </span>
+
+                            <span class="whisperly-dropdown-text">
+
+                                <strong>
+                                    Edit Profil
+                                </strong>
+
+                                <small>
+                                    Ubah profil dan jadwalmu
+                                </small>
+
+                            </span>
 
                             <span class="whisperly-dropdown-arrow">
                                 →
@@ -1738,7 +1678,7 @@
 
 
                     {{-- =================================================
-                         ADMIN MENU
+                         ADMIN
                     ================================================== --}}
 
                     @if ($currentUser->role === 'admin')
@@ -1746,7 +1686,7 @@
                         {{-- HOME --}}
 
                         <a
-                            href="{{ route('admin') }}"
+                            href="{{ url('/whisperly') }}"
                             class="whisperly-dropdown-item"
                         >
 
@@ -1768,7 +1708,6 @@
 
                             </span>
 
-
                             <span class="whisperly-dropdown-text">
 
                                 <strong>
@@ -1776,11 +1715,10 @@
                                 </strong>
 
                                 <small>
-                                    Dashboard administrator
+                                    Kembali ke Whisperly
                                 </small>
 
                             </span>
-
 
                             <span class="whisperly-dropdown-arrow">
                                 →
@@ -1789,7 +1727,7 @@
                         </a>
 
 
-                        {{-- TALENT --}}
+                        {{-- LIHAT TALENT --}}
 
                         <a
                             href="{{ route('whisperly.talents.index') }}"
@@ -1822,7 +1760,6 @@
 
                             </span>
 
-
                             <span class="whisperly-dropdown-text">
 
                                 <strong>
@@ -1835,7 +1772,6 @@
 
                             </span>
 
-
                             <span class="whisperly-dropdown-arrow">
                                 →
                             </span>
@@ -1843,12 +1779,13 @@
                         </a>
 
 
-                        {{-- PENGADUAN / MENFESS ADMIN --}}
+                        {{-- PENGADUAN ADMIN --}}
 
-                       <a
-    href="{{ route('admin.menfess.index') }}"
-    class="whisperly-dropdown-item"
->
+                        <a
+                            href="{{ route('admin.menfess.index') }}"
+                            class="whisperly-dropdown-item"
+                        >
+
                             <span class="whisperly-dropdown-icon">
 
                                 <svg
@@ -1881,7 +1818,6 @@
 
                             </span>
 
-
                             <span class="whisperly-dropdown-text">
 
                                 <strong>
@@ -1894,7 +1830,6 @@
 
                             </span>
 
-
                             <span class="whisperly-dropdown-arrow">
                                 →
                             </span>
@@ -1906,18 +1841,15 @@
 
                     {{-- =================================================
                          LOGOUT
-                         
-                         Jika project kamu sudah punya route logout,
-                         ganti route di bawah sesuai nama route logout.
                     ================================================== --}}
 
-                    {{-- 
                     <div class="whisperly-logout-divider"></div>
 
                     <form
                         method="POST"
-                        action="{{ route('whisperly.logout') }}"
+                        action="{{ route('logout.baru') }}"
                     >
+
                         @csrf
 
                         <button
@@ -1931,6 +1863,7 @@
                                     viewBox="0 0 24 24"
                                     fill="none"
                                 >
+
                                     <path
                                         d="M10 5H6.5C5.67 5 5 5.67 5 6.5V17.5C5 18.33 5.67 19 6.5 19H10"
                                         stroke="currentColor"
@@ -1952,6 +1885,7 @@
                                         stroke-width="1.6"
                                         stroke-linecap="round"
                                     />
+
                                 </svg>
 
                             </span>
@@ -1963,7 +1897,6 @@
                         </button>
 
                     </form>
-                    --}}
 
                 </div>
 
@@ -1981,6 +1914,7 @@
 ============================================================ --}}
 
 <script>
+
     document.addEventListener(
         'DOMContentLoaded',
         function () {
@@ -2005,7 +1939,7 @@
 
 
             /* =====================================================
-               OPEN / CLOSE
+               OPEN
             ===================================================== */
 
             function openMenu() {
@@ -2021,6 +1955,10 @@
             }
 
 
+            /* =====================================================
+               CLOSE
+            ===================================================== */
+
             function closeMenu() {
 
                 dropdown.classList.remove('show');
@@ -2033,6 +1971,10 @@
                 );
             }
 
+
+            /* =====================================================
+               TOGGLE
+            ===================================================== */
 
             function toggleMenu() {
 
@@ -2052,7 +1994,7 @@
 
 
             /* =====================================================
-               BUTTON CLICK
+               BUTTON
             ===================================================== */
 
             menuButton.addEventListener(
@@ -2068,7 +2010,7 @@
 
 
             /* =====================================================
-               CLICK INSIDE DROPDOWN
+               DROPDOWN CLICK
             ===================================================== */
 
             dropdown.addEventListener(
@@ -2082,7 +2024,7 @@
 
 
             /* =====================================================
-               CLICK OUTSIDE
+               OUTSIDE CLICK
             ===================================================== */
 
             document.addEventListener(
@@ -2129,7 +2071,7 @@
 
 
             /* =====================================================
-               CLOSE AFTER MENU ITEM CLICK
+               MENU ITEM
             ===================================================== */
 
             const menuItems =
@@ -2155,4 +2097,5 @@
 
         }
     );
+
 </script>
