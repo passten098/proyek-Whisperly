@@ -57,8 +57,8 @@
                             @forelse ($data as $item)
                                 <tr>
                                     <td>{{ $no++ }}</td>
-                                    <td>{{ $item->id_booking }}</td>
-									<td>{{ $item->id_pengguna }}</td>
+                                    <td>{{ $item->booking?->talent?->nama_talent ?? '-' }}</td>
+									<td>{{ $item->pengguna?->username ?? '-' }}</td>
 									<td>{{ $item->nilai_rating }}</td>
 									<td>{{ $item->ulasan }}</td>
 									

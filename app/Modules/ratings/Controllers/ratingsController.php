@@ -22,7 +22,7 @@ class ratingsController extends Controller
 
 	public function index(Request $request)
 	{
-		$query = ratings::query();
+		$query = ratings::with(['booking', 'pengguna']);
 		if($request->has('search')){
 			$search = $request->get('search');
 			// $query->where('name', 'like', "%$search%");
