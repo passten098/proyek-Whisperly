@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="id">
 
 <head>
@@ -14,7 +15,6 @@
         {{ ucfirst($talent->pengguna->username) }} - Whisperly
     </title>
 
-
     <style>
 
         /* =========================================================
@@ -23,78 +23,185 @@
 
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
-
-        /* =========================================================
-           ROOT
-        ========================================================= */
-
-        :root {
-
-            --blue: #8ecae6;
-            --blue-dark: #5aa9d6;
-            --blue-soft: #e8f6fc;
-            --blue-selected: #d9f0fb;
-
-            --white: #ffffff;
-            --page-bg: #f7fbfd;
-
-            --text: #53616b;
-            --text-dark: #263943;
-            --muted: #8a9aa3;
-
-            --border: #e5eef2;
-
-            /* AVAILABLE */
-            --available-bg: #dff3ea;
-            --available-text: #438568;
-            --available-border: #c5e7d7;
-
-            /* UNAVAILABLE */
-            --unavailable-bg: #eeeeef;
-            --unavailable-text: #8a9297;
-            --unavailable-border: #dedfe1;
-
-            /* BOOKED */
-            --booked-bg: #f7dfe2;
-            --booked-text: #b35d69;
-            --booked-border: #edc4ca;
-
-            /* SUCCESS */
-            --success-bg: #e4f5eb;
-            --success-text: #3e7958;
-
-            /* ERROR */
-            --error-bg: #fbe5e7;
-            --error-text: #a94b58;
+        html {
+            scroll-behavior: smooth;
         }
-
-
-        /* =========================================================
-           BODY
-        ========================================================= */
 
         body {
-
-            margin: 0;
-
             min-height: 100vh;
+            overflow-x: hidden;
+            color: #f8f4ff;
+            font-family:
+                "Segoe UI",
+                Inter,
+                Arial,
+                sans-serif;
 
             background:
                 radial-gradient(
-                    circle at 85% 10%,
-                    rgba(174, 224, 244, .25),
-                    transparent 28%
+                    circle at 8% 8%,
+                    rgba(130, 71, 211, .28),
+                    transparent 25%
                 ),
-                var(--page-bg);
+                radial-gradient(
+                    circle at 88% 12%,
+                    rgba(195, 145, 62, .15),
+                    transparent 22%
+                ),
+                radial-gradient(
+                    circle at 72% 78%,
+                    rgba(103, 49, 180, .23),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 12% 90%,
+                    rgba(151, 82, 221, .14),
+                    transparent 25%
+                ),
+                linear-gradient(
+                    135deg,
+                    #05040b 0%,
+                    #0b0716 25%,
+                    #150c2a 52%,
+                    #0c0718 78%,
+                    #04030a 100%
+                );
 
-            color: var(--text);
+            background-attachment: fixed;
+        }
 
-            font-family:
-                "Segoe UI",
-                Arial,
-                sans-serif;
+
+        /* =========================================================
+           AMBIENT BACKGROUND
+        ========================================================= */
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: -20%;
+            pointer-events: none;
+
+            background:
+                radial-gradient(
+                    ellipse at 25% 20%,
+                    rgba(117, 57, 208, .16),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    ellipse at 75% 30%,
+                    rgba(213, 169, 83, .08),
+                    transparent 30%
+                );
+
+            filter: blur(50px);
+
+            animation:
+                ambientMove 14s ease-in-out infinite alternate;
+
+            z-index: -3;
+        }
+
+        @keyframes ambientMove {
+
+            0% {
+                transform:
+                    translate3d(-2%, -1%, 0)
+                    scale(1);
+            }
+
+            100% {
+                transform:
+                    translate3d(2%, 2%, 0)
+                    scale(1.08);
+            }
+
+        }
+
+
+        /* =========================================================
+           BACKGROUND ORBS
+        ========================================================= */
+
+        .light-orb {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(2px);
+            z-index: -2;
+        }
+
+        .orb-one {
+            width: 230px;
+            height: 230px;
+            top: 15%;
+            left: -100px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(142, 74, 235, .18),
+                    transparent 68%
+                );
+
+            animation:
+                floatOne 12s ease-in-out infinite;
+        }
+
+        .orb-two {
+            width: 300px;
+            height: 300px;
+            right: -120px;
+            bottom: 5%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(215, 174, 92, .09),
+                    transparent 68%
+                );
+
+            animation:
+                floatTwo 15s ease-in-out infinite;
+        }
+
+        @keyframes floatOne {
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(45px, 30px);
+            }
+
+        }
+
+        @keyframes floatTwo {
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(-40px, -35px);
+            }
+
+        }
+
+
+        /* =========================================================
+           NAVBAR
+        ========================================================= */
+
+        .navbar-wrapper {
+            position: relative;
+            z-index: 20;
         }
 
 
@@ -103,15 +210,13 @@
         ========================================================= */
 
         main {
-
-            width:
-                min(1120px, calc(100% - 50px));
-
-            margin:
-                0 auto;
+            position: relative;
+            width: 100%;
 
             padding:
-                120px 0 70px;
+                30px
+                60px
+                80px;
         }
 
 
@@ -119,358 +224,534 @@
            ALERT
         ========================================================= */
 
-        .success {
-
-            margin-bottom:
-                25px;
+        .success,
+        .error {
+            position: relative;
+            width: 100%;
+            margin-bottom: 24px;
 
             padding:
-                15px 18px;
+                15px
+                19px;
 
-            border:
-                1px solid
-                #cde9d8;
+            border-radius: 16px;
 
-            border-radius:
-                14px;
+            backdrop-filter: blur(18px);
 
-            background:
-                var(--success-bg);
-
-            color:
-                var(--success-text);
-
-            font-size:
-                13px;
-
-            line-height:
-                1.5;
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, .22);
         }
 
+        .success {
+            border:
+                1px solid
+                rgba(220, 181, 91, .35);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(70, 49, 35, .75),
+                    rgba(44, 31, 58, .72)
+                );
+
+            color: #f0d890;
+        }
 
         .error {
-
-            margin-bottom:
-                25px;
-
-            padding:
-                15px 18px;
-
             border:
                 1px solid
-                #efcdd1;
-
-            border-radius:
-                14px;
+                rgba(215, 111, 163, .35);
 
             background:
-                var(--error-bg);
+                linear-gradient(
+                    135deg,
+                    rgba(65, 29, 53, .76),
+                    rgba(38, 19, 48, .74)
+                );
 
-            color:
-                var(--error-text);
-
-            font-size:
-                13px;
-
-            line-height:
-                1.5;
+            color: #efb6d1;
         }
 
-
         .error ul {
-
-            margin:
-                6px 0 0;
-
-            padding-left:
-                20px;
+            margin-top: 6px;
+            padding-left: 20px;
         }
 
 
         /* =========================================================
            MAIN LAYOUT
-           KIRI PROFIL
-           KANAN JADWAL
         ========================================================= */
 
         .profile-layout {
+            position: relative;
+            width: 100%;
 
-            display:
-                grid;
+            display: grid;
 
             grid-template-columns:
-                330px minmax(0, 1fr);
+                370px
+                minmax(0, 1fr);
 
-            gap:
-                55px;
+            gap: 80px;
 
-            align-items:
-                start;
+            align-items: start;
         }
 
 
         /* =========================================================
-           LEFT — PROFILE
+           PROFILE
         ========================================================= */
 
         .profile-column {
-
-            position:
-                sticky;
-
-            top:
-                105px;
+            position: sticky;
+            top: 95px;
+            width: 100%;
 
             padding:
-                28px;
+                30px
+                0;
 
-            border:
-                1px solid
-                var(--border);
+            background: transparent;
 
-            border-radius:
-                24px;
-
-            background:
-                rgba(255,255,255,.9);
-
-            box-shadow:
-                0 10px 35px
-                rgba(67, 121, 145, .07);
+            /* FOTO + NAMA + EMAIL CENTER */
+            text-align: center;
         }
 
 
         /* =========================================================
-           PROFILE PHOTO
+           PHOTO
         ========================================================= */
 
-        .profile-photo {
+        .photo-stage {
+            position: relative;
 
-            width:
-                150px;
+            width: 210px;
+            height: 210px;
 
-            height:
-                150px;
-
+            /* CENTER FOTO */
             margin:
-                0 auto 22px;
-
-            overflow:
-                hidden;
-
-            border-radius:
-                50%;
-
-            border:
-                5px solid
-                white;
-
-            background:
-                var(--blue-soft);
-
-            box-shadow:
-                0 10px 30px
-                rgba(73, 147, 183, .16);
+                0 auto 30px;
         }
 
+        .photo-stage::before {
+            content: "";
+
+            position: absolute;
+            inset: -15px;
+
+            border-radius: 50%;
+
+            background:
+                conic-gradient(
+                    from 0deg,
+                    transparent 0deg,
+                    rgba(230, 193, 105, .9) 45deg,
+                    transparent 95deg,
+                    rgba(121, 67, 204, .75) 180deg,
+                    transparent 245deg,
+                    rgba(230, 193, 105, .75) 320deg,
+                    transparent 360deg
+                );
+
+            filter: blur(1px);
+
+            animation:
+                rotateRing 8s linear infinite;
+        }
+
+        .photo-stage::after {
+            content: "";
+
+            position: absolute;
+            inset: -35px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(150, 82, 235, .24),
+                    transparent 67%
+                );
+
+            filter: blur(12px);
+
+            z-index: -1;
+        }
+
+        @keyframes rotateRing {
+
+            to {
+                transform: rotate(360deg);
+            }
+
+        }
+
+        .photo-ring {
+            position: absolute;
+            inset: 0;
+
+            padding: 5px;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #fff0b4,
+                    #c9973d 25%,
+                    #f4d88c 48%,
+                    #9e7130 75%,
+                    #f0ce78
+                );
+
+            box-shadow:
+                0 0 0 2px rgba(255, 255, 255, .06),
+                0 0 35px rgba(210, 164, 72, .24),
+                0 25px 60px rgba(0, 0, 0, .45);
+        }
+
+        .profile-photo {
+            width: 100%;
+            height: 100%;
+
+            overflow: hidden;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #25163d,
+                    #0d0819
+                );
+        }
 
         .profile-photo img {
+            display: block;
 
-            width:
-                100%;
+            width: 100%;
+            height: 100%;
 
-            height:
-                100%;
+            object-fit: cover;
 
-            display:
-                block;
+            transition:
+                transform .7s cubic-bezier(.2, .8, .2, 1);
+        }
 
-            object-fit:
-                cover;
+        .photo-stage:hover .profile-photo img {
+            transform: scale(1.06);
+        }
+
+        .online-dot {
+            position: absolute;
+
+            right: 13px;
+            bottom: 15px;
+
+            width: 18px;
+            height: 18px;
+
+            border:
+                3px solid
+                #10091c;
+
+            border-radius: 50%;
+
+            background: #b99752;
+
+            box-shadow:
+                0 0 0 5px rgba(185, 151, 82, .12),
+                0 0 18px rgba(185, 151, 82, .75);
         }
 
 
         /* =========================================================
-           PROFILE NAME
+           PROFILE TEXT
         ========================================================= */
 
         .profile-info {
+            width: 100%;
 
-            text-align:
-                left;
+            /* CENTER */
+            text-align: center;
         }
 
+        .profile-label {
+            display: inline-flex;
 
-        .profile-name {
+            align-items: center;
+            justify-content: center;
 
-            margin:
-                0;
+            gap: 8px;
 
-            color:
-                var(--text-dark);
+            margin-bottom: 12px;
 
-            font-size:
-                26px;
+            color: #c9a858;
 
-            font-weight:
-                700;
+            font-size: 10px;
+            font-weight: 800;
 
-            line-height:
-                1.2;
+            letter-spacing: .22em;
+
+            text-transform: uppercase;
         }
 
+        .profile-label::before {
+            content: "";
 
-        .username {
-
-            margin:
-                5px 0 0;
-
-            color:
-                var(--muted);
-
-            font-size:
-                14px;
-        }
-
-
-        .email {
-
-            margin:
-                8px 0 0;
-
-            color:
-                var(--muted);
-
-            font-size:
-                12.5px;
-
-            word-break:
-                break-word;
-        }
-
-
-        /* =========================================================
-           DIVIDER
-        ========================================================= */
-
-        .profile-divider {
-
-            height:
-                1px;
-
-            margin:
-                23px 0;
+            width: 25px;
+            height: 1px;
 
             background:
-                var(--border);
+                linear-gradient(
+                    90deg,
+                    #e2bd69,
+                    transparent
+                );
         }
 
+        .profile-name {
+            margin: 0;
 
-        /* =========================================================
-           DESCRIPTION
-        ========================================================= */
+            color: #fff;
 
-        .description-title {
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 39px;
+            font-weight: 500;
+
+            line-height: 1.08;
+
+            letter-spacing: -.025em;
+
+            text-shadow:
+                0 8px 35px rgba(0, 0, 0, .35);
+        }
+
+        .email {
+            margin-top: 9px;
+
+            color: #9389a5;
+
+            font-size: 12px;
+
+            word-break: break-word;
+
+            /* CENTER EMAIL */
+            text-align: center;
+        }
+
+        .profile-divider {
+            width: 100%;
+            height: 1px;
 
             margin:
-                0 0 10px;
+                16px
+                0
+                10px;
 
-            color:
-                var(--text-dark);
-
-            font-size:
-                14px;
-
-            font-weight:
-                700;
-        }
-
-
-        .description {
-
-            color:
-                var(--text);
-
-            font-size:
-                13px;
-
-            line-height:
-                1.7;
-
-            white-space:
-                pre-line;
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(220, 181, 91, .8),
+                    rgba(220, 181, 91, .18),
+                    transparent
+                );
         }
 
 
         /* =========================================================
-           RIGHT — SCHEDULE
+           DESCRIPTION / TENTANG TALENT
+        ========================================================= */
+
+        .description-wrapper {
+            width: 100%;
+
+            min-height: 80px;
+
+            padding:
+                8px
+                12px
+                10px !important;
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(216, 181, 106, .10),
+                    rgba(75, 38, 112, .18)
+                );
+
+            border:
+                1px solid
+                rgba(216, 181, 106, .24);
+
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, .04),
+                0 8px 20px rgba(0, 0, 0, .12);
+
+            display: block !important;
+
+            /* BAGIAN DESKRIPSI TETAP KIRI */
+            text-align: left;
+        }
+
+        .description-title {
+            margin:
+                0 !important;
+
+            padding:
+                0 !important;
+
+            color: #e8ca7b;
+
+            font-size: 17px;
+            font-weight: 800;
+
+            line-height: 1 !important;
+
+            letter-spacing: .02em;
+        }
+
+        .description {
+            width: 100%;
+
+            margin:
+                15px
+                0
+                0 !important;
+
+            padding:
+                0 !important;
+
+            color: #c8bdd6;
+
+            font-size: 13px;
+
+            line-height: 1.4 !important;
+
+            white-space: pre-line;
+
+            text-align: left;
+        }
+
+
+        /* =========================================================
+           SCHEDULE COLUMN
         ========================================================= */
 
         .schedule-column {
+            position: relative;
 
-            min-width:
-                0;
+            width: 100%;
+
+            min-width: 0;
         }
 
+        .schedule-column::before {
+            content: "";
+
+            position: absolute;
+
+            top: -80px;
+            right: -80px;
+
+            width: 320px;
+            height: 320px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(128, 67, 214, .13),
+                    transparent 70%
+                );
+
+            filter: blur(10px);
+
+            pointer-events: none;
+        }
+
+
+        /* =========================================================
+           SCHEDULE HEADER
+        ========================================================= */
 
         .schedule-header {
+            position: relative;
 
-            margin-bottom:
-                23px;
+            margin:
+                24px
+                0
+                25px;
         }
-
 
         .schedule-eyebrow {
+            display: flex;
 
-            margin:
-                0 0 5px;
+            align-items: center;
 
-            color:
-                var(--blue-dark);
+            gap: 11px;
 
-            font:
-                700 11px Arial, sans-serif;
+            margin-bottom: 10px;
 
-            letter-spacing:
-                .12em;
+            color: #cda957;
 
-            text-transform:
-                uppercase;
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: .25em;
+
+            text-transform: uppercase;
         }
 
+        .schedule-eyebrow::before {
+            content: "";
+
+            width: 32px;
+            height: 1px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #d8b365,
+                    transparent
+                );
+        }
 
         .schedule-title {
+            color: #fff;
 
-            margin:
-                0;
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
 
-            color:
-                var(--text-dark);
+            font-size: 43px;
+            font-weight: 500;
 
-            font-size:
-                30px;
+            line-height: 1.08;
 
-            font-weight:
-                700;
-
-            line-height:
-                1.2;
+            letter-spacing: -.025em;
         }
 
-
         .schedule-subtitle {
+            max-width: 650px;
 
-            margin:
-                7px 0 0;
+            margin-top: 10px;
 
-            color:
-                var(--muted);
+            color: #9389a5;
 
-            font-size:
-                13px;
+            font-size: 13px;
 
-            line-height:
-                1.5;
+            line-height: 1.6;
         }
 
 
@@ -479,147 +760,279 @@
         ========================================================= */
 
         .legend {
+            display: flex;
 
-            display:
-                flex;
+            flex-wrap: wrap;
 
-            flex-wrap:
-                wrap;
+            gap: 9px;
 
-            gap:
-                8px;
-
-            margin-bottom:
-                20px;
+            margin-bottom: 22px;
         }
 
-
         .legend-item {
+            display: inline-flex;
 
-            display:
-                inline-flex;
+            align-items: center;
 
-            align-items:
-                center;
-
-            gap:
-                6px;
+            gap: 8px;
 
             padding:
-                6px 10px;
-
-            border-radius:
-                999px;
-
-            background:
-                white;
+                8px
+                13px;
 
             border:
                 1px solid
-                var(--border);
+                rgba(166, 126, 212, .18);
 
-            color:
-                var(--muted);
+            border-radius: 999px;
 
-            font-size:
-                10px;
+            background:
+                rgba(28, 17, 45, .54);
 
-            font-weight:
-                600;
+            color: #a9a0b8;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            backdrop-filter: blur(14px);
         }
-
 
         .legend-dot {
+            width: 7px;
+            height: 7px;
 
-            width:
-                8px;
-
-            height:
-                8px;
-
-            border-radius:
-                50%;
+            border-radius: 50%;
         }
-
 
         .legend-dot.green {
+            background: #42e88b;
 
-            background:
-                #8bc9aa;
+            box-shadow:
+                0 0 12px rgba(66, 232, 139, .9);
         }
-
 
         .legend-dot.gray {
+            background: #eadcae;
 
-            background:
-                #b8bec2;
+            box-shadow:
+                0 0 9px rgba(234, 220, 174, .55);
+        }
+
+        .legend-dot.red {
+            background: #ff416c;
+
+            box-shadow:
+                0 0 13px rgba(255, 65, 108, .9);
         }
 
 
-        .legend-dot.red {
+        /* =========================================================
+           SCHEDULE FRAME
+        ========================================================= */
+
+        .schedule-shell {
+            position: relative;
+
+            padding: 2px;
+
+            border-radius: 28px;
 
             background:
-                #df919b;
+                linear-gradient(
+                    135deg,
+                    rgba(224, 188, 103, .5),
+                    rgba(109, 69, 167, .18) 28%,
+                    rgba(255, 255, 255, .04) 55%,
+                    rgba(193, 148, 66, .28)
+                );
+
+            box-shadow:
+                0 30px 90px rgba(0, 0, 0, .38),
+                0 0 50px rgba(110, 60, 186, .09);
+        }
+
+        .schedule-inner {
+            padding: 24px;
+
+            border-radius: 26px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(26, 15, 43, .93),
+                    rgba(10, 7, 19, .95)
+                );
+
+            backdrop-filter: blur(24px);
+        }
+
+        .schedule-top {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 20px;
+        }
+
+        .schedule-top-title {
+            color: #eee8f7;
+
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .schedule-top-note {
+            color: #776e83;
+
+            font-size: 10px;
         }
 
 
         /* =========================================================
            SCHEDULE GRID
-           3 KOLOM
         ========================================================= */
 
         .schedule-grid {
+            width: 100%;
 
-            display:
-                grid;
+            display: grid;
 
             grid-template-columns:
-                repeat(3, minmax(0, 1fr));
+                repeat(
+                    3,
+                    minmax(0, 1fr)
+                );
 
-            gap:
-                13px;
+            gap: 13px;
         }
 
 
         /* =========================================================
-           SCHEDULE BUTTON
+           BORDER ANGLE
+        ========================================================= */
+
+        @property --border-angle {
+            syntax: "<angle>";
+
+            initial-value: 0deg;
+
+            inherits: false;
+        }
+
+
+        /* =========================================================
+           BASE BUTTON
         ========================================================= */
 
         .schedule-button {
+            position: relative;
 
-            position:
-                relative;
+            isolation: isolate;
 
-            width:
-                100%;
+            width: 100%;
 
-            min-height:
-                72px;
+            min-height: 88px;
 
             padding:
-                14px 10px;
+                17px
+                15px;
+
+            overflow: hidden;
 
             border:
                 1px solid
-                transparent;
+                rgba(255, 255, 255, .06);
 
-            border-radius:
-                17px;
+            border-radius: 18px;
 
-            font:
-                700 13px
-                "Segoe UI",
-                Arial,
-                sans-serif;
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(49, 30, 73, .86),
+                    rgba(24, 14, 39, .92)
+                );
+
+            color: #e8e0ef;
+
+            cursor: pointer;
+
+            text-align: left;
 
             transition:
-                transform .18s ease,
-                box-shadow .18s ease,
-                border-color .18s ease,
-                background .18s ease;
+                transform .28s ease,
+                border-color .28s ease,
+                box-shadow .28s ease,
+                background .28s ease;
+        }
 
-            user-select:
-                none;
+
+        /* =========================================================
+           RUNNING BORDER
+        ========================================================= */
+
+        .schedule-button.available::before {
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            border-radius: inherit;
+
+            padding: 2px;
+
+            background:
+                conic-gradient(
+                    from var(--border-angle),
+                    transparent 0deg 70deg,
+                    rgba(53, 242, 139, .12) 80deg,
+                    #35f28b 105deg 360deg
+                );
+
+            -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+
+            -webkit-mask-composite: xor;
+
+            mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+
+            mask-composite: exclude;
+
+            animation:
+                runningBorder 2.4s linear infinite;
+
+            pointer-events: none;
+
+            z-index: 5;
+
+            color: #35f28b;
+
+            filter:
+                drop-shadow(
+                    0 0 4px currentColor
+                )
+                drop-shadow(
+                    0 0 10px currentColor
+                );
+        }
+
+        @keyframes runningBorder {
+
+            from {
+                --border-angle: 0deg;
+            }
+
+            to {
+                --border-angle: 360deg;
+            }
+
         }
 
 
@@ -628,38 +1041,125 @@
         ========================================================= */
 
         .schedule-button.available {
+            border:
+                1px solid
+                rgba(55, 230, 135, .5);
 
             background:
-                var(--available-bg);
+                linear-gradient(
+                    145deg,
+                    rgba(30, 104, 67, .96),
+                    rgba(16, 55, 39, .98)
+                );
+
+            color: #effff6;
+
+            box-shadow:
+                0 0 18px rgba(35, 218, 126, .16),
+                inset 0 1px 0 rgba(255, 255, 255, .05);
+        }
+
+        .schedule-button.available:hover {
+            transform: translateY(-5px);
 
             border-color:
-                var(--available-border);
+                rgba(111, 255, 174, .95);
 
-            color:
-                var(--available-text);
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(39, 133, 83, .98),
+                    rgba(16, 70, 47, .98)
+                );
 
-            cursor:
-                pointer;
+            box-shadow:
+                0 18px 38px rgba(0, 0, 0, .32),
+                0 0 30px rgba(48, 234, 139, .34);
+        }
+
+        .schedule-button.available.selected {
+            transform: translateY(-4px);
+
+            border-color:
+                #f0d486;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(40, 142, 88, .98),
+                    rgba(17, 69, 46, .99)
+                );
+
+            box-shadow:
+                0 15px 45px rgba(0, 0, 0, .35),
+                inset 0 0 0 1px rgba(228, 191, 104, .25),
+                0 0 38px rgba(48, 235, 139, .30);
         }
 
 
         /* =========================================================
-           UNAVAILABLE
+           TIDAK TERSEDIA
         ========================================================= */
 
-        .schedule-button.unavailable {
+        .schedule-button.unavailable,
+        .schedule-button.unavailable:disabled {
+            cursor: not-allowed !important;
+
+            opacity: 1 !important;
+
+            border:
+                1px solid
+                rgba(238, 224, 180, .72) !important;
 
             background:
-                var(--unavailable-bg);
+                linear-gradient(
+                    145deg,
+                    rgba(82, 73, 68, .95),
+                    rgba(38, 32, 40, .98)
+                ) !important;
 
-            border-color:
-                var(--unavailable-border);
+            color: #fff5d8 !important;
 
-            color:
-                var(--unavailable-text);
+            -webkit-text-fill-color:
+                #fff5d8 !important;
 
-            cursor:
-                not-allowed;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, .08),
+                0 0 14px rgba(221, 193, 116, .08),
+                0 10px 25px rgba(0, 0, 0, .22) !important;
+        }
+
+        .schedule-button.unavailable .schedule-date {
+            color: #ded2b0 !important;
+
+            opacity: 1 !important;
+
+            -webkit-text-fill-color:
+                #ded2b0 !important;
+        }
+
+        .schedule-button.unavailable .schedule-time {
+            color: #fff8e5 !important;
+
+            opacity: 1 !important;
+
+            -webkit-text-fill-color:
+                #fff8e5 !important;
+
+            text-shadow:
+                0 2px 12px rgba(0, 0, 0, .55);
+        }
+
+        .schedule-button.unavailable .schedule-status {
+            color: #ead9a7 !important;
+
+            opacity: 1 !important;
+
+            -webkit-text-fill-color:
+                #ead9a7 !important;
+
+            text-shadow:
+                0 1px 8px rgba(0, 0, 0, .4);
         }
 
 
@@ -667,143 +1167,157 @@
            BOOKED
         ========================================================= */
 
-        .schedule-button.booked {
+        .schedule-button.booked,
+        .schedule-button.booked:disabled {
+            cursor: not-allowed !important;
 
-            background:
-                var(--booked-bg);
-
-            border-color:
-                var(--booked-border);
-
-            color:
-                var(--booked-text);
-
-            cursor:
-                not-allowed;
-        }
-
-
-        /* =========================================================
-           HOVER AVAILABLE
-        ========================================================= */
-
-        .schedule-button.available:hover {
-
-            transform:
-                translateY(-4px);
-
-            background:
-                #d4eee3;
-
-            box-shadow:
-                0 12px 25px
-                rgba(64, 128, 100, .15);
-        }
-
-
-        /* =========================================================
-           SELECTED
-           EFEK BUTTON TERANGKAT
-        ========================================================= */
-
-        .schedule-button.selected {
-
-            transform:
-                translateY(-7px);
-
-            background:
-                var(--blue-selected);
-
-            border-color:
-                var(--blue);
-
-            color:
-                #397da5;
-
-            box-shadow:
-                0 17px 32px
-                rgba(73, 147, 183, .23);
-
-        }
-
-
-        .schedule-button.selected::after {
-
-            content:
-                "✓";
-
-            position:
-                absolute;
-
-            top:
-                -7px;
-
-            right:
-                -7px;
-
-            width:
-                22px;
-
-            height:
-                22px;
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            border-radius:
-                50%;
-
-            background:
-                var(--blue-dark);
-
-            color:
-                white;
-
-            font-size:
-                11px;
-
-            box-shadow:
-                0 5px 12px
-                rgba(73,147,183,.25);
-        }
-
-
-        /* =========================================================
-           EMPTY
-        ========================================================= */
-
-        .schedule-empty {
-
-            grid-column:
-                1 / -1;
-
-            padding:
-                25px;
+            opacity: 1 !important;
 
             border:
-                1px dashed
-                #d8e4e9;
-
-            border-radius:
-                17px;
+                1px solid
+                rgba(255, 65, 108, .72) !important;
 
             background:
-                white;
+                linear-gradient(
+                    145deg,
+                    rgba(112, 31, 52, .96),
+                    rgba(48, 12, 25, .99)
+                ) !important;
 
-            color:
-                var(--muted);
+            color: #ffd6df !important;
 
-            text-align:
-                center;
+            -webkit-text-fill-color:
+                #ffd6df !important;
 
-            font-size:
-                13px;
+            box-shadow:
+                0 0 16px rgba(255, 54, 99, .35),
+                0 0 35px rgba(255, 54, 99, .18),
+                0 0 65px rgba(255, 54, 99, .08),
+                inset 0 1px 0 rgba(255, 255, 255, .05) !important;
+        }
+
+        .schedule-button.booked::before {
+            display: none !important;
+
+            content: none !important;
+
+            animation: none !important;
+        }
+
+        .schedule-button.booked .schedule-date {
+            color: #e99aae !important;
+
+            -webkit-text-fill-color:
+                #e99aae !important;
+        }
+
+        .schedule-button.booked .schedule-time {
+            color: #ffe2e8 !important;
+
+            -webkit-text-fill-color:
+                #ffe2e8 !important;
+
+            text-shadow:
+                0 0 15px rgba(255, 61, 105, .30);
+        }
+
+        .schedule-button.booked .schedule-status {
+            color: #ff7798 !important;
+
+            -webkit-text-fill-color:
+                #ff7798 !important;
+
+            text-shadow:
+                0 0 12px rgba(255, 61, 105, .65);
+        }
+
+        .schedule-button.booked .schedule-status::before {
+            background: #ff416c !important;
+
+            box-shadow:
+                0 0 7px #ff416c,
+                0 0 15px rgba(255, 65, 108, .95) !important;
+        }
+
+
+        /* =========================================================
+           SCHEDULE CONTENT
+        ========================================================= */
+
+        .schedule-date {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #a99bb8;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: .08em;
+        }
+
+        .schedule-time {
+            display: block;
+
+            color: #fff;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 20px;
+            font-weight: 500;
+
+            line-height: 1.2;
+
+            text-shadow:
+                0 2px 10px rgba(0, 0, 0, .35);
+        }
+
+        .schedule-status {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            margin-top: 8px;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: .08em;
+
+            text-transform: uppercase;
+        }
+
+        .available .schedule-status {
+            color: #63f0a1;
+        }
+
+        .unavailable .schedule-status {
+            color: #ead9a7;
+        }
+
+        .booked .schedule-status {
+            color: #ff7798;
+        }
+
+        .schedule-status::before {
+            content: "";
+
+            width: 5px;
+            height: 5px;
+
+            flex-shrink: 0;
+
+            border-radius: 50%;
+
+            background: currentColor;
         }
 
 
@@ -812,710 +1326,431 @@
         ========================================================= */
 
         .booking-area {
+            position: relative;
 
-            margin-top:
-                25px;
+            margin-top: 18px;
 
             padding:
-                18px;
+                17px
+                27px;
+
+            overflow: hidden;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(103, 55, 150, .95),
+                    rgba(53, 25, 79, .98)
+                );
 
             border:
                 1px solid
-                #dcecf3;
-
-            border-radius:
-                20px;
-
-            background:
-                white;
+                rgba(231, 195, 106, .5);
 
             box-shadow:
-                0 10px 30px
-                rgba(67,121,145,.07);
+                0 25px 70px rgba(0, 0, 0, .3),
+                0 0 30px rgba(160, 90, 220, .16);
 
-            opacity:
-                0;
-
-            transform:
-                translateY(10px);
-
-            pointer-events:
-                none;
-
-            transition:
-                opacity .22s ease,
-                transform .22s ease;
+            backdrop-filter: blur(22px);
         }
 
+        .booking-area::before {
+            content: "";
 
-        .booking-area.show {
+            position: absolute;
 
-            opacity:
-                1;
+            width: 230px;
+            height: 230px;
 
-            transform:
-                translateY(0);
+            right: -100px;
+            top: -130px;
 
-            pointer-events:
-                auto;
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(216, 174, 80, .17),
+                    transparent 70%
+                );
         }
 
-
-        .booking-selected {
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                space-between;
-
-            gap:
-                15px;
-
-            margin-bottom:
-                15px;
+        .booking-area.hidden {
+            display: none;
         }
-
 
         .booking-label {
+            color: #f0d486;
 
-            color:
-                var(--muted);
+            font-size: 9px;
+            font-weight: 800;
 
-            font-size:
-                11px;
+            letter-spacing: .2em;
+
+            text-transform: uppercase;
         }
 
+        .booking-title {
+            margin-top: 4px;
 
-        .booking-time {
+            color: #fff;
 
-            margin-top:
-                3px;
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
 
-            color:
-                var(--text-dark);
-
-            font-size:
-                18px;
-
-            font-weight:
-                700;
+            font-size: 23px;
+            font-weight: 500;
         }
 
+        .booking-selected {
+            margin-top: 4px;
 
-        /* =========================================================
-           CONFIRM BUTTON
-        ========================================================= */
+            color: #e2d7ec;
 
-        .confirm-button {
+            font-size: 11px;
+        }
 
-            display:
-                inline-flex;
+        .booking-actions {
+            display: flex;
 
-            align-items:
-                center;
+            align-items: center;
 
-            justify-content:
-                center;
+            gap: 12px;
 
-            min-height:
-                45px;
+            margin-top: 13px;
+        }
+
+        .booking-button {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            min-height: 40px;
 
             padding:
-                0 22px;
+                0
+                22px;
 
-            border:
-                0;
+            border: 0;
 
-            border-radius:
-                999px;
+            border-radius: 11px;
 
             background:
-                var(--blue-dark);
+                linear-gradient(
+                    135deg,
+                    #f0d486,
+                    #c19648
+                );
 
-            color:
-                white;
+            color: #20140a;
 
-            font:
-                700 12px
-                Arial,
-                sans-serif;
+            font-size: 11px;
+            font-weight: 900;
 
-            cursor:
-                pointer;
+            cursor: pointer;
 
             box-shadow:
-                0 8px 18px
-                rgba(73,147,183,.22);
+                0 10px 30px rgba(195, 151, 62, .19);
 
             transition:
-                transform .18s ease,
-                background .18s ease,
-                box-shadow .18s ease;
+                transform .2s ease,
+                box-shadow .2s ease;
         }
 
-
-        .confirm-button:hover {
-
-            background:
-                #4d99c5;
-
-            transform:
-                translateY(-3px);
+        .booking-button:hover {
+            transform: translateY(-2px);
 
             box-shadow:
-                0 12px 24px
-                rgba(73,147,183,.28);
+                0 15px 35px rgba(195, 151, 62, .3);
         }
 
-
-        /* =========================================================
-           BACK
-        ========================================================= */
-
-        .back-wrapper {
-
-            margin-top:
-                35px;
-        }
-
-
-        .back {
-
-            display:
-                inline-flex;
-
-            align-items:
-                center;
-
-            gap:
-                7px;
+        .cancel-button {
+            min-height: 40px;
 
             padding:
-                10px 15px;
+                0
+                18px;
 
             border:
                 1px solid
-                var(--border);
+                rgba(255, 255, 255, .13);
 
-            border-radius:
-                999px;
+            border-radius: 11px;
 
             background:
-                white;
+                rgba(255, 255, 255, .06);
 
-            color:
-                #6f8792;
+            color: #eee4f5;
 
-            font:
-                700 11px
-                Arial,
-                sans-serif;
+            font-size: 10px;
+            font-weight: 700;
 
-            text-decoration:
-                none;
-
-            transition:
-                .18s ease;
+            cursor: pointer;
         }
 
 
-        .back:hover {
+        /* =========================================================
+           LOGIN NOTICE
+        ========================================================= */
 
-            color:
-                var(--blue-dark);
+        .login-notice {
+            margin-top: 22px;
+
+            padding: 22px;
+
+            border:
+                1px solid
+                rgba(153, 113, 194, .2);
+
+            border-radius: 19px;
+
+            background:
+                rgba(28, 17, 42, .62);
+
+            color: #94899f;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+        .login-notice strong {
+            color: #d8b86d;
+        }
+
+
+        /* =========================================================
+           EMPTY SCHEDULE
+        ========================================================= */
+
+        .empty-schedule {
+            padding:
+                55px
+                25px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, .06);
+
+            border-radius: 22px;
+
+            background:
+                rgba(20, 12, 32, .55);
+
+            color: #80768d;
+
+            text-align: center;
+
+            font-size: 13px;
+        }
+
+
+        /* =========================================================
+           BACK BUTTON
+        ========================================================= */
+
+        .back-area {
+            margin-top: 28px;
+        }
+
+        .back-button {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding:
+                10px
+                15px;
+
+            border:
+                1px solid
+                rgba(205, 165, 77, .2);
+
+            border-radius: 12px;
+
+            background:
+                rgba(25, 15, 39, .55);
+
+            color: #b3a9be;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            text-decoration: none;
+
+            transition:
+                .2s ease;
+        }
+
+        .back-button:hover {
+            color: #e2c477;
 
             border-color:
-                #cce5f0;
+                rgba(205, 165, 77, .45);
 
             transform:
                 translateX(-3px);
-
-            box-shadow:
-                0 7px 18px
-                rgba(67,121,145,.08);
         }
 
 
         /* =========================================================
-           TABLET
+           RESPONSIVE
         ========================================================= */
+
+        @media (max-width: 1150px) {
+
+            main {
+                padding:
+                    30px
+                    35px
+                    60px;
+            }
+
+            .profile-layout {
+                grid-template-columns:
+                    300px
+                    minmax(0, 1fr);
+
+                gap: 50px;
+            }
+
+            .schedule-grid {
+                grid-template-columns:
+                    repeat(
+                        2,
+                        minmax(0, 1fr)
+                    );
+            }
+
+            .profile-name {
+                font-size: 34px;
+            }
+
+            .schedule-title {
+                font-size: 37px;
+            }
+
+        }
+
 
         @media (max-width: 850px) {
 
             main {
-
-                width:
-                    calc(100% - 30px);
-
-                padding-top:
-                    105px;
+                padding:
+                    25px
+                    25px
+                    55px;
             }
-
 
             .profile-layout {
+                grid-template-columns: 1fr;
 
-                grid-template-columns:
-                    280px minmax(0, 1fr);
-
-                gap:
-                    30px;
+                gap: 20px;
             }
-
 
             .profile-column {
+                position: relative;
 
-                padding:
-                    23px;
+                top: auto;
+
+                width: 100%;
+
+                text-align: center;
             }
 
+            .photo-stage {
+                width: 175px;
+                height: 175px;
 
-            .profile-photo {
-
-                width:
-                    130px;
-
-                height:
-                    130px;
+                margin:
+                    0 auto 30px;
             }
 
-
-            .schedule-grid {
-
-                gap:
-                    10px;
+            .schedule-header {
+                margin-top: 10px;
             }
-
-
-            .schedule-button {
-
-                min-height:
-                    66px;
-            }
-
-        }
-
-
-        /* =========================================================
-           MOBILE
-        ========================================================= */
-
-        @media (max-width: 700px) {
-
-            main {
-
-                width:
-                    calc(100% - 24px);
-
-                padding:
-                    95px 0 45px;
-            }
-
-
-            .profile-layout {
-
-                grid-template-columns:
-                    1fr;
-
-                gap:
-                    30px;
-            }
-
-
-            .profile-column {
-
-                position:
-                    static;
-
-                width:
-                    100%;
-            }
-
-
-            .profile-info {
-
-                text-align:
-                    center;
-            }
-
-
-            .description-wrapper {
-
-                text-align:
-                    left;
-            }
-
-
-            .schedule-column {
-
-                width:
-                    100%;
-            }
-
 
             .schedule-title {
-
-                font-size:
-                    26px;
-            }
-
-
-            .schedule-grid {
-
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-            }
-
-
-            .booking-selected {
-
-                align-items:
-                    flex-start;
-
-                flex-direction:
-                    column;
-            }
-
-
-            .confirm-button {
-
-                width:
-                    100%;
-            }
-
-
-            .back-wrapper {
-
-                text-align:
-                    center;
+                font-size: 34px;
             }
 
         }
 
 
-        /* =========================================================
-           SMALL MOBILE
-        ========================================================= */
+        @media (max-width: 600px) {
 
-        @media (max-width: 420px) {
-
-            .schedule-grid {
-
-                grid-template-columns:
-                    1fr;
-            }
-
-
-            .legend {
-
-                gap:
-                    5px;
-            }
-
-
-            .legend-item {
-
-                font-size:
-                    9px;
-            }
-
-        }
-
-
-        /* =========================================================
-           BOOKING SUCCESS MODAL
-        ========================================================= */
-
-        .booking-success-modal-overlay {
-
-            position:
-                fixed;
-
-            top:
-                0;
-
-            left:
-                0;
-
-            width:
-                100%;
-
-            height:
-                100%;
-
-            background:
-                rgba(0, 0, 0, 0.45);
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            opacity:
-                0;
-
-            visibility:
-                hidden;
-
-            transition:
-                opacity .25s ease,
-                visibility .25s ease;
-
-            z-index:
-                9999;
-        }
-
-
-        .booking-success-modal-overlay.show {
-
-            opacity:
-                1;
-
-            visibility:
-                visible;
-        }
-
-
-        .booking-success-modal {
-
-            position:
-                relative;
-
-            background:
-                white;
-
-            border-radius:
-                24px;
-
-            padding:
-                40px 35px;
-
-            max-width:
-                420px;
-
-            width:
-                calc(100% - 30px);
-
-            box-shadow:
-                0 20px 60px
-                rgba(0, 0, 0, 0.2);
-
-            transform:
-                scale(.95);
-
-            opacity:
-                0;
-
-            transition:
-                transform .25s ease,
-                opacity .25s ease;
-        }
-
-
-        .booking-success-modal-overlay.show
-            .booking-success-modal {
-
-            transform:
-                scale(1);
-
-            opacity:
-                1;
-        }
-
-
-        .booking-success-icon {
-
-            font-size:
-                48px;
-
-            text-align:
-                center;
-
-            margin-bottom:
-                20px;
-        }
-
-
-        .booking-success-title {
-
-            margin:
-                0 0 12px;
-
-            color:
-                var(--text-dark);
-
-            font-size:
-                24px;
-
-            font-weight:
-                700;
-
-            line-height:
-                1.3;
-
-            text-align:
-                center;
-        }
-
-
-        .booking-success-message {
-
-            margin:
-                0 0 25px;
-
-            color:
-                var(--text);
-
-            font-size:
-                14px;
-
-            line-height:
-                1.6;
-
-            text-align:
-                center;
-        }
-
-
-        .booking-success-actions {
-
-            display:
-                flex;
-
-            gap:
-                12px;
-
-            align-items:
-                center;
-        }
-
-
-        .booking-success-btn {
-
-            flex:
-                1;
-
-            padding:
-                12px 16px;
-
-            border:
-                none;
-
-            border-radius:
-                999px;
-
-            font:
-                600 13px
-                "Segoe UI",
-                Arial,
-                sans-serif;
-
-            cursor:
-                pointer;
-
-            transition:
-                .18s ease;
-        }
-
-
-        .booking-success-btn-primary {
-
-            background:
-                var(--blue-dark);
-
-            color:
-                white;
-
-            box-shadow:
-                0 8px 18px
-                rgba(73, 147, 183, .22);
-        }
-
-
-        .booking-success-btn-primary:hover {
-
-            background:
-                #4d99c5;
-
-            transform:
-                translateY(-2px);
-
-            box-shadow:
-                0 12px 24px
-                rgba(73, 147, 183, .28);
-        }
-
-
-        .booking-success-btn-secondary {
-
-            background:
-                #f0f3f6;
-
-            color:
-                #6f8792;
-
-            border:
-                1px solid
-                var(--border);
-        }
-
-
-        .booking-success-btn-secondary:hover {
-
-            background:
-                #e5ecf1;
-
-            transform:
-                translateY(-2px);
-        }
-
-
-        /* =========================================================
-           MODAL RESPONSIVE
-        ========================================================= */
-
-        @media (max-width: 480px) {
-
-            .booking-success-modal {
-
+            main {
                 padding:
-                    30px 20px;
+                    20px
+                    16px
+                    45px;
             }
 
+            .profile-column {
+                padding-top: 10px;
 
-            .booking-success-title {
-
-                font-size:
-                    20px;
+                text-align: center;
             }
 
+            .photo-stage {
+                width: 155px;
+                height: 155px;
 
-            .booking-success-message {
-
-                font-size:
-                    13px;
+                margin:
+                    0 auto 25px;
             }
 
-
-            .booking-success-actions {
-
-                flex-direction:
-                    column;
+            .profile-name {
+                font-size: 31px;
             }
 
-
-            .booking-success-btn {
-
-                width:
-                    100%;
+            .schedule-title {
+                font-size: 30px;
             }
+
+            .schedule-shell {
+                border-radius: 21px;
+            }
+
+            .schedule-inner {
+                padding: 16px;
+
+                border-radius: 19px;
+            }
+
+            .schedule-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .schedule-button {
+                min-height: 78px;
+            }
+
+            .booking-area {
+                padding:
+                    15px
+                    21px;
+            }
+
+            .booking-actions {
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+            .booking-button,
+            .cancel-button {
+                width: 100%;
+            }
+
         }
 
     </style>
@@ -1525,719 +1760,743 @@
 
 <body>
 
+    <div class="light-orb orb-one"></div>
 
-@include('whisperly.navbar')
-
-
-<main>
+    <div class="light-orb orb-two"></div>
 
 
     {{-- =========================================================
-         SUCCESS
+         NAVBAR
     ========================================================== --}}
 
-    @if (session('booking_success'))
-
-        <div class="success">
-
-            <strong>
-                Booking berhasil!
-            </strong>
-
-            <br>
-
-            {{ session('status') }}
-
-        </div>
-
-    @endif
+    @include('whisperly.navbar')
 
 
-    {{-- =========================================================
-         ERROR
-    ========================================================== --}}
-
-    @if ($errors->any())
-
-        <div class="error">
-
-            <strong>
-                Terjadi kesalahan:
-            </strong>
-
-            <ul>
-
-                @foreach ($errors->all() as $error)
-
-                    <li>
-                        {{ $error }}
-                    </li>
-
-                @endforeach
-
-            </ul>
-
-        </div>
-
-    @endif
-
-
-    {{-- =========================================================
-         LAYOUT UTAMA
-    ========================================================== --}}
-
-    <div class="profile-layout">
+    <main>
 
 
         {{-- =====================================================
-             KIRI — PROFIL TALENT
+             ALERT
         ====================================================== --}}
 
-        <section class="profile-column">
+        @if (session('success'))
 
+            <div class="success">
 
-            {{-- FOTO --}}
-
-            <div class="profile-photo">
-
-                @if ($talent->photo)
-
-                    <img
-                        src="{{ asset('storage/' . $talent->photo) }}"
-                        alt="Foto {{ $talent->pengguna->username }}"
-                    >
-
-                @else
-
-                    @php
-
-                        $faceNumber =
-                            (abs(crc32($talent->pengguna->username)) % 8) + 1;
-
-                    @endphp
-
-                    <img
-                        src="{{ asset('assets/images/faces/' . $faceNumber . '.jpg') }}"
-                        alt="Foto {{ $talent->pengguna->username }}"
-                    >
-
-                @endif
+                {{ session('success') }}
 
             </div>
 
-
-            {{-- INFORMASI PROFIL --}}
-
-            <div class="profile-info">
-
-                <h1 class="profile-name">
-
-                    {{ ucfirst($talent->pengguna->username) }}
-
-                </h1>
+        @endif
 
 
+        @if ($errors->any())
 
-                <p class="email">
+            <div class="error">
 
-                    {{ $talent->pengguna->email }}
+                <strong>
+                    Terjadi kesalahan.
+                </strong>
 
-                </p>
+                <ul>
+
+                    @foreach ($errors->all() as $error)
+
+                        <li>
+                            {{ $error }}
+                        </li>
+
+                    @endforeach
+
+                </ul>
+
+            </div>
+
+        @endif
 
 
-                <div class="profile-divider"></div>
+        {{-- =====================================================
+             MAIN LAYOUT
+        ====================================================== --}}
+
+        <div class="profile-layout">
 
 
-                {{-- DESKRIPSI --}}
+            {{-- =================================================
+                 PROFILE
+            ================================================== --}}
 
-                <div class="description-wrapper">
+            <aside class="profile-column">
 
-                    <h2 class="description-title">
 
-                        Tentang Talent
+                <div class="photo-stage">
 
+                    <div class="photo-ring">
+
+                        <div class="profile-photo">
+
+                            @php
+
+                                $photo =
+                                    trim(
+                                        (string)
+                                        $talent->photo
+                                    );
+
+                                $photoUrl = null;
+
+                                if ($photo) {
+
+                                    if (
+                                        filter_var(
+                                            $photo,
+                                            FILTER_VALIDATE_URL
+                                        )
+                                    ) {
+
+                                        $photoUrl = $photo;
+
+                                    } else {
+
+                                        $photo =
+                                            preg_replace(
+                                                '#^public/#',
+                                                '',
+                                                ltrim(
+                                                    $photo,
+                                                    '/'
+                                                )
+                                            );
+
+                                        $photoUrl =
+                                            asset(
+                                                'storage/' .
+                                                $photo
+                                            );
+
+                                    }
+
+                                }
+
+                            @endphp
+
+
+                            @if ($photoUrl)
+
+                                <img
+                                    src="{{ $photoUrl }}"
+                                    alt="Foto {{ $talent->pengguna->username }}"
+
+                                    onerror="
+                                        this.onerror=null;
+                                        this.src='{{ asset('assets/images/faces/1.jpg') }}';
+                                    "
+                                >
+
+                            @else
+
+                                @php
+
+                                    $faceNumber =
+                                        (
+                                            abs(
+                                                crc32(
+                                                    $talent
+                                                        ->pengguna
+                                                        ->username
+                                                )
+                                            ) % 8
+                                        ) + 1;
+
+                                @endphp
+
+
+                                <img
+                                    src="{{ asset(
+                                        'assets/images/faces/' .
+                                        $faceNumber .
+                                        '.jpg'
+                                    ) }}"
+
+                                    alt="Foto {{ $talent->pengguna->username }}"
+                                >
+
+                            @endif
+
+                        </div>
+
+                    </div>
+
+
+                    <span class="online-dot"></span>
+
+                </div>
+
+
+                <div class="profile-info">
+
+
+                    <div class="profile-label">
+                        WHISPERLY TALENT
+                    </div>
+
+
+                    <h1 class="profile-name">
+                        {{ ucfirst($talent->pengguna->username) }}
+                    </h1>
+
+
+                    @if ($talent->pengguna->email)
+
+                        <div class="email">
+                            {{ $talent->pengguna->email }}
+                        </div>
+
+                    @endif
+
+
+                    <div class="profile-divider"></div>
+
+
+                    <div class="description-wrapper">
+
+                        <h2 class="description-title">
+                            Tentang Talent
+                        </h2>
+
+                        <div class="description">
+                            {{ $talent->deskripsi ?: 'Talent belum menambahkan deskripsi.' }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </aside>
+
+
+            {{-- =================================================
+                 SCHEDULE
+            ================================================== --}}
+
+            <section class="schedule-column">
+
+
+                <header class="schedule-header">
+
+                    <div class="schedule-eyebrow">
+                        AVAILABLE MOMENTS
+                    </div>
+
+
+                    <h2 class="schedule-title">
+                        Pilih waktu terbaikmu.
                     </h2>
 
 
-                    <div class="description">
+                    <p class="schedule-subtitle">
+                        Temukan waktu yang tersedia dan pilih sesi
+                        yang paling sesuai untuk mengirim pesan kepada
+                        talent pilihanmu.
+                    </p>
 
-                        {{ $talent->deskripsi ?: 'Talent belum menambahkan deskripsi.' }}
+                </header>
+
+
+                {{-- =================================================
+                     LEGEND
+                ================================================== --}}
+
+                <div class="legend">
+
+                    <div class="legend-item">
+
+                        <span class="legend-dot green"></span>
+
+                        Tersedia
+
+                    </div>
+
+
+                    <div class="legend-item">
+
+                        <span class="legend-dot gray"></span>
+
+                        Tidak tersedia
+
+                    </div>
+
+
+                    <div class="legend-item">
+
+                        <span class="legend-dot red"></span>
+
+                        Sudah dipesan
 
                     </div>
 
                 </div>
 
-            </div>
+
+                {{-- =================================================
+                     SCHEDULE FRAME
+                ================================================== --}}
+
+                <div class="schedule-shell">
+
+                    <div class="schedule-inner">
 
 
-        </section>
+                        <div class="schedule-top">
 
-
-        {{-- =====================================================
-             KANAN — JADWAL
-        ====================================================== --}}
-
-        <section class="schedule-column">
-
-
-            <div class="schedule-header">
-
-                <p class="schedule-eyebrow">
-                    Whisperly
-                </p>
-
-                <h2 class="schedule-title">
-                    Pilih Waktu
-                </h2>
-
-                <p class="schedule-subtitle">
-                    Pilih salah satu waktu yang tersedia untuk melakukan booking.
-                </p>
-
-            </div>
-
-
-            {{-- =================================================
-                 LEGEND
-            ================================================== --}}
-
-            <div class="legend">
-
-                <div class="legend-item">
-
-                    <span class="legend-dot green"></span>
-
-                    Tersedia
-
-                </div>
-
-
-                <div class="legend-item">
-
-                    <span class="legend-dot gray"></span>
-
-                    Tidak tersedia
-
-                </div>
-
-
-                <div class="legend-item">
-
-                    <span class="legend-dot red"></span>
-
-                    Sudah dibooking
-
-                </div>
-
-            </div>
-
-
-            {{-- =================================================
-                 JADWAL
-            ================================================== --}}
-
-            <div class="schedule-grid">
-
-
-                @forelse ($talent->schedules as $schedule)
-
-                    @php
-                        $status = $schedule->resolveStatusForDate(now(config('app.timezone'))->toDateString());
-                        $isAvailable = $status === 'available';
-                        $isBooked = $status === 'booked';
-                        $statusClass = $isAvailable ? 'available' : ($isBooked ? 'booked' : 'unavailable');
-                    @endphp
-
-                    <button
-                        type="button"
-                        class="schedule-button {{ $statusClass }}"
-                        data-schedule-id="{{ $schedule->id }}"
-                        data-start="{{ substr($schedule->start_time, 0, 5) }}"
-                        data-end="{{ substr($schedule->end_time, 0, 5) }}"
-                        {{ !$isAvailable ? 'disabled' : '' }}
-                    >
-
-                        {{ substr($schedule->start_time, 0, 5) }}
-
-                        –
-
-                        {{ substr($schedule->end_time, 0, 5) }}
-
-                    </button>
-
-
-                @empty
-
-
-                    <div class="schedule-empty">
-
-                        Belum ada jadwal yang tersedia.
-
-                    </div>
-
-
-                @endforelse
-
-
-            </div>
-
-
-            {{-- =================================================
-                 BOOKING
-            ================================================== --}}
-
-            @if (
-                auth('whisperly')->check() &&
-                auth('whisperly')->user()->role === 'user'
-            )
-
-
-                <div
-                    class="booking-area"
-                    id="bookingArea"
-                >
-
-
-                    <div class="booking-selected">
-
-
-                        <div>
-
-                            <div class="booking-label">
-                                Jadwal yang dipilih
+                            <div class="schedule-top-title">
+                                Jadwal Talent
                             </div>
 
-
-                            <div
-                                class="booking-time"
-                                id="bookingTime"
-                            >
-                                -
+                            <div class="schedule-top-note">
+                                Pilih salah satu waktu
                             </div>
 
                         </div>
 
 
-                        <form
-                            method="POST"
-                            action="{{ route(
-                                'whisperly.bookings.store',
-                                [
-                                    'username' =>
-                                    $talent->pengguna->username
-                                ]
-                            ) }}"
-                            id="bookingForm"
-                        >
+                        @if ($talent->schedules->count())
 
-                            @csrf
+                            <div class="schedule-grid">
 
 
-                            <input
-                                type="hidden"
-                                name="schedule_id"
-                                id="schedule_id"
-                                value=""
+                                @foreach ($talent->schedules as $schedule)
+
+                                    @php
+
+                                        /*
+                                         * STATUS BERDASARKAN TANGGAL
+                                         * JADWALNYA SENDIRI
+                                         */
+
+                                        $scheduleDate =
+                                            \Carbon\Carbon::parse(
+                                                $schedule->date
+                                            )->toDateString();
+
+
+                                        $status =
+                                            $schedule->resolveStatusForDate(
+                                                $scheduleDate
+                                            );
+
+
+                                        $isAvailable =
+                                            $status === 'available';
+
+
+                                        $isBooked =
+                                            $status === 'booked';
+
+
+                                        $statusClass =
+                                            $isAvailable
+                                                ? 'available'
+                                                : (
+                                                    $isBooked
+                                                        ? 'booked'
+                                                        : 'unavailable'
+                                                );
+
+                                    @endphp
+
+
+                                    <button
+                                        type="button"
+
+                                        class="
+                                            schedule-button
+                                            {{ $statusClass }}
+                                        "
+
+                                        @if ($isAvailable)
+
+                                            data-schedule-id="{{ $schedule->id }}"
+
+                                            data-start="{{ $schedule->start_time }}"
+
+                                            data-end="{{ $schedule->end_time }}"
+
+                                        @endif
+
+                                        {{ !$isAvailable ? 'disabled' : '' }}
+                                    >
+
+
+                                        <span class="schedule-date">
+
+                                            {{
+                                                \Carbon\Carbon::parse(
+                                                    $schedule->date
+                                                )->translatedFormat(
+                                                    'l, d M Y'
+                                                )
+                                            }}
+
+                                        </span>
+
+
+                                        <span class="schedule-time">
+
+                                            {{
+                                                \Carbon\Carbon::parse(
+                                                    $schedule->start_time
+                                                )->format('H\:i')
+                                            }}
+
+                                            —
+
+                                            {{
+                                                \Carbon\Carbon::parse(
+                                                    $schedule->end_time
+                                                )->format('H\:i')
+                                            }}
+
+                                        </span>
+
+
+                                        <span class="schedule-status">
+
+                                            @if ($isAvailable)
+
+                                                Tersedia
+
+                                            @elseif ($isBooked)
+
+                                                Sudah dipesan
+
+                                            @else
+
+                                                Tidak tersedia
+
+                                            @endif
+
+                                        </span>
+
+
+                                    </button>
+
+                                @endforeach
+
+
+                            </div>
+
+                        @else
+
+                            <div class="empty-schedule">
+
+                                Belum ada jadwal yang tersedia
+                                untuk talent ini.
+
+                            </div>
+
+                        @endif
+
+
+                        {{-- =================================================
+                             BOOKING AREA
+                        ================================================== --}}
+
+                        @if (
+                            auth('whisperly')->check() &&
+                            auth('whisperly')->user()->role === 'user'
+                        )
+
+                            <div
+                                class="booking-area hidden"
+                                id="bookingArea"
                             >
 
 
-                            <button
-                                type="submit"
-                                class="confirm-button"
-                            >
+                                <div class="booking-label">
+                                    SELECTED SESSION
+                                </div>
 
-                                ✓ Confirm Booking
 
-                            </button>
+                                <div class="booking-title">
+                                    Pesan sesi ini
+                                </div>
 
-                        </form>
+
+                                <div
+                                    class="booking-selected"
+                                    id="selectedScheduleText"
+                                >
+                                    Silakan pilih jadwal terlebih dahulu.
+                                </div>
+
+
+                                <form
+                                    method="POST"
+
+                                    action="{{ route(
+                                        'whisperly.bookings.store',
+                                        [
+                                            'username' =>
+                                                $talent
+                                                    ->pengguna
+                                                    ->username
+                                        ]
+                                    ) }}"
+                                >
+
+                                    @csrf
+
+
+                                    <input
+                                        type="hidden"
+
+                                        name="schedule_id"
+
+                                        id="selectedScheduleId"
+                                    >
+
+
+                                    <div class="booking-actions">
+
+
+                                        <button
+                                            type="submit"
+
+                                            class="booking-button"
+                                        >
+                                            Pesan Sekarang
+                                        </button>
+
+
+                                        <button
+                                            type="button"
+
+                                            class="cancel-button"
+
+                                            id="cancelSelection"
+                                        >
+                                            Batal
+                                        </button>
+
+
+                                    </div>
+
+                                </form>
+
+                            </div>
+
+                        @else
+
+                            <div class="login-notice">
+
+                                <strong>
+                                    Ingin memesan sesi?
+                                </strong>
+
+                                <br>
+
+                                Silakan masuk sebagai pengguna Whisperly
+                                untuk memilih jadwal dan melakukan booking.
+
+                            </div>
+
+                        @endif
 
 
                     </div>
 
+                </div>
+
+
+                {{-- =================================================
+                     BACK
+                ================================================== --}}
+
+                <div class="back-area">
+
+                    <a
+                        href="{{ route('whisperly.talents.index') }}"
+
+                        class="back-button"
+                    >
+                        ← Kembali ke daftar talent
+                    </a>
 
                 </div>
 
 
-            @endif
-
-
-        </section>
-
-
-    </div>
-
-
-    {{-- =========================================================
-         BACK
-    ========================================================== --}}
-
-    <div class="back-wrapper">
-
-        <a
-            href="{{ route('whisperly.talents.index') }}"
-            class="back"
-        >
-
-            ← Kembali ke Daftar Talent
-
-        </a>
-
-    </div>
-
-
-    {{-- =========================================================
-         BOOKING SUCCESS MODAL
-    ========================================================== --}}
-
-    <div
-        class="booking-success-modal-overlay"
-        id="bookingSuccessModal"
-    >
-
-        <div class="booking-success-modal">
-
-            <div class="booking-success-icon">
-                🎉
-            </div>
-
-            <h2 class="booking-success-title">
-                Booking Berhasil!
-            </h2>
-
-            <p class="booking-success-message">
-                Talent sudah berhasil kamu booking.
-                <br>
-                Sekarang kamu bisa mulai chat dengan talent.
-            </p>
-
-            <div class="booking-success-actions">
-
-                <button
-                    type="button"
-                    class="booking-success-btn booking-success-btn-secondary"
-                    id="bookingNantiBtn"
-                >
-                    Nanti
-                </button>
-
-                <button
-                    type="button"
-                    class="booking-success-btn booking-success-btn-primary"
-                    id="bookingChatBtn"
-                >
-                    Mulai Chat
-                </button>
-
-            </div>
+            </section>
 
         </div>
 
-    </div>
+    </main>
 
 
-</main>
+    {{-- =========================================================
+         JAVASCRIPT
+    ========================================================== --}}
+
+    @if (
+        auth('whisperly')->check() &&
+        auth('whisperly')->user()->role === 'user'
+    )
+
+        <script>
+
+            document.addEventListener(
+                "DOMContentLoaded",
+                function () {
+
+                    const buttons =
+                        document.querySelectorAll(
+                            ".schedule-button.available"
+                        );
 
 
-<script>
-
-    /*
-    |--------------------------------------------------------------------------
-    | PILIH JADWAL
-    |--------------------------------------------------------------------------
-    */
-
-    document.addEventListener(
-        'DOMContentLoaded',
-        function () {
-
-            const scheduleButtons =
-                document.querySelectorAll(
-                    '.schedule-button.available'
-                );
+                    const bookingArea =
+                        document.getElementById(
+                            "bookingArea"
+                        );
 
 
-            const scheduleInput =
-                document.getElementById(
-                    'schedule_id'
-                );
+                    const selectedId =
+                        document.getElementById(
+                            "selectedScheduleId"
+                        );
 
 
-            const bookingArea =
-                document.getElementById(
-                    'bookingArea'
-                );
+                    const selectedText =
+                        document.getElementById(
+                            "selectedScheduleText"
+                        );
 
 
-            const bookingTime =
-                document.getElementById(
-                    'bookingTime'
-                );
+                    const cancelButton =
+                        document.getElementById(
+                            "cancelSelection"
+                        );
 
 
-            scheduleButtons.forEach(
-                function (button) {
+                    if (
+                        !bookingArea ||
+                        !selectedId ||
+                        !selectedText
+                    ) {
+                        return;
+                    }
 
-                    button.addEventListener(
-                        'click',
-                        function () {
+
+                    buttons.forEach(
+                        function (button) {
+
+                            button.addEventListener(
+                                "click",
+                                function () {
 
 
-                            /*
-                            |--------------------------------------------------
-                            | HAPUS SELECTION SEBELUMNYA
-                            |--------------------------------------------------
-                            */
+                                    buttons.forEach(
+                                        function (item) {
 
-                            scheduleButtons.forEach(
-                                function (item) {
+                                            item.classList.remove(
+                                                "selected"
+                                            );
 
-                                    item.classList.remove(
-                                        'selected'
+                                        }
                                     );
+
+
+                                    button.classList.add(
+                                        "selected"
+                                    );
+
+
+                                    const scheduleId =
+                                        button.dataset.scheduleId;
+
+
+                                    const start =
+                                        button.dataset.start;
+
+
+                                    const end =
+                                        button.dataset.end;
+
+
+                                    if (!scheduleId) {
+                                        return;
+                                    }
+
+
+                                    selectedId.value =
+                                        scheduleId;
+
+
+                                    selectedText.textContent =
+                                        "Sesi terpilih: " +
+                                        start +
+                                        " — " +
+                                        end;
+
+
+                                    bookingArea.classList.remove(
+                                        "hidden"
+                                    );
+
+
+                                    bookingArea.scrollIntoView({
+                                        behavior: "smooth",
+                                        block: "nearest"
+                                    });
 
                                 }
                             );
 
-
-                            /*
-                            |--------------------------------------------------
-                            | PILIH BUTTON
-                            |--------------------------------------------------
-                            */
-
-                            button.classList.add(
-                                'selected'
-                            );
+                        }
+                    );
 
 
-                            /*
-                            |--------------------------------------------------
-                            | AMBIL DATA
-                            |--------------------------------------------------
-                            */
+                    if (cancelButton) {
 
-                            const scheduleId =
-                                button.dataset.scheduleId;
+                        cancelButton.addEventListener(
+                            "click",
+                            function () {
 
 
-                            const start =
-                                button.dataset.start;
+                                buttons.forEach(
+                                    function (item) {
+
+                                        item.classList.remove(
+                                            "selected"
+                                        );
+
+                                    }
+                                );
 
 
-                            const end =
-                                button.dataset.end;
+                                selectedId.value =
+                                    "";
 
 
-                            /*
-                            |--------------------------------------------------
-                            | MASUKKAN ID KE FORM
-                            |--------------------------------------------------
-                            */
+                                selectedText.textContent =
+                                    "Silakan pilih jadwal terlebih dahulu.";
 
-                            if (scheduleInput) {
-
-                                scheduleInput.value =
-                                    scheduleId;
-
-                            }
-
-
-                            /*
-                            |--------------------------------------------------
-                            | TAMPILKAN JAM
-                            |--------------------------------------------------
-                            */
-
-                            if (bookingTime) {
-
-                                bookingTime.textContent =
-                                    start + ' – ' + end;
-
-                            }
-
-
-                            /*
-                            |--------------------------------------------------
-                            | TAMPILKAN CONFIRM BOOKING
-                            |--------------------------------------------------
-                            */
-
-                            if (bookingArea) {
 
                                 bookingArea.classList.add(
-                                    'show'
+                                    "hidden"
                                 );
 
                             }
+                        );
 
-                        }
-                    );
+                    }
 
                 }
             );
 
+        </script>
 
-            /*
-            |--------------------------------------------------------------------------
-            | BOOKING SUCCESS MODAL
-            |--------------------------------------------------------------------------
-            */
-
-            const bookingSuccessModal =
-                document.getElementById(
-                    'bookingSuccessModal'
-                );
-
-
-            const bookingChatBtn =
-                document.getElementById(
-                    'bookingChatBtn'
-                );
-
-
-            const bookingNantiBtn =
-                document.getElementById(
-                    'bookingNantiBtn'
-                );
-
-
-            /*
-            |--------------------------------------------------
-            | CEK SESSION BOOKING_SUCCESS
-            |--------------------------------------------------
-            */
-
-            const hasBookingSuccess =
-                {!! json_encode(session('booking_success', false)) !!};
-
-
-            const bookingId =
-                {!! json_encode(session('booking_id', '')) !!};
-
-
-            /*
-            |--------------------------------------------------
-            | DEBUG - Cek booking ID
-            |--------------------------------------------------
-            */
-
-            if (hasBookingSuccess && bookingId) {
-
-                console.log(
-                    '[Booking Success] Booking ID: ' + bookingId
-                );
-
-            }
-
-
-            if (
-                hasBookingSuccess === true &&
-                bookingId !== '' &&
-                bookingSuccessModal
-            ) {
-
-                /*
-                |--------------------------------------------------
-                | TAMPILKAN MODAL
-                |--------------------------------------------------
-                | Session flash sudah otomatis hilang setelah
-                | render, jadi popup hanya muncul sekali.
-                |--------------------------------------------------
-                */
-
-                setTimeout(
-                    function () {
-
-                        bookingSuccessModal.classList.add(
-                            'show'
-                        );
-
-                    },
-                    300
-                );
-            }
-
-
-            /*
-            |--------------------------------------------------
-            | TOMBOL MULAI CHAT
-            |--------------------------------------------------
-            */
-
-            if (bookingChatBtn) {
-
-                bookingChatBtn.addEventListener(
-                    'click',
-                    function () {
-
-                        if (bookingId && bookingId.trim() !== '') {
-
-                            const chatUrl =
-                                '/whisperly/chat/' +
-                                bookingId;
-
-                            /*
-                            |--------------------------------------------------
-                            | DEBUG - Cek URL yang dihasilkan
-                            |--------------------------------------------------
-                            */
-
-                            console.log(
-                                '[Chat Redirect] URL: ' + chatUrl
-                            );
-
-                            /*
-                            |--------------------------------------------------
-                            | Redirect ke halaman chat dengan booking ID
-                            | Route: /whisperly/chat/{booking}
-                            |--------------------------------------------------
-                            */
-
-                            window.location.href = chatUrl;
-
-                        } else {
-
-                            console.error(
-                                '[Chat Error] Booking ID tidak ditemukan: ' +
-                                bookingId
-                            );
-
-                        }
-
-                    }
-                );
-            }
-
-
-            /*
-            |--------------------------------------------------
-            | TOMBOL NANTI
-            |--------------------------------------------------
-            */
-
-            if (bookingNantiBtn) {
-
-                bookingNantiBtn.addEventListener(
-                    'click',
-                    function () {
-
-                        if (bookingSuccessModal) {
-
-                            bookingSuccessModal.classList.remove(
-                                'show'
-                            );
-
-                        }
-
-                    }
-                );
-            }
-
-        }
-    );
-
-</script>
+    @endif
 
 
 </body>

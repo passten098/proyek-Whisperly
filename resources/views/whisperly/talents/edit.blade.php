@@ -1,8 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="id">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -12,36 +12,24 @@
 
     <title>Edit Profil - Whisperly</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
     <style>
-        /* =========================================================
-           WHISPERLY EDIT PROFILE
-        ========================================================= */
-
-        :root {
-            --wp-green: #789f89;
-            --wp-green-dark: #527663;
-            --wp-green-deep: #385b4b;
-            --wp-green-soft: #e8f1eb;
-            --wp-pink: #f4dfe5;
-            --wp-pink-dark: #c98599;
-            --wp-cream: #fcf8f3;
-            --wp-white: #ffffff;
-            --wp-text: #34443d;
-            --wp-text-soft: #69766f;
-            --wp-muted: #9aa59f;
-            --wp-border: #e7ebe7;
-
-            --wp-shadow:
-                0 24px 70px rgba(72, 94, 82, 0.10);
-
-            --wp-radius-xl: 38px;
-            --wp-radius-lg: 30px;
-        }
-
 
         /* =========================================================
            RESET
-        ========================================================= */
+        ========================================================== */
 
         * {
             box-sizing: border-box;
@@ -55,597 +43,931 @@
 
         body {
             min-height: 100vh;
+            overflow-x: hidden;
+
+            color: #f8f5fc;
+
             font-family:
-                Inter,
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
+                "Manrope",
                 sans-serif;
 
-            color: var(--wp-text);
+            background:
+                radial-gradient(
+                    circle at 5% 5%,
+                    rgba(128, 66, 212, .27),
+                    transparent 27%
+                ),
+                radial-gradient(
+                    circle at 92% 7%,
+                    rgba(208, 165, 75, .13),
+                    transparent 23%
+                ),
+                radial-gradient(
+                    circle at 75% 78%,
+                    rgba(104, 47, 180, .20),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    135deg,
+                    #05040a 0%,
+                    #0b0715 32%,
+                    #160c29 57%,
+                    #0a0614 100%
+                );
+
+            background-attachment: fixed;
+        }
+
+
+        /* =========================================================
+           AMBIENT BACKGROUND
+        ========================================================== */
+
+        body::before {
+            content: "";
+
+            position: fixed;
+
+            inset: -20%;
+
+            z-index: -5;
+
+            pointer-events: none;
 
             background:
                 radial-gradient(
-                    circle at 8% 8%,
-                    rgba(120, 169, 135, .15),
+                    ellipse at 18% 20%,
+                    rgba(132, 70, 221, .14),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    ellipse at 82% 30%,
+                    rgba(219, 179, 93, .07),
                     transparent 28%
-                ),
-                radial-gradient(
-                    circle at 92% 20%,
-                    rgba(244, 223, 229, .55),
-                    transparent 25%
-                ),
-                var(--wp-cream);
+                );
+
+            filter: blur(55px);
+
+            animation:
+                ambientMove 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes ambientMove {
+
+            0% {
+                transform:
+                    translate3d(-1%, -1%, 0)
+                    scale(1);
+            }
+
+            100% {
+                transform:
+                    translate3d(2%, 2%, 0)
+                    scale(1.07);
+            }
+
         }
 
 
         /* =========================================================
-           PAGE
-        ========================================================= */
+           ORBS
+        ========================================================== */
 
-        .wp-page {
-            position: relative;
-            min-height: 100vh;
-            overflow: hidden;
-            padding: 42px 24px 70px;
+        .ambient-orb {
+            position: fixed;
+
+            border-radius: 50%;
+
+            pointer-events: none;
+
+            z-index: -4;
         }
 
-        .wp-page::before {
-            content: "";
-            position: absolute;
+        .orb-purple {
+            width: 260px;
+            height: 260px;
 
-            width: 390px;
-            height: 390px;
-
-            top: 100px;
-            left: -210px;
+            left: -130px;
+            top: 22%;
 
             background:
                 radial-gradient(
                     circle,
-                    rgba(120, 169, 135, .15),
+                    rgba(139, 73, 230, .16),
                     transparent 68%
                 );
 
-            pointer-events: none;
+            filter: blur(8px);
         }
 
-        .wp-page::after {
-            content: "";
-            position: absolute;
+        .orb-gold {
+            width: 320px;
+            height: 320px;
 
-            width: 430px;
-            height: 430px;
-
-            right: -250px;
-            bottom: 50px;
+            right: -160px;
+            bottom: -80px;
 
             background:
                 radial-gradient(
                     circle,
-                    rgba(244, 223, 229, .40),
+                    rgba(215, 173, 85, .08),
                     transparent 68%
                 );
 
-            pointer-events: none;
+            filter: blur(8px);
         }
 
 
         /* =========================================================
-           CONTAINER
-        ========================================================= */
+           MAIN
+        ========================================================== */
 
-        .wp-container {
+        main {
             position: relative;
-            z-index: 2;
 
-            width: min(1180px, 100%);
-            margin: 0 auto;
+            width: 100%;
+
+            padding:
+                24px
+                60px
+                65px;
         }
 
 
         /* =========================================================
-           HEADER
-        ========================================================= */
+           PAGE HEADER
+        ========================================================== */
 
-        .wp-heading {
-            margin-bottom: 28px;
+        .page-header {
+            max-width: 850px;
+
+            margin-bottom: 30px;
         }
 
-        .wp-heading-left {
-            max-width: 650px;
-        }
+        .page-eyebrow {
+            display: flex;
 
-        .wp-eyebrow {
-            display: inline-flex;
             align-items: center;
-            gap: 8px;
 
-            margin-bottom: 11px;
+            gap: 9px;
 
-            color: var(--wp-green-dark);
+            margin-bottom: 8px;
 
-            font-size: 11px;
+            color: #d6b66c;
+
+            font-size: 8px;
+
             font-weight: 800;
-            letter-spacing: .16em;
+
+            letter-spacing: .34em;
+
             text-transform: uppercase;
         }
 
-        .wp-eyebrow-dot {
-            width: 7px;
-            height: 7px;
+        .page-eyebrow::before {
+            content: "";
 
-            border-radius: 50%;
-
-            background: var(--wp-pink-dark);
-
-            box-shadow:
-                0 0 0 5px rgba(201, 133, 153, .10);
-        }
-
-        .wp-title {
-            color: var(--wp-green-deep);
-
-            font-size: clamp(30px, 4vw, 44px);
-            line-height: 1.08;
-
-            letter-spacing: -.045em;
-            font-weight: 800;
-        }
-
-        .wp-subtitle {
-            max-width: 570px;
-
-            margin-top: 10px;
-
-            color: var(--wp-text-soft);
-
-            font-size: 14px;
-            line-height: 1.7;
-        }
-
-
-        /* =========================================================
-           GRID
-        ========================================================= */
-
-        .wp-grid {
-            display: grid;
-
-            grid-template-columns:
-                minmax(0, 1.08fr)
-                minmax(360px, .92fr);
-
-            gap: 22px;
-
-            align-items: stretch;
-        }
-
-
-        /* =========================================================
-           CARD
-        ========================================================= */
-
-        .wp-card {
-            position: relative;
-
-            background:
-                rgba(255, 255, 255, .88);
-
-            border:
-                1px solid rgba(224, 230, 225, .65);
-
-            border-radius: var(--wp-radius-xl);
-
-            box-shadow: var(--wp-shadow);
-
-            overflow: hidden;
-
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-        }
-
-
-        /* =========================================================
-           PROFILE CARD
-        ========================================================= */
-
-        .wp-profile-card {
-            padding: 28px;
-        }
-
-        .wp-profile-top {
-            position: relative;
-
-            display: flex;
-            align-items: center;
-
-            gap: 21px;
-
-            padding: 22px;
-            margin-bottom: 28px;
-
-            border-radius: 32px;
+            width: 30px;
+            height: 1px;
 
             background:
                 linear-gradient(
-                    135deg,
-                    #eef5ef 0%,
-                    #f8f2ed 52%,
-                    #f8e9ed 100%
+                    90deg,
+                    #dfbf72,
+                    transparent
                 );
-
-            overflow: hidden;
         }
 
-        .wp-profile-top::after {
-            content: "";
+        .page-title {
+            color: #fff;
 
-            position: absolute;
+            font-family:
+                "Playfair Display",
+                serif;
 
-            width: 190px;
-            height: 190px;
+            font-size: 40px;
 
-            right: -75px;
-            top: -95px;
+            font-weight: 600;
 
-            border-radius: 50%;
+            line-height: 1.05;
+
+            letter-spacing: -.025em;
+
+            text-shadow:
+                0 10px 35px rgba(0, 0, 0, .4);
+        }
+
+        .page-subtitle {
+            max-width: 650px;
+
+            margin-top: 10px;
+
+            color: #8f859c;
+
+            font-size: 10px;
+
+            font-weight: 500;
+
+            line-height: 1.8;
+
+            letter-spacing: .01em;
+        }
+
+
+        /* =========================================================
+           ALERT
+        ========================================================== */
+
+        .success,
+        .error {
+            width: 100%;
+
+            margin-bottom: 20px;
+
+            padding:
+                13px
+                17px;
+
+            border-radius: 13px;
+
+            font-size: 10px;
+
+            backdrop-filter: blur(18px);
+        }
+
+        .success {
+            border:
+                1px solid
+                rgba(220, 184, 102, .30);
 
             background:
-                rgba(255, 255, 255, .40);
+                rgba(69, 48, 29, .50);
+
+            color: #ead18e;
+        }
+
+        .error {
+            border:
+                1px solid
+                rgba(214, 101, 145, .30);
+
+            background:
+                rgba(65, 27, 48, .52);
+
+            color: #efb5ca;
+        }
+
+        .error ul {
+            padding-left: 18px;
+
+            margin-top: 5px;
+        }
+
+
+        /* =========================================================
+           MAIN GRID
+        ========================================================== */
+
+        .profile-layout {
+            display: grid;
+
+            grid-template-columns:
+                370px
+                minmax(0, 1fr);
+
+            gap: 70px;
+
+            align-items: start;
+        }
+
+
+        /* =========================================================
+           LEFT PROFILE
+        ========================================================== */
+
+        .profile-column {
+            position: sticky;
+
+            top: 85px;
+
+            padding:
+                5px
+                0
+                30px;
+
+            text-align: left;
         }
 
 
         /* =========================================================
            PHOTO
-        ========================================================= */
+        ========================================================== */
 
-        .wp-photo-wrap {
+        .photo-stage {
             position: relative;
-            z-index: 2;
 
-            flex: 0 0 auto;
+            width: 200px;
+            height: 200px;
+
+            margin:
+                0
+                auto
+                28px;
         }
 
-        .wp-photo {
+        .photo-stage::before {
+            content: "";
+
+            position: absolute;
+
+            inset: -12px;
+
+            border-radius: 50%;
+
+            background:
+                conic-gradient(
+                    from 0deg,
+                    #8b5ac7,
+                    transparent 20%,
+                    #dcb967,
+                    transparent 43%,
+                    #7741ad,
+                    transparent 65%,
+                    #ead083,
+                    transparent 85%,
+                    #8b5ac7
+                );
+
+            animation:
+                rotatePhoto 10s linear infinite;
+        }
+
+        .photo-stage::after {
+            content: "";
+
+            position: absolute;
+
+            inset: -42px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(135, 72, 221, .23),
+                    transparent 67%
+                );
+
+            filter: blur(18px);
+
+            z-index: -1;
+        }
+
+        @keyframes rotatePhoto {
+
+            to {
+                transform:
+                    rotate(360deg);
+            }
+
+        }
+
+        .photo-ring {
+            position: absolute;
+
+            inset: 0;
+
+            padding: 5px;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #f8dda0,
+                    #b88332 23%,
+                    #f3d17b 48%,
+                    #8e642a 75%,
+                    #eed187
+                );
+
+            box-shadow:
+                0 0 0 2px rgba(255,255,255,.04),
+                0 0 38px rgba(213,169,79,.22),
+                0 25px 65px rgba(0,0,0,.45);
+        }
+
+        .profile-photo {
+            width: 100%;
+            height: 100%;
+
+            overflow: hidden;
+
+            border-radius: 50%;
+
+            background: #120a20;
+        }
+
+        .profile-photo img {
             display: block;
 
-            width: 112px;
-            height: 112px;
+            width: 100%;
+            height: 100%;
 
             object-fit: cover;
 
-            /* FOTO BULAT */
-            border-radius: 50%;
-
-            border:
-                5px solid rgba(255, 255, 255, .95);
-
-            box-shadow:
-                0 14px 30px rgba(67, 91, 77, .15);
+            transition:
+                transform .65s ease;
         }
 
-        .wp-photo-status {
+        .photo-stage:hover
+        .profile-photo img {
+            transform:
+                scale(1.055);
+        }
+
+        .online-dot {
             position: absolute;
 
-            right: -4px;
-            bottom: -4px;
+            right: 12px;
+            bottom: 12px;
 
-            width: 27px;
-            height: 27px;
+            width: 18px;
+            height: 18px;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            border:
+                3px solid
+                #11091d;
 
             border-radius: 50%;
 
-            background: var(--wp-white);
+            background: #c7a75c;
 
             box-shadow:
-                0 5px 15px rgba(67, 91, 77, .13);
-        }
-
-        .wp-photo-status span {
-            width: 11px;
-            height: 11px;
-
-            border-radius: 50%;
-
-            background: #78aa87;
+                0 0 0 4px rgba(199,167,92,.10),
+                0 0 18px rgba(199,167,92,.70);
         }
 
 
         /* =========================================================
            PROFILE IDENTITY
-        ========================================================= */
+        ========================================================== */
 
-        .wp-profile-identity {
-            position: relative;
-            z-index: 2;
+        .profile-info {
+            width: 100%;
 
-            min-width: 0;
+            text-align: left;
         }
 
-        .wp-profile-label {
-            margin-bottom: 6px;
+        .profile-label {
+            display: flex;
 
-            color: var(--wp-text-soft);
+            align-items: center;
 
-            font-size: 11px;
+            justify-content: center;
+
+            gap: 8px;
+
+            margin-bottom: 9px;
+
+            color: #caaa5d;
+
+            font-size: 8px;
+
             font-weight: 800;
 
-            letter-spacing: .13em;
+            letter-spacing: .30em;
+
             text-transform: uppercase;
+
+            text-align: center;
         }
 
-        .wp-profile-username {
-            color: var(--wp-green-deep);
+        .profile-label::before,
+        .profile-label::after {
+            content: "";
 
-            font-size: 25px;
-            line-height: 1.1;
+            width: 20px;
+            height: 1px;
 
-            font-weight: 800;
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(218,184,101,.7)
+                );
+        }
+
+        .profile-label::after {
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(218,184,101,.7),
+                    transparent
+                );
+        }
+
+        .profile-name {
+            color: #fff;
+
+            font-family:
+                "Playfair Display",
+                serif;
+
+            font-size: 43px;
+
+            font-weight: 600;
+
+            line-height: 1.05;
+
             letter-spacing: -.035em;
 
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            text-align: center;
+
+            text-shadow:
+                0 8px 35px rgba(0,0,0,.40);
+
+            word-break: break-word;
         }
 
-        .wp-profile-hint {
-            margin-top: 8px;
+        .email {
+            margin-top: 10px;
 
-            color: #718078;
+            color: #9b91a8;
 
-            font-size: 12px;
+            font-size: 11px;
+
+            font-weight: 500;
+
+            text-align: center;
+
+            word-break: break-word;
+        }
+
+
+        /* =========================================================
+           DIVIDER
+        ========================================================== */
+
+        .profile-divider {
+            width: 80%;
+
+            height: 1px;
+
+            margin:
+                22px
+                auto
+                22px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(218,181,98,.55),
+                    rgba(119,68,173,.35),
+                    transparent
+                );
+        }
+
+
+        /* =========================================================
+           INFORMATION PROFILE
+           FONT DIPERBESAR
+        ========================================================== */
+
+        .section-heading {
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: flex-start;
+
+            gap: 12px;
+
+            margin-bottom: 21px;
+
+            text-align: left;
+        }
+
+        .section-heading h2,
+        .section-heading p {
+            text-align: left;
+        }
+
+        .section-icon {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            border:
+                1px solid
+                rgba(216,181,106,.27);
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(216,181,106,.10),
+                    rgba(93,48,139,.20)
+                );
+
+            color: #e2c473;
+
+            box-shadow:
+                0 8px 20px rgba(0,0,0,.18);
+        }
+
+        .section-icon svg {
+            width: 19px;
+            height: 19px;
+        }
+
+        .section-heading h2 {
+            color: #f2ecf8;
+
+            font-size: 17px;
+
+            font-weight: 800;
+
+            line-height: 1.2;
+
+            letter-spacing: -.01em;
+        }
+
+        .section-heading p {
+            margin-top: 4px;
+
+            color: #8f849d;
+
+            font-size: 11px;
+
+            font-weight: 500;
+
             line-height: 1.5;
         }
 
 
         /* =========================================================
-           SECTION TITLE
-        ========================================================= */
+           FORM
+        ========================================================== */
 
-        .wp-section-title {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        .form-group {
+            margin-bottom: 19px;
 
-            margin-bottom: 18px;
+            text-align: left;
         }
 
-        .wp-section-title-left {
+        .form-label {
+            display: block;
+
+            margin-bottom: 9px;
+
+            color: #d8cfdf;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: .13em;
+
+            text-transform: uppercase;
+
+            text-align: left;
+        }
+
+        .input,
+        .textarea {
+            width: 100%;
+
+            outline: none;
+
+            border:
+                1px solid
+                rgba(164,130,205,.17);
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(35,21,54,.72),
+                    rgba(13,8,23,.90)
+                );
+
+            color: #f5eff9;
+
+            font-family:
+                "Manrope",
+                sans-serif;
+
+            font-size: 13px;
+
+            text-align: left;
+
+            transition:
+                border-color .25s ease,
+                box-shadow .25s ease;
+        }
+
+        .input {
+            height: 48px;
+
+            padding:
+                0
+                15px;
+        }
+
+        .textarea {
+            min-height: 150px;
+
+            padding:
+                15px
+                16px;
+
+            resize: vertical;
+
+            line-height: 1.75;
+        }
+
+        .input:focus,
+        .textarea:focus {
+            border-color:
+                rgba(220,184,102,.58);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(216,181,106,.06);
+        }
+
+        .input[readonly] {
+            color: #9c92a8;
+        }
+
+        .textarea::placeholder {
+            color: #61586c;
+        }
+
+
+        /* =========================================================
+           CHARACTER COUNT
+        ========================================================== */
+
+        .description-bottom {
             display: flex;
+
+            justify-content: flex-end;
+
+            margin-top: 6px;
+
+            color: #81768d;
+
+            font-size: 9px;
+
+            font-weight: 600;
+        }
+
+
+        /* =========================================================
+           UPLOAD
+        ========================================================== */
+
+        .upload-area {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-top: 8px;
+
+            padding:
+                14px
+                16px;
+
+            border:
+                1px solid
+                rgba(216,181,106,.17);
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(43,27,64,.60),
+                    rgba(17,10,28,.72)
+                );
+        }
+
+        .upload-info {
+            display: flex;
+
             align-items: center;
 
             gap: 10px;
         }
 
-        .wp-section-icon {
+        .upload-icon {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
             width: 38px;
             height: 38px;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            flex-shrink: 0;
 
-            border-radius: 50%;
+            border:
+                1px solid
+                rgba(216,181,106,.23);
 
-            color: var(--wp-green-dark);
-            background: var(--wp-green-soft);
+            border-radius: 10px;
+
+            background:
+                rgba(216,181,106,.07);
+
+            color: #d7b968;
         }
 
-        .wp-section-icon svg {
+        .upload-icon svg {
             width: 17px;
             height: 17px;
         }
 
-        .wp-section-title h2 {
-            color: var(--wp-text);
-
-            font-size: 15px;
-            font-weight: 800;
-        }
-
-
-        /* =========================================================
-           FORM
-        ========================================================= */
-
-        .wp-form-group {
-            margin-bottom: 17px;
-        }
-
-        .wp-form-label {
-            display: block;
-
-            margin-bottom: 8px;
-
-            color: #59675f;
-
-            font-size: 12px;
-            font-weight: 800;
-        }
-
-        .wp-input,
-        .wp-textarea {
-            width: 100%;
-
-            border:
-                1px solid rgba(225, 231, 226, .8);
-
-            outline: none;
-
-            color: var(--wp-text);
-            background: #fbfcfa;
-
-            font-family: inherit;
-            font-size: 13px;
-
-            transition:
-                border-color .2s ease,
-                box-shadow .2s ease,
-                background .2s ease;
-        }
-
-        .wp-input {
-            height: 50px;
-
-            padding: 0 18px;
-
-            border-radius: 999px;
-        }
-
-        .wp-textarea {
-            min-height: 130px;
-
-            padding: 16px 18px;
-
-            line-height: 1.65;
-
-            resize: vertical;
-
-            border-radius: 25px;
-        }
-
-        .wp-input:focus,
-        .wp-textarea:focus {
-            border-color:
-                rgba(120, 169, 135, .55);
-
-            background: var(--wp-white);
-
-            box-shadow:
-                0 0 0 4px rgba(120, 169, 135, .09);
-        }
-
-        .wp-input[readonly] {
-            color: #758078;
-
-            background: #f3f6f3;
-
-            cursor: not-allowed;
-        }
-
-        .wp-description-bottom {
-            display: flex;
-            justify-content: flex-end;
-
-            margin-top: 6px;
-
-            color: var(--wp-muted);
+        .upload-title {
+            color: #eee8f5;
 
             font-size: 11px;
+
+            font-weight: 800;
         }
 
+        .upload-desc {
+            margin-top: 3px;
 
-        /* =========================================================
-           UPLOAD FOTO
-        ========================================================= */
+            color: #776d82;
 
-        .wp-upload-area {
-            display: flex;
+            font-size: 9px;
+        }
+
+        .upload-button {
+            display: inline-flex;
+
             align-items: center;
-            justify-content: space-between;
 
-            gap: 14px;
+            justify-content: center;
 
-            padding: 14px 17px;
+            min-height: 38px;
 
-            border-radius: 999px;
+            padding:
+                0
+                17px;
+
+            border:
+                1px solid
+                rgba(220,184,102,.48);
+
+            border-radius: 10px;
 
             background:
                 linear-gradient(
-                    100deg,
-                    rgba(232, 243, 233, .70),
-                    rgba(248, 228, 233, .48)
+                    135deg,
+                    rgba(216,181,106,.15),
+                    rgba(111,67,159,.20)
                 );
-        }
 
-        .wp-upload-info {
-            display: flex;
-            align-items: center;
-
-            gap: 11px;
-
-            min-width: 0;
-        }
-
-        .wp-upload-icon {
-            flex: 0 0 auto;
-
-            width: 40px;
-            height: 40px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 50%;
-
-            color: var(--wp-pink-dark);
-
-            background:
-                rgba(255, 255, 255, .75);
-        }
-
-        .wp-upload-icon svg {
-            width: 18px;
-            height: 18px;
-        }
-
-        .wp-upload-text {
-            min-width: 0;
-        }
-
-        .wp-upload-title {
-            color: var(--wp-text);
-
-            font-size: 12px;
-            font-weight: 800;
-        }
-
-        .wp-upload-desc {
-            margin-top: 2px;
-
-            color: var(--wp-muted);
+            color: #e5ca7e;
 
             font-size: 10px;
-        }
 
-        .wp-upload-button {
-            flex: 0 0 auto;
-
-            position: relative;
-
-            padding: 10px 17px;
-
-            border: 0;
-            border-radius: 999px;
-
-            color: var(--wp-green-dark);
-
-            background: var(--wp-white);
-
-            box-shadow:
-                0 5px 14px rgba(72, 94, 82, .08);
-
-            font-family: inherit;
-
-            font-size: 11px;
             font-weight: 800;
 
             cursor: pointer;
 
-            transition: .2s ease;
+            transition:
+                transform .2s ease,
+                box-shadow .2s ease;
         }
 
-        .wp-upload-button:hover {
-            transform: translateY(-1px);
+        .upload-button:hover {
+            transform:
+                translateY(-2px);
 
             box-shadow:
-                0 8px 18px rgba(72, 94, 82, .12);
+                0 10px 25px rgba(0,0,0,.25);
         }
 
         #photo {
@@ -655,613 +977,1078 @@
 
         /* =========================================================
            AVAILABILITY
-        ========================================================= */
+        ========================================================== */
 
-        .wp-availability-card {
-            padding: 28px;
+        .availability-column {
+            position: relative;
+
+            width: 100%;
+
+            min-width: 0;
         }
 
-        .wp-availability-header {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-
-            gap: 20px;
-
-            margin-bottom: 21px;
+        .availability-header {
+            margin:
+                8px
+                0
+                24px;
         }
 
-        .wp-availability-heading {
+        .availability-eyebrow {
             display: flex;
 
-            gap: 12px;
-        }
-
-        .wp-big-icon {
-            flex: 0 0 auto;
-
-            width: 47px;
-            height: 47px;
-
-            display: flex;
             align-items: center;
-            justify-content: center;
 
-            border-radius: 50%;
+            gap: 9px;
 
-            color: var(--wp-green-dark);
+            margin-bottom: 8px;
+
+            color: #d2b263;
+
+            font-size: 8px;
+
+            font-weight: 800;
+
+            letter-spacing: .33em;
+
+            text-transform: uppercase;
+        }
+
+        .availability-eyebrow::before {
+            content: "";
+
+            width: 30px;
+            height: 1px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ddbd6f,
+                    transparent
+                );
+        }
+
+        .availability-title {
+            color: #fff;
+
+            font-family:
+                "Playfair Display",
+                serif;
+
+            font-size: 43px;
+
+            font-weight: 600;
+
+            line-height: 1.05;
+
+            letter-spacing: -.03em;
+        }
+
+        .availability-subtitle {
+            max-width: 650px;
+
+            margin-top: 12px;
+
+            color: #9d92aa;
+
+            font-size: 12px;
+
+            font-weight: 500;
+
+            line-height: 1.8;
+
+            letter-spacing: .005em;
+        }
+
+
+        /* =========================================================
+           SCHEDULE SHELL
+        ========================================================== */
+
+        .schedule-shell {
+            position: relative;
+
+            padding: 1px;
+
+            border-radius: 22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(223,187,101,.45),
+                    rgba(108,65,160,.16),
+                    rgba(255,255,255,.03),
+                    rgba(193,147,62,.27)
+                );
+
+            box-shadow:
+                0 25px 70px rgba(0,0,0,.36);
+        }
+
+        .schedule-inner {
+            padding: 22px;
+
+            border-radius: 21px;
 
             background:
                 linear-gradient(
                     145deg,
-                    #e5f0e8,
-                    #f6e6e9
+                    rgba(26,15,43,.94),
+                    rgba(9,6,17,.97)
                 );
         }
 
-        .wp-big-icon svg {
-            width: 21px;
-            height: 21px;
-        }
 
-        .wp-availability-title {
-            color: var(--wp-green-deep);
+        /* =========================================================
+           SCHEDULE HEADER
+        ========================================================== */
 
-            font-size: 20px;
-            line-height: 1.2;
+        .schedule-top {
+            display: flex;
 
-            font-weight: 800;
-
-            letter-spacing: -.025em;
-        }
-
-        .wp-availability-desc {
-            margin-top: 5px;
-
-            color: var(--wp-muted);
-
-            font-size: 11px;
-            line-height: 1.5;
-        }
-
-        .wp-count-badge {
-            display: inline-flex;
             align-items: center;
-            justify-content: center;
 
-            min-width: 34px;
-            height: 29px;
+            justify-content: space-between;
 
-            padding: 0 10px;
+            gap: 20px;
 
-            border-radius: 999px;
+            margin-bottom: 19px;
 
-            color: var(--wp-green-dark);
-            background: var(--wp-green-soft);
+            padding:
+                0
+                2px;
+        }
 
-            font-size: 11px;
+        .schedule-top-title {
+            color: #f1eaf7;
+
+            font-size: 14px;
+
             font-weight: 800;
+
+            letter-spacing: .01em;
+        }
+
+        .schedule-top-note {
+            color: #8e829b;
+
+            font-size: 10px;
+
+            font-weight: 600;
         }
 
 
         /* =========================================================
-           SCHEDULE
-        ========================================================= */
+           SCHEDULE LIST
+        ========================================================== */
 
-        .wp-schedule-list {
+        .schedule-list {
             display: flex;
+
             flex-direction: column;
 
-            gap: 10px;
-
-            max-height: 520px;
-
-            overflow-y: auto;
-
-            padding-right: 3px;
+            gap: 11px;
         }
 
-        .wp-schedule-list::-webkit-scrollbar {
-            width: 4px;
-        }
+        .schedule-item {
+            position: relative;
 
-        .wp-schedule-list::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .wp-schedule-list::-webkit-scrollbar-thumb {
-            border-radius: 999px;
-            background: #dce4df;
-        }
-
-        .wp-schedule {
-            display: grid;
-
-            grid-template-columns: 1fr auto;
+            display: flex;
 
             align-items: center;
 
-            gap: 14px;
+            justify-content: space-between;
 
-            padding: 14px 12px 14px 18px;
+            gap: 30px;
 
-            border-radius: 22px;
+            min-height: 92px;
 
-            background: #f7f9f6;
+            padding:
+                16px
+                20px
+                16px
+                24px;
 
-            transition:
-                transform .2s ease,
-                background .2s ease,
-                box-shadow .2s ease;
-        }
+            overflow: hidden;
 
-        .wp-schedule:hover {
-            transform: translateY(-2px);
+            border:
+                1px solid
+                rgba(255,255,255,.07);
 
-            background: #f4f8f4;
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(52,31,78,.78),
+                    rgba(20,11,34,.94)
+                );
 
             box-shadow:
-                0 8px 20px rgba(72, 94, 82, .06);
+                inset 0 1px 0
+                rgba(255,255,255,.025);
+
+            transition:
+                transform .25s ease,
+                border-color .25s ease,
+                box-shadow .25s ease;
         }
 
-        .wp-schedule-main {
-            min-width: 0;
+        .schedule-item::before {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+
+            top: 12px;
+
+            bottom: 12px;
+
+            width: 3px;
+
+            border-radius: 5px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #e5c675,
+                    #8a55c4
+                );
+
+            box-shadow:
+                0 0 12px
+                rgba(216,181,106,.22);
         }
 
-        .wp-schedule-day {
-            color: var(--wp-text);
+        .schedule-item::after {
+            content: "";
 
-            font-size: 13px;
-            font-weight: 800;
-        }
+            position: absolute;
 
-        .wp-schedule-time {
-            display: inline-flex;
-            align-items: center;
+            width: 170px;
+            height: 170px;
 
-            gap: 6px;
-
-            margin-top: 5px;
-
-            color: var(--wp-muted);
-
-            font-size: 11px;
-        }
-
-        .wp-time-dot {
-            width: 6px;
-            height: 6px;
+            right: -100px;
+            top: -100px;
 
             border-radius: 50%;
 
-            background: var(--wp-pink-dark);
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(213,169,79,.07),
+                    transparent 68%
+                );
+
+            pointer-events: none;
+        }
+
+        .schedule-item:hover {
+            transform:
+                translateY(-2px);
+
+            border-color:
+                rgba(216,181,106,.27);
+
+            box-shadow:
+                0 14px 34px
+                rgba(0,0,0,.28);
         }
 
 
         /* =========================================================
-           SELECT
-        ========================================================= */
+           DAY + TIME
+        ========================================================== */
 
-        .wp-status-select {
-            min-width: 145px;
-            height: 39px;
+        .schedule-main {
+            position: relative;
 
-            padding: 0 30px 0 15px;
+            z-index: 1;
 
-            border:
-                1px solid rgba(220, 229, 222, .8);
+            min-width: 0;
+        }
 
-            border-radius: 999px;
+        .schedule-day {
+            color: #f5eff9;
+
+            font-family:
+                "Playfair Display",
+                serif;
+
+            font-size: 24px;
+
+            font-weight: 600;
+
+            line-height: 1;
+        }
+
+        .schedule-time {
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            margin-top: 9px;
+
+            color: #b9afc4;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            letter-spacing: .02em;
+        }
+
+        .schedule-time span:not(.time-dot) {
+            color: #766c80;
+        }
+
+        .time-dot {
+            width: 6px;
+            height: 6px;
+
+            flex-shrink: 0;
+
+            border-radius: 50%;
+
+            background: #d9b968;
+
+            box-shadow:
+                0 0 10px
+                rgba(217,185,104,.75);
+        }
+
+
+        /* =========================================================
+           STATUS SELECT
+        ========================================================== */
+
+        .status-select {
+            position: relative;
+
+            z-index: 2;
+
+            min-width: 175px;
+
+            height: 48px;
+
+            padding:
+                0
+                42px
+                0
+                17px;
 
             outline: none;
 
-            color: var(--wp-green-dark);
+            appearance: none;
 
-            background-color: var(--wp-white);
+            border:
+                1px solid
+                rgba(216,181,106,.38);
 
-            font-family: inherit;
+            border-radius: 13px;
+
+            background-color: #211332;
+
+            background-image:
+                linear-gradient(
+                    45deg,
+                    transparent 50%,
+                    #e0bf6c 50%
+                ),
+                linear-gradient(
+                    135deg,
+                    #e0bf6c 50%,
+                    transparent 50%
+                );
+
+            background-position:
+                calc(100% - 19px) 20px,
+                calc(100% - 14px) 20px;
+
+            background-size:
+                6px 6px,
+                6px 6px;
+
+            background-repeat: no-repeat;
+
+            color: #e5c979;
+
+            font-family:
+                "Manrope",
+                sans-serif;
 
             font-size: 11px;
+
             font-weight: 800;
+
+            letter-spacing: .02em;
 
             cursor: pointer;
 
-            transition: .2s ease;
+            box-shadow:
+                0 8px 20px
+                rgba(0,0,0,.20);
+
+            transition:
+                border-color .25s ease,
+                box-shadow .25s ease,
+                transform .2s ease;
         }
 
-        .wp-status-select:hover,
-        .wp-status-select:focus {
+        .status-select:hover {
             border-color:
-                rgba(120, 169, 135, .60);
+                rgba(224,188,103,.70);
+
+            transform:
+                translateY(-2px);
 
             box-shadow:
-                0 0 0 3px rgba(120, 169, 135, .09);
+                0 10px 28px
+                rgba(0,0,0,.30),
+                0 0 18px
+                rgba(216,181,106,.07);
+        }
+
+        .status-select:focus {
+            border-color:
+                rgba(224,188,103,.80);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(216,181,106,.08),
+                0 10px 28px
+                rgba(0,0,0,.25);
+        }
+
+        .status-select option {
+            background: #1b102b;
+
+            color: #f5edfa;
+
+            font-family:
+                "Manrope",
+                sans-serif;
+
+            font-size: 11px;
         }
 
 
         /* =========================================================
            BOOKED
-        ========================================================= */
+        ========================================================== */
 
-        .wp-booked {
+        .booked-status {
+            position: relative;
+
+            z-index: 2;
+
             display: inline-flex;
+
             align-items: center;
 
-            gap: 7px;
+            gap: 8px;
 
-            min-height: 39px;
+            min-height: 48px;
 
-            padding: 0 15px;
+            padding:
+                0
+                17px;
 
-            border-radius: 999px;
+            border:
+                1px solid
+                rgba(255,70,108,.38);
 
-            color: #a56d7d;
+            border-radius: 13px;
 
-            background: #faeaee;
+            background:
+                rgba(95,27,46,.38);
+
+            color: #ff9caf;
 
             font-size: 10px;
+
             font-weight: 800;
 
             white-space: nowrap;
         }
 
-        .wp-booked svg {
-            width: 14px;
-            height: 14px;
+        .booked-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #ff416c;
+
+            box-shadow:
+                0 0 10px
+                rgba(255,65,108,.8);
         }
 
 
         /* =========================================================
            EMPTY
-        ========================================================= */
+        ========================================================== */
 
-        .wp-empty {
-            display: flex;
-            flex-direction: column;
-
-            align-items: center;
-            justify-content: center;
-
-            min-height: 250px;
-
-            padding: 30px;
+        .empty-schedule {
+            padding:
+                45px
+                20px;
 
             border:
-                1px dashed #dce4de;
+                1px solid
+                rgba(255,255,255,.055);
 
-            border-radius: 28px;
-
-            text-align: center;
+            border-radius: 15px;
 
             background:
-                linear-gradient(
-                    145deg,
-                    rgba(232, 243, 233, .35),
-                    rgba(248, 228, 233, .22)
-                );
+                rgba(20,12,32,.50);
+
+            text-align: center;
         }
 
-        .wp-empty-icon {
-            width: 58px;
-            height: 58px;
-
+        .empty-icon {
             display: flex;
+
             align-items: center;
+
             justify-content: center;
 
-            margin-bottom: 13px;
+            width: 42px;
+            height: 42px;
 
-            border-radius: 50%;
+            margin:
+                0
+                auto
+                11px;
 
-            color: var(--wp-green-dark);
+            border:
+                1px solid
+                rgba(216,181,106,.20);
 
-            background: var(--wp-white);
+            border-radius: 11px;
 
-            box-shadow:
-                0 9px 24px rgba(72, 94, 82, .08);
+            color: #c8a95d;
         }
 
-        .wp-empty-icon svg {
-            width: 23px;
-            height: 23px;
+        .empty-icon svg {
+            width: 18px;
+            height: 18px;
         }
 
-        .wp-empty-title {
-            color: var(--wp-text);
+        .empty-title {
+            color: #d8cfdf;
 
-            font-size: 13px;
+            font-size: 12px;
+
             font-weight: 800;
         }
 
-        .wp-empty-text {
-            margin-top: 5px;
+        .empty-text {
+            margin-top: 4px;
 
-            color: var(--wp-muted);
+            color: #756b80;
 
-            font-size: 11px;
+            font-size: 9px;
         }
 
 
         /* =========================================================
-           ACTION
-        ========================================================= */
+           SAVE BUTTON
+        ========================================================== */
 
-        .wp-actions {
+        .actions {
             display: flex;
 
-            align-items: center;
             justify-content: flex-end;
 
-            margin-top: 25px;
+            margin-top: 19px;
         }
 
-        .wp-btn {
+        .save-button {
+            position: relative;
+
             display: inline-flex;
 
             align-items: center;
+
             justify-content: center;
 
             gap: 8px;
 
             min-height: 48px;
 
-            padding: 0 24px;
+            padding:
+                0
+                25px;
 
-            border-radius: 999px;
+            overflow: hidden;
 
-            font-family: inherit;
+            border:
+                1px solid
+                rgba(245,216,132,.62);
 
-            font-size: 12px;
-            font-weight: 800;
-
-            cursor: pointer;
-
-            transition:
-                transform .2s ease,
-                box-shadow .2s ease,
-                background .2s ease;
-        }
-
-        .wp-btn-save {
-            border: 0;
-
-            color: white;
+            border-radius: 12px;
 
             background:
                 linear-gradient(
                     135deg,
-                    var(--wp-green),
-                    var(--wp-green-dark)
+                    #efd486,
+                    #bc9146
                 );
 
+            color: #211509;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
             box-shadow:
-                0 10px 23px rgba(82, 118, 99, .20);
+                0 13px 32px
+                rgba(195,151,62,.17);
+
+            transition:
+                transform .2s ease,
+                box-shadow .2s ease;
         }
 
-        .wp-btn-save:hover {
-            transform: translateY(-2px);
+        .save-button:hover {
+            transform:
+                translateY(-2px);
 
             box-shadow:
-                0 14px 28px rgba(82, 118, 99, .27);
+                0 18px 40px
+                rgba(195,151,62,.28);
         }
 
-        .wp-btn svg {
+        .save-button svg {
             width: 15px;
             height: 15px;
         }
 
 
         /* =========================================================
-           ERROR
-        ========================================================= */
-
-        .wp-error {
-            margin-bottom: 18px;
-
-            padding: 13px 17px;
-
-            border:
-                1px solid #f0cfd7;
-
-            border-radius: 20px;
-
-            color: #a85f73;
-
-            background: #fff2f5;
-
-            font-size: 12px;
-            line-height: 1.6;
-        }
-
-
-        /* =========================================================
            RESPONSIVE
-        ========================================================= */
+        ========================================================== */
 
-        @media (max-width: 950px) {
+        @media (max-width: 1150px) {
 
-            .wp-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .wp-availability-card {
-                min-height: auto;
-            }
-        }
-
-
-        @media (max-width: 650px) {
-
-            .wp-page {
+            main {
                 padding:
-                    25px 14px 45px;
+                    24px
+                    35px
+                    55px;
             }
 
-            .wp-profile-card,
-            .wp-availability-card {
-                padding: 20px;
+            .profile-layout {
+                grid-template-columns:
+                    320px
+                    minmax(0,1fr);
+
+                gap: 45px;
             }
 
-            .wp-profile-top {
-                align-items: flex-start;
-
-                flex-direction: column;
-
-                padding: 19px;
-
-                border-radius: 28px;
+            .photo-stage {
+                width: 205px;
+                height: 205px;
             }
 
-            .wp-photo {
-                width: 94px;
-                height: 94px;
-
-                border-radius: 50%;
+            .profile-name {
+                font-size: 38px;
             }
 
-            .wp-profile-username {
+            .availability-title,
+            .page-title {
+                font-size: 35px;
+            }
+
+            .availability-subtitle {
+                font-size: 11px;
+            }
+
+            .schedule-day {
                 font-size: 22px;
             }
 
-            .wp-upload-area {
+            .schedule-time {
+                font-size: 13px;
+            }
+
+            .status-select {
+                min-width: 160px;
+            }
+
+            .section-heading h2 {
+                font-size: 16px;
+            }
+
+            .section-heading p {
+                font-size: 10px;
+            }
+
+            .form-label {
+                font-size: 9px;
+            }
+
+            .input,
+            .textarea {
+                font-size: 12px;
+            }
+
+        }
+
+
+        @media (max-width: 850px) {
+
+            main {
+                padding:
+                    22px
+                    25px
+                    50px;
+            }
+
+            .profile-layout {
+                grid-template-columns: 1fr;
+
+                gap: 32px;
+            }
+
+            .profile-column {
+                position: relative;
+
+                top: auto;
+            }
+
+            .photo-stage {
+                width: 200px;
+                height: 200px;
+            }
+
+            .profile-name {
+                font-size: 36px;
+            }
+
+            .availability-title,
+            .page-title {
+                font-size: 32px;
+            }
+
+            .schedule-item {
                 align-items: flex-start;
 
                 flex-direction: column;
 
-                border-radius: 25px;
+                gap: 16px;
+
+                min-height: 0;
             }
 
-            .wp-upload-button {
+            .status-select,
+            .booked-status {
                 width: 100%;
             }
 
-            .wp-schedule {
-                grid-template-columns: 1fr;
+            .section-heading h2 {
+                font-size: 17px;
             }
 
-            .wp-status-select,
-            .wp-booked {
-                width: 100%;
+            .section-heading p {
+                font-size: 11px;
             }
 
-            .wp-actions {
-                margin-top: 20px;
+            .form-label {
+                font-size: 10px;
             }
 
-            .wp-btn-save {
-                width: 100%;
+            .input,
+            .textarea {
+                font-size: 13px;
             }
+
         }
+
+
+        @media (max-width: 600px) {
+
+            main {
+                padding:
+                    18px
+                    16px
+                    40px;
+            }
+
+            .photo-stage {
+                width: 175px;
+                height: 175px;
+            }
+
+            .profile-name {
+                font-size: 31px;
+            }
+
+            .availability-title,
+            .page-title {
+                font-size: 29px;
+            }
+
+            .availability-subtitle {
+                font-size: 10px;
+            }
+
+            .schedule-inner {
+                padding: 15px;
+            }
+
+            .schedule-top {
+                align-items: flex-start;
+
+                flex-direction: column;
+
+                gap: 5px;
+            }
+
+            .schedule-top-title {
+                font-size: 13px;
+            }
+
+            .schedule-top-note {
+                font-size: 9px;
+            }
+
+            .schedule-item {
+                padding:
+                    16px
+                    15px
+                    16px
+                    20px;
+            }
+
+            .schedule-day {
+                font-size: 22px;
+            }
+
+            .schedule-time {
+                font-size: 13px;
+            }
+
+            .section-icon {
+                width: 40px;
+                height: 40px;
+            }
+
+            .section-heading h2 {
+                font-size: 16px;
+            }
+
+            .section-heading p {
+                font-size: 10px;
+            }
+
+            .form-label {
+                font-size: 9px;
+            }
+
+            .input,
+            .textarea {
+                font-size: 12px;
+            }
+
+            .upload-area {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+            .upload-button {
+                width: 100%;
+            }
+
+            .actions {
+                justify-content: stretch;
+            }
+
+            .save-button {
+                width: 100%;
+            }
+
+        }
+
     </style>
+
 </head>
 
 
 <body>
 
-    {{-- =========================================================
-         NAVBAR GLOBAL
-    ========================================================== --}}
+
+    <div class="ambient-orb orb-purple"></div>
+
+    <div class="ambient-orb orb-gold"></div>
+
 
     @include('whisperly.navbar')
 
 
-    <main class="wp-page">
-
-        <div class="wp-container">
-
-            {{-- =================================================
-                 HEADER
-            ================================================== --}}
-
-            <header class="wp-heading">
-
-                <div class="wp-heading-left">
-
-                    <div class="wp-eyebrow">
-
-                        <span class="wp-eyebrow-dot"></span>
-
-                        Whisperly Profile
-
-                    </div>
+    <main>
 
 
-                    <h1 class="wp-title">
-                        Edit profil kamu
-                    </h1>
+        {{-- =====================================================
+             HEADER
+        ====================================================== --}}
+
+        <header class="page-header">
+
+            <div class="page-eyebrow">
+                PROFILE SETTINGS
+            </div>
+
+            <h1 class="page-title">
+                Edit profil kamu.
+            </h1>
+
+            <p class="page-subtitle">
+                Atur informasi profil dan ketersediaanmu supaya
+                pengguna Whisperly tahu lebih banyak tentangmu
+                dan kapan kamu siap menerima booking.
+            </p>
+
+        </header>
 
 
-                    <p class="wp-subtitle">
-                        Atur informasi profil dan ketersediaanmu
-                        supaya orang lain tahu kapan kamu siap menerima
-                        booking.
-                    </p>
+        {{-- =====================================================
+             SUCCESS
+        ====================================================== --}}
 
-                </div>
+        @if (session('success'))
 
-            </header>
+            <div class="success">
+                {{ session('success') }}
+            </div>
+
+        @endif
 
 
-            {{-- =================================================
-                 VALIDATION ERROR
-            ================================================== --}}
+        {{-- =====================================================
+             ERROR
+        ====================================================== --}}
 
-            @if ($errors->any())
+        @if ($errors->any())
 
-                <div class="wp-error">
+            <div class="error">
+
+                <strong>
+                    Terjadi kesalahan.
+                </strong>
+
+                <ul>
 
                     @foreach ($errors->all() as $error)
 
-                        <div>
+                        <li>
                             {{ $error }}
-                        </div>
+                        </li>
 
                     @endforeach
 
-                </div>
+                </ul>
 
-            @endif
+            </div>
 
-
-            {{-- =================================================
-                 FORM
-            ================================================== --}}
-
-            <form
-                action="{{ route('talent.update') }}"
-                method="POST"
-                enctype="multipart/form-data"
-            >
-
-                @csrf
-
-                @method('PUT')
+        @endif
 
 
-                <div class="wp-grid">
+        {{-- =====================================================
+             FORM
+        ====================================================== --}}
+
+        <form
+            action="{{ route('talent.update') }}"
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+            @csrf
+
+            @method('PUT')
 
 
-                    {{-- =================================================
-                         LEFT : PROFILE
-                    ================================================== --}}
-
-                    <section class="wp-card wp-profile-card">
+            <div class="profile-layout">
 
 
-                        {{-- Profile identity --}}
+                {{-- =================================================
+                     PROFILE LEFT
+                ================================================== --}}
 
-                        <div class="wp-profile-top">
+                <aside class="profile-column">
 
 
-                            <div class="wp-photo-wrap">
+                    {{-- FOTO CENTER --}}
 
-                                @if ($talent->photo)
+                    <div class="photo-stage">
+
+                        <div class="photo-ring">
+
+                            <div class="profile-photo">
+
+                                @php
+
+                                    $photo =
+                                        trim(
+                                            (string) $talent->photo
+                                        );
+
+                                    $photoUrl = null;
+
+                                    if ($photo) {
+
+                                        if (
+                                            filter_var(
+                                                $photo,
+                                                FILTER_VALIDATE_URL
+                                            )
+                                        ) {
+
+                                            $photoUrl = $photo;
+
+                                        } else {
+
+                                            $photo =
+                                                preg_replace(
+                                                    '#^public/#',
+                                                    '',
+                                                    ltrim(
+                                                        $photo,
+                                                        '/'
+                                                    )
+                                                );
+
+                                            $photoUrl =
+                                                asset(
+                                                    'storage/' . $photo
+                                                );
+
+                                        }
+
+                                    }
+
+                                @endphp
+
+
+                                @if ($photoUrl)
 
                                     <img
                                         id="photoPreview"
-                                        class="wp-photo"
-                                        src="{{ asset('storage/' . $talent->photo) }}"
+                                        src="{{ $photoUrl }}"
                                         alt="Foto Profil"
+                                        onerror="
+                                            this.onerror=null;
+                                            this.src='{{ asset('assets/images/faces/1.jpg') }}';
+                                        "
                                     >
 
                                 @else
@@ -1269,107 +2056,122 @@
                                     @php
 
                                         $faceNumber =
-                                            (abs(crc32($user->username)) % 8) + 1;
+                                            (
+                                                abs(
+                                                    crc32(
+                                                        $user->username
+                                                    )
+                                                ) % 8
+                                            ) + 1;
 
                                     @endphp
 
-
                                     <img
                                         id="photoPreview"
-                                        class="wp-photo"
-                                        src="{{ asset('assets/images/faces/' . $faceNumber . '.jpg') }}"
+                                        src="{{ asset(
+                                            'assets/images/faces/' .
+                                            $faceNumber .
+                                            '.jpg'
+                                        ) }}"
                                         alt="Foto Profil"
                                     >
 
                                 @endif
 
-
-                                <div class="wp-photo-status">
-
-                                    <span></span>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="wp-profile-identity">
-
-                                <div class="wp-profile-label">
-                                    Foto Profil
-                                </div>
-
-
-                                <div class="wp-profile-username">
-                                    {{ $user->username }}
-                                </div>
-
-
-                                <div class="wp-profile-hint">
-                                    Profil kamu akan terlihat seperti ini
-                                    oleh pengguna Whisperly lainnya.
-                                </div>
-
                             </div>
 
                         </div>
 
 
-                        {{-- Section --}}
+                        <span class="online-dot"></span>
 
-                        <div class="wp-section-title">
+                    </div>
 
-                            <div class="wp-section-title-left">
 
-                                <div class="wp-section-icon">
+                    {{-- =================================================
+                         IDENTITAS CENTER
+                    ================================================== --}}
 
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                    >
+                    <div class="profile-info">
 
-                                        <path
-                                            d="M20 21a8 8 0 0 0-16 0"
-                                        ></path>
+                        <div class="profile-label">
+                            WHISPERLY TALENT
+                        </div>
 
-                                        <circle
-                                            cx="12"
-                                            cy="7"
-                                            r="4"
-                                        ></circle>
+                        <h2 class="profile-name">
+                            {{ ucfirst($user->username) }}
+                        </h2>
 
-                                    </svg>
+                        <div class="email">
+                            {{ $user->email }}
+                        </div>
 
-                                </div>
 
+                        {{-- GARIS --}}
+
+                        <div class="profile-divider"></div>
+
+
+                        {{-- =================================================
+                             INFORMASI PROFIL
+                        ================================================== --}}
+
+                        <div class="section-heading">
+
+                            <div class="section-icon">
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                >
+
+                                    <path
+                                        d="M20 21a8 8 0 0 0-16 0"
+                                    ></path>
+
+                                    <circle
+                                        cx="12"
+                                        cy="7"
+                                        r="4"
+                                    ></circle>
+
+                                </svg>
+
+                            </div>
+
+
+                            <div>
 
                                 <h2>
                                     Informasi Profil
                                 </h2>
 
+                                <p>
+                                    Informasi dasar profil kamu
+                                </p>
+
                             </div>
 
                         </div>
 
 
-                        {{-- Username --}}
+                        {{-- USERNAME --}}
 
-                        <div class="wp-form-group">
+                        <div class="form-group">
 
                             <label
                                 for="username"
-                                class="wp-form-label"
+                                class="form-label"
                             >
                                 Username
                             </label>
 
-
                             <input
                                 type="text"
                                 id="username"
-                                class="wp-input"
+                                class="input"
                                 value="{{ $user->username }}"
                                 readonly
                             >
@@ -1377,22 +2179,21 @@
                         </div>
 
 
-                        {{-- Email --}}
+                        {{-- EMAIL --}}
 
-                        <div class="wp-form-group">
+                        <div class="form-group">
 
                             <label
                                 for="email"
-                                class="wp-form-label"
+                                class="form-label"
                             >
                                 Email
                             </label>
 
-
                             <input
                                 type="email"
                                 id="email"
-                                class="wp-input"
+                                class="input"
                                 value="{{ $user->email }}"
                                 readonly
                             >
@@ -1400,29 +2201,28 @@
                         </div>
 
 
-                        {{-- Description --}}
+                        {{-- ABOUT YOU --}}
 
-                        <div class="wp-form-group">
+                        <div class="form-group">
 
                             <label
                                 for="description"
-                                class="wp-form-label"
+                                class="form-label"
                             >
                                 About You
                             </label>
 
-
                             <textarea
                                 name="description"
                                 id="description"
-                                class="wp-textarea"
+                                class="textarea"
                                 maxlength="2000"
                                 required
                                 placeholder="Ceritakan sedikit tentang dirimu..."
                             >{{ old('description', $talent->deskripsi ?? '') }}</textarea>
 
 
-                            <div class="wp-description-bottom">
+                            <div class="description-bottom">
 
                                 <span id="charCount">
                                     0 / 2000
@@ -1433,13 +2233,13 @@
                         </div>
 
 
-                        {{-- Upload --}}
+                        {{-- GANTI FOTO --}}
 
-                        <div class="wp-upload-area">
+                        <div class="upload-area">
 
-                            <div class="wp-upload-info">
+                            <div class="upload-info">
 
-                                <div class="wp-upload-icon">
+                                <div class="upload-icon">
 
                                     <svg
                                         viewBox="0 0 24 24"
@@ -1459,13 +2259,13 @@
                                 </div>
 
 
-                                <div class="wp-upload-text">
+                                <div>
 
-                                    <div class="wp-upload-title">
+                                    <div class="upload-title">
                                         Ganti Foto
                                     </div>
 
-                                    <div class="wp-upload-desc">
+                                    <div class="upload-desc">
                                         JPG, PNG atau WEBP · Maks. 2 MB
                                     </div>
 
@@ -1476,7 +2276,7 @@
 
                             <label
                                 for="photo"
-                                class="wp-upload-button"
+                                class="upload-button"
                             >
                                 Pilih Foto
                             </label>
@@ -1491,137 +2291,163 @@
 
                         </div>
 
-                    </section>
+                    </div>
+
+                </aside>
 
 
+                {{-- =================================================
+                     AVAILABILITY RIGHT
+                ================================================== --}}
 
-                    {{-- =================================================
-                         RIGHT : AVAILABILITY
-                    ================================================== --}}
-
-                    <section class="wp-card wp-availability-card">
-
-
-                        <div class="wp-availability-header">
-
-                            <div class="wp-availability-heading">
+                <section class="availability-column">
 
 
-                                <div class="wp-big-icon">
+                    <header class="availability-header">
 
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                    >
+                        <div class="availability-eyebrow">
+                            PROFILE AVAILABILITY
+                        </div>
 
-                                        <rect
-                                            x="3"
-                                            y="4"
-                                            width="18"
-                                            height="17"
-                                            rx="3"
-                                        ></rect>
+                        <h2 class="availability-title">
+                            Atur waktu terbaikmu.
+                        </h2>
 
-                                        <path d="M8 2v4"></path>
+                        <p class="availability-subtitle">
+                            Tentukan jadwal kapan kamu tersedia untuk
+                            menerima booking dari pengguna Whisperly.
+                        </p>
 
-                                        <path d="M16 2v4"></path>
+                    </header>
 
-                                        <path d="M3 10h18"></path>
 
-                                        <path d="M8 14h.01"></path>
+                    <div class="schedule-shell">
 
-                                        <path d="M12 14h.01"></path>
+                        <div class="schedule-inner">
 
-                                        <path d="M16 14h.01"></path>
 
-                                        <path d="M8 18h.01"></path>
+                            <div class="schedule-top">
 
-                                        <path d="M12 18h.01"></path>
-
-                                    </svg>
-
+                                <div class="schedule-top-title">
+                                    Jadwal Talent
                                 </div>
 
-
-                                <div>
-
-                                    <h2 class="wp-availability-title">
-                                        Availability
-                                    </h2>
-
-
-                                    <p class="wp-availability-desc">
-                                        Tentukan kapan kamu tersedia
-                                        untuk menerima booking.
-                                    </p>
-
+                                <div class="schedule-top-note">
+                                    Pilih status setiap jadwal
                                 </div>
 
                             </div>
 
 
-                            @if ($talent->schedules)
-
-                                <span class="wp-count-badge">
-                                    {{ $talent->schedules->count() }}
-                                </span>
-
-                            @endif
-
-                        </div>
+                            @if ($talent->schedules->count())
 
 
-                        {{-- Schedule --}}
-
-                        @forelse ($talent->schedules as $schedule)
-
-                            @php
-
-                                $status =
-                                    $schedule->resolveStatusForDate(
-                                        now(config('app.timezone'))
-                                            ->toDateString()
-                                    );
-
-                            @endphp
+                                <div class="schedule-list">
 
 
-                            <div class="wp-schedule">
+                                    @foreach ($talent->schedules as $schedule)
 
 
-                                <div class="wp-schedule-main">
+                                        @php
 
-                                    <div class="wp-schedule-day">
-                                        {{ $schedule->day }}
-                                    </div>
+                                            $status =
+                                                $schedule->resolveStatusForDate(
+                                                    now(
+                                                        config('app.timezone')
+                                                    )->toDateString()
+                                                );
+
+                                        @endphp
 
 
-                                    <div class="wp-schedule-time">
+                                        <div class="schedule-item">
 
-                                        <span class="wp-time-dot"></span>
 
-                                        {{ substr($schedule->start_time, 0, 5) }}
+                                            <div class="schedule-main">
 
-                                        <span>—</span>
+                                                <div class="schedule-day">
+                                                    {{ $schedule->day }}
+                                                </div>
 
-                                        {{ substr($schedule->end_time, 0, 5) }}
 
-                                    </div>
+                                                <div class="schedule-time">
+
+                                                    <span class="time-dot"></span>
+
+                                                    {{ substr($schedule->start_time, 0, 5) }}
+
+                                                    <span>
+                                                        —
+                                                    </span>
+
+                                                    {{ substr($schedule->end_time, 0, 5) }}
+
+                                                </div>
+
+                                            </div>
+
+
+                                            @if ($status === 'booked')
+
+
+                                                <div class="booked-status">
+
+                                                    <span class="booked-dot"></span>
+
+                                                    Sudah Dibooking
+
+                                                </div>
+
+
+                                            @else
+
+
+                                                <select
+                                                    name="schedule[{{ $schedule->id }}]"
+                                                    class="status-select"
+                                                >
+
+                                                    <option
+                                                        value="available"
+                                                        {{ $status === 'available' ? 'selected' : '' }}
+                                                    >
+                                                        Tersedia
+                                                    </option>
+
+                                                    <option
+                                                        value="unavailable"
+                                                        {{ $status === 'unavailable' ? 'selected' : '' }}
+                                                    >
+                                                        Tidak Tersedia
+                                                    </option>
+
+                                                </select>
+
+
+                                            @endif
+
+
+                                        </div>
+
+
+                                    @endforeach
+
 
                                 </div>
 
 
-                                @if ($status === 'booked')
+                            @else
 
-                                    <div class="wp-booked">
+
+                                <div class="empty-schedule">
+
+                                    <div class="empty-icon">
 
                                         <svg
                                             viewBox="0 0 24 24"
                                             fill="none"
                                             stroke="currentColor"
-                                            stroke-width="2"
+                                            stroke-width="1.7"
                                         >
 
                                             <rect
@@ -1638,136 +2464,78 @@
 
                                             <path d="M3 10h18"></path>
 
-                                            <path d="M9 15l2 2 4-4"></path>
-
                                         </svg>
-
-                                        Sudah Dibooking
 
                                     </div>
 
-                                @else
 
-                                    <select
-                                        name="schedule[{{ $schedule->id }}]"
-                                        class="wp-status-select"
-                                    >
-
-                                        <option
-                                            value="available"
-                                            {{ $status === 'available' ? 'selected' : '' }}
-                                        >
-                                            Tersedia
-                                        </option>
+                                    <div class="empty-title">
+                                        Belum ada jadwal
+                                    </div>
 
 
-                                        <option
-                                            value="unavailable"
-                                            {{ $status === 'unavailable' ? 'selected' : '' }}
-                                        >
-                                            Tidak Tersedia
-                                        </option>
-
-                                    </select>
-
-                                @endif
-
-                            </div>
-
-
-                        @empty
-
-
-                            <div class="wp-empty">
-
-                                <div class="wp-empty-icon">
-
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.7"
-                                    >
-
-                                        <rect
-                                            x="3"
-                                            y="4"
-                                            width="18"
-                                            height="17"
-                                            rx="3"
-                                        ></rect>
-
-                                        <path d="M8 2v4"></path>
-
-                                        <path d="M16 2v4"></path>
-
-                                        <path d="M3 10h18"></path>
-
-                                    </svg>
+                                    <div class="empty-text">
+                                        Jadwal kamu akan muncul di sini.
+                                    </div>
 
                                 </div>
 
 
-                                <div class="wp-empty-title">
-                                    Belum ada jadwal
-                                </div>
+                            @endif
 
 
-                                <div class="wp-empty-text">
-                                    Jadwal kamu akan muncul di sini.
-                                </div>
+                        </div>
 
-                            </div>
+                    </div>
 
 
-                        @endforelse
+                    {{-- =================================================
+                         SAVE
+                    ================================================== --}}
 
-                    </section>
+                    <div class="actions">
 
-                </div>
-
-
-
-                {{-- =================================================
-                     ACTIONS
-                ================================================== --}}
-
-                <div class="wp-actions">
-
-                    <button
-                        type="submit"
-                        class="wp-btn wp-btn-save"
-                    >
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
+                        <button
+                            type="submit"
+                            class="save-button"
                         >
 
-                            <path
-                                d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"
-                            ></path>
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                            >
 
-                            <path d="M17 21v-8H7v8"></path>
+                                <path
+                                    d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"
+                                ></path>
 
-                            <path d="M7 3v5h8"></path>
+                                <path
+                                    d="M17 21v-8H7v8"
+                                ></path>
 
-                        </svg>
+                                <path
+                                    d="M7 3v5h8"
+                                ></path>
 
-                        Simpan Perubahan
+                            </svg>
 
-                    </button>
+                            Simpan Perubahan
 
-                </div>
+                        </button>
 
-            </form>
+                    </div>
 
-        </div>
+
+                </section>
+
+
+            </div>
+
+        </form>
 
     </main>
-
 
 
     <script>
@@ -1777,19 +2545,23 @@
         ========================================================== */
 
         const photoInput =
-            document.getElementById('photo');
+            document.getElementById("photo");
 
         const photoPreview =
-            document.getElementById('photoPreview');
+            document.getElementById("photoPreview");
 
 
-        if (photoInput && photoPreview) {
+        if (
+            photoInput &&
+            photoPreview
+        ) {
 
             photoInput.addEventListener(
-                'change',
+                "change",
                 function () {
 
-                    const file = this.files[0];
+                    const file =
+                        this.files[0];
 
                     if (!file) {
                         return;
@@ -1797,31 +2569,38 @@
 
 
                     const allowedTypes = [
-                        'image/jpeg',
-                        'image/png',
-                        'image/webp'
+                        "image/jpeg",
+                        "image/png",
+                        "image/webp"
                     ];
 
 
-                    if (!allowedTypes.includes(file.type)) {
+                    if (
+                        !allowedTypes.includes(
+                            file.type
+                        )
+                    ) {
 
                         alert(
-                            'Format foto harus JPG, PNG, atau WEBP.'
+                            "Format foto harus JPG, PNG, atau WEBP."
                         );
 
-                        this.value = '';
+                        this.value = "";
 
                         return;
                     }
 
 
-                    if (file.size > 2 * 1024 * 1024) {
+                    if (
+                        file.size >
+                        2 * 1024 * 1024
+                    ) {
 
                         alert(
-                            'Ukuran foto maksimal 2 MB.'
+                            "Ukuran foto maksimal 2 MB."
                         );
 
-                        this.value = '';
+                        this.value = "";
 
                         return;
                     }
@@ -1848,24 +2627,29 @@
         }
 
 
-
         /* =========================================================
-           DESCRIPTION CHARACTER COUNT
+           CHARACTER COUNTER
         ========================================================== */
 
         const description =
-            document.getElementById('description');
+            document.getElementById(
+                "description"
+            );
 
         const charCount =
-            document.getElementById('charCount');
+            document.getElementById(
+                "charCount"
+            );
 
 
         function updateCharCount() {
 
-            if (!description || !charCount) {
+            if (
+                !description ||
+                !charCount
+            ) {
                 return;
             }
-
 
             charCount.textContent =
                 `${description.value.length} / 2000`;
@@ -1876,7 +2660,7 @@
         if (description) {
 
             description.addEventListener(
-                'input',
+                "input",
                 updateCharCount
             );
 
@@ -1889,4 +2673,4 @@
 </body>
 
 </html>
-```
+
