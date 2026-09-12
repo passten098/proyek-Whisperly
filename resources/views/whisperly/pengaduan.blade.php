@@ -2194,6 +2194,7 @@ Ceritakan apa saja yang ingin kamu sampaikan...
 
                                 <textarea
                                     name="komentar"
+                                    id="commentInput"
                                     placeholder="Tulis tanggapanmu..."
                                     required
                                 ></textarea>
@@ -2256,6 +2257,30 @@ Ceritakan apa saja yang ingin kamu sampaikan...
 
 
 </div>
+
+
+<script>
+
+    // ENTER UNTUK MENGIRIM BALASAN
+    const commentInputs = document.querySelectorAll('.reply-form textarea');
+
+    commentInputs.forEach(function(commentInput) {
+
+        commentInput.addEventListener('keydown', function(e) {
+
+            if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
+
+                e.preventDefault();
+
+                this.form.submit();
+
+            }
+
+        });
+
+    });
+
+</script>
 
 
 </body>

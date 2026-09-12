@@ -22,7 +22,7 @@ class commentsController extends Controller
 
 	public function index(Request $request)
 	{
-		$query = comments::query();
+		 $query = comments::with(['menfess', 'pengguna']);
 		if($request->has('search')){
 			$search = $request->get('search');
 			// $query->where('name', 'like', "%$search%");
