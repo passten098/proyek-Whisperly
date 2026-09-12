@@ -9,7 +9,9 @@ use App\Http\Controllers\WhisperlyBookingController;
 use App\Http\Controllers\WhisperlyChatController;
 use App\Http\Controllers\WhisperlyProfileController;
 use App\Modules\menfess\Controllers\menfessController;
+use App\Modules\talents\Models\talents;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 
 /*
@@ -74,8 +76,22 @@ Route::middleware([
     'auth:whisperly'
 ])->group(function () {
 
-    Route::view('/whisperly', 'whisperly.home')
-        ->name('whisperly.home');
+    Route::get('/whisperly', function () {
+    $currentUser = Auth::guard('whisperly')->user();
+
+    $currentTalentProfile = null;
+
+    if ($currentUser) {
+        $currentTalentProfile = talents::with('pengguna')
+            ->where('pengguna_id', $currentUser->id)
+            ->first();
+    }
+
+    return view('whisperly.home', compact(
+        'currentUser',
+        'currentTalentProfile'
+    ));
+})->name('whisperly.home');
 
     Route::view('/selamat', 'whisperly.home')
         ->name('selamat');

@@ -47,13 +47,8 @@
             background-color: #a9d2f5;
 
             background-image:
-            linear-gradient(
-            rgba(183,216,246,0.55),
-            rgba(183,216,246,0.55)
-        ),
-                url('{{ asset('assets/images/chat-background.jpg') }}');
 
-            background-size: cover;
+                url('{{ asset('assets/images/chat-background.jpg') }}');
 
             background-position: center;
 
@@ -81,15 +76,12 @@
 
             grid-template-columns: 360px minmax(0, 1fr);
 
-            background: rgba(255, 255, 255, .96);
+            background: transparent;
 
             border-radius: 28px;
 
             overflow: hidden;
 
-            box-shadow:
-                0 20px 60px
-                rgba(35, 101, 160, .20);
         }
 
 
@@ -99,18 +91,24 @@
 
         .sidebar {
 
-            background: #ffffff;
+    background: #ffffff;
 
-            border-right: 1px solid #dceafb;
+    border-right: 1px solid #dceafb;
 
-            display: flex;
+    display: flex;
 
-            flex-direction: column;
+    flex-direction: column;
 
-            min-width: 0;
+    min-width: 0;
 
-            min-height: 0;
-        }
+    min-height: 0;
+
+    border-top-right-radius: 40px;
+
+    border-bottom-right-radius: 40px;
+
+    overflow: hidden;
+}
 
 
         .sidebar-header {
@@ -464,22 +462,12 @@
         .room {
     min-width: 0;
     min-height: 0;
+
     display: flex;
     flex-direction: column;
     overflow: hidden;
 
-    background-color: #a9d2f5;
-
-    background-image:
-        linear-gradient(
-            rgba(183,216,246,0.55),
-            rgba(183,216,246,0.55)
-        ),
-        url('{{ asset('assets/images/chat-background.jpg') }}');
-
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background: transparent;
 
     position: relative;
 }
@@ -490,28 +478,34 @@
         ========================================================== */
 
         .room-header {
+    height: 92px;
+    min-height: 92px;
+    flex-shrink: 0;
 
-            height: 92px;
+    margin: 12px 12px 0;
 
-            min-height: 92px;
+    background:
+        rgba(255, 255, 255, .96);
 
-            flex-shrink: 0;
+    border:
+        1px solid #d7e8fa;
 
-            background:
-                rgba(255, 255, 255, .96);
+    border-radius: 28px;
 
-            border-bottom:
-                1px solid #d7e8fa;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-            display: flex;
+    padding:
+        0 28px;
 
-            align-items: center;
+    box-shadow:
+        0 5px 15px
+        rgba(51, 110, 160, .08);
 
-            justify-content: space-between;
-
-            padding:
-                0 28px;
-        }
+    position: relative;
+    z-index: 5;
+}
 
 
         .room-person {
@@ -1514,24 +1508,30 @@
         ========================================================== */
 
         .composer {
+    flex-shrink: 0;
 
-            flex-shrink: 0;
+    width: calc(100% - 24px);
 
-            width: 100%;
+    margin: 0 12px 12px;
 
-            padding:
-                15px 24px 20px;
+    padding:
+        15px 24px 20px;
 
-            background:
-                rgba(255, 255, 255, .97);
+    background:
+        rgba(255, 255, 255, .97);
 
-            border-top:
-                1px solid #d5e7f8;
+    border:
+        1px solid #d5e7f8;
 
-            position: relative;
+    border-radius: 28px;
 
-            z-index: 5;
-        }
+    position: relative;
+    z-index: 5;
+
+    box-shadow:
+        0 5px 15px
+        rgba(51, 110, 160, .08);
+}
 
 
         .composer form {

@@ -7,6 +7,7 @@ use App\Modules\ratings\Models\ratings;
 use App\Modules\talents\Models\TalentSchedule;
 use App\Modules\pengguna\Models\pengguna;
 use App\Modules\talents\Models\talents;
+use App\Modules\chat\Models\WhisperlyChatUserState;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -36,7 +37,6 @@ class WhisperlyBookingController extends Controller
             ],
         ]);
 
-
         /*
         |--------------------------------------------------------------------------
         | USER LOGIN
@@ -44,7 +44,6 @@ class WhisperlyBookingController extends Controller
         */
 
         $user = $request->user('whisperly');
-
 
         if (!$user) {
 
@@ -55,7 +54,6 @@ class WhisperlyBookingController extends Controller
                     'Silakan login terlebih dahulu.'
                 );
         }
-
 
         /*
         |--------------------------------------------------------------------------
@@ -74,7 +72,6 @@ class WhisperlyBookingController extends Controller
             )
             ->first();
 
-
         if (!$talent) {
 
             return redirect()
@@ -86,7 +83,6 @@ class WhisperlyBookingController extends Controller
                     'Talent tidak ditemukan.'
                 );
         }
-
 
         /*
         |--------------------------------------------------------------------------
@@ -101,7 +97,6 @@ class WhisperlyBookingController extends Controller
             )
             ->first();
 
-
         if (!$profile) {
 
             return redirect()
@@ -113,7 +108,6 @@ class WhisperlyBookingController extends Controller
                     'Profil talent tidak ditemukan.'
                 );
         }
-
 
         /*
         |--------------------------------------------------------------------------
@@ -134,17 +128,6 @@ class WhisperlyBookingController extends Controller
                     |--------------------------------------------------------------------------
                     | CARI JADWAL
                     |--------------------------------------------------------------------------
-                    |
-                    | Tidak menggunakan schedule_date karena tabel
-                    | talent_schedules sekarang hanya menyimpan:
-                    |
-                    | id
-                    | talent_id
-                    | start_time
-                    | end_time
-                    | status
-                    |
-                    |--------------------------------------------------------------------------
                     */
 
                     $schedule = TalentSchedule::query()
@@ -159,17 +142,9 @@ class WhisperlyBookingController extends Controller
                         ->lockForUpdate()
                         ->first();
 
-
-                    /*
-                    |--------------------------------------------------------------------------
-                    | JADWAL TIDAK DITEMUKAN
-                    |--------------------------------------------------------------------------
-                    */
-
                     if (!$schedule) {
                         return null;
                     }
-
 
                     /*
                     |--------------------------------------------------------------------------
@@ -181,10 +156,9 @@ class WhisperlyBookingController extends Controller
                         return null;
                     }
 
-
                     /*
                     |--------------------------------------------------------------------------
-                    | CEK JAM SUDAH LEWAT ATAU BELUM
+                    | CEK JAM
                     |--------------------------------------------------------------------------
                     */
 
@@ -201,15 +175,13 @@ class WhisperlyBookingController extends Controller
                         $now->day
                     );
 
-
                     if ($endTime->lessThanOrEqualTo($now)) {
                         return null;
                     }
 
-
                     /*
                     |--------------------------------------------------------------------------
-                    | CEK APAKAH JAM SUDAH DIBOOKING
+                    | CEK BOOKING LAMA
                     |--------------------------------------------------------------------------
                     */
 
@@ -222,14 +194,7 @@ class WhisperlyBookingController extends Controller
                         ->lockForUpdate()
                         ->first();
 
-
                     if ($existingBooking) {
-
-                        /*
-                        |--------------------------------------------------------------------------
-                        | KALAU SUDAH PERNAH DIBOOKING USER YANG SAMA
-                        |--------------------------------------------------------------------------
-                        */
 
                         if (
                             $existingBooking->pengguna_id ===
@@ -238,45 +203,94 @@ class WhisperlyBookingController extends Controller
                             return $existingBooking;
                         }
 
-
-                        /*
-                        |--------------------------------------------------------------------------
-                        | SUDAH DIBOOKING USER LAIN
-                        |--------------------------------------------------------------------------
-                        */
-
                         return null;
                     }
 
-
                     /*
                     |--------------------------------------------------------------------------
-                    | BUAT BOOKING
+                    | BUAT BOOKING BARU
                     |--------------------------------------------------------------------------
                     */
 
                     $booking = WhisperlyBooking::create([
-                        'pengguna_id' => $user->id,
-                        'talent_id' => $profile->id,
-                        'schedule_id' => $schedule->id,
-                        'status' => 'upcoming',
+                        'pengguna_id' =>
+                            $user->id,
+
+                        'talent_id' =>
+                            $profile->id,
+
+                        'schedule_id' =>
+                            $schedule->id,
+
+                        'status' =>
+                            'upcoming',
                     ]);
 
+                    /*
+                    |--------------------------------------------------------------------------
+                    | RESET CHAT USER
+                    |--------------------------------------------------------------------------
+                    |
+                    | Booking baru berarti chat boleh digunakan kembali.
+                    |
+                    | deleted_at = null
+                    | cleared_at = waktu booking baru
+                    |
+                    | Dengan cleared_at, pesan dari chat lama
+                    | tidak akan ditampilkan lagi.
+                    |--------------------------------------------------------------------------
+                    */
+
+                    $userChatState =
+                        WhisperlyChatUserState::firstOrCreate([
+                            'user_id' =>
+                                $user->id,
+
+                            'contact_user_id' =>
+                                $profile->pengguna_id,
+                        ]);
+
+                    $userChatState->forceFill([
+                        'deleted_at' =>
+                            null,
+
+                        'cleared_at' =>
+                            now(),
+                    ])->save();
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | RESET CHAT DI SISI TALENT
+                    |--------------------------------------------------------------------------
+                    */
+
+                    $talentChatState =
+                        WhisperlyChatUserState::firstOrCreate([
+                            'user_id' =>
+                                $profile->pengguna_id,
+
+                            'contact_user_id' =>
+                                $user->id,
+                        ]);
+
+                    $talentChatState->forceFill([
+                        'deleted_at' =>
+                            null,
+
+                        'cleared_at' =>
+                            now(),
+                    ])->save();
 
                     /*
                     |--------------------------------------------------------------------------
                     | UBAH STATUS JADWAL
                     |--------------------------------------------------------------------------
-                    |
-                    | available → booked
-                    |
-                    |--------------------------------------------------------------------------
                     */
 
                     $schedule->update([
-                        'status' => 'booked',
+                        'status' =>
+                            'booked',
                     ]);
-
 
                     /*
                     |--------------------------------------------------------------------------
@@ -284,13 +298,13 @@ class WhisperlyBookingController extends Controller
                     |--------------------------------------------------------------------------
                     */
 
-                    $booking->syncLaralagBooking(true);
-
+                    $booking->syncLaralagBooking(
+                        true
+                    );
 
                     return $booking;
                 }
             );
-
 
             /*
             |--------------------------------------------------------------------------
@@ -304,7 +318,8 @@ class WhisperlyBookingController extends Controller
                     ->route(
                         'whisperly.talents.show',
                         [
-                            'username' => $username
+                            'username' =>
+                                $username
                         ]
                     )
                     ->with(
@@ -313,16 +328,9 @@ class WhisperlyBookingController extends Controller
                     );
             }
 
-
             /*
             |--------------------------------------------------------------------------
             | BOOKING BERHASIL
-            |--------------------------------------------------------------------------
-            |
-            | Data booking_success dan booking_id tetap dikirim
-            | supaya popup booking yang sudah kamu buat sebelumnya
-            | tetap bisa membaca hasil booking.
-            |
             |--------------------------------------------------------------------------
             */
 
@@ -330,7 +338,8 @@ class WhisperlyBookingController extends Controller
                 ->route(
                     'whisperly.talents.show',
                     [
-                        'username' => $username
+                        'username' =>
+                            $username
                     ]
                 )
                 ->with(
@@ -346,20 +355,14 @@ class WhisperlyBookingController extends Controller
                     'Booking berhasil! Kamu sekarang bisa chat dengan talent.'
                 );
 
-
         } catch (\Throwable $e) {
-
-            /*
-            |--------------------------------------------------------------------------
-            | JANGAN TAMPILKAN ERROR 500 KE USER
-            |--------------------------------------------------------------------------
-            */
 
             return redirect()
                 ->route(
                     'whisperly.talents.show',
                     [
-                        'username' => $username
+                        'username' =>
+                            $username
                     ]
                 )
                 ->with(
@@ -380,14 +383,8 @@ class WhisperlyBookingController extends Controller
         WhisperlyBooking $booking
     ): RedirectResponse {
 
-        $user = $request->user('whisperly');
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | CEK PEMILIK BOOKING
-        |--------------------------------------------------------------------------
-        */
+        $user =
+            $request->user('whisperly');
 
         abort_unless(
             $user &&
@@ -396,25 +393,11 @@ class WhisperlyBookingController extends Controller
             'Anda tidak berhak memberi rating untuk booking ini.'
         );
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | RATING SETELAH CHAT SELESAI
-        |--------------------------------------------------------------------------
-        */
-
         abort_unless(
             $booking->chatStatus() === 'completed',
             422,
             'Rating hanya dapat diberikan setelah booking selesai.'
         );
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | VALIDASI
-        |--------------------------------------------------------------------------
-        */
 
         $request->validate([
             'rating' => [
@@ -430,24 +413,17 @@ class WhisperlyBookingController extends Controller
             ],
         ]);
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | CEK SUDAH RATING
-        |--------------------------------------------------------------------------
-        */
-
-        $alreadyRated = ratings::query()
-            ->where(
-                'booking_id',
-                $booking->id
-            )
-            ->where(
-                'pengguna_id',
-                $user->id
-            )
-            ->exists();
-
+        $alreadyRated =
+            ratings::query()
+                ->where(
+                    'booking_id',
+                    $booking->id
+                )
+                ->where(
+                    'pengguna_id',
+                    $user->id
+                )
+                ->exists();
 
         if ($alreadyRated) {
 
@@ -461,13 +437,6 @@ class WhisperlyBookingController extends Controller
                     'Anda sudah memberikan rating untuk booking ini.'
                 );
         }
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | SIMPAN RATING
-        |--------------------------------------------------------------------------
-        */
 
         ratings::create([
 
@@ -496,35 +465,14 @@ class WhisperlyBookingController extends Controller
 
         ]);
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | UPDATE STATUS BOOKING
-        |--------------------------------------------------------------------------
-        */
-
         $booking->update([
             'status' =>
                 'completed',
         ]);
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | SINKRONISASI
-        |--------------------------------------------------------------------------
-        */
-
         $booking->syncLaralagBooking(
             true
         );
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | KEMBALI KE CHAT
-        |--------------------------------------------------------------------------
-        */
 
         return redirect()
             ->route(

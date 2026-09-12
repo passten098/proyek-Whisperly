@@ -372,6 +372,32 @@
         }
 
 
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .user-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+}
+
+.user-role {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1;
+    margin-top: 3px;
+}
+
         .username {
 
             max-width: 125px;
@@ -730,6 +756,20 @@
                 sans-serif;
 
         }
+
+        .menu-profile-avatar img {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    border-radius: 13px;
+
+}
 
 
         .menu-profile-info {
@@ -3036,21 +3076,43 @@
 
                     <div class="user-avatar">
 
-                        {{ strtoupper(
-                            substr(
-                                $currentUser->username,
-                                0,
-                                1
-                            )
-                        ) }}
+    @if (
+        $currentUser->role === 'talent' &&
+        $currentTalentProfile &&
+        $currentTalentProfile->photo
+    )
 
-                    </div>
+        <img
+            src="{{ asset('storage/' . $currentTalentProfile->photo) }}"
+            alt="{{ $currentUser->username }}"
+        >
 
-                    <span class="username">
+    @else
 
-                        {{ $currentUser->username }}
+        {{ strtoupper(
+            substr(
+                $currentUser->username,
+                0,
+                1
+            )
+        ) }}
 
-                    </span>
+    @endif
+
+</div>
+
+                    <div class="user-info">
+    <span class="username">{{ $currentUser->username }}</span>
+    <span class="user-role">
+        @if ($currentUser->role === 'talent')
+            Talent
+        @elseif ($currentUser->role === 'admin')
+            Admin
+        @else
+            User
+        @endif
+    </span>
+</div>
 
                 </div>
 
@@ -3095,16 +3157,30 @@
 
                             <div class="menu-profile-avatar">
 
-                                {{ strtoupper(
-                                    substr(
-                                        $currentUser->username,
-                                        0,
-                                        1
-                                    )
-                                ) }}
+    @if (
+        $currentUser->role === 'talent' &&
+        $currentTalentProfile &&
+        $currentTalentProfile->photo
+    )
 
-                            </div>
+        <img
+            src="{{ asset('storage/' . $currentTalentProfile->photo) }}"
+            alt="{{ $currentUser->username }}"
+        >
 
+    @else
+
+        {{ strtoupper(
+            substr(
+                $currentUser->username,
+                0,
+                1
+            )
+        ) }}
+
+    @endif
+
+</div>
                             <div class="menu-profile-info">
 
                                 <span class="menu-profile-name">
