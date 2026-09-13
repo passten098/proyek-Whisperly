@@ -3,7 +3,7 @@
 namespace App\Modules\ratings\Models;
 
 use App\Helpers\UsesUuid;
-use App\Modules\bookings\Models\WhisperlyBooking;
+use App\Modules\bookings\Models\bookings;
 use App\Modules\pengguna\Models\pengguna;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,7 +14,10 @@ class ratings extends Model
     use UsesUuid;
 
     public $incrementing = false;
+
     protected $keyType = 'string';
+
+    protected $table = 'ratings';
 
     protected $casts = [
         'deleted_at' => 'datetime',
@@ -23,23 +26,43 @@ class ratings extends Model
         'nilai_rating' => 'integer',
     ];
 
-    protected $table = 'ratings';
     protected $fillable = [
-        'booking_id',
-        'pengguna_id',
-        'talent_id',
+        'id_booking',
+        'id_pengguna',
         'nilai_rating',
         'ulasan',
+        'created_by',
+        'updated_by',
+        'deleted_by',
     ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | BOOKING LARALAG
+    |--------------------------------------------------------------------------
+    */
 
     public function booking()
     {
-        return $this->belongsTo(WhisperlyBooking::class, 'booking_id', 'id');
+        return $this->belongsTo(
+            bookings::class,
+            'id_booking',
+            'id'
+        );
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | PENGGUNA
+    |--------------------------------------------------------------------------
+    */
 
     public function pengguna()
     {
-        return $this->belongsTo(pengguna::class, 'pengguna_id', 'id');
+        return $this->belongsTo(
+            pengguna::class,
+            'id_pengguna',
+            'id'
+        );
     }
 }
-

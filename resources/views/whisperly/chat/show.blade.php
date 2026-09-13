@@ -47,7 +47,10 @@
             background-color: #a9d2f5;
 
             background-image:
-
+                linear-gradient(
+                    rgba(183,216,246,0.55),
+                    rgba(183,216,246,0.55)
+                ),
                 url('{{ asset('assets/images/chat-background.jpg') }}');
 
             background-position: center;
@@ -460,17 +463,30 @@
         ========================================================== */
 
         .room {
-    min-width: 0;
-    min-height: 0;
+            min-width: 0;
+            min-height: 0;
 
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
 
-    background: transparent;
+            background-color: #a9d2f5;
 
-    position: relative;
-}
+            background-image:
+                linear-gradient(
+                    rgba(183,216,246,0.55),
+                    rgba(183,216,246,0.55)
+                ),
+                url('{{ asset('assets/images/chat-background.jpg') }}');
+
+            background-size: cover;
+
+            background-position: center;
+
+            background-repeat: no-repeat;
+
+            position: relative;
+        }
 
 
         /* ==========================================================
@@ -647,7 +663,9 @@
 
             background: #ffffff;
 
-            box-shadow: 0 8px 20px rgba(35, 101, 160, .16);
+            box-shadow:
+                0 8px 20px
+                rgba(35, 101, 160, .16);
         }
 
 
@@ -661,7 +679,8 @@
 
             width: 100%;
 
-            padding: 8px 10px;
+            padding:
+                8px 10px;
 
             border: 0;
 
@@ -699,7 +718,8 @@
 
             height: 100%;
 
-            background: rgba(0, 0, 0, 0.5);
+            background:
+                rgba(0, 0, 0, 0.5);
 
             display: none;
 
@@ -711,8 +731,10 @@
 
             opacity: 0;
 
-            transition: opacity 0.3s ease;
+            transition:
+                opacity 0.3s ease;
         }
+
 
         .account-info-panel.active {
 
@@ -720,6 +742,7 @@
 
             opacity: 1;
         }
+
 
         .account-info-panel-content {
 
@@ -733,33 +756,42 @@
 
             overflow-y: auto;
 
-            animation: slideInRight 0.3s ease;
+            animation:
+                slideInRight 0.3s ease;
 
-            box-shadow: -10px 0 40px rgba(35, 101, 160, 0.15);
+            box-shadow:
+                -10px 0 40px
+                rgba(35, 101, 160, 0.15);
         }
+
 
         @keyframes slideInRight {
 
             from {
 
-                transform: translateX(100%);
+                transform:
+                    translateX(100%);
 
                 opacity: 0;
             }
 
             to {
 
-                transform: translateX(0);
+                transform:
+                    translateX(0);
 
                 opacity: 1;
             }
         }
 
+
         .account-info-header {
 
-            padding: 28px 24px;
+            padding:
+                28px 24px;
 
-            border-bottom: 1px solid #e4f0ff;
+            border-bottom:
+                1px solid #e4f0ff;
 
             display: flex;
 
@@ -768,11 +800,13 @@
             justify-content: space-between;
         }
 
+
         .account-info-header h3 {
 
             margin: 0;
 
-            font-family: Georgia, serif;
+            font-family:
+                Georgia, serif;
 
             font-size: 22px;
 
@@ -780,6 +814,7 @@
 
             color: #173456;
         }
+
 
         .account-info-close {
 
@@ -805,10 +840,11 @@
 
             justify-content: center;
 
-            transition: 0.2s ease;
+            transition: .2s ease;
 
             border-radius: 8px;
         }
+
 
         .account-info-close:hover {
 
@@ -817,10 +853,12 @@
             color: #1976d2;
         }
 
+
         .account-info-body {
 
             padding: 24px;
         }
+
 
         .account-profile-section {
 
@@ -830,8 +868,10 @@
 
             padding-bottom: 28px;
 
-            border-bottom: 1px solid #e4f0ff;
+            border-bottom:
+                1px solid #e4f0ff;
         }
+
 
         .account-profile-avatar {
 
@@ -839,11 +879,17 @@
 
             height: 100px;
 
-            margin: 0 auto 18px;
+            margin:
+                0 auto 18px;
 
             border-radius: 50%;
 
-            background: linear-gradient(135deg, #c8e5ff, #9fd0fa);
+            background:
+                linear-gradient(
+                    135deg,
+                    #c8e5ff,
+                    #9fd0fa
+                );
 
             color: #1976d2;
 
@@ -857,8 +903,11 @@
 
             justify-content: center;
 
-            box-shadow: 0 8px 24px rgba(25, 118, 210, 0.18);
+            box-shadow:
+                0 8px 24px
+                rgba(25, 118, 210, 0.18);
         }
+
 
         .account-profile-avatar img {
 
@@ -871,6 +920,7 @@
             object-fit: cover;
         }
 
+
         .account-name {
 
             font-size: 20px;
@@ -882,6 +932,7 @@
             margin-bottom: 6px;
         }
 
+
         .account-username {
 
             font-size: 14px;
@@ -890,6 +941,7 @@
 
             margin-bottom: 12px;
         }
+
 
         .account-status {
 
@@ -903,7 +955,8 @@
 
             font-weight: 600;
 
-            padding: 6px 14px;
+            padding:
+                6px 14px;
 
             border-radius: 20px;
 
@@ -912,19 +965,24 @@
             color: #1976d2;
         }
 
+
         .account-status.online {
 
-            background: rgba(35, 190, 104, 0.12);
+            background:
+                rgba(35, 190, 104, 0.12);
 
             color: #23be68;
         }
 
+
         .account-status.offline {
 
-            background: rgba(102, 128, 155, 0.12);
+            background:
+                rgba(102, 128, 155, 0.12);
 
             color: #668099;
         }
+
 
         .account-status-dot {
 
@@ -937,14 +995,17 @@
             background: currentColor;
         }
 
+
         .account-info-item {
 
             margin-bottom: 20px;
 
             padding-bottom: 20px;
 
-            border-bottom: 1px solid #f0f6ff;
+            border-bottom:
+                1px solid #f0f6ff;
         }
+
 
         .account-info-item:last-child {
 
@@ -954,6 +1015,7 @@
 
             padding-bottom: 0;
         }
+
 
         .account-info-label {
 
@@ -967,8 +1029,9 @@
 
             margin-bottom: 8px;
 
-            letter-spacing: 0.5px;
+            letter-spacing: .5px;
         }
+
 
         .account-info-value {
 
@@ -981,6 +1044,7 @@
             word-break: break-word;
         }
 
+
         .account-info-value strong {
 
             color: #173456;
@@ -988,29 +1052,35 @@
             font-weight: 700;
         }
 
+
         .account-booking-grid {
 
             display: grid;
 
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns:
+                1fr 1fr;
 
             gap: 14px;
 
             margin-bottom: 20px;
         }
 
+
         .account-booking-item {
 
             background: #f8fcff;
 
-            padding: 14px 12px;
+            padding:
+                14px 12px;
 
             border-radius: 12px;
 
-            border: 1px solid #e4f0ff;
+            border:
+                1px solid #e4f0ff;
 
             text-align: center;
         }
+
 
         .account-booking-item-label {
 
@@ -1024,8 +1094,9 @@
 
             margin-bottom: 6px;
 
-            letter-spacing: 0.5px;
+            letter-spacing: .5px;
         }
+
 
         .account-booking-item-value {
 
@@ -1076,7 +1147,7 @@
 
 
         /* ==========================================================
-           MESSAGES AREA
+           MESSAGES
         ========================================================== */
 
         .messages {
@@ -1207,8 +1278,7 @@
 
         .empty-message-small {
 
-            padding:
-                15px;
+            padding: 15px;
 
             text-align: center;
 
@@ -1250,10 +1320,6 @@
         }
 
 
-        /* ==========================================================
-           MESSAGE AVATAR
-        ========================================================== */
-
         .message-avatar {
 
             width: 35px;
@@ -1288,10 +1354,6 @@
                 rgba(39, 105, 160, .15);
         }
 
-
-        /* ==========================================================
-           MESSAGE CONTENT
-        ========================================================== */
 
         .message-content {
 
@@ -1376,10 +1438,6 @@
         }
 
 
-        /* ==========================================================
-           MESSAGE FOOTER
-        ========================================================== */
-
         .message-footer {
 
             display: flex;
@@ -1411,10 +1469,6 @@
         }
 
 
-        /* ==========================================================
-           CHECKLIST PESAN
-        ========================================================== */
-
         .message-check {
 
             display: inline-flex;
@@ -1441,8 +1495,6 @@
         }
 
 
-        /* Satu centang */
-
         .message-check.single {
 
             color: #6f879d;
@@ -1450,8 +1502,6 @@
             letter-spacing: 0;
         }
 
-
-        /* Dua centang */
 
         .message-check.double {
 
@@ -1464,20 +1514,14 @@
         .message-check.double::before {
 
             content: "✓✓";
-
         }
 
 
         .message-check.double {
 
             font-size: 12px;
-
         }
 
-
-        /* ==========================================================
-           EMPTY MESSAGE
-        ========================================================== */
 
         .empty-message {
 
@@ -1546,7 +1590,9 @@
         }
 
 
-        .composer textarea {flex: 1;
+        .composer textarea {
+
+            flex: 1;
 
             width: 100%;
 
@@ -1647,7 +1693,7 @@
 
 
         /* ==========================================================
-           CLOSED COMPOSER
+           CLOSED CHAT
         ========================================================== */
 
         .closed-composer {
@@ -1674,6 +1720,468 @@
             font-size: 13px;
 
             text-align: center;
+        }
+
+
+        /* ==========================================================
+           ⭐ RATING PREMIUM
+        ========================================================== */
+
+        .rating-wrapper {
+
+            width: 100%;
+
+            padding: 4px 0 0;
+        }
+
+
+        .rating-card {
+
+            position: relative;
+
+            width: 100%;
+
+            padding:
+                20px 22px 18px;
+
+            border-radius: 22px;
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,.98),
+                    rgba(239,248,255,.98)
+                );
+
+            border:
+                1px solid rgba(76,145,205,.20);
+
+            box-shadow:
+                0 12px 35px
+                rgba(35,101,160,.13);
+        }
+
+
+        .rating-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: -70px;
+
+            right: -45px;
+
+            width: 170px;
+
+            height: 170px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(93,165,237,.18),
+                    transparent 68%
+                );
+
+            pointer-events: none;
+        }
+
+
+        .rating-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            bottom: -90px;
+
+            left: -60px;
+
+            width: 190px;
+
+            height: 190px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(124,186,237,.13),
+                    transparent 68%
+                );
+
+            pointer-events: none;
+        }
+
+
+        .rating-top {
+
+            position: relative;
+
+            z-index: 2;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 13px;
+        }
+
+
+        .rating-icon {
+
+            width: 46px;
+
+            height: 46px;
+
+            flex-shrink: 0;
+
+            border-radius: 15px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #e8f5ff,
+                    #cfe9ff
+                );
+
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,.8),
+                0 6px 18px
+                rgba(44,126,198,.12);
+        }
+
+
+        .rating-heading {
+
+            min-width: 0;
+        }
+
+
+        .rating-heading h3 {
+
+            margin: 0 0 3px;
+
+            color: #173456;
+
+            font-family: Georgia, serif;
+
+            font-size: 21px;
+
+            font-weight: 400;
+        }
+
+
+        .rating-heading p {
+
+            margin: 0;
+
+            color: #69839c;
+
+            font-size: 12px;
+
+            line-height: 1.45;
+        }
+
+
+        .rating-stars {
+
+            position: relative;
+
+            z-index: 2;
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 7px;
+
+            margin:
+                13px 0 11px;
+        }
+
+
+        .rating-star {
+
+            width: 43px;
+
+            height: 43px;
+
+            border: none;
+
+            border-radius: 13px;
+
+            background: #f5faff;
+
+            color: #b7c9da;
+
+            font-size: 22px;
+
+            cursor: pointer;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            transition:
+                transform .18s ease,
+                color .18s ease,
+                background .18s ease,
+                box-shadow .18s ease;
+        }
+
+
+        .rating-star:hover {
+
+            transform:
+                translateY(-3px)
+                scale(1.04);
+
+            color: #f0b429;
+
+            background: #fff8df;
+
+            box-shadow:
+                0 7px 18px
+                rgba(225,174,44,.16);
+        }
+
+
+        .rating-star.selected {
+
+            color: #f0b429;
+
+            background: #fff8df;
+
+            box-shadow:
+                0 7px 18px
+                rgba(225,174,44,.16);
+        }
+
+
+        .rating-star.pop {
+
+            animation:
+                starPop .22s ease;
+        }
+
+
+        @keyframes starPop {
+
+            0% {
+
+                transform: scale(.82);
+            }
+
+            65% {
+
+                transform: scale(1.15);
+            }
+
+            100% {
+
+                transform: scale(1);
+            }
+        }
+
+
+        .rating-label {
+
+            position: relative;
+
+            z-index: 2;
+
+            text-align: center;
+
+            min-height: 18px;
+
+            color: #46749d;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            margin-bottom: 10px;
+        }
+
+
+        .rating-textarea {
+
+            position: relative;
+
+            z-index: 2;
+
+            width: 100%;
+
+            min-height: 65px;
+
+            resize: vertical;
+
+            border:
+                1px solid #d7e8f8;
+
+            border-radius: 14px;
+
+            padding:
+                12px 14px;
+
+            outline: none;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 13px;
+
+            line-height: 1.45;
+
+            color: #244968;
+
+            background:
+                rgba(255,255,255,.88);
+
+            transition:
+                .2s ease;
+        }
+
+
+        .rating-textarea:focus {
+
+            border-color: #62a8e8;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(98,168,232,.10);
+        }
+
+
+        .rating-textarea::placeholder {
+
+            color: #91a6bb;
+        }
+
+
+        .rating-submit {
+
+            position: relative;
+
+            z-index: 2;
+
+            width: 100%;
+
+            margin-top: 10px;
+
+            height: 43px;
+
+            border: none;
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2587ed,
+                    #1374d6
+                );
+
+            color: #ffffff;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 8px 20px
+                rgba(31,124,218,.20);
+
+            transition:
+                .2s ease;
+        }
+
+
+        .rating-submit:hover {
+
+            transform:
+                translateY(-1px);
+
+            box-shadow:
+                0 10px 24px
+                rgba(31,124,218,.28);
+        }
+
+
+        .rating-submit:disabled {
+
+            background:
+                #b9cfe4;
+
+            cursor:
+                not-allowed;
+
+            box-shadow:
+                none;
+
+            transform:
+                none;
+        }
+
+
+        .rating-completed {
+
+            position: relative;
+
+            z-index: 2;
+
+            text-align: center;
+
+            padding:
+                7px 0 2px;
+
+            color: #527693;
+
+            font-size: 13px;
+        }
+
+
+        .rating-completed strong {
+
+            display: block;
+
+            color: #236da8;
+
+            font-size: 14px;
+
+            margin-bottom: 4px;
+        }
+
+
+        .rating-divider {
+
+            height: 1px;
+
+            width: 100%;
+
+            margin:
+                2px 0 12px;
+
+            background:
+                rgba(80,130,170,.12);
         }
 
 
@@ -1823,6 +2331,144 @@
 
 
         /* ==========================================================
+           CHAT COUNTDOWN / EXPIRED STATE
+        ========================================================== */
+        .chat-countdown {
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            color: #6d88a2;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .chat-countdown-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #27ae60;
+            box-shadow: 0 0 0 4px rgba(39,174,96,.10);
+        }
+
+        .chat-countdown.expired {
+            color: #8b7890;
+        }
+
+        .chat-countdown.expired .chat-countdown-dot {
+            background: #9aa8b5;
+            box-shadow: none;
+        }
+
+        .rating-modal {
+            text-align: center;
+        }
+
+        .rating-modal .rating-stars {
+            justify-content: center;
+            margin: 20px 0 8px;
+        }
+
+        .rating-modal .rating-textarea {
+            width: 100%;
+            margin-top: 14px;
+        }
+
+        .rating-modal .rating-submit {
+            margin-top: 12px;
+        }
+
+        .rating-modal-overlay {
+            z-index: 10000;
+        }
+
+        .rating-modal {
+            position: relative;
+            text-align: center;
+        }
+
+        .rating-close {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            width: 34px;
+            height: 34px;
+            border: none;
+            background: transparent;
+            color: rgba(255,255,255,.65);
+            font-size: 28px;
+            line-height: 1;
+            cursor: pointer;
+            transition: .2s ease;
+            z-index: 2;
+        }
+
+        .rating-close:hover {
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        .thank-you-overlay {
+            z-index: 11000;
+            animation: thankYouFadeIn .35s ease forwards;
+        }
+
+        .thank-you-card {
+            width: min(420px, calc(100vw - 40px));
+            padding: 38px 30px 34px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(145deg, rgba(42,25,67,.98), rgba(15,9,28,.99));
+            border: 1px solid rgba(218,185,108,.35);
+            border-radius: 24px;
+            box-shadow: 0 25px 80px rgba(0,0,0,.55), 0 0 50px rgba(218,185,108,.12);
+            animation: thankYouPop .55s cubic-bezier(.2,.8,.2,1) forwards;
+        }
+
+        .thank-you-icon {
+            width: 76px;
+            height: 76px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(218,185,108,.1);
+            border: 1px solid rgba(218,185,108,.45);
+            animation: thankYouIcon .7s ease forwards;
+        }
+
+        .thank-you-icon span {
+            font-size: 38px;
+            color: #daba6c;
+            animation: thankYouStar .8s ease forwards;
+        }
+
+        .thank-you-card h3 {
+            margin: 0 0 10px;
+            font-family: "Playfair Display", serif;
+            font-size: 29px;
+            color: #fff;
+            animation: thankYouText .6s .15s ease both;
+        }
+
+        .thank-you-card p {
+            margin: 0;
+            color: rgba(255,255,255,.68);
+            font-size: 14px;
+            line-height: 1.6;
+            animation: thankYouText .6s .25s ease both;
+        }
+
+        @keyframes thankYouFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes thankYouPop { from { opacity: 0; transform: scale(.82) translateY(15px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        @keyframes thankYouIcon { from { transform: scale(.3) rotate(-25deg); opacity: 0; } 70% { transform: scale(1.12) rotate(5deg); } to { transform: scale(1) rotate(0); opacity: 1; } }
+        @keyframes thankYouStar { from { transform: scale(0); opacity: 0; } 60% { transform: scale(1.25); } to { transform: scale(1); opacity: 1; } }
+        @keyframes thankYouText { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ==========================================================
            RESPONSIVE
         ========================================================== */
 
@@ -1846,10 +2492,12 @@
                 max-width: 85%;
             }
 
+
             .account-info-panel-content {
 
                 max-width: 360px;
             }
+
         }
 
 
@@ -1957,10 +2605,35 @@
                     42px;
             }
 
+
             .account-info-panel-content {
 
                 max-width: 100%;
             }
+
+
+            .rating-card {
+
+                padding:
+                    17px 14px 15px;
+            }
+
+
+            .rating-star {
+
+                width: 38px;
+
+                height: 38px;
+
+                font-size: 19px;
+            }
+
+
+            .rating-stars {
+
+                gap: 5px;
+            }
+
         }
 
     </style>
@@ -1971,8 +2644,11 @@
 <body>
 
     <div class="navbar-wrapper">
+
         @include('whisperly.navbar')
+
     </div>
+
 
     @php
 
@@ -2009,6 +2685,92 @@
                 )
             );
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | CEK WAKTU BOOKING
+        |--------------------------------------------------------------------------
+        |
+        | Rating baru muncul setelah end_time pada tanggal booking benar-benar
+        | lewat. Tidak hanya mengandalkan $status dari controller.
+        |
+        */
+
+        $ratingAvailable = false;
+
+        $bookingEndedAt = null;
+
+        if (
+            $isUser
+            && $booking->schedule
+        ) {
+
+            $timezone = 'Asia/Jakarta';
+
+            $nowJakarta =
+                now()->setTimezone($timezone);
+
+            $scheduleDate =
+                \Carbon\Carbon::parse(
+                    $booking->schedule->date,
+                    $timezone
+                )->toDateString();
+
+
+            $bookingStart =
+                \Carbon\Carbon::parse(
+                    $scheduleDate
+                    . ' '
+                    . $booking->schedule->start_time,
+                    $timezone
+                );
+
+
+            $bookingEndedAt =
+                \Carbon\Carbon::parse(
+                    $scheduleDate
+                    . ' '
+                    . $booking->schedule->end_time,
+                    $timezone
+                );
+
+
+            /*
+             * Mendukung jadwal yang melewati tengah malam.
+             */
+
+            if (
+                $bookingEndedAt->lt(
+                    $bookingStart
+                )
+            ) {
+
+                $bookingEndedAt->addDay();
+
+            }
+
+
+            $ratingAvailable =
+                $nowJakarta->gte(
+                    $bookingEndedAt
+                );
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | RATING EXISTING
+        |--------------------------------------------------------------------------
+        |
+        | Tidak membuat query dengan nama kolom rating tertentu.
+        | Kita cukup melihat apakah booking ini sudah memiliki rating.
+        |
+        */
+
+        $existingRating =
+            $booking->ratings?->first();
+
     @endphp
 
 
@@ -2033,8 +2795,6 @@
                 </div>
 
 
-                {{-- SEARCH --}}
-
                 <div class="search-box">
 
                     <span class="search-icon">
@@ -2050,8 +2810,6 @@
 
                 </div>
 
-
-                {{-- FILTER --}}
 
                 <div class="filters">
 
@@ -2115,36 +2873,10 @@
                             );
 
 
-                        /*
-                        |--------------------------------------
-                        | AMBIL PESAN TERAKHIR
-                        |--------------------------------------
-                        |
-                        | PENTING:
-                        | $item adalah booking REPRESENTATIF room
-                        | (dipilih dari created_at booking, BUKAN
-                        | dari pesan terakhir). Kalau pesan terakhir
-                        | diambil dari $item->conversation saja, hasilnya
-                        | bisa beda dengan room chat di sebelah kanan
-                        | (yang menggabungkan semua booking di room).
-                        |
-                        | Maka dari itu, pesan terakhir yang benar
-                        | sudah dihitung di controller (show()) dari
-                        | SELURUH booking dalam room yang sama, lalu
-                        | dititipkan lewat $item->last_message.
-                        |--------------------------------------
-                        */
-
                         $lastMessage =
                             $item->last_message
                             ?? null;
 
-
-                        /*
-                        |--------------------------------------
-                        | WAKTU PESAN TERAKHIR
-                        |--------------------------------------
-                        */
 
                         $messageTime =
                             $lastMessage
@@ -2157,15 +2889,12 @@
                                 );
 
 
-                        /*
-                        |--------------------------------------
-                        | STATUS PESAN TERAKHIR
-                        | UNTUK CHECKLIST DAN BADGE
-                        |--------------------------------------
-                        */
+                        $isLastMessageFromCurrentUser =
+                            false;
 
-                        $isLastMessageFromCurrentUser = false;
-                        $lastMessageIsRead = true;
+                        $lastMessageIsRead =
+                            true;
+
 
                         if ($lastMessage) {
 
@@ -2174,10 +2903,14 @@
                                 ===
                                 (string) $currentUser->id;
 
-                            if ($isLastMessageFromCurrentUser) {
+
+                            if (
+                                $isLastMessageFromCurrentUser
+                            ) {
 
                                 $lastRead =
                                     $item->conversation?->last_read_at;
+
 
                                 if ($lastRead) {
 
@@ -2224,16 +2957,12 @@
                         data-unread="{{ $hasUnread ? '1' : '0' }}"
                     >
 
-                        {{-- AVATAR --}}
-
                         <div class="avatar">
 
                             {{ $itemInitial }}
 
                         </div>
 
-
-                        {{-- INFO --}}
 
                         <div class="chat-info">
 
@@ -2264,8 +2993,6 @@
                         </div>
 
 
-                        {{-- RIGHT SIDE --}}
-
                         <div style="
                             display:flex;
                             flex-direction:column;
@@ -2280,13 +3007,9 @@
                             </div>
 
 
-                            {{-- INDIKATOR PESAN TERAKHIR --}}
-
                             @if ($lastMessage)
 
                                 @if ($isLastMessageFromCurrentUser)
-
-                                    {{-- CHECKLIST UNTUK PESAN DARI USER LOGIN --}}
 
                                     <span style="
                                         font-size:11px;
@@ -2304,8 +3027,6 @@
                                     </span>
 
                                 @elseif ($hasUnread)
-
-                                    {{-- BADGE UNREAD UNTUK PESAN DARI ORANG LAIN --}}
 
                                     <div class="unread-badge">
 
@@ -2376,7 +3097,10 @@
                         </h2>
 
 
-                        <div class="online-text" id="roomPresenceStatus">
+                        <div
+                            class="online-text"
+                            id="roomPresenceStatus"
+                        >
 
                             {{ $contactStatus }}
 
@@ -2388,21 +3112,69 @@
 
 
 
-                {{-- PROFILE --}}
+                <details
+                    class="info-menu"
+                    onclick="event.stopPropagation()"
+                >
 
-                <details class="info-menu" onclick="event.stopPropagation()">
-                    <summary class="info-button" aria-label="Menu informasi chat">☰</summary>
-                    <div class="info-menu-list" onclick="event.stopPropagation()">
-                        <button type="button" id="accountInfoToggle">Informasi Akun</button>
-                        <form method="POST" action="{{ route('whisperly.chat.clear', $booking->id) }}" onsubmit="return confirm('Bersihkan seluruh isi chat ini dari akun Anda?')">
+                    <summary
+                        class="info-button"
+                        aria-label="Menu informasi chat"
+                    >
+                        ☰
+                    </summary>
+
+
+                    <div
+                        class="info-menu-list"
+                        onclick="event.stopPropagation()"
+                    >
+
+                        <button
+                            type="button"
+                            id="accountInfoToggle"
+                        >
+                            Informasi Akun
+                        </button>
+
+
+                        <form
+                            method="POST"
+                            action="{{ route(
+                                'whisperly.chat.clear',
+                                $booking->id
+                            ) }}"
+                            onsubmit="return confirm('Bersihkan seluruh isi chat ini dari akun Anda?')"
+                        >
+
                             @csrf
-                            <button type="submit">Bersihkan Chat</button>
+
+                            <button type="submit">
+                                Bersihkan Chat
+                            </button>
+
                         </form>
-                        <form method="POST" action="{{ route('whisperly.chat.delete', $booking->id) }}" onsubmit="return confirm('Hapus chat ini dari akun Anda?')">
+
+
+                        <form
+                            method="POST"
+                            action="{{ route(
+                                'whisperly.chat.delete',
+                                $booking->id
+                            ) }}"
+                            onsubmit="return confirm('Hapus chat ini dari akun Anda?')"
+                        >
+
                             @csrf
-                            <button type="submit">Hapus Chat</button>
+
+                            <button type="submit">
+                                Hapus Chat
+                            </button>
+
                         </form>
+
                     </div>
+
                 </details>
 
             </header>
@@ -2410,7 +3182,7 @@
 
 
             {{-- ====================================================
-                 JADWAL BOOKING AKTIF
+                 JADWAL
             ===================================================== --}}
 
             <div class="schedule">
@@ -2469,10 +3241,6 @@
                     @endphp
 
 
-
-                    {{-- ==================================================
-                         PEMBATAS BOOKING
-                    =================================================== --}}
 
                     <div class="booking-divider">
 
@@ -2565,10 +3333,6 @@
 
 
 
-                    {{-- ==================================================
-                         PESAN BOOKING
-                    =================================================== --}}
-
                     @forelse (
                         $roomMessagesList
                         as $message
@@ -2617,16 +3381,12 @@
                             "
                         >
 
-                            {{-- AVATAR --}}
-
                             <div class="message-avatar">
 
                                 {{ $senderInitial }}
 
                             </div>
 
-
-                            {{-- CONTENT --}}
 
                             <div class="message-content">
 
@@ -2646,8 +3406,6 @@
                                 </div>
 
 
-                                {{-- WAKTU + CHECKLIST --}}
-
                                 <div class="message-footer">
 
                                     <div class="message-time">
@@ -2661,15 +3419,6 @@
                                     @if ($mine)
 
                                         @php
-
-                                            /*
-                                             * Jika nanti controller/model
-                                             * sudah memiliki status read,
-                                             * gunakan nilai tersebut.
-                                             *
-                                             * Untuk sekarang:
-                                             * pesan dianggap terkirim.
-                                             */
 
                                             $isRead =
                                                 $message->is_read
@@ -2737,24 +3486,22 @@
 
 
 
-            {{-- ========================================================
+            {{-- ====================================================
                  COMPOSER
-            ========================================================= --}}
+            ===================================================== --}}
 
-            <div class="composer">
-
+            <div
+                class="composer"
+                id="chatComposer"
+                data-booking-end="{{ $bookingEndedAt?->toIso8601String() }}"
+            >
                 @if ($canChat)
-
                     <form
                         method="POST"
-                        action="{{ route(
-                            'whisperly.chat.store',
-                            $booking->id
-                        ) }}"
+                        action="{{ route('whisperly.chat.store', $booking->id) }}"
+                        id="messageForm"
                     >
-
                         @csrf
-
 
                         <textarea
                             name="message"
@@ -2764,40 +3511,36 @@
                             maxlength="2000"
                         ></textarea>
 
-
                         <button
                             type="submit"
                             class="send-button"
+                            id="sendButton"
                             title="Kirim pesan"
                         >
-
                             ➤
-
                         </button>
-
                     </form>
 
-                @else
-
-                    <div class="closed-composer">
-
-                        🔒
-
-                        <span>
-
-                            Chat sudah ditutup
-                            karena waktu booking
-                            telah selesai.
-
-                        </span>
-
+                    <div class="chat-countdown" id="chatCountdown" aria-live="polite">
+                        <span class="chat-countdown-dot"></span>
+                        <span id="chatCountdownText">Sesi aktif</span>
                     </div>
-
+                @else
+                    <div class="closed-composer" id="closedComposer">
+                        🔒
+                        <span>
+                            @if ($status === 'upcoming')
+                                Chat akan terbuka sesuai jadwal booking.
+                            @else
+                                Chat sudah ditutup karena waktu booking telah selesai.
+                            @endif
+                        </span>
+                    </div>
                 @endif
-
             </div>
 
         </section>
+
 
 
         {{-- ====================================================
@@ -2811,11 +3554,13 @@
 
             <div class="account-info-panel-content">
 
-                {{-- HEADER --}}
 
                 <div class="account-info-header">
 
-                    <h3>Informasi Akun</h3>
+                    <h3>
+                        Informasi Akun
+                    </h3>
+
 
                     <button
                         type="button"
@@ -2827,20 +3572,23 @@
 
                 </div>
 
-                {{-- BODY --}}
 
                 <div class="account-info-body">
 
-                    {{-- PROFILE SECTION --}}
 
                     <div class="account-profile-section">
 
                         <div class="account-profile-avatar">
 
-                            @if ($isUser && $talent?->photo)
+                            @if (
+                                $isUser
+                                && $talent?->photo
+                            )
 
                                 <img
-                                    src="{{ asset('storage/' . $talent->photo) }}"
+                                    src="{{ asset(
+                                        'storage/' . $talent->photo
+                                    ) }}"
                                     alt="Avatar {{ $otherName }}"
                                 >
 
@@ -2852,20 +3600,46 @@
 
                         </div>
 
+
                         <div class="account-name">
+
                             {{ ucfirst($otherName) }}
+
                         </div>
 
-                        <div class="account-status {{ in_array($contactStatus, ['Online', 'Mengetik...'], true) ? 'online' : 'offline' }}" id="profilePresenceStatus">
-                            <span class="account-status-dot"></span>
+
+                        <div
+                            class="
+                                account-status
+                                {{
+                                    in_array(
+                                        $contactStatus,
+                                        ['Online', 'Mengetik...'],
+                                        true
+                                    )
+                                    ? 'online'
+                                    : 'offline'
+                                }}
+                            "
+                            id="profilePresenceStatus"
+                        >
+
+                            <span
+                                class="account-status-dot"
+                            ></span>
+
                             {{ $contactStatus }}
+
                         </div>
 
                     </div>
 
-                    {{-- BIO --}}
 
-                    @if ($isUser && $talent?->deskripsi)
+
+                    @if (
+                        $isUser
+                        && $talent?->deskripsi
+                    )
 
                         <div class="account-info-item">
 
@@ -2873,15 +3647,18 @@
                                 Tentang
                             </div>
 
+
                             <div class="account-info-value">
+
                                 {{ $talent->deskripsi }}
+
                             </div>
 
                         </div>
 
                     @endif
 
-                    {{-- BOOKING INFO --}}
+
 
                     <div class="account-info-item">
 
@@ -2889,7 +3666,9 @@
                             Informasi Booking
                         </div>
 
+
                         <div class="account-booking-grid">
+
 
                             <div class="account-booking-item">
 
@@ -2897,10 +3676,12 @@
                                     Jam
                                 </div>
 
+
                                 <div class="account-booking-item-value">
 
                                     {{ substr(
-                                        $booking->schedule?->start_time ?? '00:00',
+                                        $booking->schedule?->start_time
+                                        ?? '00:00',
                                         0,
                                         5
                                     ) }}
@@ -2909,25 +3690,32 @@
 
                             </div>
 
+
+
                             <div class="account-booking-item">
 
                                 <div class="account-booking-item-label">
                                     Durasi
                                 </div>
 
+
                                 <div class="account-booking-item-value">
 
-                                    {{ round($booking->durationHours(), 1) }}h
+                                    {{ round(
+                                        $booking->durationHours(),
+                                        1
+                                    ) }}h
 
                                 </div>
 
                             </div>
 
+
                         </div>
 
                     </div>
 
-                    {{-- STATUS BOOKING --}}
+
 
                     <div class="account-info-item">
 
@@ -2935,18 +3723,27 @@
                             Status Booking
                         </div>
 
+
                         <div class="account-info-value">
 
                             <strong>
 
                                 @if ($status === 'active')
+
                                     🟢 Aktif
+
                                 @elseif ($status === 'upcoming')
+
                                     🔵 Akan Datang
+
                                 @elseif ($status === 'completed')
+
                                     ✓ Selesai
+
                                 @else
+
                                     ⚪ {{ ucfirst($status) }}
+
                                 @endif
 
                             </strong>
@@ -2955,13 +3752,14 @@
 
                     </div>
 
-                    {{-- BOOKING DATE --}}
+
 
                     <div class="account-info-item">
 
                         <div class="account-info-label">
                             Tanggal Booking
                         </div>
+
 
                         <div class="account-info-value">
 
@@ -2971,7 +3769,7 @@
 
                     </div>
 
-                    {{-- TOTAL MESSAGES --}}
+
 
                     <div class="account-info-item">
 
@@ -2979,9 +3777,12 @@
                             Total Pesan
                         </div>
 
+
                         <div class="account-info-value">
 
-                            <strong>{{ $messages->count() }} pesan</strong>
+                            <strong>
+                                {{ $messages->count() }} pesan
+                            </strong>
 
                         </div>
 
@@ -2995,69 +3796,99 @@
 
 
 
-    {{-- ================================================================
-         POPUP BOOKING SELESAI
-    ================================================================= --}}
-
-    @if ($status === 'completed')
-
-        <div
-            class="modal-overlay"
-            id="bookingFinishedModal"
-        >
-
-            <div class="modal">
-
-                <div class="modal-icon">
-
-                    ✓
-
+        {{-- ====================================================
+             POPUP BOOKING SELESAI UNTUK TALENT
+        ===================================================== --}}
+        @if ($status === 'completed' && ! $isUser)
+            <div class="modal-overlay" id="bookingFinishedModal" style="display:flex;">
+                <div class="modal">
+                    <div class="modal-icon">✓</div>
+                    <h3>Booking Selesai</h3>
+                    <p>
+                        Waktu booking dengan
+                        <strong>{{ ucfirst($otherName) }}</strong>
+                        telah berakhir.<br><br>
+                        Chat ini sudah ditutup dan kamu tidak dapat mengirim pesan lagi.
+                    </p>
+                    <button type="button" class="modal-button" onclick="closeFinishedModal()">
+                        Mengerti
+                    </button>
                 </div>
-
-
-                <h3>
-
-                    Booking Selesai
-
-                </h3>
-
-
-                <p>
-
-                    Waktu booking dengan
-
-                    <strong>
-                        {{ ucfirst($otherName) }}
-                    </strong>
-
-                    telah berakhir.
-
-                    <br><br>
-
-                    Chat ini sudah ditutup
-                    dan kamu tidak dapat
-                    mengirim pesan lagi.
-
-                </p>
-
-
-                <button
-                    type="button"
-                    class="modal-button"
-                    onclick="closeFinishedModal()"
-                >
-
-                    Mengerti
-
-                </button>
-
             </div>
+        @endif
 
-        </div>
+        {{-- ====================================================
+             POPUP RATING USER
+        ===================================================== --}}
+        @if ($isUser && ! $existingRating)
+            <div
+                class="modal-overlay rating-modal-overlay"
+                id="ratingModal"
+                style="display:none;"
+                aria-hidden="true"
+            >
+                <div class="modal rating-modal">
+                    <button type="button" class="rating-close" onclick="closeRatingModal()" aria-label="Tutup">×</button>
 
-    @endif
+                    <div class="modal-icon">⭐</div>
 
+                    <h3>Beri Penilaian</h3>
 
+                    <p>
+                        Bagaimana pengalamanmu bersama
+                        <strong>{{ ucfirst($otherName) }}</strong>?
+                    </p>
+
+                    <form
+                        method="POST"
+                        action="{{ route('whisperly.chat.rating.store', $booking->id) }}"
+                        id="ratingForm"
+                    >
+                        @csrf
+
+                        <div class="rating-stars" id="ratingStars" aria-label="Pilih rating">
+                            @for ($i = 1; $i <= 5; $i++)
+                                <button
+                                    type="button"
+                                    class="rating-star"
+                                    data-value="{{ $i }}"
+                                    aria-label="{{ $i }} bintang"
+                                >★</button>
+                            @endfor
+                        </div>
+
+                        <div class="rating-label" id="ratingLabel">
+                            Pilih jumlah bintang
+                        </div>
+
+                        <input
+                            type="hidden"
+                            name="nilai_rating"
+                            id="ratingValue"
+                            value=""
+                        >
+
+                        <textarea
+                            class="rating-textarea"
+                            name="ulasan"
+                            id="ratingComment"
+                            maxlength="1000"
+                            required
+                            placeholder="Tulis pengalamanmu tentang sesi ini..."
+                        ></textarea>
+
+                        <button
+                            type="submit"
+                            class="rating-submit"
+                            id="ratingSubmit"
+                            disabled
+                        >
+                            Kirim Penilaian
+                        </button>
+                    </form>
+                </div>
+            </div>
+        @endif
 
     <script>
 
@@ -3092,66 +3923,207 @@
 
         }
 
+
         const csrfToken =
-            document.querySelector('meta[name="csrf-token"]')?.content;
+            document.querySelector(
+                'meta[name="csrf-token"]'
+            )?.content;
+
 
         const heartbeatUrl =
-            @json(route('whisperly.chat.heartbeat'));
+            @json(
+                route(
+                    'whisperly.chat.heartbeat'
+                )
+            );
+
 
         const typingUrl =
-            @json(route('whisperly.chat.typing'));
+            @json(
+                route(
+                    'whisperly.chat.typing'
+                )
+            );
+
 
         const presenceUrl =
-            @json(route('whisperly.chat.presence', $booking->id));
+            @json(
+                route(
+                    'whisperly.chat.presence',
+                    $booking->id
+                )
+            );
 
-        function sendPresenceRequest(url, body = null) {
-            return fetch(url, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken,
-                    'Accept': 'application/json',
-                    ...(body ? {'Content-Type': 'application/json'} : {}),
-                },
-                body: body ? JSON.stringify(body) : null,
-            });
+
+        function sendPresenceRequest(
+            url,
+            body = null
+        ) {
+
+            return fetch(
+                url,
+                {
+                    method: 'POST',
+
+                    headers: {
+                        'X-CSRF-TOKEN':
+                            csrfToken,
+
+                        'Accept':
+                            'application/json',
+
+                        ...(body
+                            ? {
+                                'Content-Type':
+                                    'application/json'
+                            }
+                            : {}
+                        ),
+                    },
+
+                    body:
+                        body
+                            ? JSON.stringify(body)
+                            : null,
+                }
+            );
+
         }
+
 
         function updateContactStatus() {
-            fetch(presenceUrl, {
-                headers: {'Accept': 'application/json'},
-            })
-                .then(response => response.json())
-                .then(data => {
-                    const status = data.status;
-                    const roomStatus = document.getElementById('roomPresenceStatus');
-                    const profileStatus = document.getElementById('profilePresenceStatus');
 
-                    if (roomStatus) roomStatus.textContent = status;
-                    if (profileStatus) {
-                        profileStatus.lastChild.textContent = ` ${status}`;
-                        profileStatus.classList.toggle('online', status !== 'Offline');
-                        profileStatus.classList.toggle('offline', status === 'Offline');
+            fetch(
+                presenceUrl,
+                {
+                    headers: {
+                        'Accept':
+                            'application/json'
                     }
-                });
+                }
+            )
+
+            .then(
+                response =>
+                    response.json()
+            )
+
+            .then(
+                data => {
+
+                    const status =
+                        data.status;
+
+
+                    const roomStatus =
+                        document.getElementById(
+                            'roomPresenceStatus'
+                        );
+
+
+                    const profileStatus =
+                        document.getElementById(
+                            'profilePresenceStatus'
+                        );
+
+
+                    if (roomStatus) {
+
+                        roomStatus.textContent =
+                            status;
+
+                    }
+
+
+                    if (profileStatus) {
+
+                        profileStatus.lastChild.textContent =
+                            ` ${status}`;
+
+
+                        profileStatus.classList.toggle(
+                            'online',
+                            status !== 'Offline'
+                        );
+
+
+                        profileStatus.classList.toggle(
+                            'offline',
+                            status === 'Offline'
+                        );
+
+                    }
+
+                }
+            );
+
         }
 
-        sendPresenceRequest(heartbeatUrl);
+
+        sendPresenceRequest(
+            heartbeatUrl
+        );
+
+
         updateContactStatus();
-        setInterval(function () {
-            sendPresenceRequest(heartbeatUrl);
-            updateContactStatus();
-        }, 10000);
+
+
+        setInterval(
+            function () {
+
+                sendPresenceRequest(
+                    heartbeatUrl
+                );
+
+
+                updateContactStatus();
+
+            },
+            10000
+        );
+
+
 
         if (messageInput) {
+
             let typingTimer;
 
-            messageInput.addEventListener('input', function () {
-                sendPresenceRequest(typingUrl, {typing: true});
-                clearTimeout(typingTimer);
-                typingTimer = setTimeout(function () {
-                    sendPresenceRequest(typingUrl, {typing: false});
-                }, 4500);
-            });
+
+            messageInput.addEventListener(
+                'input',
+                function () {
+
+                    sendPresenceRequest(
+                        typingUrl,
+                        {
+                            typing: true
+                        }
+                    );
+
+
+                    clearTimeout(
+                        typingTimer
+                    );
+
+
+                    typingTimer =
+                        setTimeout(
+                            function () {
+
+                                sendPresenceRequest(
+                                    typingUrl,
+                                    {
+                                        typing: false
+                                    }
+                                );
+
+                            },
+                            4500
+                        );
+
+                }
+            );
+
         }
 
 
@@ -3161,7 +4133,9 @@
         ========================================================== */
 
         const searchInput =
-            document.getElementById('searchChat');
+            document.getElementById(
+                'searchChat'
+            );
 
 
         function applyChatFilter() {
@@ -3176,58 +4150,73 @@
 
             const activeFilter =
                 document
-                    .querySelector('.filter.active')
+                    .querySelector(
+                        '.filter.active'
+                    )
                     ?.dataset.filter
                     ?? 'all';
 
 
             document
-                .querySelectorAll('.chat-item')
-                .forEach(function (item) {
+                .querySelectorAll(
+                    '.chat-item'
+                )
+                .forEach(
+                    function (item) {
 
-                    const name =
-                        item
-                            .querySelector('.chat-name')
-                            ?.textContent
-                            .toLowerCase()
-                            ?? '';
-
-
-                    const preview =
-                        item
-                            .querySelector('.chat-preview')
-                            ?.textContent
-                            .toLowerCase()
-                            ?? '';
+                        const name =
+                            item
+                                .querySelector(
+                                    '.chat-name'
+                                )
+                                ?.textContent
+                                .toLowerCase()
+                                ?? '';
 
 
-                    const unread =
-                        item.dataset.unread === '1';
+                        const preview =
+                            item
+                                .querySelector(
+                                    '.chat-preview'
+                                )
+                                ?.textContent
+                                .toLowerCase()
+                                ?? '';
 
 
-                    const matchesSearch =
-                        name.includes(keyword)
-                        ||
-                        preview.includes(keyword);
+                        const unread =
+                            item.dataset.unread
+                            === '1';
 
 
-                    const matchesFilter =
-                        activeFilter === 'all'
-                        ||
-                        (
-                            activeFilter === 'unread'
-                            &&
-                            unread
-                        );
+                        const matchesSearch =
+                            name.includes(
+                                keyword
+                            )
+                            ||
+                            preview.includes(
+                                keyword
+                            );
 
 
-                    item.style.display =
-                        matchesSearch
-                        && matchesFilter
-                            ? 'flex'
-                            : 'none';
+                        const matchesFilter =
+                            activeFilter === 'all'
+                            ||
+                            (
+                                activeFilter === 'unread'
+                                &&
+                                unread
+                            );
 
-                });
+
+                        item.style.display =
+                            matchesSearch
+                            && matchesFilter
+                                ? 'flex'
+                                : 'none';
+
+                    }
+                );
 
         }
 
@@ -3249,37 +4238,41 @@
 
         document
             .querySelectorAll('.filter')
-            .forEach(function (button) {
+            .forEach(
+                function (button) {
 
-                button.addEventListener(
-                    'click',
-                    function () {
+                    button.addEventListener(
+                        'click',
+                        function () {
 
-                        document
-                            .querySelectorAll('.filter')
-                            .forEach(
-                                function (btn) {
+                            document
+                                .querySelectorAll(
+                                    '.filter'
+                                )
+                                .forEach(
+                                    function (btn) {
 
-                                    btn.classList
-                                        .remove(
-                                            'active'
-                                        );
+                                        btn.classList
+                                            .remove(
+                                                'active'
+                                            );
 
-                                }
+                                    }
+                                );
+
+
+                            this.classList.add(
+                                'active'
                             );
 
 
-                        this.classList.add(
-                            'active'
-                        );
+                            applyChatFilter();
 
+                        }
+                    );
 
-                        applyChatFilter();
-
-                    }
-                );
-
-            });
+                }
+            );
 
 
 
@@ -3305,91 +4298,475 @@
         }
 
 
+
         /* ==========================================================
            ACCOUNT INFO PANEL
         ========================================================== */
 
         const accountInfoPanel =
-            document.getElementById('accountInfoPanel');
+            document.getElementById(
+                'accountInfoPanel'
+            );
+
 
         const accountInfoToggle =
-            document.getElementById('accountInfoToggle');
+            document.getElementById(
+                'accountInfoToggle'
+            );
+
 
         const accountInfoClose =
-            document.getElementById('accountInfoClose');
+            document.getElementById(
+                'accountInfoClose'
+            );
 
 
-        // Open panel
         if (accountInfoToggle) {
 
-            accountInfoToggle.addEventListener('click', function() {
+            accountInfoToggle.addEventListener(
+                'click',
+                function () {
 
-                if (accountInfoPanel) {
+                    if (accountInfoPanel) {
 
-                    accountInfoPanel.classList.add('active');
+                        accountInfoPanel.classList.add(
+                            'active'
+                        );
+
+                    }
 
                 }
-
-            });
+            );
 
         }
 
 
-        // Close panel with button
         if (accountInfoClose) {
 
-            accountInfoClose.addEventListener('click', function() {
+            accountInfoClose.addEventListener(
+                'click',
+                function () {
 
-                if (accountInfoPanel) {
+                    if (accountInfoPanel) {
 
-                    accountInfoPanel.classList.remove('active');
+                        accountInfoPanel.classList.remove(
+                            'active'
+                        );
+
+                    }
 
                 }
-
-            });
+            );
 
         }
 
 
-        // Close panel with background click
         if (accountInfoPanel) {
 
-            accountInfoPanel.addEventListener('click', function(e) {
+            accountInfoPanel.addEventListener(
+                'click',
+                function (e) {
 
-                if (e.target === accountInfoPanel) {
+                    if (
+                        e.target ===
+                        accountInfoPanel
+                    ) {
 
-                    accountInfoPanel.classList.remove('active');
+                        accountInfoPanel.classList.remove(
+                            'active'
+                        );
+
+                    }
 
                 }
-
-            });
+            );
 
         }
+
 
         if (
             accountInfoPanel
-            && new URLSearchParams(window.location.search).get('info') === '1'
+            &&
+            new URLSearchParams(
+                window.location.search
+            ).get('info') === '1'
         ) {
-            accountInfoPanel.classList.add('active');
-        }
 
-        // ENTER UNTUK MENGIRIM PESAN
-if (messageInput) {
-
-    messageInput.addEventListener('keydown', function(e) {
-
-        if (e.key === 'Enter' && !e.shiftKey) {
-
-            e.preventDefault();
-
-            this.form.requestSubmit();
+            accountInfoPanel.classList.add(
+                'active'
+            );
 
         }
 
-    });
 
-}
 
+        /* ==========================================================
+           ENTER UNTUK MENGIRIM PESAN
+        ========================================================== */
+
+        if (messageInput) {
+
+            messageInput.addEventListener(
+                'keydown',
+                function (e) {
+
+                    if (
+                        e.key === 'Enter'
+                        &&
+                        !e.shiftKey
+                    ) {
+
+                        e.preventDefault();
+
+                        this.form.requestSubmit();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+
+        /* ==========================================================
+           ⭐ RATING INTERACTION
+        ========================================================== */
+
+        const ratingStars =
+            document.querySelectorAll(
+                '.rating-star'
+            );
+
+
+        const ratingValue =
+            document.getElementById(
+                'ratingValue'
+            );
+
+
+        const ratingLabel =
+            document.getElementById(
+                'ratingLabel'
+            );
+
+
+        const ratingSubmit =
+            document.getElementById(
+                'ratingSubmit'
+            );
+
+
+        const ratingComment =
+            document.getElementById(
+                'ratingComment'
+            );
+
+
+        const ratingTexts = {
+
+            1:
+                'Kurang memuaskan',
+
+            2:
+                'Masih perlu ditingkatkan',
+
+            3:
+                'Cukup baik',
+
+            4:
+                'Sangat baik',
+
+            5:
+                'Luar biasa! ⭐'
+
+        };
+
+
+        function updateRatingStars(
+            value
+        ) {
+
+            ratingStars.forEach(
+                function (star) {
+
+                    const starValue =
+                        Number(
+                            star.dataset.value
+                        );
+
+
+                    star.classList.toggle(
+                        'selected',
+                        starValue <= value
+                    );
+
+                }
+            );
+
+
+            if (ratingLabel) {
+
+                ratingLabel.textContent =
+                    ratingTexts[value]
+                    || 'Pilih jumlah bintang';
+
+            }
+
+        }
+
+
+        ratingStars.forEach(
+            function (star) {
+
+                star.addEventListener(
+                    'click',
+                    function () {
+
+                        const value =
+                            Number(
+                                this.dataset.value
+                            );
+
+
+                        if (ratingValue) {
+
+                            ratingValue.value =
+                                value;
+
+                        }
+
+
+                        updateRatingStars(
+                            value
+                        );
+
+
+                        this.classList.remove(
+                            'pop'
+                        );
+
+
+                        void this.offsetWidth;
+
+
+                        this.classList.add(
+                            'pop'
+                        );
+
+
+                        if (ratingSubmit) {
+
+                            ratingSubmit.disabled =
+                                value < 1;
+
+                        }
+
+                    }
+                );
+
+
+                star.addEventListener(
+                    'mouseenter',
+                    function () {
+
+                        const value =
+                            Number(
+                                this.dataset.value
+                            );
+
+
+                        ratingStars.forEach(
+                            function (item) {
+
+                                item.classList.toggle(
+                                    'selected',
+                                    Number(
+                                        item.dataset.value
+                                    ) <= value
+                                );
+
+                            }
+                        );
+
+                    }
+                );
+
+
+                star.addEventListener(
+                    'mouseleave',
+                    function () {
+
+                        const selected =
+                            Number(
+                                ratingValue?.value
+                                || 0
+                            );
+
+
+                        updateRatingStars(
+                            selected
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+        /* ==========================================================
+           BOOKING TIMER -> LOCK CHAT -> OPEN RATING
+        ========================================================== */
+        const chatComposer = document.getElementById('chatComposer');
+        const messageForm = document.getElementById('messageForm');
+        const chatCountdown = document.getElementById('chatCountdown');
+        const chatCountdownText = document.getElementById('chatCountdownText');
+        const ratingModal = document.getElementById('ratingModal');
+        const ratingForm = document.getElementById('ratingForm');
+
+        let ratingOpened = false;
+
+        function openRatingModal() {
+            if (!ratingModal || ratingOpened) return;
+
+            ratingOpened = true;
+            ratingModal.style.display = 'flex';
+            ratingModal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeRatingModal() {
+            if (!ratingModal) return;
+            ratingModal.style.display = 'none';
+            ratingModal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        function lockChat() {
+            if (messageForm) {
+                messageForm.querySelectorAll('textarea, button').forEach(function (el) {
+                    el.disabled = true;
+                });
+            }
+
+            if (messageInput) {
+                messageInput.disabled = true;
+                messageInput.placeholder = 'Sesi booking telah berakhir.';
+            }
+
+            if (chatCountdown) {
+                chatCountdown.classList.add('expired');
+            }
+
+            if (chatCountdownText) {
+                chatCountdownText.textContent = 'Sesi selesai';
+            }
+        }
+
+        function formatRemaining(ms) {
+            const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+
+            return [hours, minutes, seconds]
+                .map(function (value) {
+                    return String(value).padStart(2, '0');
+                })
+                .join(':');
+        }
+
+        function bookingExpired() {
+            lockChat();
+            openRatingModal();
+        }
+
+        function updateBookingTimer() {
+            if (!chatComposer) return;
+
+            const endValue = chatComposer.dataset.bookingEnd;
+            if (!endValue) return;
+
+            const endTime = new Date(endValue).getTime();
+            if (Number.isNaN(endTime)) return;
+
+            const remaining = endTime - Date.now();
+
+            if (remaining <= 0) {
+                bookingExpired();
+                return;
+            }
+
+            if (chatCountdownText) {
+                chatCountdownText.textContent = 'Sisa waktu ' + formatRemaining(remaining);
+            }
+        }
+
+        updateBookingTimer();
+        setInterval(updateBookingTimer, 500);
+
+        /* Jika halaman dibuka setelah waktu selesai, popup langsung muncul. */
+        @if ($isUser && $ratingAvailable && ! $existingRating)
+            openRatingModal();
+        @endif
+
+        {{-- ANIMASI TERIMA KASIH SETELAH RATING BERHASIL --}}
+        @if ($isUser && session('rating_success'))
+            <div class="modal-overlay thank-you-overlay" id="thankYouModal">
+                <div class="thank-you-card">
+                    <div class="thank-you-icon"><span>★</span></div>
+                    <h3>Terima Kasih!</h3>
+                    <p>Penilaianmu sudah berhasil disimpan.</p>
+                </div>
+            </div>
+        @endif
+
+        /* Jangan biarkan Enter mencoba mengirim pesan setelah timer habis. */
+        if (messageForm) {
+            messageForm.addEventListener('submit', function (event) {
+                const endValue = chatComposer?.dataset.bookingEnd;
+                const endTime = endValue ? new Date(endValue).getTime() : NaN;
+
+                if (!Number.isNaN(endTime) && Date.now() >= endTime) {
+                    event.preventDefault();
+                    bookingExpired();
+                }
+            });
+        }
+
+        if (ratingForm) {
+            ratingForm.addEventListener('submit', function (event) {
+                const value = Number(document.getElementById('ratingValue')?.value || 0);
+                const comment = document.getElementById('ratingComment')?.value.trim() || '';
+
+                if (value < 1 || !comment) {
+                    event.preventDefault();
+                    return;
+                }
+
+                const submit = document.getElementById('ratingSubmit');
+                if (submit) {
+                    submit.disabled = true;
+                    submit.textContent = 'Menyimpan...';
+                }
+            });
+        }
+        const thankYouModal = document.getElementById('thankYouModal');
+
+        if (thankYouModal) {
+            document.body.style.overflow = 'hidden';
+
+            setTimeout(function () {
+                thankYouModal.style.transition = 'opacity .45s ease';
+                thankYouModal.style.opacity = '0';
+
+                setTimeout(function () {
+                    thankYouModal.remove();
+                    document.body.style.overflow = '';
+                }, 450);
+            }, 1800);
+        }
     </script>
 
 </body>

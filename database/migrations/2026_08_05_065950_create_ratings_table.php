@@ -7,29 +7,28 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ubah foreign key rating dari BIGINT menjadi UUID/string.
+     *
+     * Booking dan pengguna Whisperly/Laralag menggunakan UUID,
+     * sehingga kolom id_booking dan id_pengguna pada ratings
+     * harus dapat menyimpan string UUID.
      */
     public function up(): void
     {
-        Schema::create('ratings', function (Blueprint $table) {
-            $table->string('id', 36)->primary();
-            $table->unsignedBigInteger('id_booking');
-            $table->unsignedBigInteger('id_pengguna');
-            $table->integer('nilai_rating');
-            $table->text('ulasan');
-            $table->timestamps();
-            $table->softDeletes();
-            $table->string('created_by', 36)->nullable();
-            $table->string('updated_by', 36)->nullable();
-            $table->string('deleted_by', 36)->nullable();
+        Schema::table('ratings', function (Blueprint $table) {
+            $table->string('id_booking', 36)->change();
+            $table->string('id_pengguna', 36)->change();
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Kembalikan ke tipe BIGINT seperti struktur lama.
      */
     public function down(): void
     {
-        Schema::dropIfExists('ratings');
+        Schema::table('ratings', function (Blueprint $table) {
+            $table->unsignedBigInteger('id_booking')->change();
+            $table->unsignedBigInteger('id_pengguna')->change();
+        });
     }
 };
