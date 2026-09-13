@@ -1437,6 +1437,67 @@
 
 
         /* =========================================================
+           EXPIRED / PASSED SCHEDULE
+        ========================================================== */
+
+        .expired-status {
+            position: relative;
+            z-index: 2;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 48px;
+            padding: 0 17px;
+            border: 1px solid rgba(255,255,255,.10);
+            border-radius: 13px;
+            background: rgba(255,255,255,.045);
+            color: #77727d;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .02em;
+            white-space: nowrap;
+            cursor: not-allowed;
+            opacity: .78;
+        }
+
+        .expired-dot {
+            width: 7px;
+            height: 7px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: #77727d;
+        }
+
+        .schedule-item.expired {
+            border-color: rgba(255,255,255,.055);
+            background: linear-gradient(145deg, rgba(45,43,48,.72), rgba(18,16,22,.88));
+            box-shadow: none;
+            opacity: .72;
+        }
+
+        .schedule-item.expired::before {
+            background: #5e5963;
+            box-shadow: none;
+        }
+
+        .schedule-item.expired .schedule-day,
+        .schedule-item.expired .schedule-time {
+            color: #77727d;
+        }
+
+        .schedule-item.expired .time-dot {
+            background: #66616b;
+            box-shadow: none;
+        }
+
+        .schedule-item.expired:hover {
+            transform: none;
+            border-color: rgba(255,255,255,.055);
+            box-shadow: none;
+        }
+
+
+        /* =========================================================
            BOOKED
         ========================================================== */
 
@@ -2349,18 +2410,47 @@
 
 
                                         @php
+                                            $timezone = config('app.timezone');
+                                            $now = now($timezone);
 
-                                            $status =
-                                                $schedule->resolveStatusForDate(
-                                                    now(
-                                                        config('app.timezone')
-                                                    )->toDateString()
-                                                );
+                                            $scheduleDate = \Carbon\Carbon::parse(
+                                                $schedule->date,
+                                                $timezone
+                                            )->toDateString();
 
+                                            $scheduleStart = \Carbon\Carbon::parse(
+                                                $scheduleDate . ' ' . $schedule->start_time,
+                                                $timezone
+                                            );
+
+                                            $scheduleEnd = \Carbon\Carbon::parse(
+                                                $scheduleDate . ' ' . $schedule->end_time,
+                                                $timezone
+                                            );
+
+                                            // Jadwal baru dianggap lewat setelah JAM SELESAI.
+                                            // Contoh: 20:00-21:00 tetap bisa diedit sampai 21:00.
+                                            if ($scheduleEnd->lt($scheduleStart)) {
+                                                $scheduleEnd->addDay();
+                                            }
+
+                                            $isExpired = $scheduleEnd->lessThanOrEqualTo($now);
+
+                                            $status = $schedule->resolveStatusForDate(
+                                                $scheduleDate
+                                            );
+
+                                            /*
+                                             * Jadwal yang belum lewat otomatis dianggap tersedia.
+                                             * Jika sudah dibooking, status booked tetap dipertahankan.
+                                             */
+                                            if (! $isExpired && $status !== 'booked') {
+                                                $status = 'available';
+                                            }
                                         @endphp
 
 
-                                        <div class="schedule-item">
+                                        <div class="schedule-item {{ $isExpired ? 'expired' : '' }}">
 
 
                                             <div class="schedule-main">
@@ -2387,8 +2477,26 @@
                                             </div>
 
 
-                                            @if ($status === 'booked')
+                                            @if ($isExpired)
 
+                                                <div
+                                                    class="expired-status"
+                                                    title="Jadwal ini sudah lewat dan tidak dapat diubah."
+                                                >
+                                                    <span class="expired-dot"></span>
+                                                    Waktu sudah lewat
+                                                </div>
+
+                                                {{-- Status lama tetap dikirim agar jadwal yang sudah lewat tidak berubah. --}}
+                                                @if ($status !== 'booked')
+                                                    <input
+                                                        type="hidden"
+                                                        name="schedule[{{ $schedule->id }}]"
+                                                        value="{{ $status }}"
+                                                    >
+                                                @endif
+
+                                            @elseif ($status === 'booked')
 
                                                 <div class="booked-status">
 
@@ -2398,9 +2506,7 @@
 
                                                 </div>
 
-
                                             @else
-
 
                                                 <select
                                                     name="schedule[{{ $schedule->id }}]"
@@ -2422,7 +2528,6 @@
                                                     </option>
 
                                                 </select>
-
 
                                             @endif
 

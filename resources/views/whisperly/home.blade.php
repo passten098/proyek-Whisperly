@@ -36,6 +36,12 @@
             --champagne: #f5e4c4;
             --champagne-soft: #fff4dc;
 
+            /* LOGOUT */
+            --logout-red: #ff6678;
+            --logout-red-soft: #ff8795;
+            --logout-red-bg: rgba(255, 102, 120, .08);
+            --logout-red-border: rgba(255, 102, 120, .17);
+
             --border: rgba(255,255,255,.11);
 
             --glass: rgba(21, 20, 40, .91);
@@ -48,9 +54,7 @@
         ========================================================= */
 
         * {
-
             box-sizing: border-box;
-
         }
 
 
@@ -371,6 +375,32 @@
 
         }
 
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .user-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+}
+
+.user-role {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1;
+    margin-top: 3px;
+}
 
         .username {
 
@@ -731,6 +761,20 @@
 
         }
 
+        .menu-profile-avatar img {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    border-radius: 13px;
+
+}
+
 
         .menu-profile-info {
 
@@ -1066,7 +1110,235 @@
 
 
         /* =========================================================
-           PREMIUM HOME / DASHBOARD
+           LOGOUT ITEM
+        ========================================================= */
+
+        .logout-form {
+
+            position: relative;
+
+            width: 100%;
+
+            margin: 0;
+
+            padding: 0;
+
+            z-index: 3;
+
+        }
+
+
+        .logout-button {
+
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            min-height: 58px;
+
+            width: 100%;
+
+            margin: 0;
+
+            padding:
+                7px 9px;
+
+            border: 0;
+
+            border-radius: 16px;
+
+            color:
+                var(--logout-red);
+
+            background:
+                transparent;
+
+            font:
+                inherit;
+
+            text-align: left;
+
+            cursor: pointer;
+
+            overflow: hidden;
+
+            z-index: 3;
+
+            transition:
+                background .25s ease,
+                transform .25s ease,
+                color .25s ease;
+
+        }
+
+
+        /* GARIS MERAH */
+
+        .logout-button::before {
+
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+
+            top: 10px;
+
+            bottom: 10px;
+
+            width: 2px;
+
+            border-radius: 999px;
+
+            background:
+                var(--logout-red);
+
+            opacity: 0;
+
+            transform:
+                scaleY(.3);
+
+            transition:
+                opacity .25s ease,
+                transform .25s ease;
+
+        }
+
+
+        .logout-button:hover {
+
+            background:
+                var(--logout-red-bg);
+
+            color:
+                var(--logout-red-soft);
+
+            transform:
+                translateX(3px);
+
+        }
+
+
+        .logout-button:hover::before {
+
+            opacity: 1;
+
+            transform:
+                scaleY(1);
+
+        }
+
+
+        /* ICON LOGOUT MERAH */
+
+        .logout-button .dropdown-icon {
+
+            color:
+                var(--logout-red);
+
+            border-color:
+                var(--logout-red-border);
+
+            background:
+                rgba(255,102,120,.055);
+
+        }
+
+
+        .logout-button:hover
+        .dropdown-icon {
+
+            color:
+                var(--logout-red-soft);
+
+            background:
+                rgba(255,102,120,.11);
+
+            border-color:
+                rgba(255,135,149,.24);
+
+            transform:
+                scale(1.06);
+
+        }
+
+
+        /* TEKS LOGOUT */
+
+        .logout-button
+        .dropdown-text strong {
+
+            color:
+                var(--logout-red);
+
+            transition:
+                color .25s ease;
+
+        }
+
+
+        .logout-button
+        .dropdown-text small {
+
+            color:
+                rgba(255,102,120,.40);
+
+            transition:
+                color .25s ease;
+
+        }
+
+
+        .logout-button:hover
+        .dropdown-text strong {
+
+            color:
+                var(--logout-red-soft);
+
+        }
+
+
+        .logout-button:hover
+        .dropdown-text small {
+
+            color:
+                rgba(255,135,149,.60);
+
+        }
+
+
+        /* PANAH LOGOUT */
+
+        .logout-button
+        .dropdown-arrow {
+
+            color:
+                rgba(255,102,120,.38);
+
+            transition:
+                .25s ease;
+
+        }
+
+
+        .logout-button:hover
+        .dropdown-arrow {
+
+            color:
+                var(--logout-red-soft);
+
+            transform:
+                translateX(4px);
+
+        }
+
+
+        /* =========================================================
+           PREMIUM HOME
         ========================================================= */
 
         .premium-home {
@@ -1187,19 +1459,15 @@
 
             0%,
             100% {
-
                 transform:
                     translate(0,0)
                     scale(1);
-
             }
 
             50% {
-
                 transform:
                     translate(30px,25px)
                     scale(1.08);
-
             }
 
         }
@@ -1209,19 +1477,15 @@
 
             0%,
             100% {
-
                 transform:
                     translate(0,0)
                     scale(1);
-
             }
 
             50% {
-
                 transform:
                     translate(-35px,35px)
                     scale(1.1);
-
             }
 
         }
@@ -1231,17 +1495,13 @@
 
             0%,
             100% {
-
                 transform:
                     translateY(0);
-
             }
 
             50% {
-
                 transform:
                     translateY(-35px);
-
             }
 
         }
@@ -1249,7 +1509,6 @@
 
         /* =========================================================
            PREMIUM CONTAINER
-           SUDAH DIPERBAIKI AGAR JUDUL TIDAK TERPOTONG
         ========================================================= */
 
         .premium-container {
@@ -1399,7 +1658,6 @@
 
         /* =========================================================
            PREMIUM TITLE
-           FIX HURUF Y
         ========================================================= */
 
         .premium-title {
@@ -1779,17 +2037,13 @@
         @keyframes orbitRotate {
 
             from {
-
                 transform:
                     rotate(0deg);
-
             }
 
             to {
-
                 transform:
                     rotate(360deg);
-
             }
 
         }
@@ -1798,17 +2052,13 @@
         @keyframes orbitRotateReverse {
 
             from {
-
                 transform:
                     rotate(360deg);
-
             }
 
             to {
-
                 transform:
                     rotate(0deg);
-
             }
 
         }
@@ -1842,19 +2092,15 @@
 
             0%,
             100% {
-
                 transform:
                     translateY(0)
                     rotate(-1deg);
-
             }
 
             50% {
-
                 transform:
                     translateY(-16px)
                     rotate(2deg);
-
             }
 
         }
@@ -2053,17 +2299,13 @@
 
             0%,
             100% {
-
                 transform:
                     scale(.9);
-
             }
 
             50% {
-
                 transform:
                     scale(1.18);
-
             }
 
         }
@@ -2115,17 +2357,13 @@
 
             0%,
             100% {
-
                 transform:
                     translateY(0);
-
             }
 
             50% {
-
                 transform:
                     translateY(-10px);
-
             }
 
         }
@@ -2214,17 +2452,13 @@
 
             0%,
             100% {
-
                 transform:
                     translateY(0);
-
             }
 
             50% {
-
                 transform:
                     translateY(9px);
-
             }
 
         }
@@ -2412,11 +2646,8 @@
 
 
         .star-one {
-
             top: 105px;
-
             left: 70px;
-
         }
 
 
@@ -3009,9 +3240,7 @@
             class="brand"
             href="{{ route('whisperly.home') }}"
         >
-
             WHISPERLY
-
         </a>
 
 
@@ -3036,21 +3265,43 @@
 
                     <div class="user-avatar">
 
-                        {{ strtoupper(
-                            substr(
-                                $currentUser->username,
-                                0,
-                                1
-                            )
-                        ) }}
+    @if (
+        $currentUser->role === 'talent' &&
+        $currentTalentProfile &&
+        $currentTalentProfile->photo
+    )
 
-                    </div>
+        <img
+            src="{{ asset('storage/' . $currentTalentProfile->photo) }}"
+            alt="{{ $currentUser->username }}"
+        >
 
-                    <span class="username">
+    @else
 
-                        {{ $currentUser->username }}
+        {{ strtoupper(
+            substr(
+                $currentUser->username,
+                0,
+                1
+            )
+        ) }}
 
-                    </span>
+    @endif
+
+</div>
+
+                    <div class="user-info">
+    <span class="username">{{ $currentUser->username }}</span>
+    <span class="user-role">
+        @if ($currentUser->role === 'talent')
+            Talent
+        @elseif ($currentUser->role === 'admin')
+            Admin
+        @else
+            User
+        @endif
+    </span>
+</div>
 
                 </div>
 
@@ -3095,16 +3346,30 @@
 
                             <div class="menu-profile-avatar">
 
-                                {{ strtoupper(
-                                    substr(
-                                        $currentUser->username,
-                                        0,
-                                        1
-                                    )
-                                ) }}
+    @if (
+        $currentUser->role === 'talent' &&
+        $currentTalentProfile &&
+        $currentTalentProfile->photo
+    )
 
-                            </div>
+        <img
+            src="{{ asset('storage/' . $currentTalentProfile->photo) }}"
+            alt="{{ $currentUser->username }}"
+        >
 
+    @else
+
+        {{ strtoupper(
+            substr(
+                $currentUser->username,
+                0,
+                1
+            )
+        ) }}
+
+    @endif
+
+</div>
                             <div class="menu-profile-info">
 
                                 <span class="menu-profile-name">
@@ -3127,10 +3392,14 @@
                         <div class="dropdown-divider"></div>
 
 
-                        <!-- USER MENU -->
+                        <!-- =====================================================
+                             USER MENU
+                        ====================================================== -->
 
                         @if ($currentUser->role === 'user')
 
+
+                            <!-- HOME -->
 
                             <a
                                 href="{{ route('whisperly.home') }}"
@@ -3155,7 +3424,6 @@
 
                                 </span>
 
-
                                 <span class="dropdown-text">
 
                                     <strong>
@@ -3168,13 +3436,14 @@
 
                                 </span>
 
-
                                 <span class="dropdown-arrow">
                                     →
                                 </span>
 
                             </a>
 
+
+                            <!-- CHAT -->
 
                             <a
                                 href="{{ route('whisperly.chat.index') }}"
@@ -3213,7 +3482,6 @@
 
                                 </span>
 
-
                                 <span class="dropdown-text">
 
                                     <strong>
@@ -3226,13 +3494,14 @@
 
                                 </span>
 
-
                                 <span class="dropdown-arrow">
                                     →
                                 </span>
 
                             </a>
 
+
+                            <!-- LIHAT TALENT -->
 
                             <a
                                 href="{{ route('whisperly.talents.index') }}"
@@ -3265,7 +3534,6 @@
 
                                 </span>
 
-
                                 <span class="dropdown-text">
 
                                     <strong>
@@ -3278,13 +3546,14 @@
 
                                 </span>
 
-
                                 <span class="dropdown-arrow">
                                     →
                                 </span>
 
                             </a>
 
+
+                            <!-- PENGADUAN -->
 
                             <a
                                 href="{{ route('pengaduan') }}"
@@ -3323,7 +3592,6 @@
 
                                 </span>
 
-
                                 <span class="dropdown-text">
 
                                     <strong>
@@ -3336,7 +3604,6 @@
 
                                 </span>
 
-
                                 <span class="dropdown-arrow">
                                     →
                                 </span>
@@ -3347,10 +3614,14 @@
                         @endif
 
 
-                        <!-- TALENT MENU -->
+                        <!-- =====================================================
+                             TALENT MENU
+                        ====================================================== -->
 
                         @if ($currentUser->role === 'talent')
 
+
+                            <!-- HOME -->
 
                             <a
                                 href="{{ route('whisperly.home') }}"
@@ -3375,7 +3646,6 @@
 
                                 </span>
 
-
                                 <span class="dropdown-text">
 
                                     <strong>
@@ -3388,13 +3658,14 @@
 
                                 </span>
 
-
                                 <span class="dropdown-arrow">
                                     →
                                 </span>
 
                             </a>
 
+
+                            <!-- LIHAT TALENT -->
 
                             <a
                                 href="{{ route('whisperly.talents.index') }}"
@@ -3427,7 +3698,6 @@
 
                                 </span>
 
-
                                 <span class="dropdown-text">
 
                                     <strong>
@@ -3440,13 +3710,14 @@
 
                                 </span>
 
-
                                 <span class="dropdown-arrow">
                                     →
                                 </span>
 
                             </a>
 
+
+                            <!-- EDIT PROFIL -->
 
                             <a
                                 href="{{ route('talent.edit') }}"
@@ -3477,7 +3748,6 @@
 
                                 </span>
 
-
                                 <span class="dropdown-text">
 
                                     <strong>
@@ -3490,12 +3760,14 @@
 
                                 </span>
 
-
                                 <span class="dropdown-arrow">
                                     →
                                 </span>
 
                             </a>
+
+
+                            <!-- PENGADUAN -->
 
                             <a
                                 href="{{ route('pengaduan') }}"
@@ -3534,7 +3806,6 @@
 
                                 </span>
 
-
                                 <span class="dropdown-text">
 
                                     <strong>
@@ -3547,13 +3818,14 @@
 
                                 </span>
 
-
                                 <span class="dropdown-arrow">
                                     →
                                 </span>
 
                             </a>
 
+
+                            <!-- CHAT -->
 
                             <a
                                 href="{{ route('whisperly.chat.index') }}"
@@ -3592,7 +3864,6 @@
 
                                 </span>
 
-
                                 <span class="dropdown-text">
 
                                     <strong>
@@ -3605,7 +3876,6 @@
 
                                 </span>
 
-
                                 <span class="dropdown-arrow">
                                     →
                                 </span>
@@ -3616,13 +3886,18 @@
                         @endif
 
 
-                        <!-- ADMIN MENU -->
+                        <!-- =====================================================
+                             ADMIN MENU
+                             ADMIN HANYA HOME + PENGADUAN
+                        ====================================================== -->
 
                         @if ($currentUser->role === 'admin')
 
 
+                            <!-- HOME ADMIN -->
+
                             <a
-                                href="{{ route('admin') }}"
+                                href="{{ route('whisperly.home') }}"
                                 class="dropdown-item"
                             >
 
@@ -3634,7 +3909,7 @@
                                     >
 
                                         <path
-                                            d="M3.5 10.7L12 3.7L20.5 10.7V20H14.8V14.4H9.2V20H3.5V10.7Z"
+                                            d="M3.5 10.7L12 3.7L20.5 3.7V20H14.8V14.4H9.2V20H3.5V10.7Z"
                                             stroke="currentColor"
                                             stroke-width="1.6"
                                             stroke-linejoin="round"
@@ -3644,7 +3919,6 @@
 
                                 </span>
 
-
                                 <span class="dropdown-text">
 
                                     <strong>
@@ -3652,11 +3926,10 @@
                                     </strong>
 
                                     <small>
-                                        Dashboard administrator
+                                        Kembali ke halaman utama
                                     </small>
 
                                 </span>
-
 
                                 <span class="dropdown-arrow">
                                     →
@@ -3665,57 +3938,7 @@
                             </a>
 
 
-                            <a
-                                href="{{ route('whisperly.talents.index') }}"
-                                class="dropdown-item"
-                            >
-
-                                <span class="dropdown-icon">
-
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                    >
-
-                                        <circle
-                                            cx="12"
-                                            cy="8"
-                                            r="3"
-                                            stroke="currentColor"
-                                            stroke-width="1.6"
-                                        />
-
-                                        <path
-                                            d="M5.5 20C5.9 16.1 8 14 12 14C16 14 18.1 16.1 18.5 20"
-                                            stroke="currentColor"
-                                            stroke-width="1.6"
-                                            stroke-linecap="round"
-                                        />
-
-                                    </svg>
-
-                                </span>
-
-
-                                <span class="dropdown-text">
-
-                                    <strong>
-                                        Lihat Talent
-                                    </strong>
-
-                                    <small>
-                                        Kelola daftar talent
-                                    </small>
-
-                                </span>
-
-
-                                <span class="dropdown-arrow">
-                                    →
-                                </span>
-
-                            </a>
-
+                            <!-- PENGADUAN ADMIN -->
 
                             <a
                                 href="{{ route('admin.menfess.index') }}"
@@ -3754,7 +3977,6 @@
 
                                 </span>
 
-
                                 <span class="dropdown-text">
 
                                     <strong>
@@ -3762,11 +3984,10 @@
                                     </strong>
 
                                     <small>
-                                        Kelola ruang pengaduan
+                                        Kelola dan setujui pengaduan
                                     </small>
 
                                 </span>
-
 
                                 <span class="dropdown-arrow">
                                     →
@@ -3776,6 +3997,83 @@
 
 
                         @endif
+
+
+                        <!-- =====================================================
+                             KELUAR
+                             BERLAKU UNTUK SEMUA ROLE
+                        ====================================================== -->
+
+                        <div class="dropdown-divider"></div>
+
+
+                        <form
+                            method="POST"
+                            action="{{ route('logout.baru') }}"
+                            class="logout-form"
+                        >
+
+                            @csrf
+
+                            <button
+                                type="submit"
+                                class="logout-button"
+                            >
+
+                                <span class="dropdown-icon">
+
+                                    <svg
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                    >
+
+                                        <path
+                                            d="M10 5H6.5C5.67 5 5 5.67 5 6.5V17.5C5 18.33 5.67 19 6.5 19H10"
+                                            stroke="currentColor"
+                                            stroke-width="1.6"
+                                            stroke-linecap="round"
+                                        />
+
+                                        <path
+                                            d="M13 8L17 12L13 16"
+                                            stroke="currentColor"
+                                            stroke-width="1.6"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        />
+
+                                        <path
+                                            d="M9 12H17"
+                                            stroke="currentColor"
+                                            stroke-width="1.6"
+                                            stroke-linecap="round"
+                                        />
+
+                                    </svg>
+
+                                </span>
+
+
+                                <span class="dropdown-text">
+
+                                    <strong>
+                                        Keluar
+                                    </strong>
+
+                                    <small>
+                                        Keluar dari akun Whisperly
+                                    </small>
+
+                                </span>
+
+
+                                <span class="dropdown-arrow">
+                                    →
+                                </span>
+
+                            </button>
+
+                        </form>
 
 
                     </div>
@@ -3862,37 +4160,43 @@
                 </p>
 
 
+                <!-- =====================================================
+                     ACTION BUTTONS
+                ====================================================== -->
+
                 <div class="premium-actions">
 
-
-                    <!-- LIHAT TALENT -->
-
-                    <a
-                        class="premium-action primary"
-                        href="{{ route('whisperly.talents.index') }}"
-                    >
-
-                        Lihat Talent
-
-                    </a>
-
-
-                    <!-- RUANG PENGADUAN -->
 
                     @if (
                         $currentUser &&
                         $currentUser->role === 'admin'
                     )
 
+                        <!-- ADMIN -->
+
                         <a
-                            class="premium-action secondary"
+                            class="premium-action primary"
                             href="{{ route('admin.menfess.index') }}"
                         >
 
-                            Ruang Pengaduan
+                            Kelola Pengaduan
+
                         </a>
 
+
                     @else
+
+                        <!-- USER & TALENT -->
+
+                        <a
+                            class="premium-action primary"
+                            href="{{ route('whisperly.talents.index') }}"
+                        >
+
+                            Lihat Talent
+
+                        </a>
+
 
                         <a
                             class="premium-action secondary"
@@ -3900,7 +4204,6 @@
                         >
 
                             Ruang Pengaduan
-
 
                         </a>
 

@@ -28,7 +28,7 @@ class menfessController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | ADMIN - INDEX
+    | INDEX ADMIN / MANAGEMENT
     |--------------------------------------------------------------------------
     */
 
@@ -42,13 +42,9 @@ class menfessController extends Controller
             ]);
 
         if ($request->has('search')) {
-
-            $search = trim(
-                (string) $request->get('search')
-            );
+            $search = trim((string) $request->get('search'));
 
             if ($search !== '') {
-
                 $query->where(
                     'isi_pesan',
                     'like',
@@ -80,28 +76,15 @@ class menfessController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | PUBLIC - RUANG PENGADUAN
+    | PUBLIC MENFESS
     |--------------------------------------------------------------------------
     */
 
     public function publicIndex(Request $request): View
     {
-        /*
-        |--------------------------------------------------------------------------
-        | AMBIL SEMUA KATEGORI
-        |--------------------------------------------------------------------------
-        */
-
         $categories = categories::query()
             ->orderBy('jenis_kategori')
             ->get();
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | KATEGORI YANG DIPILIH
-        |--------------------------------------------------------------------------
-        */
 
         $selectedCategory = strtolower(
             trim(
@@ -112,21 +95,7 @@ class menfessController extends Controller
             )
         );
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | NORMALISASI KATEGORI URL
-        |--------------------------------------------------------------------------
-        |
-        | random   = campuran
-        | love     = cinta
-        | horror   = horror
-        | sad      = sedih
-        |
-        */
-
         $selectedCategory = match ($selectedCategory) {
-
             'random',
             'campuran' => 'random',
 
@@ -143,12 +112,6 @@ class menfessController extends Controller
         };
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | QUERY MENFESS
-        |--------------------------------------------------------------------------
-        */
-
         $query = menfess::query()
             ->with([
                 'pengguna',
@@ -161,146 +124,76 @@ class menfessController extends Controller
             );
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | TENTUKAN KATEGORI DATABASE
-        |--------------------------------------------------------------------------
-        */
-
         $categoryName = match ($selectedCategory) {
-
             'random' => 'campuran',
-
             'love' => 'cinta',
-
             'horror' => 'horror',
-
             'sad' => 'sedih',
 
             default => 'campuran',
         };
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | CARI KATEGORI
-        |--------------------------------------------------------------------------
-        */
-
         $category = categories::query()
             ->whereRaw(
                 'LOWER(TRIM(jenis_kategori)) = ?',
-                [strtolower($categoryName)]
+                [
+                    strtolower($categoryName)
+                ]
             )
             ->first();
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | FILTER MENFESS
-        |--------------------------------------------------------------------------
-        */
-
         if ($category) {
-
             $query->where(
                 'id_kategori',
                 $category->id
             );
-
         } else {
-
-            $query->whereRaw(
-                '1 = 0'
-            );
+            $query->whereRaw('1 = 0');
         }
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | AMBIL DATA MENFESS
-        |--------------------------------------------------------------------------
-        */
 
         $items = $query
             ->orderByDesc('created_at')
             ->get();
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | KIRIM KE BLADE
-        |--------------------------------------------------------------------------
-        */
-
         return view(
             'whisperly.pengaduan',
             [
-                'title' =>
-                    'Ruang Pengaduan',
+                'title' => 'Ruang Pengaduan',
 
-                'items' =>
-                    $items,
+                'items' => $items,
 
-                'categories' =>
-                    $categories,
+                'categories' => $categories,
 
-                'selectedCategory' =>
-                    $selectedCategory,
+                'selectedCategory' => $selectedCategory,
 
-                'activeCategory' =>
-                    $category,
+                'activeCategory' => $category,
 
                 'categoryColors' => [
 
                     'random' =>
-                        'linear-gradient(
-                            135deg,
-                            rgba(79, 120, 212, 0.28),
-                            rgba(48, 72, 124, 0.2)
-                        )',
+                        'linear-gradient(135deg, rgba(79, 120, 212, 0.28), rgba(48, 72, 124, 0.2))',
 
                     'cinta' =>
-                        'linear-gradient(
-                            135deg,
-                            rgba(186, 31, 54, 0.2),
-                            rgba(80, 18, 30, 0.16)
-                        )',
+                        'linear-gradient(135deg, rgba(186, 31, 54, 0.2), rgba(80, 18, 30, 0.16))',
 
                     'love' =>
-                        'linear-gradient(
-                            135deg,
-                            rgba(186, 31, 54, 0.2),
-                            rgba(80, 18, 30, 0.16)
-                        )',
+                        'linear-gradient(135deg, rgba(186, 31, 54, 0.2), rgba(80, 18, 30, 0.16))',
 
                     'horor' =>
-                        'linear-gradient(
-                            135deg,
-                            rgba(20, 71, 52, 0.35),
-                            rgba(9, 28, 22, 0.2)
-                        )',
+                        'linear-gradient(135deg, rgba(20, 71, 52, 0.35), rgba(9, 28, 22, 0.2))',
 
                     'horror' =>
-                        'linear-gradient(
-                            135deg,
-                            rgba(20, 71, 52, 0.35),
-                            rgba(9, 28, 22, 0.2)
-                        )',
+                        'linear-gradient(135deg, rgba(20, 71, 52, 0.35), rgba(9, 28, 22, 0.2))',
 
                     'sedih' =>
-                        'linear-gradient(
-                            135deg,
-                            rgba(205, 132, 52, 0.28),
-                            rgba(132, 90, 32, 0.24)
-                        )',
+                        'linear-gradient(135deg, rgba(205, 132, 52, 0.28), rgba(132, 90, 32, 0.24))',
 
                     'sad' =>
-                        'linear-gradient(
-                            135deg,
-                            rgba(205, 132, 52, 0.28),
-                            rgba(132, 90, 32, 0.24)
-                        )',
+                        'linear-gradient(135deg, rgba(205, 132, 52, 0.28), rgba(132, 90, 32, 0.24))',
                 ],
             ]
         );
@@ -309,7 +202,7 @@ class menfessController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | ADMIN - MENFESS
+    | ADMIN MODERATION
     |--------------------------------------------------------------------------
     */
 
@@ -320,30 +213,40 @@ class menfessController extends Controller
                 (string) (
                     $request
                         ->user('whisperly')
-                        ?->role ?? ''
+                        ?->role
+                    ?? ''
                 )
             ) === 'admin',
             403,
             'Hanya admin yang dapat mengakses moderasi menfess.'
         );
 
+
         $pendingItems = menfess::with([
             'pengguna',
             'kategori',
             'comments.pengguna'
         ])
-            ->where('status', 'pending')
+            ->where(
+                'status',
+                'pending'
+            )
             ->orderByDesc('created_at')
             ->get();
+
 
         $approvedItems = menfess::with([
             'pengguna',
             'kategori',
             'comments.pengguna'
         ])
-            ->where('status', 'approved')
+            ->where(
+                'status',
+                'approved'
+            )
             ->orderByDesc('created_at')
             ->get();
+
 
         $this->log(
             $request,
@@ -357,11 +260,11 @@ class menfessController extends Controller
             ]
         );
 
+
         return view(
             'menfess::menfess_admin',
             [
-                'title' =>
-                    'Moderasi Menfess',
+                'title' => 'Moderasi Menfess',
 
                 'pendingItems' =>
                     $pendingItems,
@@ -382,33 +285,18 @@ class menfessController extends Controller
     public function create(Request $request): View
     {
         $data['forms'] = [
-
             'id_kategori' => [
-                'label' =>
-                    'Kategori',
-
-                'type' =>
-                    'select',
-
-                'value' =>
-                    old('id_kategori'),
-
-                'required' =>
-                    true
+                'label' => 'Kategori',
+                'type' => 'select',
+                'value' => old('id_kategori'),
+                'required' => true
             ],
 
             'isi_pesan' => [
-                'label' =>
-                    'Isi Pesan',
-
-                'type' =>
-                    'textarea',
-
-                'value' =>
-                    old('isi_pesan'),
-
-                'required' =>
-                    true
+                'label' => 'Isi Pesan',
+                'type' => 'textarea',
+                'value' => old('isi_pesan'),
+                'required' => true
             ],
         ];
 
@@ -429,8 +317,7 @@ class menfessController extends Controller
             array_merge(
                 $data,
                 [
-                    'title' =>
-                        $this->title
+                    'title' => $this->title
                 ]
             )
         );
@@ -439,51 +326,26 @@ class menfessController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | STORE
+    | STORE MENFESS
     |--------------------------------------------------------------------------
     */
 
     public function store(Request $request): RedirectResponse
     {
-        /*
-        |--------------------------------------------------------------------------
-        | VALIDASI
-        |--------------------------------------------------------------------------
-        */
-
         $request->validate([
-            'id_kategori' =>
-                'required|string',
+            'id_kategori' => 'required|string',
 
             'isi_pesan' =>
                 'required|string|min:1|max:2000',
         ]);
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | CARI KATEGORI
-        |--------------------------------------------------------------------------
-        */
-
         $categoryInput = strtolower(
             trim(
-                (string) $request->input(
-                    'id_kategori'
-                )
+                (string) $request->input('id_kategori')
             )
         );
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | NORMALISASI INPUT KATEGORI
-        |--------------------------------------------------------------------------
-        |
-        | ID kategori tetap diterima.
-        | Nama kategori juga diterima.
-        |
-        */
 
         $category = categories::query()
             ->where(
@@ -492,32 +354,32 @@ class menfessController extends Controller
             )
             ->orWhereRaw(
                 'LOWER(TRIM(jenis_kategori)) = ?',
-                [$categoryInput]
+                [
+                    $categoryInput
+                ]
             )
             ->first();
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | JIKA BELUM DITEMUKAN, COBA ALIAS
-        |--------------------------------------------------------------------------
-        */
 
         if (!$category) {
 
             $categoryName = match ($categoryInput) {
 
-                'random' => 'campuran',
+                'random' =>
+                    'campuran',
 
-                'love' => 'cinta',
+                'love' =>
+                    'cinta',
 
-                'horror' => 'horror',
+                'horror',
+                'horor' =>
+                    'horror',
 
-                'horor' => 'horror',
+                'sad' =>
+                    'sedih',
 
-                'sad' => 'sedih',
-
-                default => null,
+                default =>
+                    null,
             };
 
 
@@ -526,18 +388,14 @@ class menfessController extends Controller
                 $category = categories::query()
                     ->whereRaw(
                         'LOWER(TRIM(jenis_kategori)) = ?',
-                        [$categoryName]
+                        [
+                            $categoryName
+                        ]
                     )
                     ->first();
             }
         }
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | CEK KATEGORI
-        |--------------------------------------------------------------------------
-        */
 
         if (!$category) {
 
@@ -550,17 +408,21 @@ class menfessController extends Controller
         }
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | BUAT MENFESS
-        |--------------------------------------------------------------------------
-        */
+        $user = Auth::guard('whisperly')->user();
+
+
+        if (!$user) {
+            return back()
+                ->with(
+                    'message_error',
+                    'Silakan login terlebih dahulu.'
+                );
+        }
+
 
         $menfess = menfess::create([
-
             'id_pengguna' =>
-                Auth::guard('whisperly')->id()
-                ?? Auth::id(),
+                $user->id,
 
             'id_kategori' =>
                 $category->id,
@@ -577,12 +439,6 @@ class menfessController extends Controller
         ]);
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | LOG
-        |--------------------------------------------------------------------------
-        */
-
         $this->log(
             $request,
             'membuat ' . $this->title,
@@ -592,12 +448,6 @@ class menfessController extends Controller
             ]
         );
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | REDIRECT
-        |--------------------------------------------------------------------------
-        */
 
         return redirect()
             ->route('pengaduan')
@@ -618,8 +468,7 @@ class menfessController extends Controller
         Request $request,
         menfess $menfess
     ) {
-        $data['menfess'] =
-            $menfess;
+        $data['menfess'] = $menfess;
 
 
         $this->log(
@@ -655,22 +504,25 @@ class menfessController extends Controller
         Request $request,
         menfess $menfess
     ): RedirectResponse {
+
         abort_unless(
             strtolower(
                 (string) (
                     $request
                         ->user('whisperly')
-                        ?->role ?? ''
+                        ?->role
+                    ?? ''
                 )
             ) === 'admin',
             403,
             'Hanya admin yang dapat menyetujui menfess.'
         );
 
+
         $menfess->update([
-            'status' =>
-                'approved'
+            'status' => 'approved'
         ]);
+
 
         $this->log(
             $request,
@@ -680,6 +532,7 @@ class menfessController extends Controller
                     $menfess->id
             ]
         );
+
 
         return redirect()
             ->route('admin.menfess.index')
@@ -700,22 +553,25 @@ class menfessController extends Controller
         Request $request,
         menfess $menfess
     ): RedirectResponse {
+
         abort_unless(
             strtolower(
                 (string) (
                     $request
                         ->user('whisperly')
-                        ?->role ?? ''
+                        ?->role
+                    ?? ''
                 )
             ) === 'admin',
             403,
             'Hanya admin yang dapat menolak menfess.'
         );
 
+
         $menfess->update([
-            'status' =>
-                'rejected'
+            'status' => 'rejected'
         ]);
+
 
         $this->log(
             $request,
@@ -725,6 +581,7 @@ class menfessController extends Controller
                     $menfess->id
             ]
         );
+
 
         return redirect()
             ->route('menfess.admin')
@@ -752,71 +609,39 @@ class menfessController extends Controller
         $data['forms'] = [
 
             'id_pengguna' => [
-                'label' =>
-                    'Pengguna',
-
-                'type' =>
-                    'number',
-
+                'label' => 'Pengguna',
+                'type' => 'number',
                 'value' =>
                     $menfess->id_pengguna,
-
-                'required' =>
-                    true,
-
-                'id' =>
-                    'id_pengguna'
+                'required' => true,
+                'id' => 'id_pengguna'
             ],
 
             'id_kategori' => [
-                'label' =>
-                    'Kategori',
-
-                'type' =>
-                    'number',
-
+                'label' => 'Kategori',
+                'type' => 'number',
                 'value' =>
                     $menfess->id_kategori,
-
-                'required' =>
-                    true,
-
-                'id' =>
-                    'id_kategori'
+                'required' => true,
+                'id' => 'id_kategori'
             ],
 
             'isi_pesan' => [
-                'label' =>
-                    'Isi Pesan',
-
-                'type' =>
-                    'textarea',
-
+                'label' => 'Isi Pesan',
+                'type' => 'textarea',
                 'value' =>
                     $menfess->isi_pesan,
-
-                'required' =>
-                    true,
-
-                'id' =>
-                    'isi_pesan'
+                'required' => true,
+                'id' => 'isi_pesan'
             ],
 
             'status' => [
-                'label' =>
-                    'Status',
-
-                'type' =>
-                    'text',
-
+                'label' => 'Status',
+                'type' => 'text',
                 'value' =>
                     $menfess->status,
-
-                'required' =>
-                    true,
-
-                'id' =>
-                    'status'
+                'required' => true,
+                'id' => 'status'
             ],
         ];
 
@@ -854,7 +679,6 @@ class menfessController extends Controller
         Request $request,
         $id
     ) {
-
         $this->validate(
             $request,
             [
@@ -908,7 +732,8 @@ class menfessController extends Controller
             );
 
         $menfess->updated_by =
-            Auth::id();
+            Auth::guard('whisperly')->id()
+            ?? Auth::id();
 
 
         $menfess->save();
@@ -943,13 +768,13 @@ class menfessController extends Controller
         Request $request,
         $id
     ) {
-
         abort_unless(
             strtolower(
                 (string) (
                     $request
                         ->user('whisperly')
-                        ?->role ?? ''
+                        ?->role
+                    ?? ''
                 )
             ) === 'admin',
             403,
@@ -975,9 +800,7 @@ class menfessController extends Controller
             Auth::guard('whisperly')->id()
             ?? Auth::id();
 
-
         $menfess->save();
-
 
         $menfess->delete();
 
@@ -1002,8 +825,21 @@ class menfessController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | ADD COMMENT
+    | ADD COMMENT / REPLY
     |--------------------------------------------------------------------------
+    |
+    | Semua akun Whisperly yang sudah login dapat berkomentar:
+    |
+    | - User
+    | - Talent
+    | - Admin
+    |
+    | Menfess tetap anonim.
+    | Komentar menampilkan username asli.
+    |
+    | reply_to digunakan untuk menghubungkan komentar
+    | dengan komentar induknya.
+    |
     */
 
     public function addComment(
@@ -1011,41 +847,226 @@ class menfessController extends Controller
         menfess $menfess
     ): RedirectResponse {
 
+        /*
+        |--------------------------------------------------------------------------
+        | VALIDASI
+        |--------------------------------------------------------------------------
+        */
+
         $request->validate([
             'komentar' => [
                 'required',
                 'string',
-                'min:2',
-                'max:2000'
+                'min:1',
+                'max:2000',
+            ],
+
+            'reply_to' => [
+                'nullable',
+                'string',
+                'exists:comments,id',
             ],
         ]);
 
 
-        comments::create([
+        /*
+        |--------------------------------------------------------------------------
+        | CEK LOGIN WHISPERLY
+        |--------------------------------------------------------------------------
+        */
 
+        $user = Auth::guard('whisperly')->user();
+
+
+        if (!$user) {
+
+            return back()
+                ->with(
+                    'message_error',
+                    'Silakan login terlebih dahulu.'
+                );
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | HANYA MENFESS APPROVED YANG DAPAT DIBALAS
+        |--------------------------------------------------------------------------
+        */
+
+        if ($menfess->status !== 'approved') {
+
+            return back()
+                ->with(
+                    'message_error',
+                    'Menfess belum tersedia untuk dibalas.'
+                );
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | AMBIL ISI KOMENTAR
+        |--------------------------------------------------------------------------
+        */
+
+        $komentar = trim(
+            (string) $request->input('komentar')
+        );
+
+
+        $replyTo = $request->input('reply_to');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | CEK PARENT COMMENT
+        |--------------------------------------------------------------------------
+        |
+        | Kalau reply_to diisi, pastikan komentar tersebut:
+        |
+        | 1. benar-benar ada
+        | 2. berasal dari menfess yang sama
+        |
+        */
+
+        $parentComment = null;
+
+        if ($replyTo) {
+
+            $parentComment = comments::with('pengguna')
+                ->where(
+                    'id',
+                    $replyTo
+                )
+                ->where(
+                    'id_menfess',
+                    $menfess->id
+                )
+                ->first();
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | JIKA PARENT TIDAK DITEMUKAN
+            |--------------------------------------------------------------------------
+            */
+
+            if (!$parentComment) {
+
+                return back()
+                    ->with(
+                        'message_error',
+                        'Komentar yang ingin dibalas tidak ditemukan.'
+                    );
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | TAMBAHKAN MENTION @USERNAME
+            |--------------------------------------------------------------------------
+            */
+
+            $targetUsername =
+                $parentComment->pengguna?->username
+                ?? 'Pengguna';
+
+
+            $mention =
+                '@' . $targetUsername;
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | CEGAH @USERNAME DOBEL
+            |--------------------------------------------------------------------------
+            */
+
+            if (
+                !str_starts_with(
+                    strtolower($komentar),
+                    strtolower($mention)
+                )
+            ) {
+
+                $komentar =
+                    $mention
+                    . ' '
+                    . $komentar;
+            }
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | SIMPAN KOMENTAR
+        |--------------------------------------------------------------------------
+        |
+        | BAGIAN PENTING:
+        |
+        | reply_to sekarang BENAR-BENAR disimpan.
+        |
+        | Kalau komentar utama:
+        |     reply_to = null
+        |
+        | Kalau membalas komentar:
+        |     reply_to = ID komentar yang dibalas
+        |
+        */
+
+        comments::create([
             'id_menfess' =>
                 $menfess->id,
 
             'id_pengguna' =>
-                Auth::guard('whisperly')->id()
-                ?? Auth::id(),
+                $user->id,
 
             'komentar' =>
-                trim(
-                    (string) $request->input(
-                        'komentar'
-                    )
-                ),
+                $komentar,
 
             'status' =>
                 'active',
+
+            'reply_to' =>
+                $parentComment?->id,
         ]);
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | CATAT LOG
+        |--------------------------------------------------------------------------
+        */
+
+        $this->log(
+            $request,
+            'membalas menfess',
+            [
+                'menfess.id' =>
+                    $menfess->id,
+
+                'comment.user_id' =>
+                    $user->id,
+
+                'reply_to' =>
+                    $parentComment?->id,
+            ]
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | KEMBALI KE HALAMAN SEBELUMNYA
+        |--------------------------------------------------------------------------
+        */
 
         return back()
             ->with(
                 'message_success',
-                'Balasan berhasil dikirim.'
+                $parentComment
+                    ? 'Balasan berhasil dikirim.'
+                    : 'Komentar berhasil dikirim.'
             );
     }
 }

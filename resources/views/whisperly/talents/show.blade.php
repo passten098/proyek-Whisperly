@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 
 <html lang="id">
@@ -489,7 +490,10 @@
 
         .profile-info {
             width: 100%;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
             text-align: center;
         }
 
@@ -1152,21 +1156,15 @@
         .schedule-button.unavailable .schedule-date {
 
             color: #ded2b0 !important;
-
             opacity: 1 !important;
-
-            -webkit-text-fill-color:
-                #ded2b0 !important;
+            -webkit-text-fill-color: #ded2b0 !important;
         }
 
         .schedule-button.unavailable .schedule-time {
 
             color: #fff8e5 !important;
-
             opacity: 1 !important;
-
-            -webkit-text-fill-color:
-                #fff8e5 !important;
+            -webkit-text-fill-color: #fff8e5 !important;
 
             text-shadow:
                 0 2px 12px rgba(0, 0, 0, .55);
@@ -1175,14 +1173,8 @@
         .schedule-button.unavailable .schedule-status {
 
             color: #ead9a7 !important;
-
             opacity: 1 !important;
-
-            -webkit-text-fill-color:
-                #ead9a7 !important;
-
-            text-shadow:
-                0 1px 8px rgba(0, 0, 0, .4);
+            -webkit-text-fill-color: #ead9a7 !important;
         }
 
 
@@ -1223,26 +1215,20 @@
         .schedule-button.booked::before {
 
             display: none !important;
-
             content: none !important;
-
             animation: none !important;
         }
 
         .schedule-button.booked .schedule-date {
 
             color: #e99aae !important;
-
-            -webkit-text-fill-color:
-                #e99aae !important;
+            -webkit-text-fill-color: #e99aae !important;
         }
 
         .schedule-button.booked .schedule-time {
 
             color: #ffe2e8 !important;
-
-            -webkit-text-fill-color:
-                #ffe2e8 !important;
+            -webkit-text-fill-color: #ffe2e8 !important;
 
             text-shadow:
                 0 0 15px rgba(255, 61, 105, .30);
@@ -1251,9 +1237,7 @@
         .schedule-button.booked .schedule-status {
 
             color: #ff7798 !important;
-
-            -webkit-text-fill-color:
-                #ff7798 !important;
+            -webkit-text-fill-color: #ff7798 !important;
 
             text-shadow:
                 0 0 12px rgba(255, 61, 105, .65);
@@ -1726,11 +1710,18 @@
 
 
         /* =========================================================
+<<<<<<< HEAD
            POPUP
         ========================================================= */
 
         .booking-success-overlay {
 
+=======
+           BOOKING SUCCESS POPUP
+        ========================================================= */
+
+        .booking-popup {
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
             position: fixed;
 
             inset: 0;
@@ -1745,17 +1736,25 @@
             padding: 20px;
 
             background:
+<<<<<<< HEAD
                 rgba(5, 3, 12, .80);
 
             backdrop-filter: blur(10px);
 
             -webkit-backdrop-filter:
                 blur(10px);
+=======
+                rgba(3, 2, 8, .78);
+
+            backdrop-filter:
+                blur(16px);
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
             opacity: 0;
 
             visibility: hidden;
 
+<<<<<<< HEAD
             transition:
                 opacity .3s ease,
                 visibility .3s ease;
@@ -1770,6 +1769,29 @@
 
         .booking-success-popup {
 
+=======
+            pointer-events: none;
+
+            transition:
+                opacity .35s ease,
+                visibility .35s ease;
+        }
+
+        .booking-popup.show {
+            opacity: 1;
+
+            visibility: visible;
+
+            pointer-events: auto;
+        }
+
+
+        /* =========================================================
+           POPUP BOX
+        ========================================================= */
+
+        .booking-popup-box {
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
             position: relative;
 
             width:
@@ -1779,6 +1801,7 @@
                 );
 
             padding:
+<<<<<<< HEAD
                 36px
                 30px
                 30px;
@@ -1788,10 +1811,26 @@
                 rgba(240, 212, 134, .35);
 
             border-radius: 26px;
+=======
+                34px
+                30px
+                28px;
+
+            overflow: hidden;
+
+            text-align: center;
+
+            border:
+                1px solid
+                rgba(224, 188, 103, .46);
+
+            border-radius: 28px;
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
             background:
                 linear-gradient(
                     145deg,
+<<<<<<< HEAD
                     rgba(39, 23, 56, .98),
                     rgba(14, 8, 24, .99)
                 );
@@ -1814,17 +1853,53 @@
         .booking-success-overlay.show
         .booking-success-popup {
 
+=======
+                    rgba(43, 25, 66, .98),
+                    rgba(12, 7, 22, .99)
+                );
+
+            box-shadow:
+                0 40px 110px rgba(0, 0, 0, .68),
+                0 0 60px rgba(121, 67, 204, .20),
+                inset 0 1px 0 rgba(255, 255, 255, .07);
+
+            transform:
+                translateY(25px)
+                scale(.93);
+
+            transition:
+                transform .42s cubic-bezier(
+                    .2,
+                    .85,
+                    .2,
+                    1
+                );
+        }
+
+        .booking-popup.show
+        .booking-popup-box {
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
             transform:
                 translateY(0)
                 scale(1);
         }
 
+<<<<<<< HEAD
         .booking-success-popup::before {
 
+=======
+
+        /* =========================================================
+           POPUP LIGHT
+        ========================================================= */
+
+        .booking-popup-box::before {
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
             content: "";
 
             position: absolute;
 
+<<<<<<< HEAD
             top: -80px;
 
             left: 50%;
@@ -1832,6 +1907,14 @@
             width: 180px;
             height: 180px;
 
+=======
+            width: 280px;
+            height: 280px;
+
+            top: -190px;
+            left: 50%;
+
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
             transform:
                 translateX(-50%);
 
@@ -1840,6 +1923,7 @@
             background:
                 radial-gradient(
                     circle,
+<<<<<<< HEAD
                     rgba(211, 170, 82, .16),
                     transparent 70%
                 );
@@ -1858,6 +1942,51 @@
 
             margin:
                 0 auto 20px;
+=======
+                    rgba(224, 188, 103, .22),
+                    transparent 68%
+                );
+
+            pointer-events: none;
+        }
+
+        .booking-popup-box::after {
+            content: "";
+
+            position: absolute;
+
+            width: 220px;
+            height: 220px;
+
+            right: -130px;
+            bottom: -130px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(117, 57, 208, .20),
+                    transparent 68%
+                );
+
+            pointer-events: none;
+        }
+
+
+        /* =========================================================
+           CLOSE BUTTON
+        ========================================================= */
+
+        .booking-popup-close {
+            position: absolute;
+
+            top: 14px;
+            right: 15px;
+
+            width: 33px;
+            height: 33px;
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
             display: flex;
 
@@ -1866,19 +1995,84 @@
 
             border:
                 1px solid
+<<<<<<< HEAD
                 rgba(240, 212, 134, .60);
+=======
+                rgba(255, 255, 255, .10);
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
             border-radius: 50%;
 
             background:
+<<<<<<< HEAD
                 radial-gradient(
                     circle,
                     rgba(240, 212, 134, .24),
                     rgba(240, 212, 134, .04)
+=======
+                rgba(255, 255, 255, .05);
+
+            color: #aaa0b4;
+
+            font-size: 18px;
+
+            cursor: pointer;
+
+            transition:
+                .25s ease;
+
+            z-index: 10;
+        }
+
+        .booking-popup-close:hover {
+            color: #f0d486;
+
+            border-color:
+                rgba(240, 212, 134, .45);
+
+            background:
+                rgba(240, 212, 134, .08);
+
+            transform:
+                rotate(90deg);
+        }
+
+
+        /* =========================================================
+           SUCCESS ICON
+        ========================================================= */
+
+        .booking-success-icon {
+            position: relative;
+
+            width: 55px;
+            height: 55px;
+
+            margin:
+                0 auto 17px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            border:
+                1px solid
+                rgba(240, 212, 134, .55);
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(240, 212, 134, .18),
+                    rgba(81, 46, 122, .18)
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
                 );
 
             color: #f0d486;
 
+<<<<<<< HEAD
             font-size: 35px;
             font-weight: 800;
 
@@ -1921,6 +2115,62 @@
 
             margin:
                 0 0 11px;
+=======
+            font-size: 25px;
+
+            box-shadow:
+                0 0 25px rgba(240, 212, 134, .15),
+                inset 0 0 18px rgba(240, 212, 134, .05);
+
+            animation:
+                successPulse 2.2s ease-in-out infinite;
+        }
+
+        @keyframes successPulse {
+
+            0%,
+            100% {
+                box-shadow:
+                    0 0 22px rgba(240, 212, 134, .12),
+                    inset 0 0 18px rgba(240, 212, 134, .05);
+            }
+
+            50% {
+                box-shadow:
+                    0 0 35px rgba(240, 212, 134, .28),
+                    inset 0 0 22px rgba(240, 212, 134, .09);
+            }
+
+        }
+
+
+        /* =========================================================
+           POPUP LABEL
+        ========================================================= */
+
+        .booking-popup-label {
+            position: relative;
+
+            margin-bottom: 8px;
+
+            color: #d8b86d;
+
+            font-size: 9px;
+            font-weight: 900;
+
+            letter-spacing: .25em;
+
+            text-transform: uppercase;
+        }
+
+
+        /* =========================================================
+           POPUP TITLE
+        ========================================================= */
+
+        .booking-popup-title {
+            position: relative;
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
             color: #fff;
 
@@ -1929,6 +2179,7 @@
                 "Times New Roman",
                 serif;
 
+<<<<<<< HEAD
             font-size: 28px;
 
             font-weight: 500;
@@ -1963,6 +2214,227 @@
             padding:
                 0
                 25px;
+=======
+            font-size: 29px;
+            font-weight: 500;
+
+            line-height: 1.15;
+        }
+
+        .booking-popup-subtitle {
+            position: relative;
+
+            margin-top: 7px;
+
+            color: #9e93ab;
+
+            font-size: 11px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================================================
+           TALENT INFO
+        ========================================================= */
+
+        .booking-talent {
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin:
+                22px
+                0
+                16px;
+
+            padding:
+                12px
+                13px;
+
+            border:
+                1px solid
+                rgba(216, 181, 106, .20);
+
+            border-radius: 17px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(216, 181, 106, .07),
+                    rgba(91, 48, 132, .14)
+                );
+
+            text-align: left;
+        }
+
+        .booking-talent-photo {
+            width: 58px;
+            height: 58px;
+
+            flex-shrink: 0;
+
+            padding: 2px;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #fff0b4,
+                    #c9973d,
+                    #795123
+                );
+
+            box-shadow:
+                0 0 18px rgba(215, 174, 92, .16);
+        }
+
+        .booking-talent-photo img {
+            display: block;
+
+            width: 100%;
+            height: 100%;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            background: #120a20;
+        }
+
+        .booking-talent-meta {
+            min-width: 0;
+        }
+
+        .booking-talent-caption {
+            color: #8f849d;
+
+            font-size: 8px;
+            font-weight: 800;
+
+            letter-spacing: .15em;
+
+            text-transform: uppercase;
+
+            margin-bottom: 4px;
+        }
+
+        .booking-talent-name {
+            color: #fff;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 18px;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+        }
+
+
+        /* =========================================================
+           TIME INFO
+        ========================================================= */
+
+        .booking-popup-time {
+            position: relative;
+
+            padding:
+                14px
+                17px;
+
+            border:
+                1px solid
+                rgba(216, 181, 106, .25);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(216, 181, 106, .08),
+                    rgba(90, 48, 132, .13)
+                );
+        }
+
+        .booking-popup-time-label {
+            color: #9389a5;
+
+            font-size: 8px;
+            font-weight: 800;
+
+            letter-spacing: .16em;
+
+            text-transform: uppercase;
+        }
+
+        .booking-popup-time-value {
+            margin-top: 5px;
+
+            color: #f0d486;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 20px;
+
+            line-height: 1.3;
+        }
+
+        .booking-popup-date-value {
+            margin-top: 3px;
+
+            color: #b7adbf;
+
+            font-size: 10px;
+        }
+
+
+        /* =========================================================
+           POPUP ACTIONS
+        ========================================================= */
+
+        .booking-popup-actions {
+            position: relative;
+
+            display: grid;
+
+            grid-template-columns:
+                1.25fr
+                .75fr;
+
+            gap: 10px;
+
+            margin-top: 18px;
+        }
+
+
+        /* =========================================================
+           CHAT BUTTON
+        ========================================================= */
+
+        .booking-popup-chat {
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            min-height: 46px;
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
             border: 0;
 
@@ -1971,13 +2443,19 @@
             background:
                 linear-gradient(
                     135deg,
+<<<<<<< HEAD
                     #f2d88b,
                     #c19447
+=======
+                    #f0d486,
+                    #c19648
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
                 );
 
             color: #20140a;
 
             font-size: 11px;
+<<<<<<< HEAD
 
             font-weight: 900;
 
@@ -1985,18 +2463,31 @@
 
             box-shadow:
                 0 10px 30px rgba(195, 151, 62, .22);
+=======
+            font-weight: 900;
+
+            text-decoration: none;
+
+            box-shadow:
+                0 10px 28px rgba(195, 151, 62, .18);
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
             transition:
                 transform .2s ease,
                 box-shadow .2s ease;
         }
 
+<<<<<<< HEAD
         .booking-success-close:hover {
 
+=======
+        .booking-popup-chat:hover {
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
             transform:
                 translateY(-2px);
 
             box-shadow:
+<<<<<<< HEAD
                 0 15px 38px rgba(195, 151, 62, .34);
         }
 
@@ -2004,6 +2495,112 @@
 
             transform:
                 translateY(0);
+=======
+                0 15px 35px rgba(195, 151, 62, .30);
+        }
+
+        .chat-arrow {
+            font-size: 15px;
+
+            transition:
+                transform .2s ease;
+        }
+
+        .booking-popup-chat:hover
+        .chat-arrow {
+            transform:
+                translateX(3px);
+        }
+
+
+        /* =========================================================
+           CANCEL BUTTON
+        ========================================================= */
+
+        .booking-popup-cancel {
+            min-height: 46px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, .12);
+
+            border-radius: 12px;
+
+            background:
+                rgba(255, 255, 255, .05);
+
+            color: #c8bfd2;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                .2s ease;
+        }
+
+        .booking-popup-cancel:hover {
+            color: #f1d99a;
+
+            border-color:
+                rgba(240, 212, 134, .35);
+
+            background:
+                rgba(240, 212, 134, .06);
+        }
+
+
+        /* =========================================================
+           POPUP FOOTER
+        ========================================================= */
+
+        .booking-popup-footer {
+            position: relative;
+
+            margin-top: 14px;
+
+            color: #62596d;
+
+            font-size: 8px;
+
+            letter-spacing: .04em;
+        }
+
+
+        /* =========================================================
+           MOBILE
+        ========================================================= */
+
+        @media (max-width: 600px) {
+
+            .booking-popup {
+                padding: 16px;
+            }
+
+            .booking-popup-box {
+                padding:
+                    30px
+                    19px
+                    22px;
+
+                border-radius: 23px;
+            }
+
+            .booking-popup-title {
+                font-size: 25px;
+            }
+
+            .booking-talent {
+                margin-top: 18px;
+            }
+
+            .booking-popup-actions {
+                grid-template-columns:
+                    1fr;
+            }
+
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
         }
 
 
@@ -2308,7 +2905,7 @@
              ALERT
         ====================================================== --}}
 
-        @if (session('success'))
+        @if (session('success') || session('booking_success'))
 
             <div class="success">
 
@@ -2599,12 +3196,15 @@
 
                                     @php
 
+<<<<<<< HEAD
                                         /*
                                          * =================================================
                                          * TANGGAL DAN JAM SESI
                                          * =================================================
                                          */
 
+=======
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
                                         $scheduleDate =
                                             \Carbon\Carbon::parse(
                                                 $schedule->date
@@ -2612,6 +3212,7 @@
 
 
                                         /*
+<<<<<<< HEAD
                                          * Waktu mulai sesi
                                          */
 
@@ -2674,6 +3275,53 @@
                                             $schedule->resolveStatusForDate(
                                                 $scheduleDate
                                             );
+=======
+                                         * CEK WAKTU JADWAL
+                                         *
+                                         * Jika waktu mulai jadwal sudah sama dengan
+                                         * atau lebih kecil dari waktu sekarang,
+                                         * jadwal dianggap sudah lewat / sudah dimulai.
+                                         *
+                                         * Jadi meskipun status database masih
+                                         * "available" atau "booked", jadwal tersebut
+                                         * akan ditampilkan abu-abu dan tidak dapat dipilih.
+                                         */
+                                        $now = \Carbon\Carbon::now();
+
+                                        $scheduleStart = \Carbon\Carbon::parse(
+                                            $schedule->date . ' ' . $schedule->start_time
+                                        );
+
+                                        $scheduleEnd = \Carbon\Carbon::parse(
+                                            $schedule->date . ' ' . $schedule->end_time
+                                        );
+
+                                        // Jadwal baru dianggap lewat setelah JAM SELESAI.
+                                        // Contoh: 20:00-21:00 tetap bisa dipesan sampai 21:00.
+                                        if ($scheduleEnd->lt($scheduleStart)) {
+                                            $scheduleEnd->addDay();
+                                        }
+
+                                        $isExpired = $scheduleEnd->lessThanOrEqualTo($now);
+
+
+                                        if ($isExpired) {
+                                            $status = 'expired';
+                                        } else {
+                                            $status =
+                                                $schedule->resolveStatusForDate(
+                                                    $scheduleDate
+                                                );
+
+                                            /*
+                                             * Semua jadwal yang belum lewat otomatis
+                                             * tersedia, kecuali jika sudah dibooking.
+                                             */
+                                            if ($status !== 'booked') {
+                                                $status = 'available';
+                                            }
+                                        }
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
 
                                         /*
@@ -2696,8 +3344,13 @@
 
 
                                         $statusClass =
+<<<<<<< HEAD
                                             $isPassed
                                                 ? 'passed'
+=======
+                                            $isExpired
+                                                ? 'unavailable'
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
                                                 : (
                                                     $isAvailable
                                                         ? 'available'
@@ -2730,6 +3383,14 @@
                                         @elseif ($isPassed)
 
                                             data-passed="true"
+
+                                            data-date="{{
+                                                \Carbon\Carbon::parse(
+                                                    $schedule->date
+                                                )->translatedFormat(
+                                                    'l, d M Y'
+                                                )
+                                            }}"
 
                                         @endif
 
@@ -2771,9 +3432,15 @@
 
                                         <span class="schedule-status">
 
+<<<<<<< HEAD
                                             @if ($isPassed)
 
                                                 Sudah lewat
+=======
+                                            @if ($isExpired)
+
+                                                Tidak tersedia
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
                                             @elseif ($isAvailable)
 
@@ -2856,6 +3523,8 @@
                                                     ->username
                                         ]
                                     ) }}"
+
+                                    id="bookingForm"
                                 >
 
                                     @csrf
@@ -2877,8 +3546,10 @@
                                             type="submit"
 
                                             class="booking-button"
+
+                                            id="confirmBookingButton"
                                         >
-                                            Pesan Sekarang
+                                            Konfirmasi Booking
                                         </button>
 
 
@@ -2947,7 +3618,162 @@
 
 
     {{-- =========================================================
+<<<<<<< HEAD
          JAVASCRIPT BOOKING
+=======
+         BOOKING SUCCESS POPUP
+    ========================================================== --}}
+
+    <div
+        class="booking-popup"
+        id="bookingPopup"
+        aria-hidden="true"
+    >
+
+        <div class="booking-popup-box">
+
+
+            <button
+                type="button"
+                class="booking-popup-close"
+                id="closeBookingPopup"
+                aria-label="Tutup"
+            >
+                ×
+            </button>
+
+
+            {{-- SUCCESS ICON --}}
+
+            <div class="booking-success-icon">
+                ✓
+            </div>
+
+
+            <div class="booking-popup-label">
+                BOOKING CONFIRMED
+            </div>
+
+
+            <h2 class="booking-popup-title">
+                Booking berhasil.
+            </h2>
+
+
+            <p class="booking-popup-subtitle">
+                Sesi kamu dengan talent sudah berhasil dipesan.
+            </p>
+
+
+            {{-- TALENT --}}
+
+            <div class="booking-talent">
+
+
+                <div class="booking-talent-photo">
+
+                    <img
+                        id="popupTalentPhoto"
+                        src="{{ asset('assets/images/faces/1.jpg') }}"
+                        alt="Talent"
+                    >
+
+                </div>
+
+
+                <div class="booking-talent-meta">
+
+                    <div class="booking-talent-caption">
+                        WHISPERLY TALENT
+                    </div>
+
+
+                    <div
+                        class="booking-talent-name"
+                        id="popupTalentName"
+                    >
+                        {{ ucfirst($talent->pengguna->username) }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            {{-- TIME --}}
+
+            <div class="booking-popup-time">
+
+                <div class="booking-popup-time-label">
+                    WAKTU SESI
+                </div>
+
+
+                <div
+                    class="booking-popup-time-value"
+                    id="popupBookingTime"
+                >
+                    -
+                </div>
+
+
+                <div
+                    class="booking-popup-date-value"
+                    id="popupBookingDate"
+                >
+                    -
+                </div>
+
+            </div>
+
+
+            {{-- ACTIONS --}}
+
+            <div class="booking-popup-actions">
+
+
+                <a
+                    href="#"
+                    class="booking-popup-chat"
+                    id="popupChatButton"
+                >
+
+                    <span>
+                        Chat Talent
+                    </span>
+
+                    <span class="chat-arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <button
+                    type="button"
+                    class="booking-popup-cancel"
+                    id="popupCancelButton"
+                >
+                    Nanti
+                </button>
+
+
+            </div>
+
+
+            <div class="booking-popup-footer">
+                Kamu bisa melanjutkan percakapan dengan talent melalui room chat.
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    {{-- =========================================================
+         JAVASCRIPT
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
     ========================================================== --}}
 
     @if (
@@ -2961,11 +3787,17 @@
                 "DOMContentLoaded",
                 function () {
 
+<<<<<<< HEAD
                     /*
                      * =====================================================
                      * SEMUA TOMBOL JADWAL
                      * =====================================================
                      */
+=======
+                    /* =====================================================
+                       ELEMENTS
+                    ===================================================== */
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
                     const buttons =
                         document.querySelectorAll(
@@ -3007,6 +3839,7 @@
                         );
 
 
+<<<<<<< HEAD
                     /*
                      * =====================================================
                      * POPUP SESI SUDAH LEWAT
@@ -3034,10 +3867,127 @@
                         passedPopup.classList.add(
                             "show"
                         );
+=======
+                    const bookingForm =
+                        document.getElementById(
+                            "bookingForm"
+                        );
+
+
+                    const confirmButton =
+                        document.getElementById(
+                            "confirmBookingButton"
+                        );
+
+
+                    const bookingPopup =
+                        document.getElementById(
+                            "bookingPopup"
+                        );
+
+
+                    const closeBookingPopup =
+                        document.getElementById(
+                            "closeBookingPopup"
+                        );
+
+
+                    const popupCancelButton =
+                        document.getElementById(
+                            "popupCancelButton"
+                        );
+
+
+                    const popupTalentPhoto =
+                        document.getElementById(
+                            "popupTalentPhoto"
+                        );
+
+
+                    const popupTalentName =
+                        document.getElementById(
+                            "popupTalentName"
+                        );
+
+
+                    const popupBookingTime =
+                        document.getElementById(
+                            "popupBookingTime"
+                        );
+
+
+                    const popupBookingDate =
+                        document.getElementById(
+                            "popupBookingDate"
+                        );
+
+
+                    const popupChatButton =
+                        document.getElementById(
+                            "popupChatButton"
+                        );
+
+
+                    /* Booking controls hanya diproses jika elemen booking ada.
+                       Popup tetap boleh berjalan walaupun area booking tidak ada. */
+
+
+                    /* =====================================================
+                       TALENT DATA
+                    ===================================================== */
+
+                    const talentName =
+                        @json(
+                            ucfirst(
+                                $talent->pengguna->username
+                            )
+                        );
+
+
+                    const talentUsername =
+                        @json(
+                            $talent->pengguna->username
+                        );
+
+
+                    /*
+                     * Ambil foto yang SAMA dengan foto profil utama.
+                     */
+
+                    let talentPhoto =
+                        @json(
+                            $photoUrl
+                        );
+
+
+                    if (!talentPhoto) {
+
+                        const fallbackFaceNumber =
+                            (
+                                Math.abs(
+                                    @json(
+                                        crc32(
+                                            $talent
+                                                ->pengguna
+                                                ->username
+                                        )
+                                    )
+                                ) % 8
+                            ) + 1;
+
+
+                        talentPhoto =
+                            "{{ asset('assets/images/faces') }}/"
+                            +
+                            fallbackFaceNumber
+                            +
+                            ".jpg";
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
                     }
 
 
+<<<<<<< HEAD
                     function hidePassedPopup() {
 
                         if (!passedPopup) {
@@ -3056,6 +4006,11 @@
                      * KLIK SEMUA JADWAL
                      * =====================================================
                      */
+=======
+                    /* =====================================================
+                       SELECT SCHEDULE
+                    ===================================================== */
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
                     buttons.forEach(
                         function (button) {
@@ -3148,9 +4103,15 @@
                                         button.dataset.end;
 
 
+<<<<<<< HEAD
                                     /*
                                      * Pengaman.
                                      */
+=======
+                                    const date =
+                                        button.dataset.date;
+
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
                                     if (!scheduleId) {
                                         return;
@@ -3170,9 +4131,12 @@
                                      */
 
                                     selectedText.textContent =
-                                        "Sesi terpilih: " +
-                                        start +
-                                        " — " +
+                                        "Sesi terpilih: "
+                                        +
+                                        start
+                                        +
+                                        " — "
+                                        +
                                         end;
 
 
@@ -3201,11 +4165,17 @@
                     );
 
 
+<<<<<<< HEAD
                     /*
                      * =====================================================
                      * BATAL
                      * =====================================================
                      */
+=======
+                    /* =====================================================
+                       CANCEL SELECTED SCHEDULE
+                    ===================================================== */
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
                     if (cancelButton) {
 
@@ -3242,6 +4212,7 @@
                     }
 
 
+<<<<<<< HEAD
                     /*
                      * =====================================================
                      * TUTUP POPUP SESI LEWAT
@@ -3278,6 +4249,70 @@
                                 ) {
 
                                     hidePassedPopup();
+=======
+                    /* =====================================================
+                       SAVE BOOKING DATA BEFORE SUBMIT
+                    ===================================================== */
+
+                    if (bookingForm) {
+
+                        bookingForm.addEventListener(
+                            "submit",
+                            function () {
+
+                                const selectedButton =
+                                    document.querySelector(
+                                        ".schedule-button.available.selected"
+                                    );
+
+
+                                if (
+                                    !selectedButton ||
+                                    !selectedId.value
+                                ) {
+                                    return;
+                                }
+
+
+                                const bookingData = {
+
+                                    talentName:
+                                        talentName,
+
+                                    talentUsername:
+                                        talentUsername,
+
+                                    talentPhoto:
+                                        talentPhoto,
+
+                                    date:
+                                        selectedButton.dataset.date,
+
+                                    start:
+                                        selectedButton.dataset.start,
+
+                                    end:
+                                        selectedButton.dataset.end
+
+                                };
+
+
+                                sessionStorage.setItem(
+                                    "whisperlyBookingSuccess",
+                                    JSON.stringify(
+                                        bookingData
+                                    )
+                                );
+
+
+                                if (confirmButton) {
+
+                                    confirmButton.disabled =
+                                        true;
+
+                                    confirmButton.innerHTML =
+                                        "Memproses...";
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
                                 }
 
@@ -3287,6 +4322,7 @@
                     }
 
 
+<<<<<<< HEAD
                     /*
                      * Tombol ESC untuk popup sesi lewat.
                      */
@@ -3376,6 +4412,223 @@
                                 popup.classList.remove(
                                     "show"
                                 );
+=======
+                    /* =====================================================
+                       FIND EXISTING CHAT LINK FROM NAVBAR
+                    ===================================================== */
+
+                    function findChatUrl() {
+
+                        const links =
+                            document.querySelectorAll(
+                                "a[href]"
+                            );
+
+
+                        for (
+                            let i = 0;
+                            i < links.length;
+                            i++
+                        ) {
+
+                            const link =
+                                links[i];
+
+
+                            const text =
+                                link.textContent
+                                    .trim()
+                                    .toLowerCase();
+
+
+                            if (
+                                text === "chat" ||
+                                text.includes("chat")
+                            ) {
+
+                                return link.href;
+
+                            }
+
+                        }
+
+
+                        return "#";
+
+                    }
+
+
+                    /* =====================================================
+                       SHOW POPUP
+                    ===================================================== */
+
+                    function showBookingPopup(
+                        bookingData
+                    ) {
+
+                        if (!bookingPopup) {
+                            return;
+                        }
+
+
+                        popupTalentName.textContent =
+                            bookingData.talentName
+                            ||
+                            talentName;
+
+
+                        popupTalentPhoto.src =
+                            bookingData.talentPhoto
+                            ||
+                            talentPhoto;
+
+
+                        popupTalentPhoto.alt =
+                            "Foto "
+                            +
+                            (
+                                bookingData.talentName
+                                ||
+                                talentName
+                            );
+
+
+                        popupBookingTime.textContent =
+                            (
+                                bookingData.start
+                                || "-"
+                            )
+                            +
+                            " — "
+                            +
+                            (
+                                bookingData.end
+                                || "-"
+                            );
+
+
+                        popupBookingDate.textContent =
+                            bookingData.date
+                            ||
+                            "Jadwal sesi";
+
+
+                        /*
+                         * Ambil link Chat yang memang sudah
+                         * digunakan navbar Whisperly.
+                         */
+
+                        /*
+                         * SET CHAT URL LANGSUNG KE ROOM BOOKING YANG BARU
+                         * Jangan ambil link Chat dari navbar karena itu bisa
+                         * membawa user ke halaman daftar chat, bukan room ini.
+                         */
+                        const bookingId = @json(session('booking_id'));
+
+                        if (bookingId && popupChatButton) {
+
+                            popupChatButton.href =
+                                @json(url('/whisperly/chat')) +
+                                '/' +
+                                encodeURIComponent(bookingId);
+
+                        }
+
+
+                        bookingPopup.classList.add(
+                            "show"
+                        );
+
+
+                        bookingPopup.setAttribute(
+                            "aria-hidden",
+                            "false"
+                        );
+
+
+                        document.body.style.overflow =
+                            "hidden";
+
+                    }
+
+
+                    /* =====================================================
+                       CLOSE POPUP
+                    ===================================================== */
+
+                    function closePopup() {
+
+                        if (!bookingPopup) {
+                            return;
+                        }
+
+
+                        bookingPopup.classList.remove(
+                            "show"
+                        );
+
+
+                        bookingPopup.setAttribute(
+                            "aria-hidden",
+                            "true"
+                        );
+
+
+                        document.body.style.overflow =
+                            "";
+
+
+                        /*
+                         * Jangan munculkan lagi popup yang sama
+                         * ketika halaman tetap terbuka.
+                         */
+
+                        sessionStorage.removeItem(
+                            "whisperlyBookingSuccess"
+                        );
+
+                    }
+
+
+                    if (closeBookingPopup) {
+
+                        closeBookingPopup.addEventListener(
+                            "click",
+                            closePopup
+                        );
+
+                    }
+
+
+                    if (popupCancelButton) {
+
+                        popupCancelButton.addEventListener(
+                            "click",
+                            closePopup
+                        );
+
+                    }
+
+
+                    /* =====================================================
+                       CLICK OUTSIDE POPUP
+                    ===================================================== */
+
+                    if (bookingPopup) {
+
+                        bookingPopup.addEventListener(
+                            "click",
+                            function (event) {
+
+                                if (
+                                    event.target ===
+                                    bookingPopup
+                                ) {
+
+                                    closePopup();
+
+                                }
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
                             }
                         );
@@ -3383,6 +4636,7 @@
                     }
 
 
+<<<<<<< HEAD
                     /*
                      * Klik area gelap di luar popup.
                      */
@@ -3409,6 +4663,11 @@
                     /*
                      * Tombol ESC.
                      */
+=======
+                    /* =====================================================
+                       ESC TO CLOSE
+                    ===================================================== */
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
                     document.addEventListener(
                         "keydown",
@@ -3416,20 +4675,81 @@
 
                             if (
                                 event.key === "Escape" &&
+<<<<<<< HEAD
                                 popup.classList.contains(
+=======
+                                bookingPopup.classList.contains(
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
                                     "show"
                                 )
                             ) {
 
+<<<<<<< HEAD
                                 popup.classList.remove(
                                     "show"
                                 );
+=======
+                                closePopup();
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
                             }
 
                         }
                     );
 
+<<<<<<< HEAD
+=======
+
+                    /* =====================================================
+                       SHOW POPUP SETELAH BOOKING BERHASIL
+                       Sumber trigger utama = booking_id dari session Laravel.
+                       Jadi popup tidak bergantung pada nama flash message.
+                    ===================================================== */
+
+                    @if (session('booking_id'))
+
+                        const savedBooking =
+                            sessionStorage.getItem(
+                                "whisperlyBookingSuccess"
+                            );
+
+                        const serverBookingId =
+                            @json(session('booking_id'));
+
+                        if (serverBookingId) {
+
+                            let bookingData = {
+                                talentName: talentName,
+                                talentUsername: talentUsername,
+                                talentPhoto: talentPhoto,
+                                date: "Jadwal sesi",
+                                start: "-",
+                                end: "-"
+                            };
+
+                            if (savedBooking) {
+                                try {
+                                    bookingData = {
+                                        ...bookingData,
+                                        ...JSON.parse(savedBooking)
+                                    };
+                                } catch (error) {
+                                    console.warn(
+                                        "Data jadwal popup tidak dapat dibaca.",
+                                        error
+                                    );
+                                }
+                            }
+
+                            setTimeout(function () {
+                                showBookingPopup(bookingData);
+                            }, 250);
+
+                        }
+
+                    @endif
+
+>>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
                 }
             );
 

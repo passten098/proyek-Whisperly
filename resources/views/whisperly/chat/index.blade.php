@@ -40,10 +40,7 @@
             background-color: #a9d2f5;
 
             background-image:
-                linear-gradient(
-            rgba(183,216,246,0.55),
-            rgba(183,216,246,0.55)
-        ),
+
                 url('{{ asset('assets/images/chat-background.jpg') }}');
 
             background-size: cover;
@@ -101,46 +98,22 @@
         ========================================================= */
 
         .chat-container {
+    width: 100%;
+    min-height: 720px;
+    display: grid;
+    grid-template-columns:
+        360px 1fr;
 
-            width: 100%;
+    column-gap: 18px;
 
-            min-height: 720px;
+    background: transparent;
 
-            display: grid;
+    border-radius: 40px;
 
-            grid-template-columns:
-                360px 1fr;
+    overflow: visible;
 
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.95
-                );
-
-            border-radius: 28px;
-
-            overflow: hidden;
-
-            border:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.85
-                );
-
-            box-shadow:
-                0 25px 70px
-                rgba(
-                    35,
-                    101,
-                    160,
-                    0.18
-                );
-        }
+    border: none;
+}
 
 
         /* =========================================================
@@ -148,25 +121,28 @@
         ========================================================= */
 
         .chat-sidebar {
+    min-height: 720px;
 
-            min-height: 720px;
+    padding:
+        28px 18px;
 
-            padding:
-                28px 18px;
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.97
+        );
 
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.97
-                );
+    border-right:
+        none;
 
-            border-right:
-                1px solid
-                #d9e9f8;
-        }
+    border-radius:
+        40px;
 
+    overflow:
+        hidden;
+}
 
         /* =========================================================
            JUDUL CHAT
@@ -670,10 +646,7 @@
                 #a9d2f5;
 
             background-image:
-                linear-gradient(
-            rgba(183,216,246,0.55),
-            rgba(183,216,246,0.55)
-        ),
+
                 url('{{ asset('assets/images/chat-background.jpg') }}');
 
             background-size:
@@ -681,6 +654,9 @@
 
             background-position:
                 center;
+
+            background-attachment:
+                fixed;    
 
             background-repeat:
                 no-repeat;
@@ -1082,6 +1058,438 @@
                     31px;
             }
         }
+
+
+        /* =========================================================
+   ✦ WHISPERLY PREMIUM GALAXY OVERRIDE
+   INDEX / CHAT LIST
+   ---------------------------------------------------------
+   IMPORTANT:
+   - Tidak mengubah HTML
+   - Tidak mengubah Blade
+   - Tidak mengubah JavaScript
+   - Tidak mengubah struktur/layout utama
+   - Hanya visual
+========================================================= */
+
+:root {
+    --wp-night: #07152f;
+    --wp-night-2: #0b2042;
+
+    --wp-blue: #2388e8;
+    --wp-blue-bright: #4da9ff;
+    --wp-blue-soft: #8bcaff;
+
+    --wp-text: #173456;
+    --wp-muted: #6f89a5;
+
+    --wp-white: rgba(255, 255, 255, .96);
+    --wp-glass: rgba(255, 255, 255, .78);
+    --wp-border: rgba(255, 255, 255, .72);
+
+    --wp-shadow:
+        0 18px 45px rgba(3, 20, 50, .18);
+
+    --wp-blue-shadow:
+        0 10px 28px rgba(35, 136, 232, .20);
+}
+
+
+/* =========================================================
+   BODY
+========================================================= */
+
+body {
+    background-color: #07152f !important;
+
+    background-image:
+        
+        url('{{ asset('assets/images/chat-background.jpg') }}') !important;
+
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+
+    color: #eaf5ff !important;
+}
+
+
+/* =========================================================
+   MAIN CONTAINER
+   Hanya memberi depth, ukuran tidak diubah
+========================================================= */
+
+.chat-container {
+    filter: drop-shadow(
+        0 24px 55px rgba(2, 14, 36, .20)
+    );
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.chat-sidebar {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.96),
+            rgba(239,247,255,.90)
+        ) !important;
+
+    border: 1px solid rgba(255,255,255,.78) !important;
+
+    box-shadow:
+        0 20px 55px rgba(2, 18, 45, .18),
+        inset 0 1px 0 rgba(255,255,255,.95) !important;
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+
+/* =========================================================
+   JUDUL CHAT
+========================================================= */
+
+.chat-title {
+    color: #102b4d !important;
+
+    text-shadow:
+        0 2px 12px rgba(38, 103, 160, .08);
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.search-box {
+    background:
+        rgba(245,250,255,.86) !important;
+
+    border:
+        1px solid rgba(117,177,228,.28) !important;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.85),
+        0 6px 18px rgba(35,101,160,.05) !important;
+
+    transition:
+        border-color .25s ease,
+        box-shadow .25s ease,
+        background .25s ease !important;
+}
+
+.search-box:hover {
+    background:
+        rgba(255,255,255,.96) !important;
+
+    border-color:
+        rgba(77,169,255,.35) !important;
+}
+
+.search-box:focus {
+    background:
+        rgba(255,255,255,.98) !important;
+
+    border-color:
+        rgba(35,136,232,.65) !important;
+
+    box-shadow:
+        0 0 0 4px rgba(35,136,232,.10),
+        0 10px 25px rgba(35,136,232,.10) !important;
+}
+
+.search-icon {
+    color: #348fdf !important;
+}
+
+
+/* =========================================================
+   FILTER
+========================================================= */
+
+.chat-filter {
+    position: relative;
+}
+
+.filter-btn {
+    transition:
+        background .25s ease,
+        color .25s ease,
+        transform .25s ease,
+        box-shadow .25s ease !important;
+}
+
+.filter-btn:hover {
+    background:
+        rgba(35,136,232,.07) !important;
+
+    color:
+        #1674d1 !important;
+
+    transform:
+        translateY(-1px);
+}
+
+.filter-btn.active {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(35,136,232,.16),
+            rgba(77,169,255,.09)
+        ) !important;
+
+    color:
+        #126bc0 !important;
+
+    box-shadow:
+        inset 0 0 0 1px rgba(35,136,232,.08),
+        0 5px 15px rgba(35,136,232,.08) !important;
+}
+
+
+/* =========================================================
+   CHAT LIST
+========================================================= */
+
+.chat-list {
+    scrollbar-width: thin;
+    scrollbar-color:
+        rgba(35,136,232,.28)
+        transparent;
+}
+
+.chat-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chat-list::-webkit-scrollbar-thumb {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(77,169,255,.45),
+            rgba(35,136,232,.25)
+        );
+
+    border-radius: 999px;
+}
+
+
+/* =========================================================
+   CHAT ITEM
+========================================================= */
+
+.chat-item {
+    border:
+        1px solid transparent !important;
+
+    transition:
+        background .25s ease,
+        border-color .25s ease,
+        transform .25s ease,
+        box-shadow .25s ease !important;
+}
+
+.chat-item:hover {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(235,247,255,.90),
+            rgba(219,239,255,.72)
+        ) !important;
+
+    border-color:
+        rgba(77,169,255,.15) !important;
+
+    transform:
+        translateX(3px) !important;
+
+    box-shadow:
+        0 8px 22px rgba(35,101,160,.07) !important;
+}
+
+.chat-item.active {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(210,235,255,.96),
+            rgba(190,223,251,.82)
+        ) !important;
+
+    border-color:
+        rgba(35,136,232,.16) !important;
+
+    box-shadow:
+        inset 3px 0 0 #2388e8,
+        0 8px 25px rgba(35,136,232,.10) !important;
+}
+
+.chat-item.active:hover {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(210,235,255,.98),
+            rgba(190,223,251,.88)
+        ) !important;
+}
+
+
+/* =========================================================
+   UNREAD CHAT
+========================================================= */
+
+.chat-item.unread {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(225,241,255,.82),
+            rgba(210,234,255,.60)
+        ) !important;
+
+    border-color:
+        rgba(77,169,255,.10) !important;
+}
+
+.chat-item.unread:hover {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(215,238,255,.98),
+            rgba(198,227,252,.88)
+        ) !important;
+}
+
+.chat-item.unread .chat-name {
+    color:
+        #0e5da4 !important;
+}
+
+
+/* =========================================================
+   AVATAR
+========================================================= */
+
+.chat-avatar {
+    background:
+        linear-gradient(
+            145deg,
+            #d9efff,
+            #8bcaff 55%,
+            #56a8ed
+        ) !important;
+
+    color:
+        #1267b7 !important;
+
+    border:
+        2px solid rgba(255,255,255,.95) !important;
+
+    box-shadow:
+        0 8px 20px rgba(35,136,232,.18),
+        inset 0 1px 2px rgba(255,255,255,.85) !important;
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease !important;
+}
+
+.chat-item:hover .chat-avatar {
+    transform:
+        scale(1.035);
+
+    box-shadow:
+        0 9px 25px rgba(35,136,232,.25),
+        inset 0 1px 2px rgba(255,255,255,.9) !important;
+}
+
+
+/* =========================================================
+   CHAT TEXT
+========================================================= */
+
+.chat-item-name {
+    color:
+        #173a5e !important;
+}
+
+.chat-item-preview {
+    color:
+        #6c87a2 !important;
+}
+
+.chat-item-time {
+    color:
+        #7691ab !important;
+}
+
+
+/* =========================================================
+   UNREAD BADGE
+========================================================= */
+
+.unread-badge {
+    background:
+        linear-gradient(
+            135deg,
+            #4ca9ff,
+            #1678d8
+        ) !important;
+
+    box-shadow:
+        0 5px 14px rgba(35,136,232,.28) !important;
+
+    border:
+        2px solid rgba(255,255,255,.75);
+}
+
+
+/* =========================================================
+   CHECKLIST
+========================================================= */
+
+.message-indicator {
+    color:
+        #2388e8 !important;
+
+    text-shadow:
+        0 2px 8px rgba(35,136,232,.18);
+}
+
+
+/* =========================================================
+   EMPTY CHAT
+========================================================= */
+
+.empty-chat {
+    color:
+        #728ca5 !important;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .chat-sidebar {
+        box-shadow:
+            0 15px 35px rgba(2,18,45,.16) !important;
+    }
+
+    .chat-item:hover {
+        transform:
+            translateX(1px) !important;
+    }
+}
 
     </style>
 

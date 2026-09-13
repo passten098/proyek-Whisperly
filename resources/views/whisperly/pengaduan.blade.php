@@ -31,8 +31,18 @@
             --shadow-small: 0 3px 9px rgba(45,53,53,.08);
         }
 
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        html,
         body {
             margin: 0;
+            padding: 0;
+        }
+
+        body {
             min-height: 100vh;
 
             font-family:
@@ -77,8 +87,8 @@
         body.theme-horror {
             background-image:
                 linear-gradient(
-                    rgba(20,10,8,.08),
-                    rgba(20,10,8,.08)
+                    rgba(30,16,12,.08),
+                    rgba(30,16,12,.08)
                 ),
                 url("{{ asset('assets/images/HOROR.jpeg') }}");
 
@@ -395,11 +405,8 @@
         .field textarea:focus,
         .reply-form textarea:focus {
             outline: none !important;
-
             background: white;
-
             border: none !important;
-
             box-shadow: none !important;
         }
 
@@ -588,7 +595,7 @@
 
 
         /* =====================================================
-           MENFESS
+           FEED
         ===================================================== */
 
         .feed {
@@ -598,6 +605,11 @@
 
             align-items: start;
         }
+
+
+        /* =====================================================
+           CARD
+        ===================================================== */
 
         .card {
             padding: 14px 16px 16px;
@@ -811,180 +823,625 @@
 
 
         /* =====================================================
-           REPLY
+           REPLY BOX
         ===================================================== */
 
         .reply-box {
             padding-top: 0 !important;
 
-            margin-top: 0 !important;
+            margin-top: 14px !important;
 
             border: none !important;
             border-top: none !important;
         }
 
+
+        /* =====================================================
+           JUMLAH KOMENTAR
+        ===================================================== */
+
         .reply-count {
-            display: inline-flex;
+            display: block !important;
 
-            align-items: center;
+            width: fit-content !important;
 
-            min-height: 20px;
+            min-height: 0 !important;
 
-            padding: 0 9px;
+            margin: 0 0 14px 0 !important;
 
-            margin-bottom: 6px;
+            padding: 0 !important;
 
-            border-radius: 999px;
+            background: transparent !important;
 
-            background: var(--blue-soft);
+            border: none !important;
+            border-radius: 0 !important;
 
-            color: #536b86;
+            color: #817970 !important;
 
             font-family:
                 "Segoe UI",
                 Arial,
-                sans-serif;
+                sans-serif !important;
 
-            font-size: 10px;
+            font-size: 11px !important;
 
-            font-weight: 800;
+            font-weight: 700 !important;
 
-            border: none !important;
-        }
-
-        .comment-list {
-            display: grid;
-
-            gap: 5px;
-
-            margin-bottom: 6px;
-        }
-
-        .comment {
-            display: flex;
-
-            gap: 7px;
-
-            padding: 6px 9px;
-
-            background: rgba(255,255,255,.57);
-
-            border: none !important;
-            outline: none !important;
-
-            border-radius: 10px;
-        }
-
-        .comment .avatar {
-            width: 22px;
-            height: 22px;
-
-            font-size: 9px;
-
-            border: none !important;
-        }
-
-        .comment strong {
-            display: block;
-
-            color: #403a35;
-
-            font-family:
-                "Segoe UI",
-                Arial,
-                sans-serif;
-
-            font-size: 12px;
-
-            font-weight: 700;
-        }
-
-        .comment-text {
-            margin-top: 1px;
-
-            color: #756d66;
-
-            font-family:
-                "Segoe UI",
-                Arial,
-                sans-serif;
-
-            font-size: 12.5px !important;
-
-            line-height: 1.4;
-
-            font-weight: 400;
+            line-height: 1.3 !important;
         }
 
 
         /* =====================================================
-           REPLY FORM
+           COMMENT LIST
         ===================================================== */
 
-        .reply-form {
-            display: flex;
+        .comment-list {
+            display: flex !important;
 
-            align-items: stretch;
+            flex-direction: column !important;
 
-            gap: 7px;
+            gap: 14px !important;
+
+            width: 100% !important;
+
+            margin: 0 0 12px 0 !important;
+
+            padding: 0 !important;
         }
 
-        .reply-form textarea {
-            flex: 1;
 
-            min-width: 0;
+        /* =====================================================
+           COMMENT THREAD
+        ===================================================== */
 
-            min-height: 34px;
+        .comment-thread {
+            width: 100% !important;
 
-            padding: 7px 9px;
+            margin: 0 !important;
+
+            padding: 0 !important;
+        }
+
+
+        /* =====================================================
+           COMMENT UTAMA
+        ===================================================== */
+
+        .comment {
+            display: flex !important;
+
+            align-items: flex-start !important;
+
+            gap: 9px !important;
+
+            width: 100% !important;
+
+            margin: 0 !important;
+
+            padding: 0 !important;
+
+            background: transparent !important;
 
             border: none !important;
+
+            border-radius: 0 !important;
+
             outline: none !important;
 
-            border-radius: 10px;
+            box-shadow: none !important;
 
-            background: rgba(255,255,255,.78);
+            transform: none !important;
+        }
 
-            color: var(--text);
+        .comment:hover {
+            transform: none !important;
+
+            background: transparent !important;
+        }
+
+
+        /* =====================================================
+           AVATAR COMMENT
+        ===================================================== */
+
+        .comment .avatar {
+            width: 29px !important;
+            height: 29px !important;
+
+            min-width: 29px !important;
+
+            margin: 0 !important;
+
+            padding: 0 !important;
+
+            display: flex !important;
+
+            align-items: center !important;
+            justify-content: center !important;
+
+            border-radius: 50% !important;
+
+            border: none !important;
 
             font-family:
                 "Segoe UI",
                 Arial,
-                sans-serif;
+                sans-serif !important;
 
-            font-size: 12px;
+            font-size: 10px !important;
 
-            resize: vertical;
+            font-weight: 800 !important;
         }
 
-        .reply-form button {
-            flex-shrink: 0;
 
-            width: 38px;
+        /* =====================================================
+           COMMENT CONTENT
+        ===================================================== */
 
-            min-height: 34px;
+        .comment-content {
+            display: block !important;
+
+            flex: 1 !important;
+
+            min-width: 0 !important;
+
+            margin: 0 !important;
+
+            padding: 0 !important;
+
+            background: transparent !important;
 
             border: none !important;
-            outline: none !important;
 
-            border-radius: 10px;
-
-            background: var(--purple);
-
-            color: white;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            cursor: pointer;
-
-            transition: .2s ease;
+            box-shadow: none !important;
         }
 
-        .reply-form button:hover {
-            transform: translateY(-1px);
+
+        /* =====================================================
+           AUTHOR COMMENT
+        ===================================================== */
+
+        .comment-author {
+            display: inline !important;
+
+            margin: 0 !important;
+
+            padding: 0 !important;
+
+            vertical-align: baseline !important;
+
+            line-height: 1.5 !important;
+        }
+
+
+        /* =====================================================
+           USERNAME
+        ===================================================== */
+
+        .reply-target {
+            display: inline !important;
+
+            margin: 0 !important;
+
+            padding: 0 !important;
+
+            color: #302a26 !important;
+
+            background: transparent !important;
+
+            border: none !important;
+
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif !important;
+
+            font-size: 12.5px !important;
+
+            font-weight: 800 !important;
+
+            line-height: 1.45 !important;
+
+            cursor: default !important;
+        }
+
+
+        /* =====================================================
+           VERIFIED
+        ===================================================== */
+
+        .verified-badge {
+            display: inline-flex !important;
+
+            align-items: center !important;
+            justify-content: center !important;
+
+            width: 13px !important;
+            height: 13px !important;
+
+            min-width: 13px !important;
+
+            margin: 0 2px 0 2px !important;
+
+            padding: 0 !important;
+
+            border-radius: 50% !important;
+
+            color: #fff !important;
+
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif !important;
+
+            font-size: 8px !important;
+
+            font-weight: 900 !important;
+
+            line-height: 1 !important;
+
+            vertical-align: middle !important;
+        }
+
+        .verified-talent {
+            background:
+                linear-gradient(
+                    135deg,
+                    #6f8cff,
+                    #4865d8
+                ) !important;
+
+            box-shadow:
+                0 2px 5px
+                rgba(72,101,216,.20) !important;
+        }
+
+        .verified-admin {
+            background:
+                linear-gradient(
+                    135deg,
+                    #f1cf68,
+                    #c99727
+                ) !important;
+
+            box-shadow:
+                0 2px 5px
+                rgba(201,151,39,.22) !important;
+        }
+
+
+        /* =====================================================
+           COMMENT TEXT
+        ===================================================== */
+
+        .comment-text {
+            display: inline !important;
+
+            width: auto !important;
+
+            max-width: none !important;
+
+            margin: 0 !important;
+
+            padding: 0 !important;
+
+            color: #4a443f !important;
+
+            background: transparent !important;
+
+            border: none !important;
+
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif !important;
+
+            font-size: 12.5px !important;
+
+            font-weight: 400 !important;
+
+            line-height: 1.5 !important;
+
+            white-space: pre-line !important;
+
+            overflow: visible !important;
+
+            text-overflow: clip !important;
+
+            word-break: break-word !important;
+
+            text-align: left !important;
+        }
+
+
+        /* =====================================================
+           BALAS
+        ===================================================== */
+
+        .comment-content > .comment-reply-button {
+            display: block !important;
+
+            margin: 4px 0 0 0 !important;
+
+            padding: 0 !important;
+
+            color: #827970 !important;
+
+            background: transparent !important;
+
+            border: none !important;
+
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif !important;
+
+            font-size: 10px !important;
+
+            font-weight: 700 !important;
+
+            line-height: 1.3 !important;
+
+            cursor: pointer !important;
+
+            transform: none !important;
+        }
+
+        .comment-content > .comment-reply-button:hover {
+            color: #4f4741 !important;
+
+            transform: none !important;
+        }
+
+
+        /* =====================================================
+           TOGGLE BALASAN
+        ===================================================== */
+
+        .toggle-replies {
+            display: flex !important;
+
+            align-items: center !important;
+
+            gap: 8px !important;
+
+            width: fit-content !important;
+
+            margin: 7px 0 0 38px !important;
+
+            padding: 0 !important;
+
+            background: transparent !important;
+
+            border: none !important;
+
+            outline: none !important;
+
+            color: #817970 !important;
+
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif !important;
+
+            font-size: 10.5px !important;
+
+            font-weight: 700 !important;
+
+            line-height: 1.3 !important;
+
+            cursor: pointer !important;
+
+            appearance: none !important;
+        }
+
+        .toggle-replies:hover {
+            color: #4e4640 !important;
+        }
+
+        .toggle-replies[aria-expanded="true"] {
+            color: #62584f !important;
+        }
+
+        .reply-line {
+            display: block !important;
+
+            width: 22px !important;
+
+            height: 1px !important;
+
+            flex-shrink: 0 !important;
+
+            background: currentColor !important;
+
+            opacity: .55 !important;
+        }
+
+
+        /* =====================================================
+           NESTED REPLIES
+        ===================================================== */
+
+        .nested-replies {
+            display: none !important;
+
+            flex-direction: column !important;
+
+            gap: 12px !important;
+
+            width: auto !important;
+
+            margin: 10px 0 0 38px !important;
+
+            padding: 0 0 0 14px !important;
+
+            border-left:
+                1px solid
+                rgba(120,110,105,.20) !important;
+        }
+
+        .nested-replies.open {
+            display: flex !important;
+        }
+
+
+        /* =====================================================
+           REPLY
+        ===================================================== */
+
+        .comment-reply {
+            display: flex !important;
+
+            align-items: flex-start !important;
+
+            gap: 8px !important;
+
+            width: 100% !important;
+
+            margin: 0 !important;
+
+            padding: 0 !important;
+
+            background: transparent !important;
+
+            border: none !important;
+
+            box-shadow: none !important;
+        }
+
+        .comment-reply .avatar {
+            width: 25px !important;
+            height: 25px !important;
+
+            min-width: 25px !important;
+
+            font-size: 9px !important;
+        }
+
+        .comment-reply .reply-target {
+            font-size: 11.5px !important;
+        }
+
+        .comment-reply .comment-text {
+            font-size: 12px !important;
+
+            line-height: 1.5 !important;
+        }
+
+
+        /* =====================================================
+           FORM KOMENTAR
+        ===================================================== */
+
+        .reply-form {
+            display: flex !important;
+
+            align-items: center !important;
+
+            gap: 8px !important;
+
+            width: 100% !important;
+
+            margin: 14px 0 0 0 !important;
+
+            padding: 0 !important;
+
+            background: transparent !important;
+
+            border: none !important;
+        }
+
+        .reply-form textarea {
+            flex: 1 !important;
+
+            min-width: 0 !important;
+
+            min-height: 40px !important;
+
+            max-height: 120px !important;
+
+            margin: 0 !important;
+
+            padding: 10px 13px !important;
+
+            resize: none !important;
+
+            border: none !important;
+
+            outline: none !important;
+
+            border-radius: 18px !important;
+
+            background:
+                rgba(255,255,255,.70) !important;
+
+            color: var(--text) !important;
+
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif !important;
+
+            font-size: 12px !important;
+
+            line-height: 1.4 !important;
+
+            box-shadow: none !important;
+        }
+
+        .reply-form textarea:focus {
+            border: none !important;
+
+            outline: none !important;
+
+            box-shadow: none !important;
+
+            background:
+                rgba(255,255,255,.90) !important;
+        }
+
+        .reply-form textarea.replying {
+            background:
+                rgba(255,255,255,.95) !important;
+        }
+
+
+        /* =====================================================
+           SEND
+        ===================================================== */
+
+        .reply-form > button {
+            width: 36px !important;
+
+            height: 36px !important;
+
+            min-width: 36px !important;
+
+            min-height: 36px !important;
+
+            padding: 0 !important;
+
+            display: flex !important;
+
+            align-items: center !important;
+            justify-content: center !important;
+
+            border: none !important;
+
+            border-radius: 50% !important;
+
+            cursor: pointer !important;
+
+            transition:
+                transform .18s ease,
+                opacity .18s ease !important;
+        }
+
+        .reply-form > button:hover {
+            transform:
+                translateX(2px) !important;
+
+            opacity: .9 !important;
         }
 
         .send-icon {
@@ -1045,15 +1502,15 @@
                     rgba(217,119,91,.94),
                     rgba(239,157,122,.94) 45%,
                     rgba(248,208,170,.94)
-                );
+                ) !important;
         }
 
         body.theme-love .page-title {
-            color: #7d463d;
+            color: #7d463d !important;
         }
 
         body.theme-love .back-button {
-            color: #8f5144;
+            color: #8f5144 !important;
         }
 
         body.theme-love .intro {
@@ -1063,11 +1520,11 @@
                     rgba(255,232,215,.88),
                     rgba(255,242,226,.88),
                     rgba(248,224,208,.86)
-                );
+                ) !important;
         }
 
         body.theme-love .intro p {
-            color: #89564a;
+            color: #89564a !important;
         }
 
         body.theme-love .composer-panel {
@@ -1077,13 +1534,13 @@
                     rgba(242,170,137,.86),
                     rgba(250,205,175,.84) 46%,
                     rgba(255,236,213,.90)
-                );
+                ) !important;
         }
 
         body.theme-love .info-box,
         body.theme-love .composer-card,
         body.theme-love .board-header {
-            background: rgba(255,249,241,.84);
+            background: rgba(255,249,241,.84) !important;
         }
 
         body.theme-love .card {
@@ -1093,7 +1550,7 @@
                     rgba(255,222,201,.88),
                     rgba(255,239,222,.90) 55%,
                     rgba(250,225,210,.86)
-                );
+                ) !important;
         }
 
         body.theme-love .submit-btn {
@@ -1102,16 +1559,16 @@
                     135deg,
                     #c96d5d,
                     #a95751
-                );
+                ) !important;
         }
 
-        body.theme-love .reply-form button {
+        body.theme-love .reply-form > button {
             background:
                 linear-gradient(
                     135deg,
                     #df9175,
                     #bd685d
-                );
+                ) !important;
         }
 
         body.theme-love .category-toggle.active {
@@ -1120,9 +1577,9 @@
                     135deg,
                     #d67b68,
                     #b75f58
-                );
+                ) !important;
 
-            color: white;
+            color: white !important;
         }
 
         body.theme-love .chip {
@@ -1131,9 +1588,9 @@
                     135deg,
                     #ffd8c5,
                     #f5bfa8
-                );
+                ) !important;
 
-            color: #a64f4b;
+            color: #a64f4b !important;
         }
 
         body.theme-love .avatar {
@@ -1142,9 +1599,22 @@
                     135deg,
                     #e7a083,
                     #c76e63
-                );
+                ) !important;
 
-            color: #633d38;
+            color: #633d38 !important;
+        }
+
+        body.theme-love .comment,
+        body.theme-love .comment:hover {
+            background: transparent !important;
+        }
+
+        body.theme-love .reply-target {
+            color: #5e403a !important;
+        }
+
+        body.theme-love .comment-text {
+            color: #654d47 !important;
         }
 
 
@@ -1160,15 +1630,15 @@
                     rgba(244,210,145,.94) 35%,
                     rgba(248,225,180,.94) 65%,
                     rgba(225,220,190,.94)
-                );
+                ) !important;
         }
 
         body.theme-sad .page-title {
-            color: #6f6048;
+            color: #6f6048 !important;
         }
 
         body.theme-sad .back-button {
-            color: #75654b;
+            color: #75654b !important;
         }
 
         body.theme-sad .intro {
@@ -1178,11 +1648,11 @@
                     rgba(250,238,205,.88),
                     rgba(242,235,210,.88),
                     rgba(225,230,215,.86)
-                );
+                ) !important;
         }
 
         body.theme-sad .intro p {
-            color: #766a52;
+            color: #766a52 !important;
         }
 
         body.theme-sad .composer-panel {
@@ -1192,7 +1662,13 @@
                     rgba(238,215,160,.88),
                     rgba(245,230,190,.86) 45%,
                     rgba(222,232,218,.88)
-                );
+                ) !important;
+        }
+
+        body.theme-sad .info-box,
+        body.theme-sad .composer-card,
+        body.theme-sad .board-header {
+            background: rgba(248,246,233,.86) !important;
         }
 
         body.theme-sad .card {
@@ -1202,7 +1678,7 @@
                     rgba(248,238,210,.88),
                     rgba(240,235,215,.88) 50%,
                     rgba(220,230,220,.85)
-                );
+                ) !important;
         }
 
         body.theme-sad .submit-btn {
@@ -1211,16 +1687,16 @@
                     135deg,
                     #a68f62,
                     #827b62
-                );
+                ) !important;
         }
 
-        body.theme-sad .reply-form button {
+        body.theme-sad .reply-form > button {
             background:
                 linear-gradient(
                     135deg,
                     #8ca09a,
                     #6f8780
-                );
+                ) !important;
         }
 
         body.theme-sad .category-toggle.active {
@@ -1229,9 +1705,9 @@
                     135deg,
                     #c8ad72,
                     #a99b70
-                );
+                ) !important;
 
-            color: white;
+            color: white !important;
         }
 
         body.theme-sad .chip {
@@ -1240,9 +1716,9 @@
                     135deg,
                     #e5d19c,
                     #d4c89f
-                );
+                ) !important;
 
-            color: #6f6045;
+            color: #6f6045 !important;
         }
 
         body.theme-sad .avatar {
@@ -1251,106 +1727,154 @@
                     135deg,
                     #c9b47d,
                     #9aa89a
-                );
+                ) !important;
 
-            color: #4f5548;
+            color: #4f5548 !important;
+        }
+
+        body.theme-sad .comment,
+        body.theme-sad .comment:hover {
+            background: transparent !important;
+        }
+
+        body.theme-sad .reply-target {
+            color: #50483e !important;
+        }
+
+        body.theme-sad .comment-text {
+            color: #625c52 !important;
         }
 
 
         /* =====================================================
-           HORROR
+           HORROR — SESUAI SCREENSHOT
         ===================================================== */
 
         body.theme-horror .top-header {
             background:
                 linear-gradient(
                     90deg,
-                    rgba(43,29,25,.96),
-                    rgba(78,40,31,.95) 42%,
-                    rgba(132,55,39,.94) 72%,
-                    rgba(181,112,65,.92)
-                );
+                    rgba(43,27,23,.98),
+                    rgba(77,40,31,.97) 38%,
+                    rgba(126,60,40,.95) 68%,
+                    rgba(179,108,61,.93)
+                ) !important;
         }
 
         body.theme-horror .page-title {
-            color: #f1d9ad;
+            color: #f2d9ae !important;
         }
 
         body.theme-horror .back-button {
-            color: #efd5aa;
+            color: #efd5aa !important;
         }
+
+
+        /* =====================================================
+           HORROR INTRO
+        ===================================================== */
 
         body.theme-horror .intro {
             background:
                 linear-gradient(
                     90deg,
-                    rgba(58,40,33,.90),
-                    rgba(80,49,37,.88),
-                    rgba(110,69,45,.84)
-                );
+                    rgba(57,36,30,.93),
+                    rgba(80,48,36,.90) 48%,
+                    rgba(108,65,43,.87)
+                ) !important;
+
+            box-shadow:
+                0 5px 16px
+                rgba(39,23,18,.18) !important;
         }
 
         body.theme-horror .intro p {
-            color: #ead5b5;
+            color: #ead4b2 !important;
         }
+
+
+        /* =====================================================
+           HORROR PANEL KIRI
+        ===================================================== */
 
         body.theme-horror .composer-panel {
             background:
                 linear-gradient(
                     180deg,
-                    rgba(49,32,28,.92),
-                    rgba(79,42,34,.89) 46%,
-                    rgba(123,71,47,.84)
-                );
+                    rgba(52,31,27,.97),
+                    rgba(78,41,32,.95) 46%,
+                    rgba(119,68,45,.92)
+                ) !important;
+
+            box-shadow:
+                0 6px 18px
+                rgba(38,23,18,.22) !important;
         }
 
         body.theme-horror .info-box,
-        body.theme-horror .composer-card,
+        body.theme-horror .composer-card {
+            background:
+                rgba(247,229,197,.90) !important;
+        }
+
+        body.theme-horror .info-box h3,
+        body.theme-horror .composer-title {
+            color: #3d2b23 !important;
+        }
+
+        body.theme-horror .info-box li {
+            color: #69584c !important;
+        }
+
+        body.theme-horror .field label {
+            color: #786658 !important;
+        }
+
+        body.theme-horror .field textarea {
+            background:
+                rgba(255,249,237,.95) !important;
+
+            color: #4a3930 !important;
+        }
+
+
+        /* =====================================================
+           HORROR BOARD
+        ===================================================== */
+
         body.theme-horror .board-header {
-            background: rgba(247,229,197,.84);
-        }
-
-        body.theme-horror .card {
             background:
-                linear-gradient(
-                    135deg,
-                    rgba(73,47,38,.90),
-                    rgba(104,61,44,.88) 48%,
-                    rgba(154,91,54,.82)
-                );
+                rgba(248,232,202,.92) !important;
+
+            box-shadow:
+                0 5px 15px
+                rgba(50,31,23,.14) !important;
         }
 
-        body.theme-horror .card .author,
-        body.theme-horror .card .message,
-        body.theme-horror .card .comment strong {
-            color: #fff0d2;
+        body.theme-horror .board-title {
+            color: #3e2c25 !important;
         }
 
-        body.theme-horror .card .meta,
-        body.theme-horror .card .comment-text {
-            color: #ead2b2;
+        body.theme-horror .board-subtitle {
+            color: #967a67 !important;
         }
 
-        body.theme-horror .comment {
-            background: rgba(30,19,16,.22);
-        }
 
-        body.theme-horror .submit-btn {
+        /* =====================================================
+           HORROR CATEGORY
+        ===================================================== */
+
+        body.theme-horror .category-toggle {
             background:
-                linear-gradient(
-                    135deg,
-                    #9d342c,
-                    #5f211f
-                );
+                #f5e7c9 !important;
+
+            color:
+                #655448 !important;
         }
 
-        body.theme-horror .reply-form button {
+        body.theme-horror .category-toggle:hover {
             background:
-                linear-gradient(
-                    135deg,
-                    #b44d34,
-                    #783029
-                );
+                #efddba !important;
         }
 
         body.theme-horror .category-toggle.active {
@@ -1358,32 +1882,210 @@
                 linear-gradient(
                     135deg,
                     #a83d31,
-                    #67231f
-                );
+                    #71251f
+                ) !important;
 
-            color: #fff4df;
+            color:
+                #fff3df !important;
+
+            box-shadow:
+                0 3px 8px
+                rgba(112,36,29,.24) !important;
         }
 
-        body.theme-horror .chip {
+
+        /* =====================================================
+           HORROR CARD
+        ===================================================== */
+
+        body.theme-horror .card {
             background:
                 linear-gradient(
                     135deg,
-                    #b64b35,
-                    #7d3029
-                );
+                    rgba(72,45,36,.94),
+                    rgba(104,61,44,.92) 48%,
+                    rgba(153,89,53,.86)
+                ) !important;
 
-            color: #ffe6c4;
+            border:
+                1px solid
+                rgba(174,112,69,.18) !important;
+
+            box-shadow:
+                0 5px 16px
+                rgba(43,25,19,.22) !important;
         }
+
+        body.theme-horror .card:hover {
+            transform:
+                translateY(-1px) !important;
+        }
+
+
+        /* =====================================================
+           HORROR HEADER CARD
+        ===================================================== */
+
+        body.theme-horror .card .author {
+            color:
+                #fff0d3 !important;
+        }
+
+        body.theme-horror .card .meta {
+            color:
+                #d9bfa0 !important;
+        }
+
+
+        /* =====================================================
+           HORROR AVATAR
+        ===================================================== */
 
         body.theme-horror .avatar {
             background:
                 linear-gradient(
                     135deg,
-                    #d1844f,
-                    #8f3b2f
-                );
+                    #d1814e,
+                    #95402f
+                ) !important;
 
-            color: #2e1814;
+            color:
+                #351d17 !important;
+        }
+
+
+        /* =====================================================
+           HORROR CHIP
+        ===================================================== */
+
+        body.theme-horror .chip {
+            background:
+                linear-gradient(
+                    135deg,
+                    #c05238,
+                    #8b3029
+                ) !important;
+
+            color:
+                #ffe8ca !important;
+
+            box-shadow:
+                0 2px 7px
+                rgba(111,39,30,.18) !important;
+        }
+
+
+        /* =====================================================
+           HORROR MESSAGE
+        ===================================================== */
+
+        body.theme-horror .card .message {
+            color:
+                #fff0d2 !important;
+        }
+
+
+        /* =====================================================
+           HORROR COMMENTS
+        ===================================================== */
+
+        body.theme-horror .reply-count {
+            color:
+                #d8bda0 !important;
+        }
+
+        body.theme-horror .comment,
+        body.theme-horror .comment:hover {
+            background:
+                transparent !important;
+
+            box-shadow:
+                none !important;
+        }
+
+        body.theme-horror .reply-target {
+            color:
+                #fff0d2 !important;
+        }
+
+        body.theme-horror .comment-text {
+            color:
+                #ead2b2 !important;
+        }
+
+        body.theme-horror .comment-reply-button,
+        body.theme-horror .toggle-replies {
+            color:
+                #ddc4a1 !important;
+        }
+
+        body.theme-horror .comment-reply-button:hover,
+        body.theme-horror .toggle-replies:hover {
+            color:
+                #fff0d2 !important;
+        }
+
+        body.theme-horror .toggle-replies[aria-expanded="true"] {
+            color:
+                #f2d9b0 !important;
+        }
+
+        body.theme-horror .reply-line {
+            color:
+                #c6a98b !important;
+        }
+
+        body.theme-horror .nested-replies {
+            border-left:
+                1px solid
+                rgba(220,185,145,.24) !important;
+        }
+
+
+        /* =====================================================
+           HORROR FORM KOMENTAR
+        ===================================================== */
+
+        body.theme-horror .reply-form textarea {
+            background:
+                rgba(255,246,227,.74) !important;
+
+            color:
+                #4b392f !important;
+        }
+
+        body.theme-horror .reply-form textarea:focus {
+            background:
+                rgba(255,249,237,.95) !important;
+        }
+
+
+        /* =====================================================
+           HORROR BUTTON
+        ===================================================== */
+
+        body.theme-horror .submit-btn {
+            background:
+                linear-gradient(
+                    135deg,
+                    #9f352c,
+                    #63211f
+                ) !important;
+
+            color:
+                #fff3df !important;
+        }
+
+        body.theme-horror .reply-form > button {
+            background:
+                linear-gradient(
+                    135deg,
+                    #b64e35,
+                    #792d28
+                ) !important;
+
+            color:
+                #fff4df !important;
         }
 
 
@@ -1398,15 +2100,15 @@
                     rgba(122,165,169,.95),
                     rgba(153,190,184,.94) 45%,
                     rgba(196,211,190,.93)
-                );
+                ) !important;
         }
 
         body.theme-random .page-title {
-            color: #345d62;
+            color: #345d62 !important;
         }
 
         body.theme-random .back-button {
-            color: #3f6c71;
+            color: #3f6c71 !important;
         }
 
         body.theme-random .intro {
@@ -1416,11 +2118,11 @@
                     rgba(220,235,230,.88),
                     rgba(233,241,228,.88),
                     rgba(245,238,210,.84)
-                );
+                ) !important;
         }
 
         body.theme-random .intro p {
-            color: #496b68;
+            color: #496b68 !important;
         }
 
         body.theme-random .composer-panel {
@@ -1430,13 +2132,13 @@
                     rgba(144,188,183,.87),
                     rgba(181,210,194,.84) 48%,
                     rgba(235,225,185,.88)
-                );
+                ) !important;
         }
 
         body.theme-random .info-box,
         body.theme-random .composer-card,
         body.theme-random .board-header {
-            background: rgba(248,250,240,.84);
+            background: rgba(248,250,240,.84) !important;
         }
 
         body.theme-random .card {
@@ -1446,7 +2148,7 @@
                     rgba(198,224,220,.88),
                     rgba(226,238,222,.89) 52%,
                     rgba(247,239,207,.84)
-                );
+                ) !important;
         }
 
         body.theme-random .submit-btn {
@@ -1455,16 +2157,16 @@
                     135deg,
                     #548d94,
                     #426f78
-                );
+                ) !important;
         }
 
-        body.theme-random .reply-form button {
+        body.theme-random .reply-form > button {
             background:
                 linear-gradient(
                     135deg,
                     #7da7a0,
                     #5c8988
-                );
+                ) !important;
         }
 
         body.theme-random .category-toggle.active {
@@ -1473,9 +2175,9 @@
                     135deg,
                     #66979b,
                     #4d7c84
-                );
+                ) !important;
 
-            color: white;
+            color: white !important;
         }
 
         body.theme-random .chip {
@@ -1484,9 +2186,9 @@
                     135deg,
                     #d4ebe0,
                     #b8d8d2
-                );
+                ) !important;
 
-            color: #3e7770;
+            color: #3e7770 !important;
         }
 
         body.theme-random .avatar {
@@ -1495,14 +2197,46 @@
                     135deg,
                     #83aaa7,
                     #5d858e
-                );
+                ) !important;
 
-            color: #264f56;
+            color: #264f56 !important;
+        }
+
+        body.theme-random .comment,
+        body.theme-random .comment:hover {
+            background: transparent !important;
+        }
+
+        body.theme-random .reply-target {
+            color: #3f3935 !important;
+        }
+
+        body.theme-random .comment-text {
+            color: #4a4540 !important;
         }
 
 
         /* =====================================================
-           PENGHAPUS GARIS
+           REMOVE OLD COMMENT RECTANGLE
+        ===================================================== */
+
+        .comment,
+        .comment:hover,
+        .comment-content,
+        .comment-author,
+        .comment-text,
+        .comment-reply {
+            box-shadow: none !important;
+
+            border-top: none !important;
+            border-right: none !important;
+            border-bottom: none !important;
+            border-left: none !important;
+        }
+
+
+        /* =====================================================
+           NO BORDER
         ===================================================== */
 
         header,
@@ -1533,6 +2267,7 @@
 
             .board-header {
                 flex-direction: column;
+
                 align-items: flex-start;
             }
 
@@ -1546,6 +2281,7 @@
 
             .top-header {
                 min-height: 64px;
+
                 padding: 0 15px;
             }
 
@@ -1555,6 +2291,7 @@
 
             .page {
                 width: calc(100% - 18px);
+
                 margin: 14px auto 30px;
             }
 
@@ -1564,7 +2301,9 @@
 
             .composer-panel {
                 position: static;
+
                 min-height: auto;
+
                 padding: 16px;
             }
 
@@ -1574,23 +2313,28 @@
 
             .category-toggle {
                 min-height: 39px;
+
                 padding: 0 15px;
+
                 font-size: 13px;
             }
 
             .message {
                 margin: 0 0 14px 0 !important;
+
                 padding: 0 !important;
 
                 font-size: 20px !important;
+
                 font-weight: 500 !important;
+
                 line-height: 1.6 !important;
 
                 text-align: left !important;
             }
 
             .comment-text {
-                font-size: 12.5px !important;
+                font-size: 14px !important;
             }
         }
 
@@ -1607,16 +2351,19 @@
 
             .category-toggle {
                 flex: 1;
+
                 min-height: 38px;
+
                 font-size: 12px;
             }
 
-            .reply-form button {
-                width: 38px;
+            .reply-form > button {
+                width: 38px !important;
             }
 
             .message {
                 margin: 0 0 14px 0 !important;
+
                 padding: 0 !important;
 
                 font-size: 18px !important;
@@ -1625,10 +2372,108 @@
             }
 
             .comment-text {
-                font-size: 12.5px !important;
+                font-size: 14px !important;
+            }
+
+            .toggle-replies {
+                margin-left: 36px !important;
+            }
+
+            .nested-replies {
+                margin-left: 36px !important;
+
+                padding-left: 12px !important;
             }
         }
+/* =====================================================
+   TOGGLE KOMENTAR UTAMA (TAMPILKAN / SEMBUNYIKAN SEMUA)
+   ===================================================== */
 
+.comment-visibility-toggle {
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 8px !important;
+
+    width: fit-content !important;
+
+    margin: 2px 0 12px 0 !important;
+
+    padding: 0 !important;
+
+    background: transparent !important;
+
+    border: none !important;
+
+    outline: none !important;
+
+    color: #817970 !important;
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif !important;
+
+    font-size: 11px !important;
+
+    font-weight: 700 !important;
+
+    line-height: 1.3 !important;
+
+    cursor: pointer !important;
+
+    appearance: none !important;
+}
+
+.comment-visibility-toggle:hover {
+    color: #4e4640 !important;
+}
+
+.comment-visibility-toggle[aria-expanded="true"] {
+    color: #62584f !important;
+}
+
+.comment-visibility-line {
+    display: block !important;
+
+    width: 22px !important;
+
+    height: 1px !important;
+
+    flex-shrink: 0 !important;
+
+    background: currentColor !important;
+
+    opacity: .55 !important;
+}
+
+.comments-content {
+    display: none !important;
+}
+
+.comments-content.open {
+    display: block !important;
+}
+
+
+/* HORROR */
+
+body.theme-horror .comment-visibility-toggle {
+    color: #ddc4a1 !important;
+}
+
+body.theme-horror .comment-visibility-toggle:hover {
+    color: #fff0d2 !important;
+}
+
+body.theme-horror .comment-visibility-toggle[aria-expanded="true"] {
+    color: #f2d9b0 !important;
+}
+
+body.theme-horror .comment-visibility-line {
+    color: #c6a98b !important;
+}
     </style>
 </head>
 
@@ -1682,10 +2527,12 @@
 
 
 <body class="{{ $theme }}">
+
+
 @include('whisperly.navbar')
 
-<header class="top-header">
 
+<header class="top-header">
 
     <h1 class="page-title">
         Ruang Pengaduan
@@ -1696,6 +2543,10 @@
 
 <div class="page">
 
+
+    <!-- =====================================================
+         INTRO
+    ====================================================== -->
 
     <div class="intro">
 
@@ -1709,7 +2560,9 @@
     <div class="content-grid">
 
 
-        <!-- FORM MENFESS -->
+        <!-- =================================================
+             FORM MENFESS
+        ================================================== -->
 
         <aside class="composer-panel">
 
@@ -1787,7 +2640,6 @@
 
                     <div class="field">
 
-
                         <label for="isi_pesan">
 
                             @if ($currentCategory === 'love')
@@ -1825,7 +2677,6 @@ Ceritakan hal yang sedang membuatmu sedih...
 Ceritakan apa saja yang ingin kamu sampaikan...
 @endif"
                         >{{ old('isi_pesan') }}</textarea>
-
 
                     </div>
 
@@ -1875,7 +2726,9 @@ Ceritakan apa saja yang ingin kamu sampaikan...
         </aside>
 
 
-        <!-- BOARD -->
+        <!-- =================================================
+             BOARD
+        ================================================== -->
 
         <main class="board">
 
@@ -1938,7 +2791,9 @@ Ceritakan apa saja yang ingin kamu sampaikan...
             </div>
 
 
-            <!-- LIST MENFESS -->
+            <!-- =================================================
+                 LIST MENFESS
+            ================================================== -->
 
             <section class="feed">
 
@@ -1954,32 +2809,20 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                             )
                         );
 
-
                         if ($tone === 'campuran') {
-
                             $tone = 'random';
-
                         }
-
 
                         if ($tone === 'cinta') {
-
                             $tone = 'love';
-
                         }
-
 
                         if ($tone === 'horor') {
-
                             $tone = 'horror';
-
                         }
 
-
                         if ($tone === 'sedih') {
-
                             $tone = 'sad';
-
                         }
 
 
@@ -2007,7 +2850,9 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                     >
 
 
-                        <!-- HEADER MENFESS -->
+                        <!-- =================================================
+                             HEADER MENFESS
+                        ================================================== -->
 
                         <div class="card-head">
 
@@ -2022,40 +2867,30 @@ Ceritakan apa saja yang ingin kamu sampaikan...
 
                                 <div>
 
-
                                     <div class="author">
-
                                         {{ $anonymousName }}
-
                                     </div>
 
 
                                     <div class="meta">
 
-
                                         <span>
-
                                             {{
                                                 $item->created_at
                                                 ?->translatedFormat('d M, H:i')
                                                 ?? $item->created_at
                                             }}
-
                                         </span>
-
 
                                         <span>
                                             •
                                         </span>
 
-
                                         <span>
                                             Anonim
                                         </span>
 
-
                                     </div>
-
 
                                 </div>
 
@@ -2063,10 +2898,7 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                             </div>
 
 
-                            <!-- KATEGORI -->
-
                             <span class="chip">
-
 
                                 @if ($tone === 'horror')
 
@@ -2090,98 +2922,390 @@ Ceritakan apa saja yang ingin kamu sampaikan...
 
                                 @endif
 
-
                             </span>
 
 
                         </div>
 
 
-                        <!-- ISI MENFESS -->
+                        <!-- =================================================
+                             ISI MENFESS
+                        ================================================== -->
 
-                        <div class="message">{{ $item->isi_pesan }}</div>
+                        <div class="message">
+                            {{ $item->isi_pesan }}
+                        </div>
 
 
-                        <!-- BALASAN -->
+                        <!-- =================================================
+                             KOMENTAR / BALASAN
+                        ================================================== -->
 
                         <div class="reply-box">
 
 
-                            <div class="reply-count">
+                            @php
 
-                                {{ $item->comments->count() }}
+                                $allComments = $item->comments
+                                    ->sortBy('created_at');
 
-                                Balasan
+                                $mainComments = $allComments
+                                    ->filter(function ($comment) {
 
-                            </div>
-
-
-                            <div class="comment-list">
-
-
-                                @foreach ($item->comments as $comment)
-
-
-                                    @php
-
-                                        $commentAnonymousCode = strtoupper(
-                                            substr(
-                                                hash(
-                                                    'sha256',
-                                                    'whisperly-comment-' . $comment->id
-                                                ),
-                                                0,
-                                                4
-                                            )
+                                        return empty(
+                                            $comment->reply_to
                                         );
 
+                                    });
 
-                                        $commentAnonymousName =
-                                            'Anonim-' . $commentAnonymousCode;
+                                $totalComments =
+                                    $allComments->count();
 
-                                    @endphp
+                                $commentsPanelId =
+                                    'comments-panel-' . $item->id;
 
-
-                                    <div class="comment">
-
-
-                                        <div class="avatar">
-
-                                            A
-
-                                        </div>
+                            @endphp
 
 
-                                        <div>
+                            @if ($totalComments > 0)
 
 
-                                            <strong>
+                                <!-- =================================================
+                                     TOMBOL TAMPILKAN / SEMBUNYIKAN KOMENTAR
+                                ================================================== -->
 
-                                                {{ $commentAnonymousName }}
+                                <button
+                                    type="button"
+                                    class="comment-visibility-toggle"
+                                    data-target="{{ $commentsPanelId }}"
+                                    data-count="{{ $totalComments }}"
+                                    aria-expanded="false"
+                                >
 
-                                            </strong>
+                                    <span class="comment-visibility-line"></span>
+
+                                    <span class="comment-visibility-text">
+                                        Tampilkan {{ $totalComments }} komentar
+                                    </span>
+
+                                </button>
 
 
-                                            <div class="comment-text">
+                                <!-- =================================================
+                                     PANEL KOMENTAR (TERSEMBUNYI DEFAULT)
+                                ================================================== -->
 
-                                                {{ $comment->komentar }}
+                                <div
+                                    class="comments-content"
+                                    id="{{ $commentsPanelId }}"
+                                >
+
+
+                                    <div class="comment-list">
+
+
+                                        @foreach ($mainComments as $comment)
+
+
+                                            @php
+
+                                                $commentUser =
+                                                    $comment->pengguna;
+
+                                                $commentUsername =
+                                                    $commentUser?->username
+                                                    ?? 'Pengguna';
+
+                                                $commentRole =
+                                                    strtolower(
+                                                        trim(
+                                                            (string) (
+                                                                $commentUser?->role
+                                                                ?? ''
+                                                            )
+                                                        )
+                                                    );
+
+                                                $commentInitial =
+                                                    strtoupper(
+                                                        mb_substr(
+                                                            $commentUsername,
+                                                            0,
+                                                            1
+                                                        )
+                                                    );
+
+                                                $isTalent =
+                                                    $commentRole === 'talent';
+
+                                                $isAdmin =
+                                                    $commentRole === 'admin';
+
+
+                                                $replies =
+                                                    $allComments->filter(
+                                                        function ($reply) use ($comment) {
+
+                                                            return
+                                                                (string)
+                                                                $reply->reply_to
+                                                                ===
+                                                                (string)
+                                                                $comment->id;
+
+                                                        }
+                                                    );
+
+
+                                                $replyCount =
+                                                    $replies->count();
+
+
+                                                $replyContainerId =
+                                                    'replies-'
+                                                    . $item->id
+                                                    . '-'
+                                                    . $comment->id;
+
+                                            @endphp
+
+
+                                            <div class="comment-thread">
+
+
+                                                <!-- =====================================
+                                                     KOMENTAR UTAMA
+                                                ====================================== -->
+
+                                                <div class="comment">
+
+
+                                                    <div class="avatar">
+                                                        {{ $commentInitial }}
+                                                    </div>
+
+
+                                                    <div class="comment-content">
+
+
+                                                        <div class="comment-author">
+
+
+                                                            <span class="reply-target">
+                                                                {{ $commentUsername }}
+                                                            </span>
+
+
+                                                            @if ($isTalent)
+
+                                                                <span
+                                                                    class="verified-badge verified-talent"
+                                                                    title="Talent Terverifikasi"
+                                                                >
+                                                                    ✓
+                                                                </span>
+
+                                                            @elseif ($isAdmin)
+
+                                                                <span
+                                                                    class="verified-badge verified-admin"
+                                                                    title="Admin Whisperly"
+                                                                >
+                                                                    ✓
+                                                                </span>
+
+                                                            @endif
+
+
+                                                            <span class="comment-text">
+                                                                {{ $comment->komentar }}
+                                                            </span>
+
+
+                                                        </div>
+
+
+                                                        <button
+                                                            type="button"
+                                                            class="comment-reply-button"
+                                                            data-comment-id="{{ $comment->id }}"
+                                                            data-username="{{ $commentUsername }}"
+                                                        >
+                                                            Balas
+                                                        </button>
+
+
+                                                    </div>
+
+
+                                                </div>
+
+
+                                                <!-- =====================================
+                                                     TOGGLE BALASAN
+                                                ====================================== -->
+
+                                                @if ($replyCount > 0)
+
+
+                                                    <button
+                                                        type="button"
+                                                        class="toggle-replies"
+                                                        data-target="{{ $replyContainerId }}"
+                                                        data-count="{{ $replyCount }}"
+                                                        aria-expanded="false"
+                                                    >
+
+                                                        <span class="reply-line"></span>
+
+                                                        <span class="toggle-replies-text">
+                                                            Lihat {{ $replyCount }} balasan
+                                                        </span>
+
+                                                    </button>
+
+
+                                                    <!-- =====================================
+                                                         NESTED REPLIES
+                                                    ====================================== -->
+
+                                                    <div
+                                                        class="nested-replies"
+                                                        id="{{ $replyContainerId }}"
+                                                    >
+
+
+                                                        @foreach ($replies as $reply)
+
+
+                                                            @php
+
+                                                                $replyUser =
+                                                                    $reply->pengguna;
+
+                                                                $replyUsername =
+                                                                    $replyUser?->username
+                                                                    ?? 'Pengguna';
+
+                                                                $replyRole =
+                                                                    strtolower(
+                                                                        trim(
+                                                                            (string) (
+                                                                                $replyUser?->role
+                                                                                ?? ''
+                                                                            )
+                                                                        )
+                                                                    );
+
+                                                                $replyInitial =
+                                                                    strtoupper(
+                                                                        mb_substr(
+                                                                            $replyUsername,
+                                                                            0,
+                                                                            1
+                                                                        )
+                                                                    );
+
+                                                                $replyIsTalent =
+                                                                    $replyRole === 'talent';
+
+                                                                $replyIsAdmin =
+                                                                    $replyRole === 'admin';
+
+                                                            @endphp
+
+
+                                                            <div class="comment comment-reply">
+
+
+                                                                <div class="avatar">
+                                                                    {{ $replyInitial }}
+                                                                </div>
+
+
+                                                                <div class="comment-content">
+
+
+                                                                    <div class="comment-author">
+
+
+                                                                        <span class="reply-target">
+                                                                            {{ $replyUsername }}
+                                                                        </span>
+
+
+                                                                        @if ($replyIsTalent)
+
+                                                                            <span
+                                                                                class="verified-badge verified-talent"
+                                                                                title="Talent Terverifikasi"
+                                                                            >
+                                                                                ✓
+                                                                            </span>
+
+                                                                        @elseif ($replyIsAdmin)
+
+                                                                            <span
+                                                                                class="verified-badge verified-admin"
+                                                                                title="Admin Whisperly"
+                                                                            >
+                                                                                ✓
+                                                                            </span>
+
+                                                                        @endif
+
+
+                                                                        <span class="comment-text">
+                                                                            {{ $reply->komentar }}
+                                                                        </span>
+
+
+                                                                    </div>
+
+
+                                                                    <button
+                                                                        type="button"
+                                                                        class="comment-reply-button"
+                                                                        data-comment-id="{{ $reply->id }}"
+                                                                        data-username="{{ $replyUsername }}"
+                                                                    >
+                                                                        Balas
+                                                                    </button>
+
+
+                                                                </div>
+
+
+                                                            </div>
+
+
+                                                        @endforeach
+
+
+                                                    </div>
+
+
+                                                @endif
+
 
                                             </div>
 
 
-                                        </div>
+                                        @endforeach
 
 
                                     </div>
 
 
-                                @endforeach
+                                </div>
 
 
-                            </div>
+                            @endif
 
 
-                            <!-- FORM BALAS -->
+                            <!-- =================================================
+                                 FORM KOMENTAR
+                            ================================================== -->
 
                             <form
                                 method="POST"
@@ -2192,9 +3316,17 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                                 @csrf
 
 
+                                <input
+                                    type="hidden"
+                                    name="reply_to"
+                                    class="reply-to-input"
+                                    value=""
+                                >
+
+
                                 <textarea
                                     name="komentar"
-                                    id="commentInput"
+                                    class="comment-input"
                                     placeholder="Tulis tanggapanmu..."
                                     required
                                 ></textarea>
@@ -2205,7 +3337,6 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                                     aria-label="Kirim balasan"
                                     title="Kirim balasan"
                                 >
-
 
                                     <svg
                                         class="send-icon"
@@ -2220,7 +3351,6 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                                         />
 
                                     </svg>
-
 
                                 </button>
 
@@ -2259,26 +3389,521 @@ Ceritakan apa saja yang ingin kamu sampaikan...
 </div>
 
 
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
 <script>
 
-    // ENTER UNTUK MENGIRIM BALASAN
-    const commentInputs = document.querySelectorAll('.reply-form textarea');
+document.addEventListener('DOMContentLoaded', function () {
 
-    commentInputs.forEach(function(commentInput) {
 
-        commentInput.addEventListener('keydown', function(e) {
+    /* =========================================================
+       TAMPILKAN / SEMBUNYIKAN SEMUA KOMENTAR MENFESS
+    ========================================================= */
 
-            if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
+    document.addEventListener('click', function (e) {
 
-                e.preventDefault();
+        const visButton =
+            e.target.closest('.comment-visibility-toggle');
 
-                this.form.submit();
+
+        if (!visButton) {
+            return;
+        }
+
+
+        e.preventDefault();
+
+
+        const targetId =
+            visButton.getAttribute(
+                'data-target'
+            );
+
+
+        if (!targetId) {
+            return;
+        }
+
+
+        const target =
+            document.getElementById(
+                targetId
+            );
+
+
+        if (!target) {
+
+            console.warn(
+                'Panel komentar tidak ditemukan:',
+                targetId
+            );
+
+            return;
+        }
+
+
+        const isOpen =
+            target.classList.contains(
+                'open'
+            );
+
+
+        const text =
+            visButton.querySelector(
+                '.comment-visibility-text'
+            );
+
+
+        const count =
+            visButton.getAttribute(
+                'data-count'
+            ) || '0';
+
+
+        if (isOpen) {
+
+
+            /* ==============================
+               SEMBUNYIKAN KOMENTAR
+            ============================== */
+
+            target.classList.remove(
+                'open'
+            );
+
+
+            visButton.setAttribute(
+                'aria-expanded',
+                'false'
+            );
+
+
+            if (text) {
+
+                text.textContent =
+                    'Tampilkan ' +
+                    count +
+                    ' komentar';
 
             }
 
+
+        } else {
+
+
+            /* ==============================
+               TAMPILKAN KOMENTAR
+            ============================== */
+
+            target.classList.add(
+                'open'
+            );
+
+
+            visButton.setAttribute(
+                'aria-expanded',
+                'true'
+            );
+
+
+            if (text) {
+
+                text.textContent =
+                    'Sembunyikan komentar';
+
+            }
+
+        }
+
+    });
+
+
+    /* =========================================================
+       LIHAT / SEMBUNYIKAN BALASAN
+    ========================================================= */
+
+    document.addEventListener('click', function (e) {
+
+        const toggleButton =
+            e.target.closest('.toggle-replies');
+
+
+        if (!toggleButton) {
+            return;
+        }
+
+
+        e.preventDefault();
+
+
+        const targetId =
+            toggleButton.getAttribute(
+                'data-target'
+            );
+
+
+        if (!targetId) {
+            return;
+        }
+
+
+        const target =
+            document.getElementById(
+                targetId
+            );
+
+
+        if (!target) {
+
+            console.warn(
+                'Target balasan tidak ditemukan:',
+                targetId
+            );
+
+            return;
+        }
+
+
+        const isOpen =
+            target.classList.contains(
+                'open'
+            );
+
+
+        const text =
+            toggleButton.querySelector(
+                '.toggle-replies-text'
+            );
+
+
+        const count =
+            toggleButton.getAttribute(
+                'data-count'
+            ) || '0';
+
+
+        if (isOpen) {
+
+
+            /* ==============================
+               SEMBUNYIKAN BALASAN
+            ============================== */
+
+            target.classList.remove(
+                'open'
+            );
+
+
+            toggleButton.setAttribute(
+                'aria-expanded',
+                'false'
+            );
+
+
+            if (text) {
+
+                text.textContent =
+                    'Lihat ' +
+                    count +
+                    ' balasan';
+
+            }
+
+
+        } else {
+
+
+            /* ==============================
+               TAMPILKAN BALASAN
+            ============================== */
+
+            target.classList.add(
+                'open'
+            );
+
+
+            toggleButton.setAttribute(
+                'aria-expanded',
+                'true'
+            );
+
+
+            if (text) {
+
+                text.textContent =
+                    'Sembunyikan balasan';
+
+            }
+
+        }
+
+    });
+
+
+    /* =========================================================
+       TOMBOL BALAS KOMENTAR
+    ========================================================= */
+
+    document.addEventListener('click', function (e) {
+
+        const button =
+            e.target.closest(
+                '.comment-reply-button'
+            );
+
+
+        if (!button) {
+            return;
+        }
+
+
+        e.preventDefault();
+
+
+        const commentId =
+            button.getAttribute(
+                'data-comment-id'
+            );
+
+
+        const username =
+            button.getAttribute(
+                'data-username'
+            ) ||
+            'Pengguna';
+
+
+        const card =
+            button.closest(
+                '.card'
+            );
+
+
+        if (!card) {
+            return;
+        }
+
+
+        const form =
+            card.querySelector(
+                '.reply-form'
+            );
+
+
+        if (!form) {
+            return;
+        }
+
+
+        const textarea =
+            form.querySelector(
+                '.comment-input'
+            );
+
+
+        const replyInput =
+            form.querySelector(
+                '.reply-to-input'
+            );
+
+
+        if (!textarea || !replyInput) {
+            return;
+        }
+
+
+        /* ==============================
+           BUKA PANEL KOMENTAR JIKA MASIH TERSEMBUNYI
+           (misal user klik "Balas" pada balasan
+           yang induk komentarnya lagi ketutup)
+        ============================== */
+
+        const commentsPanel =
+            card.querySelector(
+                '.comments-content'
+            );
+
+
+        if (commentsPanel && !commentsPanel.classList.contains('open')) {
+
+            commentsPanel.classList.add('open');
+
+
+            const visButton =
+                card.querySelector(
+                    '.comment-visibility-toggle'
+                );
+
+
+            if (visButton) {
+
+                visButton.setAttribute(
+                    'aria-expanded',
+                    'true'
+                );
+
+
+                const visText =
+                    visButton.querySelector(
+                        '.comment-visibility-text'
+                    );
+
+
+                if (visText) {
+
+                    visText.textContent =
+                        'Sembunyikan komentar';
+
+                }
+
+            }
+
+        }
+
+
+        /* ==============================
+           SIMPAN ID KOMENTAR
+        ============================== */
+
+        replyInput.value =
+            commentId || '';
+
+
+        /* ==============================
+           MASUKKAN @USERNAME
+        ============================== */
+
+        const mention =
+            '@' +
+            username +
+            ' ';
+
+
+        textarea.value =
+            mention;
+
+
+        /* ==============================
+           TANDA SEDANG MEMBALAS
+        ============================== */
+
+        textarea.classList.add(
+            'replying'
+        );
+
+
+        /* ==============================
+           FOKUS TEXTAREA
+        ============================== */
+
+        textarea.focus();
+
+
+        /* ==============================
+           KURSOR KE AKHIR
+        ============================== */
+
+        try {
+
+            textarea.setSelectionRange(
+                textarea.value.length,
+                textarea.value.length
+            );
+
+        } catch (error) {}
+
+
+        /* ==============================
+           SCROLL KE FORM
+        ============================== */
+
+        textarea.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
         });
 
     });
+
+
+    /* =========================================================
+       ENTER UNTUK KIRIM
+    ========================================================= */
+
+    document.querySelectorAll(
+        '.reply-form textarea'
+    ).forEach(function (commentInput) {
+
+
+        commentInput.addEventListener(
+            'keydown',
+            function (e) {
+
+
+                if (
+                    e.key === 'Enter' &&
+                    !e.shiftKey &&
+                    !e.isComposing
+                ) {
+
+                    e.preventDefault();
+
+
+                    const form =
+                        this.closest(
+                            'form'
+                        );
+
+
+                    if (form) {
+
+                        if (
+                            typeof form.requestSubmit ===
+                            'function'
+                        ) {
+
+                            form.requestSubmit();
+
+                        } else {
+
+                            form.submit();
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           AUTO HEIGHT TEXTAREA
+        ===================================================== */
+
+        commentInput.addEventListener(
+            'input',
+            function () {
+
+                this.style.height =
+                    'auto';
+
+
+                this.style.height =
+                    Math.min(
+                        this.scrollHeight,
+                        120
+                    ) + 'px';
+
+            }
+        );
+
+    });
+
+
+});
 
 </script>
 

@@ -32,7 +32,23 @@
 ============================================================ --}}
 
 @php
-    $currentUser = auth('whisperly')->user();
+    $currentUser =
+        auth('whisperly')->user();
+
+    $currentTalentProfile = null;
+
+    if (
+        $currentUser &&
+        $currentUser->role === 'talent'
+    ) {
+        $currentTalentProfile =
+            \App\Modules\talents\Models\talents::query()
+                ->where(
+                    'pengguna_id',
+                    $currentUser->id
+                )
+                ->first();
+    }
 @endphp
 
 <style>
@@ -216,6 +232,43 @@
         box-shadow:
             0 4px 14px rgba(0, 0, 0, 0.18);
     }
+
+    .whisperly-user-avatar {
+    width: 34px !important;
+    height: 34px !important;
+
+    min-width: 34px !important;
+    min-height: 34px !important;
+
+    max-width: 34px !important;
+    max-height: 34px !important;
+
+    flex-shrink: 0 !important;
+
+    overflow: hidden !important;
+    border-radius: 50% !important;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.whisperly-user-avatar img {
+    width: 34px !important;
+    height: 34px !important;
+
+    min-width: 34px !important;
+    min-height: 34px !important;
+
+    max-width: 34px !important;
+    max-height: 34px !important;
+
+    display: block !important;
+
+    object-fit: cover !important;
+
+    border-radius: 50% !important;
+}
 
     /* =========================================================
        USER INFORMATION
@@ -516,6 +569,43 @@
         box-shadow:
             0 5px 15px rgba(0, 0, 0, 0.18);
     }
+
+    .whisperly-menu-profile-avatar {
+    width: 44px !important;
+    height: 44px !important;
+
+    min-width: 44px !important;
+    min-height: 44px !important;
+
+    max-width: 44px !important;
+    max-height: 44px !important;
+
+    flex-shrink: 0 !important;
+
+    overflow: hidden !important;
+    border-radius: 14px !important;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.whisperly-menu-profile-avatar img {
+    width: 44px !important;
+    height: 44px !important;
+
+    min-width: 44px !important;
+    min-height: 44px !important;
+
+    max-width: 44px !important;
+    max-height: 44px !important;
+
+    display: block !important;
+
+    object-fit: cover !important;
+
+    border-radius: 14px !important;
+}
 
     .whisperly-menu-profile-info {
         min-width: 0;
@@ -1031,14 +1121,31 @@
             <div class="whisperly-user-pill">
 
                 <div class="whisperly-user-avatar">
-                    {{ strtoupper(
-                        substr(
-                            $currentUser->username,
-                            0,
-                            1
-                        )
-                    ) }}
-                </div>
+
+    @if (
+        $currentUser->role === 'talent' &&
+        $currentTalentProfile &&
+        $currentTalentProfile->photo
+    )
+
+        <img
+            src="{{ asset('storage/' . $currentTalentProfile->photo) }}"
+            alt="{{ $currentUser->username }}"
+        >
+
+    @else
+
+        {{ strtoupper(
+            substr(
+                $currentUser->username,
+                0,
+                1
+            )
+        ) }}
+
+    @endif
+
+</div>
 
                 <div class="whisperly-user-info">
 
@@ -1098,14 +1205,31 @@
                     <div class="whisperly-menu-profile">
 
                         <div class="whisperly-menu-profile-avatar">
-                            {{ strtoupper(
-                                substr(
-                                    $currentUser->username,
-                                    0,
-                                    1
-                                )
-                            ) }}
-                        </div>
+
+    @if (
+        $currentUser->role === 'talent' &&
+        $currentTalentProfile &&
+        $currentTalentProfile->photo
+    )
+
+        <img
+            src="{{ asset('storage/' . $currentTalentProfile->photo) }}"
+            alt="{{ $currentUser->username }}"
+        >
+
+    @else
+
+        {{ strtoupper(
+            substr(
+                $currentUser->username,
+                0,
+                1
+            )
+        ) }}
+
+    @endif
+
+</div>
 
                         <div class="whisperly-menu-profile-info">
 
