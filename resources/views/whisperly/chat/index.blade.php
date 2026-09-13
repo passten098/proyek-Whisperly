@@ -23,7 +23,6 @@
             box-sizing: border-box;
         }
 
-
         html {
             scroll-behavior: smooth;
         }
@@ -37,16 +36,15 @@
             margin: 0;
             min-height: 100vh;
 
-            background-color: #a9d2f5;
+            background-color: #07152f;
 
             background-image:
-
                 url('{{ asset('assets/images/chat-background.jpg') }}');
 
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
             background-repeat: no-repeat;
+            background-attachment: fixed;
 
             color: #183153;
 
@@ -80,12 +78,13 @@
         ========================================================= */
 
         main {
-            width: calc(100% - 64px);
+            width: 100%;
+            max-width: none;
 
-            max-width: 1660px;
+            margin: 0;
 
-            margin:
-                10px auto 40px;
+            height:
+                calc(100vh - 82px);
 
             position: relative;
 
@@ -98,22 +97,25 @@
         ========================================================= */
 
         .chat-container {
-    width: 100%;
-    min-height: 720px;
-    display: grid;
-    grid-template-columns:
-        360px 1fr;
+            width: 100%;
+            height: 100%;
 
-    column-gap: 18px;
+            min-height: 0;
 
-    background: transparent;
+            display: grid;
 
-    border-radius: 40px;
+            grid-template-columns:
+                360px minmax(0, 1fr);
 
-    overflow: visible;
+            column-gap: 0;
 
-    border: none;
-}
+            background:
+                #fff;
+
+            border-radius: 0;
+
+            overflow: hidden;
+        }
 
 
         /* =========================================================
@@ -121,28 +123,42 @@
         ========================================================= */
 
         .chat-sidebar {
-    min-height: 720px;
 
-    padding:
-        28px 18px;
+            height: 100%;
+            min-height: 0;
 
-    background:
-        rgba(
-            255,
-            255,
-            255,
-            0.97
-        );
+            display: flex;
 
-    border-right:
-        none;
+            flex-direction: column;
 
-    border-radius:
-        40px;
+            padding:
+                28px 18px;
 
-    overflow:
-        hidden;
-}
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.97),
+                    rgba(239,247,255,.93)
+                );
+
+            border-right:
+                1px solid
+                #dceafb;
+
+            border-radius: 0;
+
+            box-shadow:
+                none;
+
+            backdrop-filter:
+                blur(18px);
+
+            -webkit-backdrop-filter:
+                blur(18px);
+
+            overflow: hidden;
+        }
+
 
         /* =========================================================
            JUDUL CHAT
@@ -151,19 +167,26 @@
         .chat-title {
 
             margin:
-                0 0 24px 4px;
+                0 0 20px 4px;
 
             color:
-                #173456;
+                #102b4d;
 
             font-family:
                 Georgia,
                 "Times New Roman",
                 serif;
 
-            font-size: 38px;
+            font-size:
+                36px;
 
-            font-weight: 400;
+            font-weight:
+                400;
+
+            line-height:
+                1.1;
+
+            flex-shrink: 0;
         }
 
 
@@ -171,49 +194,82 @@
            SEARCH
         ========================================================= */
 
-.search-wrapper {
-    position: relative;
-    width: 100%;
-}
+        .search-wrapper {
 
-.search-icon {
-    position: absolute;
-    left: 17px;
-    top: 50%;
-    transform: translateY(-50%);
+            position: relative;
 
-    color: #4285c5;
-    font-size: 17px;
+            width: 100%;
 
-    pointer-events: none;
-    z-index: 2;
-}
+            flex-shrink: 0;
+        }
+
+
+        .search-icon {
+
+            position: absolute;
+
+            left:
+                16px;
+
+            top:
+                50%;
+
+            transform:
+                translateY(-50%);
+
+            color:
+                #348fdf;
+
+            font-size:
+                16px;
+
+            pointer-events:
+                none;
+
+            z-index:
+                2;
+        }
+
 
         .search-box {
 
             width: 100%;
 
+            height:
+                37px;
+
             padding:
-                14px 16px 14px 48px;
+                9px 14px 9px 40px;
 
             border:
                 1px solid
-                #d4e6f8;
+                rgba(117,177,228,.30);
 
-            border-radius: 15px;
+            border-radius:
+                13px;
 
-            outline: none;
+            outline:
+                none;
 
             background:
-                #f8fcff;
+                rgba(245,250,255,.90);
 
             color:
                 #23466d;
 
-            font-size: 14px;
+            font-size:
+                12px;
+
+            box-shadow:
+                inset 0 1px 0
+                rgba(255,255,255,.85),
+                0 5px 15px
+                rgba(35,101,160,.04);
 
             transition:
-                0.2s ease;
+                border-color .25s ease,
+                box-shadow .25s ease,
+                background .25s ease;
         }
 
 
@@ -223,19 +279,29 @@
         }
 
 
-        .search-box:focus {
+        .search-box:hover {
+
+            background:
+                rgba(255,255,255,.96);
 
             border-color:
-                #5da5ed;
+                rgba(77,169,255,.35);
+        }
+
+
+        .search-box:focus {
+
+            background:
+                rgba(255,255,255,.98);
+
+            border-color:
+                rgba(35,136,232,.60);
 
             box-shadow:
                 0 0 0 3px
-                rgba(
-                    93,
-                    165,
-                    237,
-                    0.12
-                );
+                rgba(35,136,232,.09),
+                0 8px 20px
+                rgba(35,136,232,.08);
         }
 
 
@@ -245,23 +311,33 @@
 
         .chat-filter {
 
-            display: flex;
+            display:
+                flex;
 
-            gap: 8px;
+            align-items:
+                center;
+
+            gap:
+                6px;
 
             margin:
-                18px 0 20px;
+                14px 0 12px;
+
+            flex-shrink:
+                0;
         }
 
 
         .filter-btn {
 
-            border: none;
+            border:
+                none;
 
             padding:
-                9px 15px;
+                7px 14px;
 
-            border-radius: 12px;
+            border-radius:
+                10px;
 
             background:
                 transparent;
@@ -269,46 +345,122 @@
             color:
                 #55718e;
 
-            font-size: 13px;
+            font-size:
+                11px;
 
-            cursor: pointer;
+            cursor:
+                pointer;
 
             transition:
-                0.2s ease;
+                background .25s ease,
+                color .25s ease,
+                transform .25s ease,
+                box-shadow .25s ease;
         }
 
 
         .filter-btn:hover {
 
             background:
-                #eef7ff;
+                rgba(35,136,232,.07);
 
             color:
-                #1976d2;
+                #1674d1;
+
+            transform:
+                translateY(-1px);
         }
 
 
         .filter-btn.active {
 
             background:
-                #dceeff;
+                linear-gradient(
+                    135deg,
+                    rgba(35,136,232,.16),
+                    rgba(77,169,255,.09)
+                );
 
             color:
-                #1976d2;
+                #126bc0;
 
-            font-weight: 700;
+            font-weight:
+                700;
+
+            box-shadow:
+                inset 0 0 0 1px
+                rgba(35,136,232,.08),
+                0 4px 12px
+                rgba(35,136,232,.07);
         }
 
 
         /* =========================================================
            CHAT LIST
+           PENTING:
+           GRID TIDAK BOLEH MEMBESARKAN ITEM
         ========================================================= */
 
         .chat-list {
 
-            display: grid;
+            flex:
+                1;
 
-            gap: 8px;
+            min-height:
+                0;
+
+            display:
+                grid;
+
+            grid-auto-rows:
+                max-content;
+
+            align-content:
+                start;
+
+            gap:
+                5px;
+
+            overflow-y:
+                auto;
+
+            overflow-x:
+                hidden;
+
+            scrollbar-width:
+                thin;
+
+            scrollbar-color:
+                rgba(35,136,232,.28)
+                transparent;
+        }
+
+
+        .chat-list::-webkit-scrollbar {
+
+            width:
+                5px;
+        }
+
+
+        .chat-list::-webkit-scrollbar-track {
+
+            background:
+                transparent;
+        }
+
+
+        .chat-list::-webkit-scrollbar-thumb {
+
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(77,169,255,.45),
+                    rgba(35,136,232,.25)
+                );
+
+            border-radius:
+                999px;
         }
 
 
@@ -318,209 +470,112 @@
 
         .chat-item {
 
-            position: relative;
+            position:
+                relative;
 
-            display: grid;
+            display:
+                grid;
 
             grid-template-columns:
-                52px 1fr auto;
+                44px minmax(0, 1fr) auto;
 
-            gap: 12px;
+            gap:
+                10px;
 
-            align-items: center;
+            align-items:
+                center;
+
+            width:
+                100%;
+
+            min-height:
+                64px;
+
+            height:
+                auto;
 
             padding:
-                13px 12px;
+                9px 10px;
 
-            border-radius: 18px;
+            margin:
+                0;
 
-            text-decoration: none;
+            border-radius:
+                14px;
 
-            color: inherit;
+            text-decoration:
+                none;
+
+            color:
+                inherit;
+
+            border:
+                1px solid
+                transparent;
+
+            flex-shrink:
+                0;
 
             transition:
-                background 0.2s ease,
-                transform 0.2s ease;
+                background .25s ease,
+                border-color .25s ease,
+                transform .25s ease,
+                box-shadow .25s ease;
         }
 
 
         .chat-item:hover {
 
             background:
-                #eef7ff;
+                linear-gradient(
+                    135deg,
+                    rgba(235,247,255,.90),
+                    rgba(219,239,255,.72)
+                );
+
+            border-color:
+                rgba(77,169,255,.15);
 
             transform:
                 translateX(2px);
+
+            box-shadow:
+                0 6px 18px
+                rgba(35,101,160,.06);
         }
 
 
         /* =========================================================
-           CHAT ITEM AKTIF
+           CHAT AKTIF
         ========================================================= */
 
         .chat-item.active {
 
             background:
-                #dceeff;
+                linear-gradient(
+                    135deg,
+                    rgba(210,235,255,.96),
+                    rgba(190,223,251,.82)
+                );
+
+            border-color:
+                rgba(35,136,232,.16);
+
+            box-shadow:
+                inset 3px 0 0 #2388e8,
+                0 6px 18px
+                rgba(35,136,232,.08);
         }
 
 
         .chat-item.active:hover {
 
             background:
-                #dceeff;
-        }
-
-
-        /* =========================================================
-           AVATAR
-        ========================================================= */
-
-        .chat-avatar {
-
-            width: 52px;
-
-            height: 52px;
-
-            border-radius: 50%;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            background:
                 linear-gradient(
                     135deg,
-                    #c8e5ff,
-                    #9fd0fa
+                    rgba(210,235,255,.98),
+                    rgba(190,223,251,.88)
                 );
-
-            color:
-                #1976d2;
-
-            font-size: 20px;
-
-            font-weight: 700;
-
-            box-shadow:
-                0 5px 15px
-                rgba(
-                    25,
-                    118,
-                    210,
-                    0.12
-                );
-        }
-
-
-        /* =========================================================
-           CHAT INFO
-        ========================================================= */
-
-        .chat-main {
-
-            min-width: 0;
-        }
-
-
-        .chat-item-name {
-
-            display: block;
-
-            margin-bottom: 4px;
-
-            color:
-                #18365b;
-
-            font-size: 15px;
-
-            font-weight: 700;
-        }
-
-
-        .chat-item-preview {
-
-            max-width: 200px;
-
-            color:
-                #63809c;
-
-            font-size: 12px;
-
-            white-space: nowrap;
-
-            overflow: hidden;
-
-            text-overflow: ellipsis;
-        }
-
-
-        /* =========================================================
-           BAGIAN KANAN ITEM
-        ========================================================= */
-
-        .chat-item-right {
-
-            align-self: start;
-
-            display: flex;
-
-            flex-direction: column;
-
-            align-items: flex-end;
-
-            gap: 6px;
-        }
-
-
-        .chat-item-time {
-
-            color:
-                #66809b;
-
-            font-size: 11px;
-
-            white-space: nowrap;
-        }
-
-
-        /* =========================================================
-           STATUS
-        ========================================================= */
-
-        .status {
-
-            font-size: 11px;
-
-            font-weight: 700;
-
-            text-transform: capitalize;
-        }
-
-
-        .active {
-            color:
-                #23834a;
-        }
-
-
-        .completed {
-            color:
-                #66809b;
-        }
-
-
-        .upcoming {
-            color:
-                #9a721b;
-        }
-
-
-        .closed {
-            color:
-                #999;
         }
 
 
@@ -531,19 +586,25 @@
         .chat-item.unread {
 
             background:
-                rgba(
-                    219,
-                    238,
-                    255,
-                    0.65
+                linear-gradient(
+                    135deg,
+                    rgba(225,241,255,.82),
+                    rgba(210,234,255,.60)
                 );
+
+            border-color:
+                rgba(77,169,255,.10);
         }
 
 
         .chat-item.unread:hover {
 
             background:
-                #dceeff;
+                linear-gradient(
+                    135deg,
+                    rgba(215,238,255,.98),
+                    rgba(198,227,252,.88)
+                );
         }
 
 
@@ -551,52 +612,337 @@
         .chat-item-name {
 
             color:
-                #145da0;
-        }
-
-
-        .unread-badge {
-
-            min-width: 21px;
-
-            height: 21px;
-
-            padding:
-                0 6px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            border-radius: 50%;
-
-            background:
-                #2388e8;
-
-            color:
-                white;
-
-            font-size: 10px;
-
-            font-weight: 700;
+                #0e5da4;
         }
 
 
         /* =========================================================
-           MESSAGE INDICATOR (CHECKLIST)
+           AVATAR
+        ========================================================= */
+
+        .chat-avatar {
+
+            width:
+                44px;
+
+            height:
+                44px;
+
+            min-width:
+                44px;
+
+            border-radius:
+                50%;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            overflow:
+                hidden;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #d9efff,
+                    #8bcaff 55%,
+                    #56a8ed
+                );
+
+            color:
+                #1267b7;
+
+            border:
+                2px solid
+                rgba(255,255,255,.95);
+
+            font-size:
+                16px;
+
+            font-weight:
+                700;
+
+            box-shadow:
+                0 6px 16px
+                rgba(35,136,232,.16),
+                inset 0 1px 2px
+                rgba(255,255,255,.85);
+
+            transition:
+                transform .25s ease,
+                box-shadow .25s ease;
+        }
+
+
+        .chat-avatar img {
+
+            width:
+                100%;
+
+            height:
+                100%;
+
+            display:
+                block;
+
+            border-radius:
+                50%;
+
+            object-fit:
+                cover;
+        }
+
+
+        .chat-item:hover
+        .chat-avatar {
+
+            transform:
+                scale(1.025);
+
+            box-shadow:
+                0 8px 20px
+                rgba(35,136,232,.22);
+        }
+
+
+        /* =========================================================
+           INFO CHAT
+        ========================================================= */
+
+        .chat-main {
+
+            min-width:
+                0;
+
+            overflow:
+                hidden;
+        }
+
+
+        .chat-item-name {
+
+            display:
+                block;
+
+            margin:
+                0 0 2px;
+
+            color:
+                #173a5e;
+
+            font-size:
+                13px;
+
+            font-weight:
+                700;
+
+            line-height:
+                1.25;
+
+            white-space:
+                nowrap;
+
+            overflow:
+                hidden;
+
+            text-overflow:
+                ellipsis;
+        }
+
+
+        .chat-item-preview {
+
+            max-width:
+                100%;
+
+            color:
+                #6c87a2;
+
+            font-size:
+                10px;
+
+            line-height:
+                1.3;
+
+            white-space:
+                nowrap;
+
+            overflow:
+                hidden;
+
+            text-overflow:
+                ellipsis;
+        }
+
+
+        /* =========================================================
+           BAGIAN KANAN ITEM
+        ========================================================= */
+
+        .chat-item-right {
+
+            align-self:
+                stretch;
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            align-items:
+                flex-end;
+
+            justify-content:
+                space-between;
+
+            padding:
+                1px 0;
+
+            gap:
+                3px;
+        }
+
+
+        .chat-item-time {
+
+            color:
+                #7691ab;
+
+            font-size:
+                9px;
+
+            line-height:
+                1.2;
+
+            white-space:
+                nowrap;
+        }
+
+
+        /* =========================================================
+           STATUS
+        ========================================================= */
+
+        .status {
+
+            font-size:
+                9px;
+
+            font-weight:
+                700;
+
+            text-transform:
+                capitalize;
+
+            white-space:
+                nowrap;
+        }
+
+
+        .status.active {
+            color:
+                #23834a;
+        }
+
+
+        .status.completed {
+            color:
+                #66809b;
+        }
+
+
+        .status.upcoming {
+            color:
+                #9a721b;
+        }
+
+
+        .status.closed {
+            color:
+                #999;
+        }
+
+
+        /* =========================================================
+           UNREAD BADGE
+        ========================================================= */
+
+        .unread-badge {
+
+            min-width:
+                18px;
+
+            height:
+                18px;
+
+            padding:
+                0 5px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            border-radius:
+                50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4ca9ff,
+                    #1678d8
+                );
+
+            color:
+                white;
+
+            font-size:
+                9px;
+
+            font-weight:
+                700;
+
+            box-shadow:
+                0 4px 10px
+                rgba(35,136,232,.25);
+
+            border:
+                1px solid
+                rgba(255,255,255,.75);
+        }
+
+
+        /* =========================================================
+           CHECKLIST
         ========================================================= */
 
         .message-indicator {
 
-            font-size: 11px;
+            font-size:
+                10px;
 
-            font-weight: 700;
+            font-weight:
+                700;
 
-            color: #2388e8;
+            color:
+                #2388e8;
 
-            white-space: nowrap;
+            white-space:
+                nowrap;
+
+            text-shadow:
+                0 2px 7px
+                rgba(35,136,232,.18);
         }
 
 
@@ -606,47 +952,63 @@
 
         .empty-chat {
 
+            margin:
+                15px 0;
+
             padding:
-                30px 10px;
+                20px 10px;
 
             color:
-                #63809c;
+                #728ca5;
 
-            font-size: 14px;
+            font-size:
+                12px;
 
-            line-height: 1.6;
+            line-height:
+                1.5;
 
-            text-align: center;
+            text-align:
+                center;
         }
 
 
         /* =========================================================
-           AREA KANAN
-           BACKGROUND SAMA DENGAN ROOM CHAT
+           AREA CHAT KANAN
         ========================================================= */
 
         .chat-content {
 
-            position: relative;
+            position:
+                relative;
 
-            min-height: 720px;
+            width:
+                100%;
 
-            display: flex;
+            height:
+                100%;
 
-            align-items: center;
+            min-height:
+                0;
 
-            justify-content: center;
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
 
             padding:
-                60px;
+                30px;
 
-            overflow: hidden;
+            overflow:
+                hidden;
 
             background-color:
                 #a9d2f5;
 
             background-image:
-
                 url('{{ asset('assets/images/chat-background.jpg') }}');
 
             background-size:
@@ -656,48 +1018,52 @@
                 center;
 
             background-attachment:
-                fixed;    
+                fixed;
 
             background-repeat:
                 no-repeat;
 
-            text-align: center;
+            text-align:
+                center;
         }
 
 
         /* =========================================================
-           CHAT EMPTY CONTENT
+           RECTANGLE CHAT SAYA
         ========================================================= */
 
         .chat-empty-content {
 
-            position: relative;
+            position:
+                relative;
 
-            z-index: 2;
+            z-index:
+                2;
 
             width:
-                min(
-                    700px,
-                    90%
-                );
+                min(590px, 88%);
 
-            display: flex;
+            display:
+                flex;
 
-            flex-direction: column;
+            flex-direction:
+                column;
 
-            align-items: center;
+            align-items:
+                center;
 
-            justify-content: center;
+            justify-content:
+                center;
 
             padding:
-                55px 65px;
+                34px 45px;
 
             background:
                 rgba(
                     255,
                     255,
                     255,
-                    0.88
+                    .91
                 );
 
             border:
@@ -706,26 +1072,29 @@
                     255,
                     255,
                     255,
-                    0.95
+                    .96
                 );
 
             border-radius:
-                30px;
+                25px;
 
             box-shadow:
-                0 20px 55px
+                0 18px 45px
                 rgba(
-                    44,
-                    106,
-                    163,
-                    0.18
+                    20,
+                    63,
+                    100,
+                    .17
                 );
 
             backdrop-filter:
-                blur(8px);
+                blur(12px);
 
             -webkit-backdrop-filter:
-                blur(8px);
+                blur(12px);
+
+            text-align:
+                center;
         }
 
 
@@ -735,20 +1104,26 @@
 
         .chat-icon {
 
-            width: 88px;
+            width:
+                68px;
 
-            height: 88px;
+            height:
+                68px;
 
             margin:
-                0 auto 24px;
+                0 0 13px;
 
-            display: flex;
+            display:
+                flex;
 
-            align-items: center;
+            align-items:
+                center;
 
-            justify-content: center;
+            justify-content:
+                center;
 
-            border-radius: 50%;
+            border-radius:
+                50%;
 
             background:
                 linear-gradient(
@@ -760,15 +1135,16 @@
             color:
                 #1976d2;
 
-            font-size: 38px;
+            font-size:
+                29px;
 
             box-shadow:
-                0 12px 30px
+                0 9px 22px
                 rgba(
                     44,
                     112,
                     176,
-                    0.16
+                    .14
                 );
         }
 
@@ -780,7 +1156,7 @@
         .chat-empty-content h1 {
 
             margin:
-                0 0 12px;
+                0 0 5px;
 
             color:
                 #182b4a;
@@ -791,49 +1167,36 @@
                 serif;
 
             font-size:
-                clamp(
-                    42px,
-                    5vw,
-                    60px
-                );
+                46px;
 
             font-weight:
                 400;
 
             line-height:
-                1.1;
+                1.05;
         }
 
 
         /* =========================================================
-           DESKRIPSI CHAT SAYA
+           DESKRIPSI
         ========================================================= */
 
         .chat-empty-content p {
 
             margin:
-                0 auto;
+                0;
 
             max-width:
-                650px;
+                500px;
 
             color:
                 #587491;
 
             font-size:
-                15px;
+                13px;
 
             line-height:
-                1.7;
-        }
-
-
-        /* =========================================================
-           HILANGKAN EFEK / ELEMENT PINK LAMA
-        ========================================================= */
-
-        .empty-chat-area {
-            display: none;
+                1.45;
         }
 
 
@@ -843,20 +1206,17 @@
 
         @media (max-width: 900px) {
 
-            main {
-
-                width:
-                    calc(100% - 35px);
-
-                margin-top:
-                    10px;
-            }
-
-
             .chat-container {
 
                 grid-template-columns:
-                    300px 1fr;
+                    300px minmax(0, 1fr);
+            }
+
+
+            .chat-sidebar {
+
+                padding:
+                    24px 14px;
             }
 
 
@@ -866,14 +1226,14 @@
                     88%;
 
                 padding:
-                    45px 35px;
+                    30px 30px;
             }
 
 
             .chat-empty-content h1 {
 
                 font-size:
-                    44px;
+                    40px;
             }
         }
 
@@ -883,6 +1243,12 @@
         ========================================================= */
 
         @media (max-width: 700px) {
+
+            body {
+                overflow:
+                    auto;
+            }
+
 
             .navbar-wrapper {
 
@@ -894,10 +1260,13 @@
             main {
 
                 width:
-                    calc(100% - 28px);
+                    100%;
+
+                height:
+                    auto;
 
                 margin:
-                    10px auto 30px;
+                    0;
             }
 
 
@@ -906,15 +1275,21 @@
                 display:
                     block;
 
-                min-height:
+                height:
                     auto;
 
+                min-height:
+                    0;
+
                 border-radius:
-                    22px;
+                    0;
             }
 
 
             .chat-sidebar {
+
+                height:
+                    auto;
 
                 min-height:
                     auto;
@@ -924,17 +1299,36 @@
 
                 border-bottom:
                     1px solid
-                    #d9e9f8;
+                    #dceafb;
+
+                border-radius:
+                    0;
+            }
+
+
+            .chat-list {
+
+                flex:
+                    none;
+
+                max-height:
+                    430px;
+
+                overflow-y:
+                    auto;
             }
 
 
             .chat-content {
 
+                height:
+                    600px;
+
                 min-height:
                     600px;
 
                 padding:
-                    35px 20px;
+                    25px 18px;
             }
 
 
@@ -944,40 +1338,46 @@
                     92%;
 
                 padding:
-                    40px 25px;
+                    30px 22px;
 
                 border-radius:
-                    25px;
+                    22px;
             }
 
 
             .chat-icon {
 
                 width:
-                    72px;
+                    62px;
 
                 height:
-                    72px;
+                    62px;
 
                 font-size:
-                    30px;
+                    27px;
 
                 margin-bottom:
-                    18px;
+                    12px;
             }
 
 
             .chat-empty-content h1 {
 
                 font-size:
-                    36px;
+                    35px;
+
+                margin-bottom:
+                    5px;
             }
 
 
             .chat-empty-content p {
 
                 font-size:
-                    13px;
+                    12px;
+
+                line-height:
+                    1.5;
             }
         }
 
@@ -991,51 +1391,77 @@
             .chat-sidebar {
 
                 padding:
-                    22px 14px;
+                    20px 12px;
             }
 
 
             .chat-title {
 
                 font-size:
-                    32px;
+                    31px;
             }
 
 
             .chat-item {
 
                 grid-template-columns:
-                    46px 1fr auto;
+                    42px minmax(0, 1fr) auto;
 
                 gap:
                     9px;
 
+                min-height:
+                    60px;
+
                 padding:
-                    11px 9px;
+                    8px 8px;
+
+                border-radius:
+                    13px;
             }
 
 
             .chat-avatar {
 
                 width:
-                    46px;
+                    42px;
 
                 height:
-                    46px;
+                    42px;
+
+                min-width:
+                    42px;
 
                 font-size:
-                    18px;
+                    15px;
+            }
+
+
+            .chat-item-name {
+
+                font-size:
+                    12px;
             }
 
 
             .chat-item-preview {
 
-                max-width:
-                    140px;
+                font-size:
+                    9px;
+            }
+
+
+            .chat-item-time {
+
+                font-size:
+                    8px;
             }
 
 
             .chat-content {
+
+                height:
+                    550px;
 
                 min-height:
                     550px;
@@ -1048,7 +1474,7 @@
                     94%;
 
                 padding:
-                    35px 18px;
+                    27px 17px;
             }
 
 
@@ -1058,438 +1484,6 @@
                     31px;
             }
         }
-
-
-        /* =========================================================
-   ✦ WHISPERLY PREMIUM GALAXY OVERRIDE
-   INDEX / CHAT LIST
-   ---------------------------------------------------------
-   IMPORTANT:
-   - Tidak mengubah HTML
-   - Tidak mengubah Blade
-   - Tidak mengubah JavaScript
-   - Tidak mengubah struktur/layout utama
-   - Hanya visual
-========================================================= */
-
-:root {
-    --wp-night: #07152f;
-    --wp-night-2: #0b2042;
-
-    --wp-blue: #2388e8;
-    --wp-blue-bright: #4da9ff;
-    --wp-blue-soft: #8bcaff;
-
-    --wp-text: #173456;
-    --wp-muted: #6f89a5;
-
-    --wp-white: rgba(255, 255, 255, .96);
-    --wp-glass: rgba(255, 255, 255, .78);
-    --wp-border: rgba(255, 255, 255, .72);
-
-    --wp-shadow:
-        0 18px 45px rgba(3, 20, 50, .18);
-
-    --wp-blue-shadow:
-        0 10px 28px rgba(35, 136, 232, .20);
-}
-
-
-/* =========================================================
-   BODY
-========================================================= */
-
-body {
-    background-color: #07152f !important;
-
-    background-image:
-        
-        url('{{ asset('assets/images/chat-background.jpg') }}') !important;
-
-    background-size: cover !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-    background-attachment: fixed !important;
-
-    color: #eaf5ff !important;
-}
-
-
-/* =========================================================
-   MAIN CONTAINER
-   Hanya memberi depth, ukuran tidak diubah
-========================================================= */
-
-.chat-container {
-    filter: drop-shadow(
-        0 24px 55px rgba(2, 14, 36, .20)
-    );
-}
-
-
-/* =========================================================
-   SIDEBAR
-========================================================= */
-
-.chat-sidebar {
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,.96),
-            rgba(239,247,255,.90)
-        ) !important;
-
-    border: 1px solid rgba(255,255,255,.78) !important;
-
-    box-shadow:
-        0 20px 55px rgba(2, 18, 45, .18),
-        inset 0 1px 0 rgba(255,255,255,.95) !important;
-
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-}
-
-
-/* =========================================================
-   JUDUL CHAT
-========================================================= */
-
-.chat-title {
-    color: #102b4d !important;
-
-    text-shadow:
-        0 2px 12px rgba(38, 103, 160, .08);
-}
-
-
-/* =========================================================
-   SEARCH
-========================================================= */
-
-.search-box {
-    background:
-        rgba(245,250,255,.86) !important;
-
-    border:
-        1px solid rgba(117,177,228,.28) !important;
-
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.85),
-        0 6px 18px rgba(35,101,160,.05) !important;
-
-    transition:
-        border-color .25s ease,
-        box-shadow .25s ease,
-        background .25s ease !important;
-}
-
-.search-box:hover {
-    background:
-        rgba(255,255,255,.96) !important;
-
-    border-color:
-        rgba(77,169,255,.35) !important;
-}
-
-.search-box:focus {
-    background:
-        rgba(255,255,255,.98) !important;
-
-    border-color:
-        rgba(35,136,232,.65) !important;
-
-    box-shadow:
-        0 0 0 4px rgba(35,136,232,.10),
-        0 10px 25px rgba(35,136,232,.10) !important;
-}
-
-.search-icon {
-    color: #348fdf !important;
-}
-
-
-/* =========================================================
-   FILTER
-========================================================= */
-
-.chat-filter {
-    position: relative;
-}
-
-.filter-btn {
-    transition:
-        background .25s ease,
-        color .25s ease,
-        transform .25s ease,
-        box-shadow .25s ease !important;
-}
-
-.filter-btn:hover {
-    background:
-        rgba(35,136,232,.07) !important;
-
-    color:
-        #1674d1 !important;
-
-    transform:
-        translateY(-1px);
-}
-
-.filter-btn.active {
-    background:
-        linear-gradient(
-            135deg,
-            rgba(35,136,232,.16),
-            rgba(77,169,255,.09)
-        ) !important;
-
-    color:
-        #126bc0 !important;
-
-    box-shadow:
-        inset 0 0 0 1px rgba(35,136,232,.08),
-        0 5px 15px rgba(35,136,232,.08) !important;
-}
-
-
-/* =========================================================
-   CHAT LIST
-========================================================= */
-
-.chat-list {
-    scrollbar-width: thin;
-    scrollbar-color:
-        rgba(35,136,232,.28)
-        transparent;
-}
-
-.chat-list::-webkit-scrollbar {
-    width: 6px;
-}
-
-.chat-list::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.chat-list::-webkit-scrollbar-thumb {
-    background:
-        linear-gradient(
-            180deg,
-            rgba(77,169,255,.45),
-            rgba(35,136,232,.25)
-        );
-
-    border-radius: 999px;
-}
-
-
-/* =========================================================
-   CHAT ITEM
-========================================================= */
-
-.chat-item {
-    border:
-        1px solid transparent !important;
-
-    transition:
-        background .25s ease,
-        border-color .25s ease,
-        transform .25s ease,
-        box-shadow .25s ease !important;
-}
-
-.chat-item:hover {
-    background:
-        linear-gradient(
-            135deg,
-            rgba(235,247,255,.90),
-            rgba(219,239,255,.72)
-        ) !important;
-
-    border-color:
-        rgba(77,169,255,.15) !important;
-
-    transform:
-        translateX(3px) !important;
-
-    box-shadow:
-        0 8px 22px rgba(35,101,160,.07) !important;
-}
-
-.chat-item.active {
-    background:
-        linear-gradient(
-            135deg,
-            rgba(210,235,255,.96),
-            rgba(190,223,251,.82)
-        ) !important;
-
-    border-color:
-        rgba(35,136,232,.16) !important;
-
-    box-shadow:
-        inset 3px 0 0 #2388e8,
-        0 8px 25px rgba(35,136,232,.10) !important;
-}
-
-.chat-item.active:hover {
-    background:
-        linear-gradient(
-            135deg,
-            rgba(210,235,255,.98),
-            rgba(190,223,251,.88)
-        ) !important;
-}
-
-
-/* =========================================================
-   UNREAD CHAT
-========================================================= */
-
-.chat-item.unread {
-    background:
-        linear-gradient(
-            135deg,
-            rgba(225,241,255,.82),
-            rgba(210,234,255,.60)
-        ) !important;
-
-    border-color:
-        rgba(77,169,255,.10) !important;
-}
-
-.chat-item.unread:hover {
-    background:
-        linear-gradient(
-            135deg,
-            rgba(215,238,255,.98),
-            rgba(198,227,252,.88)
-        ) !important;
-}
-
-.chat-item.unread .chat-name {
-    color:
-        #0e5da4 !important;
-}
-
-
-/* =========================================================
-   AVATAR
-========================================================= */
-
-.chat-avatar {
-    background:
-        linear-gradient(
-            145deg,
-            #d9efff,
-            #8bcaff 55%,
-            #56a8ed
-        ) !important;
-
-    color:
-        #1267b7 !important;
-
-    border:
-        2px solid rgba(255,255,255,.95) !important;
-
-    box-shadow:
-        0 8px 20px rgba(35,136,232,.18),
-        inset 0 1px 2px rgba(255,255,255,.85) !important;
-
-    transition:
-        transform .25s ease,
-        box-shadow .25s ease !important;
-}
-
-.chat-item:hover .chat-avatar {
-    transform:
-        scale(1.035);
-
-    box-shadow:
-        0 9px 25px rgba(35,136,232,.25),
-        inset 0 1px 2px rgba(255,255,255,.9) !important;
-}
-
-
-/* =========================================================
-   CHAT TEXT
-========================================================= */
-
-.chat-item-name {
-    color:
-        #173a5e !important;
-}
-
-.chat-item-preview {
-    color:
-        #6c87a2 !important;
-}
-
-.chat-item-time {
-    color:
-        #7691ab !important;
-}
-
-
-/* =========================================================
-   UNREAD BADGE
-========================================================= */
-
-.unread-badge {
-    background:
-        linear-gradient(
-            135deg,
-            #4ca9ff,
-            #1678d8
-        ) !important;
-
-    box-shadow:
-        0 5px 14px rgba(35,136,232,.28) !important;
-
-    border:
-        2px solid rgba(255,255,255,.75);
-}
-
-
-/* =========================================================
-   CHECKLIST
-========================================================= */
-
-.message-indicator {
-    color:
-        #2388e8 !important;
-
-    text-shadow:
-        0 2px 8px rgba(35,136,232,.18);
-}
-
-
-/* =========================================================
-   EMPTY CHAT
-========================================================= */
-
-.empty-chat {
-    color:
-        #728ca5 !important;
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 700px) {
-
-    .chat-sidebar {
-        box-shadow:
-            0 15px 35px rgba(2,18,45,.16) !important;
-    }
-
-    .chat-item:hover {
-        transform:
-            translateX(1px) !important;
-    }
-}
 
     </style>
 
@@ -1503,9 +1497,7 @@ body {
          NAVBAR WHISPERLY
     ========================================================= --}}
 
-  
-        @include('whisperly.navbar')
-
+    @include('whisperly.navbar')
 
 
     {{-- =========================================================
@@ -1531,22 +1523,22 @@ body {
                 </h2>
 
 
-
                 {{-- SEARCH --}}
 
                 <div class="search-wrapper">
 
-    <span class="search-icon">⌕</span>
+                    <span class="search-icon">
+                        ⌕
+                    </span>
 
-    <input
-        type="text"
-        class="search-box"
-        id="chat-search"
-        placeholder="Cari Obrolan..."
-    >
+                    <input
+                        type="text"
+                        class="search-box"
+                        id="chat-search"
+                        placeholder="Cari Obrolan..."
+                    >
 
-</div>
-
+                </div>
 
 
                 {{-- FILTER --}}
@@ -1570,9 +1562,7 @@ body {
                         Belum Dibaca
                     </button>
 
-
                 </div>
-
 
 
                 {{-- LIST CHAT --}}
@@ -1630,7 +1620,6 @@ body {
                                             1
                                         )
                                     );
-
                             }
 
 
@@ -1640,12 +1629,16 @@ body {
                             |--------------------------------------------------------------------------
                             */
 
-                            $lastMessage = $booking->last_message;
-    $unreadCount = $booking->unread_count ?? 0;
+                            $lastMessage =
+                                $booking->last_message;
 
-    $isLastMessageFromCurrentUser =
-        $lastMessage &&
-        (string) $lastMessage->sender_id === (string) auth('whisperly')->id();
+                            $unreadCount =
+                                $booking->unread_count ?? 0;
+
+                            $isLastMessageFromCurrentUser =
+                                $lastMessage &&
+                                (string) $lastMessage->sender_id ===
+                                (string) auth('whisperly')->id();
 
 
                             /*
@@ -1665,27 +1658,38 @@ body {
                             */
 
                             if ($lastMessage) {
-                                $messageTime = $lastMessage->created_at->format('H:i');
+
+                                $messageTime =
+                                    $lastMessage
+                                        ->created_at
+                                        ->format('H:i');
+
                             } else {
-                                $messageTime = substr(
-                                    $booking->schedule?->start_time ?? '00:00',
-                                    0,
-                                    5
-                                );
+
+                                $messageTime =
+                                    substr(
+                                        $booking
+                                            ->schedule
+                                            ?->start_time
+                                            ?? '00:00',
+                                        0,
+                                        5
+                                    );
                             }
 
 
                             /*
                             |--------------------------------------------------------------------------
-                            | STATUS PESAN TERAKHIR (UNTUK CHECKLIST/BADGE)
+                            | STATUS PESAN TERAKHIR
                             |--------------------------------------------------------------------------
                             */
 
                             $lastMessageIsRead =
-                                $booking->last_message_is_read ?? false;
+                                $booking
+                                    ->last_message_is_read
+                                    ?? false;
 
                         @endphp
-
 
 
                         {{-- =================================================
@@ -1708,10 +1712,20 @@ body {
 
                             <div class="chat-avatar">
 
-                                {{ $avatar }}
+                                @if ($userRole === 'user' && $booking->talent?->photo)
+
+                                    <img
+                                        src="{{ asset('storage/' . $booking->talent->photo) }}"
+                                        alt="Profil {{ $otherName }}"
+                                    >
+
+                                @else
+
+                                    {{ $avatar }}
+
+                                @endif
 
                             </div>
-
 
 
                             {{-- INFO --}}
@@ -1719,9 +1733,7 @@ body {
                             <div class="chat-main">
 
                                 <span class="chat-item-name">
-
                                     {{ $otherName }}
-
                                 </span>
 
 
@@ -1747,7 +1759,6 @@ body {
                             </div>
 
 
-
                             {{-- BAGIAN KANAN --}}
 
                             <div class="chat-item-right">
@@ -1762,34 +1773,37 @@ body {
                                 </span>
 
 
-
                                 {{-- INDIKATOR PESAN --}}
 
                                 @if ($lastMessage)
 
                                     @if ($isLastMessageFromCurrentUser)
 
-                                        {{-- CHECKLIST UNTUK PESAN DARI USER LOGIN --}}
-
                                         <span class="message-indicator">
 
                                             @if ($lastMessageIsRead)
+
                                                 ✓✓
+
                                             @else
+
                                                 ✓
+
                                             @endif
 
                                         </span>
 
                                     @else
 
-                                        {{-- BADGE UNREAD UNTUK PESAN DARI ORANG LAIN --}}
-
                                         @if ($unreadCount > 0)
 
                                             <span class="unread-badge">
 
-                                                {{ $unreadCount > 99 ? '99+' : $unreadCount }}
+                                                {{
+                                                    $unreadCount > 99
+                                                        ? '99+'
+                                                        : $unreadCount
+                                                }}
 
                                             </span>
 
@@ -1799,18 +1813,26 @@ body {
 
                                 @else
 
-                                    {{-- JIKA TIDAK ADA PESAN, TAMPILKAN STATUS BOOKING --}}
+                                    {{-- STATUS BOOKING --}}
 
                                     <span class="status {{ $status }}">
 
                                         @if ($status === 'active')
+
                                             Active
+
                                         @elseif ($status === 'upcoming')
+
                                             Upcoming
+
                                         @elseif ($status === 'completed')
+
                                             Completed
+
                                         @else
+
                                             {{ ucfirst($status) }}
+
                                         @endif
 
                                     </span>
@@ -1825,9 +1847,7 @@ body {
                     @empty
 
                         <p class="empty-chat">
-
                             Belum ada percakapan.
-
                         </p>
 
                     @endforelse
@@ -1835,7 +1855,6 @@ body {
                 </div>
 
             </aside>
-
 
 
             {{-- =================================================
@@ -1846,7 +1865,7 @@ body {
 
 
                 {{-- =================================================
-                     BUBBLE CHAT SAYA
+                     RECTANGLE CHAT SAYA
                 ================================================== --}}
 
                 <div class="chat-empty-content">
@@ -1855,30 +1874,22 @@ body {
                     {{-- ICON --}}
 
                     <div class="chat-icon">
-
                         💬
-
                     </div>
-
 
 
                     {{-- JUDUL --}}
 
                     <h1>
-
                         Chat Saya
-
                     </h1>
-
 
 
                     {{-- DESKRIPSI --}}
 
                     <p>
-
                         Pilih salah satu percakapan di sebelah kiri
                         untuk mulai berinteraksi dengan pengguna atau talent.
-
                     </p>
 
 
@@ -1889,7 +1900,6 @@ body {
         </div>
 
     </main>
-
 
 
     {{-- =========================================================
@@ -1955,7 +1965,6 @@ body {
         }
 
 
-
         /* =========================================================
            FILTER BELUM DIBACA
         ========================================================= */
@@ -1998,7 +2007,6 @@ body {
                             this.dataset.filter;
 
 
-
                         /* =================================================
                            FILTER CHAT
                         ================================================= */
@@ -2016,7 +2024,6 @@ body {
 
                                     return;
                                 }
-
 
 
                                 if (

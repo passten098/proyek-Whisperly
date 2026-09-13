@@ -61,6 +61,8 @@
 
         /* ==========================================================
            WRAPPER
+           (Diubah: jadi satu panel utuh, radius cuma di sisi luar,
+           shadow satu kali untuk seluruh panel — bukan per-elemen)
         ========================================================== */
 
         .chat-wrapper {
@@ -79,39 +81,42 @@
 
             grid-template-columns: 360px minmax(0, 1fr);
 
-            background: transparent;
+            background: #ffffff;
 
-            border-radius: 28px;
+            border-radius: 16px;
 
             overflow: hidden;
+
+            box-shadow:
+                0 10px 40px
+                rgba(51, 110, 160, .12);
 
         }
 
 
         /* ==========================================================
            SIDEBAR
+           (Diubah: hapus radius sendiri supaya nempel rata ke room)
         ========================================================== */
 
         .sidebar {
 
-    background: #ffffff;
+            background: #ffffff;
 
-    border-right: 1px solid #dceafb;
+            border-right: 1px solid #dceafb;
 
-    display: flex;
+            display: flex;
 
-    flex-direction: column;
+            flex-direction: column;
 
-    min-width: 0;
+            min-width: 0;
 
-    min-height: 0;
+            min-height: 0;
 
-    border-top-right-radius: 40px;
+            border-radius: 0;
 
-    border-bottom-right-radius: 40px;
-
-    overflow: hidden;
-}
+            overflow: hidden;
+        }
 
 
         .sidebar-header {
@@ -491,37 +496,41 @@
 
         /* ==========================================================
            ROOM HEADER
+           (Diubah: hilangkan margin/radius/shadow sendiri,
+           jadi strip putih rata yang nyatu di atas panel,
+           dipisah cuma dengan garis tipis)
         ========================================================== */
 
         .room-header {
-    height: 92px;
-    min-height: 92px;
-    flex-shrink: 0;
 
-    margin: 12px 12px 0;
+            height: 92px;
 
-    background:
-        rgba(255, 255, 255, .96);
+            min-height: 92px;
 
-    border:
-        1px solid #d7e8fa;
+            flex-shrink: 0;
 
-    border-radius: 28px;
+            margin: 0;
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+            background: #ffffff;
 
-    padding:
-        0 28px;
+            border: none;
 
-    box-shadow:
-        0 5px 15px
-        rgba(51, 110, 160, .08);
+            border-bottom: 1px solid #dceafb;
 
-    position: relative;
-    z-index: 5;
-}
+            border-radius: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding:
+                0 28px;
+
+            box-shadow: none;
+
+            position: relative;
+            z-index: 5;
+        }
 
 
         .room-person {
@@ -1110,33 +1119,34 @@
 
         /* ==========================================================
            SCHEDULE
+           (Diubah: dari card ngambang jadi strip info rata,
+           dipisah dengan garis tipis dari area pesan)
         ========================================================== */
 
         .schedule {
 
             flex-shrink: 0;
 
-            margin:
-                16px 24px 0;
+            margin: 0;
 
             padding:
-                15px 18px;
+                12px 24px;
 
             background:
-                rgba(255, 255, 255, .92);
+                rgba(255, 255, 255, .85);
 
-            border:
-                1px solid #d6e8fa;
+            border: none;
 
-            border-radius: 15px;
+            border-bottom:
+                1px solid #dceafb;
+
+            border-radius: 0;
 
             color: #47739f;
 
-            font-size: 14px;
+            font-size: 13px;
 
-            box-shadow:
-                0 5px 15px
-                rgba(51, 110, 160, .08);
+            box-shadow: none;
         }
 
 
@@ -1549,33 +1559,35 @@
 
         /* ==========================================================
            COMPOSER
+           (Diubah: dari card ngambang jadi strip rata di bawah,
+           nyatu dengan panel, dipisah garis tipis)
         ========================================================== */
 
         .composer {
-    flex-shrink: 0;
 
-    width: calc(100% - 24px);
+            flex-shrink: 0;
 
-    margin: 0 12px 12px;
+            width: 100%;
 
-    padding:
-        15px 24px 20px;
+            margin: 0;
 
-    background:
-        rgba(255, 255, 255, .97);
+            padding:
+                15px 24px 20px;
 
-    border:
-        1px solid #d5e7f8;
+            background: #ffffff;
 
-    border-radius: 28px;
+            border: none;
 
-    position: relative;
-    z-index: 5;
+            border-top:
+                1px solid #dceafb;
 
-    box-shadow:
-        0 5px 15px
-        rgba(51, 110, 160, .08);
-}
+            border-radius: 0;
+
+            position: relative;
+            z-index: 5;
+
+            box-shadow: none;
+        }
 
 
         .composer form {
@@ -2537,11 +2549,8 @@
 
             .schedule {
 
-                margin-left:
-                    14px;
-
-                margin-right:
-                    14px;
+                padding:
+                    12px 18px;
             }
 
 
@@ -2634,6 +2643,60 @@
                 gap: 5px;
             }
 
+        }
+
+
+        /* ==========================================================
+           WHATSAPP DESKTOP - FULL PANEL / NO FLOATING CARDS
+        ========================================================== */
+        body {
+            overflow: hidden;
+        }
+
+        .chat-wrapper {
+            width: 100%;
+            max-width: none;
+            height: calc(100vh - 82px);
+            min-height: 0;
+            margin: 0;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .sidebar,
+        .room {
+            border-radius: 0 !important;
+        }
+
+        .sidebar {
+            border-right: 1px solid #dceafb;
+        }
+
+        .room-header,
+        .schedule,
+        .composer {
+            border-radius: 0 !important;
+        }
+
+        .avatar img,
+        .message-avatar img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .room-person .avatar {
+            overflow: hidden;
+        }
+
+        @media (max-width: 700px) {
+            body { overflow: auto; }
+            .chat-wrapper {
+                height: auto;
+                min-height: 0;
+            }
         }
 
     </style>
@@ -2959,7 +3022,14 @@
 
                         <div class="avatar">
 
-                            {{ $itemInitial }}
+                            @if ($isUser && $item->talent?->photo)
+                                <img
+                                    src="{{ asset('storage/' . $item->talent->photo) }}"
+                                    alt="Profil {{ $itemName }}"
+                                >
+                            @else
+                                {{ $itemInitial }}
+                            @endif
 
                         </div>
 
@@ -3083,7 +3153,14 @@
 
                     <div class="avatar">
 
-                        {{ $otherInitial }}
+                        @if ($isUser && $talent?->photo)
+                            <img
+                                src="{{ asset('storage/' . $talent->photo) }}"
+                                alt="Profil {{ $otherName }}"
+                            >
+                        @else
+                            {{ $otherInitial }}
+                        @endif
 
                     </div>
 
@@ -3383,7 +3460,14 @@
 
                             <div class="message-avatar">
 
-                                {{ $senderInitial }}
+                                @if (!$mine && $isUser && $talent?->photo)
+                                    <img
+                                        src="{{ asset('storage/' . $talent->photo) }}"
+                                        alt="Profil {{ $senderName }}"
+                                    >
+                                @else
+                                    {{ $senderInitial }}
+                                @endif
 
                             </div>
 
