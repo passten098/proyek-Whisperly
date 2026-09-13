@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::view('/', 'welcome')->name('frontend.index');
+Route::view('/', 'landing')->name('frontend.index');
 
 
 /*
