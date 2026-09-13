@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 
 <html lang="id">
@@ -490,10 +490,6 @@
 
         .profile-info {
             width: 100%;
-<<<<<<< HEAD
-
-=======
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
             text-align: center;
         }
 
@@ -1710,18 +1706,99 @@
 
 
         /* =========================================================
-<<<<<<< HEAD
-           POPUP
-        ========================================================= */
-
-        .booking-success-overlay {
-
-=======
            BOOKING SUCCESS POPUP
         ========================================================= */
 
+        .booking-success-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 99998;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(5, 3, 12, .80);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity .3s ease, visibility .3s ease;
+        }
+
+        .booking-success-overlay.show {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .booking-success-popup {
+            width: min(430px, 100%);
+            padding: 32px 28px 28px;
+            border: 1px solid rgba(240, 212, 134, .35);
+            border-radius: 26px;
+            background: linear-gradient(145deg, rgba(39, 23, 56, .98), rgba(14, 8, 24, .99));
+            box-shadow: 0 35px 100px rgba(0,0,0,.65), 0 0 60px rgba(139,77,210,.16);
+            text-align: center;
+            transform: translateY(20px) scale(.95);
+            transition: transform .35s cubic-bezier(.2,.8,.2,1);
+        }
+
+        .booking-success-overlay.show .booking-success-popup {
+            transform: translateY(0) scale(1);
+        }
+
+        .booking-success-popup .booking-success-icon {
+            width: 58px;
+            height: 58px;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(240,212,134,.55);
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(240,212,134,.18), rgba(81,46,122,.18));
+            color: #f0d486;
+            font-size: 27px;
+            font-weight: 800;
+        }
+
+        .booking-success-popup h3 {
+            margin: 0 0 10px;
+            color: #fff;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 27px;
+            font-weight: 500;
+        }
+
+        .booking-success-popup p {
+            margin: 0 auto 22px;
+            max-width: 340px;
+            color: #c8bdd5;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .booking-success-close {
+            min-height: 44px;
+            padding: 0 24px;
+            border: 0;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f2d88b, #c19447);
+            color: #20140a;
+            font-size: 11px;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(195,151,62,.22);
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+
+        .booking-success-close:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 38px rgba(195,151,62,.34);
+        }
+
         .booking-popup {
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
             position: fixed;
 
             inset: 0;
@@ -1736,40 +1813,15 @@
             padding: 20px;
 
             background:
-<<<<<<< HEAD
-                rgba(5, 3, 12, .80);
-
-            backdrop-filter: blur(10px);
-
-            -webkit-backdrop-filter:
-                blur(10px);
-=======
                 rgba(3, 2, 8, .78);
 
             backdrop-filter:
                 blur(16px);
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
             opacity: 0;
 
             visibility: hidden;
 
-<<<<<<< HEAD
-            transition:
-                opacity .3s ease,
-                visibility .3s ease;
-        }
-
-        .booking-success-overlay.show {
-
-            opacity: 1;
-
-            visibility: visible;
-        }
-
-        .booking-success-popup {
-
-=======
             pointer-events: none;
 
             transition:
@@ -1791,7 +1843,6 @@
         ========================================================= */
 
         .booking-popup-box {
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
             position: relative;
 
             width:
@@ -1801,17 +1852,6 @@
                 );
 
             padding:
-<<<<<<< HEAD
-                36px
-                30px
-                30px;
-
-            border:
-                1px solid
-                rgba(240, 212, 134, .35);
-
-            border-radius: 26px;
-=======
                 34px
                 30px
                 28px;
@@ -1825,35 +1865,10 @@
                 rgba(224, 188, 103, .46);
 
             border-radius: 28px;
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
             background:
                 linear-gradient(
                     145deg,
-<<<<<<< HEAD
-                    rgba(39, 23, 56, .98),
-                    rgba(14, 8, 24, .99)
-                );
-
-            box-shadow:
-                0 35px 100px rgba(0, 0, 0, .65),
-                0 0 60px rgba(139, 77, 210, .16);
-
-            text-align: center;
-
-            transform:
-                translateY(25px)
-                scale(.94);
-
-            transition:
-                transform .4s
-                cubic-bezier(.2, .8, .2, 1);
-        }
-
-        .booking-success-overlay.show
-        .booking-success-popup {
-
-=======
                     rgba(43, 25, 66, .98),
                     rgba(12, 7, 22, .99)
                 );
@@ -1878,43 +1893,27 @@
 
         .booking-popup.show
         .booking-popup-box {
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
             transform:
                 translateY(0)
                 scale(1);
         }
 
-<<<<<<< HEAD
-        .booking-success-popup::before {
-
-=======
 
         /* =========================================================
            POPUP LIGHT
         ========================================================= */
 
         .booking-popup-box::before {
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
             content: "";
 
             position: absolute;
 
-<<<<<<< HEAD
-            top: -80px;
-
-            left: 50%;
-
-            width: 180px;
-            height: 180px;
-
-=======
             width: 280px;
             height: 280px;
 
             top: -190px;
             left: 50%;
 
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
             transform:
                 translateX(-50%);
 
@@ -1923,26 +1922,6 @@
             background:
                 radial-gradient(
                     circle,
-<<<<<<< HEAD
-                    rgba(211, 170, 82, .16),
-                    transparent 70%
-                );
-
-            filter: blur(8px);
-
-            pointer-events: none;
-        }
-
-        .booking-success-icon {
-
-            position: relative;
-
-            width: 72px;
-            height: 72px;
-
-            margin:
-                0 auto 20px;
-=======
                     rgba(224, 188, 103, .22),
                     transparent 68%
                 );
@@ -1986,7 +1965,6 @@
 
             width: 33px;
             height: 33px;
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
             display: flex;
 
@@ -1995,21 +1973,11 @@
 
             border:
                 1px solid
-<<<<<<< HEAD
-                rgba(240, 212, 134, .60);
-=======
                 rgba(255, 255, 255, .10);
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
             border-radius: 50%;
 
             background:
-<<<<<<< HEAD
-                radial-gradient(
-                    circle,
-                    rgba(240, 212, 134, .24),
-                    rgba(240, 212, 134, .04)
-=======
                 rgba(255, 255, 255, .05);
 
             color: #aaa0b4;
@@ -2067,55 +2035,10 @@
                     circle,
                     rgba(240, 212, 134, .18),
                     rgba(81, 46, 122, .18)
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
                 );
 
             color: #f0d486;
 
-<<<<<<< HEAD
-            font-size: 35px;
-            font-weight: 800;
-
-            box-shadow:
-                0 0 25px rgba(240, 212, 134, .18),
-                inset 0 0 20px rgba(240, 212, 134, .06);
-
-            animation:
-                successIcon .6s ease-out;
-        }
-
-        @keyframes successIcon {
-
-            0% {
-                opacity: 0;
-
-                transform:
-                    scale(.5)
-                    rotate(-20deg);
-            }
-
-            70% {
-                transform:
-                    scale(1.08)
-                    rotate(4deg);
-            }
-
-            100% {
-                opacity: 1;
-
-                transform:
-                    scale(1)
-                    rotate(0);
-            }
-        }
-
-        .booking-success-popup h3 {
-
-            position: relative;
-
-            margin:
-                0 0 11px;
-=======
             font-size: 25px;
 
             box-shadow:
@@ -2170,7 +2093,6 @@
 
         .booking-popup-title {
             position: relative;
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
             color: #fff;
 
@@ -2179,42 +2101,6 @@
                 "Times New Roman",
                 serif;
 
-<<<<<<< HEAD
-            font-size: 28px;
-
-            font-weight: 500;
-
-            letter-spacing: -.02em;
-        }
-
-        .booking-success-popup p {
-
-            position: relative;
-
-            width: 100%;
-
-            max-width: 340px;
-
-            margin:
-                0 auto 25px;
-
-            color: #c8bdd5;
-
-            font-size: 13px;
-
-            line-height: 1.7;
-        }
-
-        .booking-success-close {
-
-            position: relative;
-
-            min-height: 44px;
-
-            padding:
-                0
-                25px;
-=======
             font-size: 29px;
             font-weight: 500;
 
@@ -2434,7 +2320,6 @@
             gap: 8px;
 
             min-height: 46px;
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
             border: 0;
 
@@ -2443,59 +2328,30 @@
             background:
                 linear-gradient(
                     135deg,
-<<<<<<< HEAD
-                    #f2d88b,
-                    #c19447
-=======
                     #f0d486,
                     #c19648
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
                 );
 
             color: #20140a;
 
             font-size: 11px;
-<<<<<<< HEAD
-
-            font-weight: 900;
-
-            cursor: pointer;
-
-            box-shadow:
-                0 10px 30px rgba(195, 151, 62, .22);
-=======
             font-weight: 900;
 
             text-decoration: none;
 
             box-shadow:
                 0 10px 28px rgba(195, 151, 62, .18);
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
             transition:
                 transform .2s ease,
                 box-shadow .2s ease;
         }
 
-<<<<<<< HEAD
-        .booking-success-close:hover {
-
-=======
         .booking-popup-chat:hover {
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
             transform:
                 translateY(-2px);
 
             box-shadow:
-<<<<<<< HEAD
-                0 15px 38px rgba(195, 151, 62, .34);
-        }
-
-        .booking-success-close:active {
-
-            transform:
-                translateY(0);
-=======
                 0 15px 35px rgba(195, 151, 62, .30);
         }
 
@@ -2600,7 +2456,6 @@
                     1fr;
             }
 
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
         }
 
 
@@ -2797,51 +2652,6 @@
 
 
 <body>
-
-
-    {{-- =========================================================
-         POPUP BOOKING BERHASIL
-    ========================================================== --}}
-
-    @if (session('booking_success'))
-
-        <div
-            class="booking-success-overlay"
-            id="bookingSuccessPopup"
-        >
-
-            <div
-                class="booking-success-popup"
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="bookingSuccessTitle"
-            >
-
-                <div class="booking-success-icon">
-                    ✓
-                </div>
-
-                <h3 id="bookingSuccessTitle">
-                    Booking Berhasil!
-                </h3>
-
-                <p>
-                    {{ session('status') }}
-                </p>
-
-                <button
-                    type="button"
-                    class="booking-success-close"
-                    id="closeBookingSuccess"
-                >
-                    Oke, Mengerti
-                </button>
-
-            </div>
-
-        </div>
-
-    @endif
 
 
     {{-- =========================================================
@@ -3194,274 +3004,262 @@
 
                                 @foreach ($talent->schedules as $schedule)
 
-                                    @php
-
-<<<<<<< HEAD
-                                        /*
-                                         * =================================================
-                                         * TANGGAL DAN JAM SESI
-                                         * =================================================
-                                         */
-
-=======
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
-                                        $scheduleDate =
-                                            \Carbon\Carbon::parse(
-                                                $schedule->date
-                                            )->toDateString();
-
-
-                                        /*
-<<<<<<< HEAD
-                                         * Waktu mulai sesi
-                                         */
-
-                                        $scheduleStart =
-                                            \Carbon\Carbon::parse(
-                                                $schedule->date .
-                                                ' ' .
-                                                $schedule->start_time
-                                            );
-
-
-                                        /*
-                                         * Waktu selesai sesi
-                                         */
-
-                                        $scheduleEnd =
-                                            \Carbon\Carbon::parse(
-                                                $schedule->date .
-                                                ' ' .
-                                                $schedule->end_time
-                                            );
-
-
-                                        /*
-                                         * Waktu sekarang
-                                         */
-
-                                        $now =
-                                            \Carbon\Carbon::now();
-
-
-                                        /*
-                                         * =================================================
-                                         * CEK SESI SUDAH LEWAT
-                                         * =================================================
-                                         *
-                                         * Sesi baru dianggap lewat setelah JAM SELESAI.
-                                         *
-                                         * Contoh:
-                                         *
-                                         * 09:00 - 10:00
-                                         *
-                                         * Jam 09:30 -> masih tersedia
-                                         * Jam 10:00 -> sudah lewat
-                                         * Jam 10:01 -> sudah lewat
-                                         *
-                                         */
-
-                                        $isPassed =
-                                            $scheduleEnd->isPast();
-
-
-                                        /*
-                                         * =================================================
-                                         * STATUS NORMAL DARI DATABASE
-                                         * =================================================
-                                         */
-
-                                        $status =
-                                            $schedule->resolveStatusForDate(
-                                                $scheduleDate
-                                            );
-=======
-                                         * CEK WAKTU JADWAL
-                                         *
-                                         * Jika waktu mulai jadwal sudah sama dengan
-                                         * atau lebih kecil dari waktu sekarang,
-                                         * jadwal dianggap sudah lewat / sudah dimulai.
-                                         *
-                                         * Jadi meskipun status database masih
-                                         * "available" atau "booked", jadwal tersebut
-                                         * akan ditampilkan abu-abu dan tidak dapat dipilih.
-                                         */
-                                        $now = \Carbon\Carbon::now();
-
-                                        $scheduleStart = \Carbon\Carbon::parse(
-                                            $schedule->date . ' ' . $schedule->start_time
-                                        );
-
-                                        $scheduleEnd = \Carbon\Carbon::parse(
-                                            $schedule->date . ' ' . $schedule->end_time
-                                        );
-
-                                        // Jadwal baru dianggap lewat setelah JAM SELESAI.
-                                        // Contoh: 20:00-21:00 tetap bisa dipesan sampai 21:00.
-                                        if ($scheduleEnd->lt($scheduleStart)) {
-                                            $scheduleEnd->addDay();
-                                        }
+    @php
+
+        $timezone = config('app.timezone');
+
+        $now = now($timezone);
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | TANGGAL JADWAL
+        |--------------------------------------------------------------------------
+        */
+
+        $scheduleDate = \Carbon\Carbon::parse(
+            $schedule->schedule_date,
+            $timezone
+        )->toDateString();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | WAKTU MULAI
+        |--------------------------------------------------------------------------
+        */
+
+        $scheduleStart = \Carbon\Carbon::parse(
+            $scheduleDate . ' ' . $schedule->start_time,
+            $timezone
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | WAKTU SELESAI
+        |--------------------------------------------------------------------------
+        */
+
+        $scheduleEnd = \Carbon\Carbon::parse(
+            $scheduleDate . ' ' . $schedule->end_time,
+            $timezone
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | SUPPORT JADWAL LEWAT TENGAH MALAM
+        |--------------------------------------------------------------------------
+        */
+
+        if ($scheduleEnd->lt($scheduleStart)) {
+            $scheduleEnd->addDay();
+        }
 
-                                        $isExpired = $scheduleEnd->lessThanOrEqualTo($now);
 
+        /*
+        |--------------------------------------------------------------------------
+        | CEK APAKAH SUDAH LEWAT
+        |--------------------------------------------------------------------------
+        |
+        | 20:00 - 21:00
+        |
+        | 20:30 -> masih aktif
+        | 21:00 -> sudah lewat
+        |
+        */
 
-                                        if ($isExpired) {
-                                            $status = 'expired';
-                                        } else {
-                                            $status =
-                                                $schedule->resolveStatusForDate(
-                                                    $scheduleDate
-                                                );
+        $isExpired =
+            $scheduleEnd->lessThanOrEqualTo($now);
 
-                                            /*
-                                             * Semua jadwal yang belum lewat otomatis
-                                             * tersedia, kecuali jika sudah dibooking.
-                                             */
-                                            if ($status !== 'booked') {
-                                                $status = 'available';
-                                            }
-                                        }
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
+
+        /*
+        |--------------------------------------------------------------------------
+        | AMBIL STATUS ASLI DATABASE
+        |--------------------------------------------------------------------------
+        |
+        | PENTING:
+        | Jangan ubah unavailable menjadi available.
+        |
+        */
+
+        $status =
+            $schedule->resolveStatusForDate(
+                $scheduleDate
+            );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | NORMALISASI STATUS
+        |--------------------------------------------------------------------------
+        */
+
+        if (!in_array(
+            $status,
+            [
+                'available',
+                'unavailable',
+                'booked',
+            ],
+            true
+        )) {
+            $status = 'unavailable';
+        }
 
 
-                                        /*
-                                         * =================================================
-                                         * STATUS AKHIR
-                                         * =================================================
-                                         *
-                                         * Kalau sudah lewat, status PASSED
-                                         * menjadi prioritas.
-                                         */
+        /*
+        |--------------------------------------------------------------------------
+        | STATUS UNTUK TAMPILAN
+        |--------------------------------------------------------------------------
+        */
 
-                                        $isAvailable =
-                                            !$isPassed &&
-                                            $status === 'available';
+        $isAvailable =
+            !$isExpired &&
+            $status === 'available';
 
 
-                                        $isBooked =
-                                            !$isPassed &&
-                                            $status === 'booked';
+        $isBooked =
+            !$isExpired &&
+            $status === 'booked';
 
 
-                                        $statusClass =
-<<<<<<< HEAD
-                                            $isPassed
-                                                ? 'passed'
-=======
-                                            $isExpired
-                                                ? 'unavailable'
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
-                                                : (
-                                                    $isAvailable
-                                                        ? 'available'
-                                                        : (
-                                                            $isBooked
-                                                                ? 'booked'
-                                                                : 'unavailable'
-                                                        )
-                                                );
+        $statusClass =
+            $isExpired
+                ? 'passed'
+                : (
+                    $isAvailable
+                        ? 'available'
+                        : (
+                            $isBooked
+                                ? 'booked'
+                                : 'unavailable'
+                        )
+                );
 
-                                    @endphp
+    @endphp
 
 
-                                    <button
-                                        type="button"
+    <button
+        type="button"
 
-                                        class="
-                                            schedule-button
-                                            {{ $statusClass }}
-                                        "
+        class="
+            schedule-button
+            {{ $statusClass }}
+        "
 
-                                        @if ($isAvailable)
+        @if ($isAvailable)
 
-                                            data-schedule-id="{{ $schedule->id }}"
+            data-schedule-id="{{ $schedule->id }}"
 
-                                            data-start="{{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }}"
+            data-start="{{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }}"
 
-                                            data-end="{{ \Carbon\Carbon::parse($schedule->end_time)->format('H:i') }}"
+            data-end="{{ \Carbon\Carbon::parse($schedule->end_time)->format('H:i') }}"
 
-                                        @elseif ($isPassed)
+            data-date="{{
+                \Carbon\Carbon::parse(
+                    $schedule->schedule_date
+                )->translatedFormat(
+                    'l, d M Y'
+                )
+            }}"
 
-                                            data-passed="true"
+        @elseif ($isExpired)
 
-                                            data-date="{{
-                                                \Carbon\Carbon::parse(
-                                                    $schedule->date
-                                                )->translatedFormat(
-                                                    'l, d M Y'
-                                                )
-                                            }}"
+            data-passed="true"
 
-                                        @endif
+            data-date="{{
+                \Carbon\Carbon::parse(
+                    $schedule->schedule_date
+                )->translatedFormat(
+                    'l, d M Y'
+                )
+            }}"
 
-                                        {{ (!$isAvailable && !$isPassed) ? 'disabled' : '' }}
-                                    >
+        @endif
 
+        {{
+            (
+                !$isAvailable &&
+                !$isExpired
+            )
+            ? 'disabled'
+            : ''
+        }}
+    >
 
-                                        <span class="schedule-date">
 
-                                            {{
-                                                \Carbon\Carbon::parse(
-                                                    $schedule->date
-                                                )->translatedFormat(
-                                                    'l, d M Y'
-                                                )
-                                            }}
+        {{-- =====================================================
+             TANGGAL
+        ====================================================== --}}
 
-                                        </span>
+        <span class="schedule-date">
 
+            {{
+                \Carbon\Carbon::parse(
+                    $schedule->schedule_date
+                )->translatedFormat(
+                    'l, d M Y'
+                )
+            }}
 
-                                        <span class="schedule-time">
+        </span>
 
-                                            {{
-                                                \Carbon\Carbon::parse(
-                                                    $schedule->start_time
-                                                )->format('H:i')
-                                            }}
 
-                                            —
+        {{-- =====================================================
+             JAM
+        ====================================================== --}}
 
-                                            {{
-                                                \Carbon\Carbon::parse(
-                                                    $schedule->end_time
-                                                )->format('H:i')
-                                            }}
+        <span class="schedule-time">
 
-                                        </span>
+            {{
+                \Carbon\Carbon::parse(
+                    $schedule->start_time
+                )->format('H:i')
+            }}
 
+            —
 
-                                        <span class="schedule-status">
+            {{
+                \Carbon\Carbon::parse(
+                    $schedule->end_time
+                )->format('H:i')
+            }}
 
-<<<<<<< HEAD
-                                            @if ($isPassed)
+        </span>
 
-                                                Sudah lewat
-=======
-                                            @if ($isExpired)
 
-                                                Tidak tersedia
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
+        {{-- =====================================================
+             STATUS
+        ====================================================== --}}
 
-                                            @elseif ($isAvailable)
+        <span class="schedule-status">
 
-                                                Tersedia
+            @if ($isExpired)
 
-                                            @elseif ($isBooked)
+                Sesi sudah lewat
 
-                                                Sudah dipesan
+            @elseif ($isAvailable)
 
-                                            @else
+                Tersedia
 
-                                                Tidak tersedia
+            @elseif ($isBooked)
 
-                                            @endif
+                Sudah dipesan
 
-                                        </span>
+            @else
 
+                Tidak tersedia
 
-                                    </button>
+            @endif
 
-                                @endforeach
+        </span>
+
+
+    </button>
+
+@endforeach
 
 
                             </div>
@@ -3618,9 +3416,6 @@
 
 
     {{-- =========================================================
-<<<<<<< HEAD
-         JAVASCRIPT BOOKING
-=======
          BOOKING SUCCESS POPUP
     ========================================================== --}}
 
@@ -3773,7 +3568,6 @@
 
     {{-- =========================================================
          JAVASCRIPT
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
     ========================================================== --}}
 
     @if (
@@ -3787,17 +3581,9 @@
                 "DOMContentLoaded",
                 function () {
 
-<<<<<<< HEAD
-                    /*
-                     * =====================================================
-                     * SEMUA TOMBOL JADWAL
-                     * =====================================================
-                     */
-=======
                     /* =====================================================
                        ELEMENTS
                     ===================================================== */
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
                     const buttons =
                         document.querySelectorAll(
@@ -3839,13 +3625,6 @@
                         );
 
 
-<<<<<<< HEAD
-                    /*
-                     * =====================================================
-                     * POPUP SESI SUDAH LEWAT
-                     * =====================================================
-                     */
-
                     const passedPopup =
                         document.getElementById(
                             "sessionPassedPopup"
@@ -3859,15 +3638,23 @@
 
 
                     function showPassedPopup() {
-
                         if (!passedPopup) {
                             return;
                         }
 
-                        passedPopup.classList.add(
-                            "show"
-                        );
-=======
+                        passedPopup.classList.add("show");
+                    }
+
+
+                    function hidePassedPopup() {
+                        if (!passedPopup) {
+                            return;
+                        }
+
+                        passedPopup.classList.remove("show");
+                    }
+
+
                     const bookingForm =
                         document.getElementById(
                             "bookingForm"
@@ -3982,35 +3769,13 @@
                             fallbackFaceNumber
                             +
                             ".jpg";
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
                     }
 
 
-<<<<<<< HEAD
-                    function hidePassedPopup() {
-
-                        if (!passedPopup) {
-                            return;
-                        }
-
-                        passedPopup.classList.remove(
-                            "show"
-                        );
-
-                    }
-
-
-                    /*
-                     * =====================================================
-                     * KLIK SEMUA JADWAL
-                     * =====================================================
-                     */
-=======
                     /* =====================================================
                        SELECT SCHEDULE
                     ===================================================== */
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
                     buttons.forEach(
                         function (button) {
@@ -4103,15 +3868,9 @@
                                         button.dataset.end;
 
 
-<<<<<<< HEAD
-                                    /*
-                                     * Pengaman.
-                                     */
-=======
                                     const date =
                                         button.dataset.date;
 
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
                                     if (!scheduleId) {
                                         return;
@@ -4165,17 +3924,9 @@
                     );
 
 
-<<<<<<< HEAD
-                    /*
-                     * =====================================================
-                     * BATAL
-                     * =====================================================
-                     */
-=======
                     /* =====================================================
                        CANCEL SELECTED SCHEDULE
                     ===================================================== */
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
                     if (cancelButton) {
 
@@ -4212,44 +3963,26 @@
                     }
 
 
-<<<<<<< HEAD
-                    /*
-                     * =====================================================
-                     * TUTUP POPUP SESI LEWAT
-                     * =====================================================
-                     */
-
                     if (closePassedPopup) {
-
                         closePassedPopup.addEventListener(
                             "click",
-                            function () {
-
-                                hidePassedPopup();
-
-                            }
+                            hidePassedPopup
                         );
-
                     }
 
 
-                    /*
-                     * Klik area gelap popup.
-                     */
-
                     if (passedPopup) {
-
                         passedPopup.addEventListener(
                             "click",
                             function (event) {
-
-                                if (
-                                    event.target ===
-                                    passedPopup
-                                ) {
-
+                                if (event.target === passedPopup) {
                                     hidePassedPopup();
-=======
+                                }
+                            }
+                        );
+                    }
+
+
                     /* =====================================================
                        SAVE BOOKING DATA BEFORE SUBMIT
                     ===================================================== */
@@ -4312,7 +4045,6 @@
 
                                     confirmButton.innerHTML =
                                         "Memproses...";
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
                                 }
 
@@ -4322,97 +4054,6 @@
                     }
 
 
-<<<<<<< HEAD
-                    /*
-                     * Tombol ESC untuk popup sesi lewat.
-                     */
-
-                    document.addEventListener(
-                        "keydown",
-                        function (event) {
-
-                            if (
-                                event.key === "Escape" &&
-                                passedPopup &&
-                                passedPopup.classList.contains(
-                                    "show"
-                                )
-                            ) {
-
-                                hidePassedPopup();
-
-                            }
-
-                        }
-                    );
-
-                }
-            );
-
-        </script>
-
-    @endif
-
-
-    {{-- =========================================================
-         JAVASCRIPT POPUP BOOKING BERHASIL
-    ========================================================== --}}
-
-    @if (session('booking_success'))
-
-        <script>
-
-            document.addEventListener(
-                "DOMContentLoaded",
-                function () {
-
-                    const popup =
-                        document.getElementById(
-                            "bookingSuccessPopup"
-                        );
-
-
-                    const closeButton =
-                        document.getElementById(
-                            "closeBookingSuccess"
-                        );
-
-
-                    if (!popup) {
-                        return;
-                    }
-
-
-                    /*
-                     * Tampilkan popup setelah halaman selesai dimuat.
-                     */
-
-                    setTimeout(
-                        function () {
-
-                            popup.classList.add(
-                                "show"
-                            );
-
-                        },
-                        150
-                    );
-
-
-                    /*
-                     * Tombol Oke, Mengerti.
-                     */
-
-                    if (closeButton) {
-
-                        closeButton.addEventListener(
-                            "click",
-                            function () {
-
-                                popup.classList.remove(
-                                    "show"
-                                );
-=======
                     /* =====================================================
                        FIND EXISTING CHAT LINK FROM NAVBAR
                     ===================================================== */
@@ -4628,7 +4269,6 @@
                                     closePopup();
 
                                 }
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
                             }
                         );
@@ -4636,38 +4276,9 @@
                     }
 
 
-<<<<<<< HEAD
-                    /*
-                     * Klik area gelap di luar popup.
-                     */
-
-                    popup.addEventListener(
-                        "click",
-                        function (event) {
-
-                            if (
-                                event.target ===
-                                popup
-                            ) {
-
-                                popup.classList.remove(
-                                    "show"
-                                );
-
-                            }
-
-                        }
-                    );
-
-
-                    /*
-                     * Tombol ESC.
-                     */
-=======
                     /* =====================================================
                        ESC TO CLOSE
                     ===================================================== */
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
                     document.addEventListener(
                         "keydown",
@@ -4675,30 +4286,18 @@
 
                             if (
                                 event.key === "Escape" &&
-<<<<<<< HEAD
-                                popup.classList.contains(
-=======
                                 bookingPopup.classList.contains(
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
                                     "show"
                                 )
                             ) {
 
-<<<<<<< HEAD
-                                popup.classList.remove(
-                                    "show"
-                                );
-=======
                                 closePopup();
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
 
                             }
 
                         }
                     );
 
-<<<<<<< HEAD
-=======
 
                     /* =====================================================
                        SHOW POPUP SETELAH BOOKING BERHASIL
@@ -4749,7 +4348,6 @@
 
                     @endif
 
->>>>>>> 068e47f0d839c13038b844995557a788ecf3cb01
                 }
             );
 

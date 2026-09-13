@@ -1,60 +1,25 @@
 {{-- ============================================================
      WHISPERLY GLOBAL NAVBAR
-
      File:
      resources/views/whisperly/navbar.blade.php
-
-     MENU:
-     USER:
-     - Home
-     - Chat
-     - Lihat Talent
-     - Pengaduan
-     - Logout
-
-     TALENT:
-     - Home
-     - Lihat Talent
-     - Pengaduan
-     - Chat
-     - Edit Profil
-     - Logout
-
-     ADMIN:
-     - Home
-     - Lihat Talent
-     - Pengaduan
-     - Logout
-
-     TIDAK ADA:
-     - Profil
-     - Profil Saya
 ============================================================ --}}
 
 @php
-    $currentUser =
-        auth('whisperly')->user();
+    $currentUser = auth('whisperly')->user();
 
     $currentTalentProfile = null;
 
-    if (
-        $currentUser &&
-        $currentUser->role === 'talent'
-    ) {
-        $currentTalentProfile =
-            \App\Modules\talents\Models\talents::query()
-                ->where(
-                    'pengguna_id',
-                    $currentUser->id
-                )
-                ->first();
+    if ($currentUser && $currentUser->role === 'talent') {
+        $currentTalentProfile = \App\Modules\talents\Models\talents::query()
+            ->where('pengguna_id', $currentUser->id)
+            ->first();
     }
 @endphp
 
 <style>
     /* =========================================================
        RESET
-    ========================================================= */
+    ========================================================== */
 
     .whisperly-nav,
     .whisperly-nav *,
@@ -63,9 +28,10 @@
         box-sizing: border-box;
     }
 
+
     /* =========================================================
        NAVBAR
-    ========================================================= */
+    ========================================================== */
 
     .whisperly-nav {
         position: sticky;
@@ -88,7 +54,8 @@
         backdrop-filter: blur(25px);
         -webkit-backdrop-filter: blur(25px);
 
-        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.16);
+        box-shadow:
+            0 10px 35px rgba(0, 0, 0, 0.16);
 
         font-family:
             Arial,
@@ -96,9 +63,10 @@
             sans-serif;
     }
 
+
     /* =========================================================
        BRAND
-    ========================================================= */
+    ========================================================== */
 
     .whisperly-brand {
         position: relative;
@@ -119,7 +87,6 @@
         letter-spacing: 0.14em;
 
         text-decoration: none;
-
         white-space: nowrap;
 
         transition:
@@ -147,18 +114,21 @@
             );
 
         box-shadow:
-            0 0 16px rgba(231, 162, 182, 0.65);
+            0 0 16px
+            rgba(231, 162, 182, 0.65);
     }
 
     .whisperly-brand:hover {
         color: #ded5f6;
 
-        transform: translateY(-1px);
+        transform:
+            translateY(-1px);
     }
+
 
     /* =========================================================
        RIGHT NAVIGATION
-    ========================================================= */
+    ========================================================== */
 
     .whisperly-nav-right {
         display: flex;
@@ -169,9 +139,10 @@
         flex-shrink: 0;
     }
 
+
     /* =========================================================
        USER PILL
-    ========================================================= */
+    ========================================================== */
 
     .whisperly-user-pill {
         min-height: 45px;
@@ -181,13 +152,17 @@
 
         gap: 9px;
 
-        padding: 5px 14px 5px 6px;
+        padding:
+            5px 14px 5px 6px;
 
-        border: 1px solid rgba(255, 255, 255, 0.10);
+        border:
+            1px solid
+            rgba(255, 255, 255, 0.10);
 
         border-radius: 999px;
 
-        background: rgba(255, 255, 255, 0.045);
+        background:
+            rgba(255, 255, 255, 0.045);
 
         transition:
             background 0.25s ease,
@@ -195,26 +170,38 @@
     }
 
     .whisperly-user-pill:hover {
-        background: rgba(255, 255, 255, 0.075);
+        background:
+            rgba(255, 255, 255, 0.075);
 
-        border-color: rgba(255, 255, 255, 0.17);
+        border-color:
+            rgba(255, 255, 255, 0.17);
     }
+
 
     /* =========================================================
        USER AVATAR
-    ========================================================= */
+    ========================================================== */
 
     .whisperly-user-avatar {
-        width: 34px;
-        height: 34px;
+        width: 34px !important;
+        height: 34px !important;
 
-        flex-shrink: 0;
+        min-width: 34px !important;
+        min-height: 34px !important;
+
+        max-width: 34px !important;
+        max-height: 34px !important;
+
+        flex-shrink: 0 !important;
 
         display: flex;
+
         align-items: center;
         justify-content: center;
 
-        border-radius: 50%;
+        overflow: hidden !important;
+
+        border-radius: 50% !important;
 
         color: #241f35;
 
@@ -230,52 +217,35 @@
             sans-serif;
 
         box-shadow:
-            0 4px 14px rgba(0, 0, 0, 0.18);
+            0 4px 14px
+            rgba(0, 0, 0, 0.18);
     }
 
-    .whisperly-user-avatar {
-    width: 34px !important;
-    height: 34px !important;
+    .whisperly-user-avatar img {
+        width: 34px !important;
+        height: 34px !important;
 
-    min-width: 34px !important;
-    min-height: 34px !important;
+        min-width: 34px !important;
+        min-height: 34px !important;
 
-    max-width: 34px !important;
-    max-height: 34px !important;
+        max-width: 34px !important;
+        max-height: 34px !important;
 
-    flex-shrink: 0 !important;
+        display: block !important;
 
-    overflow: hidden !important;
-    border-radius: 50% !important;
+        object-fit: cover !important;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        border-radius: 50% !important;
+    }
 
-.whisperly-user-avatar img {
-    width: 34px !important;
-    height: 34px !important;
-
-    min-width: 34px !important;
-    min-height: 34px !important;
-
-    max-width: 34px !important;
-    max-height: 34px !important;
-
-    display: block !important;
-
-    object-fit: cover !important;
-
-    border-radius: 50% !important;
-}
 
     /* =========================================================
        USER INFORMATION
-    ========================================================= */
+    ========================================================== */
 
     .whisperly-user-info {
         display: flex;
+
         flex-direction: column;
 
         gap: 2px;
@@ -287,10 +257,13 @@
         max-width: 125px;
 
         overflow: hidden;
+
         text-overflow: ellipsis;
+
         white-space: nowrap;
 
-        color: rgba(255, 250, 247, 0.90);
+        color:
+            rgba(255, 250, 247, 0.90);
 
         font:
             700 12px Arial,
@@ -298,7 +271,8 @@
     }
 
     .whisperly-user-role {
-        color: rgba(255, 255, 255, 0.36);
+        color:
+            rgba(255, 255, 255, 0.36);
 
         font:
             600 8px Arial,
@@ -309,17 +283,19 @@
         text-transform: uppercase;
     }
 
+
     /* =========================================================
        MENU WRAPPER
-    ========================================================= */
+    ========================================================== */
 
     .whisperly-menu-wrapper {
         position: relative;
     }
 
+
     /* =========================================================
        MENU BUTTON
-    ========================================================= */
+    ========================================================== */
 
     .whisperly-menu-button {
         position: relative;
@@ -328,18 +304,22 @@
         height: 45px;
 
         display: flex;
+
         align-items: center;
         justify-content: center;
 
         padding: 0;
 
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        border:
+            1px solid
+            rgba(255, 255, 255, 0.12);
 
         border-radius: 15px;
 
         color: #fffaf7;
 
-        background: rgba(255, 255, 255, 0.055);
+        background:
+            rgba(255, 255, 255, 0.055);
 
         cursor: pointer;
 
@@ -351,37 +331,47 @@
     }
 
     .whisperly-menu-button:hover {
-        background: rgba(201, 185, 239, 0.13);
+        background:
+            rgba(201, 185, 239, 0.13);
 
-        border-color: rgba(201, 185, 239, 0.34);
+        border-color:
+            rgba(201, 185, 239, 0.34);
 
-        transform: translateY(-2px);
+        transform:
+            translateY(-2px);
 
         box-shadow:
-            0 12px 30px rgba(0, 0, 0, 0.24);
+            0 12px 30px
+            rgba(0, 0, 0, 0.24);
     }
 
     .whisperly-menu-button.active {
-        background: rgba(231, 162, 182, 0.10);
+        background:
+            rgba(231, 162, 182, 0.10);
 
-        border-color: rgba(231, 162, 182, 0.32);
+        border-color:
+            rgba(231, 162, 182, 0.32);
 
         box-shadow:
-            0 10px 28px rgba(0, 0, 0, 0.20);
+            0 10px 28px
+            rgba(0, 0, 0, 0.20);
     }
+
 
     /* =========================================================
        THREE DOTS
-    ========================================================= */
+    ========================================================== */
 
     .whisperly-dots {
         display: flex;
+
         align-items: center;
         justify-content: center;
 
         gap: 4px;
 
-        transition: gap 0.25s ease;
+        transition:
+            gap 0.25s ease;
     }
 
     .whisperly-dots span {
@@ -390,14 +380,16 @@
 
         border-radius: 50%;
 
-        background: currentColor;
+        background:
+            currentColor;
 
         transition:
             transform 0.25s ease,
             opacity 0.25s ease;
     }
 
-    .whisperly-menu-button.active .whisperly-dots {
+    .whisperly-menu-button.active
+    .whisperly-dots {
         gap: 0;
     }
 
@@ -420,9 +412,10 @@
             rotate(-45deg);
     }
 
+
     /* =========================================================
        DROPDOWN
-    ========================================================= */
+    ========================================================== */
 
     .whisperly-dropdown {
         position: absolute;
@@ -436,7 +429,9 @@
 
         overflow: hidden;
 
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        border:
+            1px solid
+            rgba(255, 255, 255, 0.12);
 
         border-radius: 25px;
 
@@ -448,19 +443,25 @@
             );
 
         box-shadow:
-            0 30px 80px rgba(0, 0, 0, 0.48);
+            0 30px 80px
+            rgba(0, 0, 0, 0.48);
 
-        backdrop-filter: blur(28px);
-        -webkit-backdrop-filter: blur(28px);
+        backdrop-filter:
+            blur(28px);
+
+        -webkit-backdrop-filter:
+            blur(28px);
 
         opacity: 0;
+
         visibility: hidden;
 
         transform:
             translateY(-9px)
             scale(0.96);
 
-        transform-origin: top right;
+        transform-origin:
+            top right;
 
         transition:
             opacity 0.22s ease,
@@ -478,9 +479,10 @@
             scale(1);
     }
 
+
     /* =========================================================
        DECORATIVE GLOW
-    ========================================================= */
+    ========================================================== */
 
     .whisperly-dropdown::before {
         content: "";
@@ -498,7 +500,8 @@
         background:
             rgba(201, 185, 239, 0.12);
 
-        filter: blur(28px);
+        filter:
+            blur(28px);
 
         pointer-events: none;
     }
@@ -519,39 +522,55 @@
         background:
             rgba(231, 162, 182, 0.07);
 
-        filter: blur(28px);
+        filter:
+            blur(28px);
 
         pointer-events: none;
     }
 
+
     /* =========================================================
        MINI PROFILE
-    ========================================================= */
+    ========================================================== */
 
     .whisperly-menu-profile {
         position: relative;
 
         display: flex;
+
         align-items: center;
 
         gap: 12px;
 
-        padding: 10px 10px 14px;
+        padding:
+            10px
+            10px
+            14px;
 
         z-index: 2;
     }
 
     .whisperly-menu-profile-avatar {
-        width: 44px;
-        height: 44px;
+        width: 44px !important;
+        height: 44px !important;
 
-        flex-shrink: 0;
+        min-width: 44px !important;
+        min-height: 44px !important;
+
+        max-width: 44px !important;
+        max-height: 44px !important;
+
+        flex-shrink: 0 !important;
 
         display: flex;
+
         align-items: center;
         justify-content: center;
 
-        border-radius: 14px;
+        overflow: hidden !important;
+
+        border-radius:
+            14px !important;
 
         color: #241f35;
 
@@ -567,50 +586,33 @@
             sans-serif;
 
         box-shadow:
-            0 5px 15px rgba(0, 0, 0, 0.18);
+            0 5px 15px
+            rgba(0, 0, 0, 0.18);
     }
 
-    .whisperly-menu-profile-avatar {
-    width: 44px !important;
-    height: 44px !important;
+    .whisperly-menu-profile-avatar img {
+        width: 44px !important;
+        height: 44px !important;
 
-    min-width: 44px !important;
-    min-height: 44px !important;
+        min-width: 44px !important;
+        min-height: 44px !important;
 
-    max-width: 44px !important;
-    max-height: 44px !important;
+        max-width: 44px !important;
+        max-height: 44px !important;
 
-    flex-shrink: 0 !important;
+        display: block !important;
 
-    overflow: hidden !important;
-    border-radius: 14px !important;
+        object-fit: cover !important;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.whisperly-menu-profile-avatar img {
-    width: 44px !important;
-    height: 44px !important;
-
-    min-width: 44px !important;
-    min-height: 44px !important;
-
-    max-width: 44px !important;
-    max-height: 44px !important;
-
-    display: block !important;
-
-    object-fit: cover !important;
-
-    border-radius: 14px !important;
-}
+        border-radius:
+            14px !important;
+    }
 
     .whisperly-menu-profile-info {
         min-width: 0;
 
         display: flex;
+
         flex-direction: column;
 
         gap: 4px;
@@ -623,7 +625,8 @@
 
         white-space: nowrap;
 
-        color: rgba(255, 250, 247, 0.96);
+        color:
+            rgba(255, 250, 247, 0.96);
 
         font:
             700 13px Arial,
@@ -631,7 +634,8 @@
     }
 
     .whisperly-menu-profile-role {
-        color: rgba(255, 255, 255, 0.38);
+        color:
+            rgba(255, 255, 255, 0.38);
 
         font:
             600 9px Arial,
@@ -642,16 +646,20 @@
         text-transform: uppercase;
     }
 
+
     /* =========================================================
        DIVIDER
-    ========================================================= */
+    ========================================================== */
 
     .whisperly-divider {
         position: relative;
 
         height: 1px;
 
-        margin: 0 8px 8px;
+        margin:
+            0
+            8px
+            8px;
 
         background:
             rgba(255, 255, 255, 0.07);
@@ -659,24 +667,29 @@
         z-index: 2;
     }
 
+
     /* =========================================================
        DROPDOWN ITEM
-    ========================================================= */
+    ========================================================== */
 
     .whisperly-dropdown-item {
         position: relative;
 
         display: flex;
+
         align-items: center;
 
         gap: 12px;
 
         width: 100%;
+
         min-height: 59px;
 
         margin-bottom: 4px;
 
-        padding: 7px 9px;
+        padding:
+            7px
+            9px;
 
         border-radius: 16px;
 
@@ -705,9 +718,10 @@
             translateX(3px);
     }
 
+
     /* =========================================================
        ACTIVE LINE
-    ========================================================= */
+    ========================================================== */
 
     .whisperly-dropdown-item::before {
         content: "";
@@ -747,9 +761,10 @@
             scaleY(1);
     }
 
+
     /* =========================================================
        ICON BOX
-    ========================================================= */
+    ========================================================== */
 
     .whisperly-dropdown-icon {
         width: 40px;
@@ -758,11 +773,13 @@
         flex-shrink: 0;
 
         display: flex;
+
         align-items: center;
         justify-content: center;
 
         border:
-            1px solid rgba(255, 255, 255, 0.07);
+            1px solid
+            rgba(255, 255, 255, 0.07);
 
         border-radius: 12px;
 
@@ -799,12 +816,14 @@
             scale(1.06);
     }
 
+
     /* =========================================================
        TEXT
-    ========================================================= */
+    ========================================================== */
 
     .whisperly-dropdown-text {
         display: flex;
+
         flex-direction: column;
 
         gap: 3px;
@@ -841,9 +860,10 @@
             rgba(255, 255, 255, 0.54);
     }
 
+
     /* =========================================================
        ARROW
-    ========================================================= */
+    ========================================================== */
 
     .whisperly-dropdown-arrow {
         margin-left: auto;
@@ -868,14 +888,56 @@
             translateX(4px);
     }
 
+
+    /* =========================================================
+       EDIT PROFILE SPECIAL
+    ========================================================== */
+
+    .whisperly-edit-profile-item {
+        border:
+            1px solid
+            rgba(220, 184, 102, 0.10);
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(220, 184, 102, 0.045),
+                rgba(201, 185, 239, 0.025)
+            );
+    }
+
+    .whisperly-edit-profile-item
+    .whisperly-dropdown-icon {
+        color: #e3c477;
+
+        border-color:
+            rgba(220, 184, 102, 0.16);
+
+        background:
+            rgba(220, 184, 102, 0.055);
+    }
+
+    .whisperly-edit-profile-item:hover
+    .whisperly-dropdown-icon {
+        color: #f1d58a;
+
+        background:
+            rgba(220, 184, 102, 0.12);
+
+        border-color:
+            rgba(220, 184, 102, 0.28);
+    }
+
+
     /* =========================================================
        LOGOUT
-    ========================================================= */
+    ========================================================== */
 
     .whisperly-logout {
         width: 100%;
 
         display: flex;
+
         align-items: center;
 
         gap: 12px;
@@ -884,7 +946,9 @@
 
         margin-top: 4px;
 
-        padding: 7px 9px;
+        padding:
+            7px
+            9px;
 
         border: 0;
 
@@ -892,7 +956,8 @@
 
         color: #e7a2b6;
 
-        background: transparent;
+        background:
+            transparent;
 
         font:
             700 12px Arial,
@@ -922,11 +987,13 @@
         flex-shrink: 0;
 
         display: flex;
+
         align-items: center;
         justify-content: center;
 
         border:
-            1px solid rgba(231, 162, 182, 0.12);
+            1px solid
+            rgba(231, 162, 182, 0.12);
 
         border-radius: 12px;
 
@@ -939,26 +1006,34 @@
         height: 18px;
     }
 
+
     /* =========================================================
        LOGOUT DIVIDER
-    ========================================================= */
+    ========================================================== */
 
     .whisperly-logout-divider {
         height: 1px;
 
-        margin: 8px 8px 4px;
+        margin:
+            8px
+            8px
+            4px;
 
         background:
             rgba(255, 255, 255, 0.07);
     }
 
+
     /* =========================================================
        TABLET
-    ========================================================= */
+    ========================================================== */
 
     @media (max-width: 900px) {
+
         .whisperly-nav {
-            padding: 13px 24px;
+            padding:
+                13px
+                24px;
         }
 
         .whisperly-brand {
@@ -970,16 +1045,19 @@
         }
     }
 
+
     /* =========================================================
        MOBILE
-    ========================================================= */
+    ========================================================== */
 
     @media (max-width: 700px) {
+
         .whisperly-nav {
             min-height: 68px;
 
             padding:
-                11px 17px;
+                11px
+                17px;
         }
 
         .whisperly-brand {
@@ -1013,14 +1091,17 @@
         }
     }
 
+
     /* =========================================================
        SMALL MOBILE
-    ========================================================= */
+    ========================================================== */
 
     @media (max-width: 420px) {
+
         .whisperly-nav {
             padding:
-                10px 14px;
+                10px
+                14px;
         }
 
         .whisperly-brand {
@@ -1041,8 +1122,8 @@
         }
 
         .whisperly-menu-profile-avatar {
-            width: 40px;
-            height: 40px;
+            width: 40px !important;
+            height: 40px !important;
         }
 
         .whisperly-dropdown-icon {
@@ -1051,11 +1132,13 @@
         }
     }
 
+
     /* =========================================================
        EXTRA SMALL PHONE
-    ========================================================= */
+    ========================================================== */
 
     @media (max-width: 350px) {
+
         .whisperly-nav {
             padding-left: 10px;
             padding-right: 10px;
@@ -1081,10 +1164,11 @@
         }
 
         .whisperly-user-avatar {
-            width: 32px;
-            height: 32px;
+            width: 32px !important;
+            height: 32px !important;
         }
     }
+
 </style>
 
 
@@ -1099,7 +1183,7 @@
     ========================================================= --}}
 
     <a
-        href="{{ url('/whisperly') }}"
+        href="{{ route('whisperly.home') }}"
         class="whisperly-brand"
     >
         WHISPERLY
@@ -1122,30 +1206,60 @@
 
                 <div class="whisperly-user-avatar">
 
-    @if (
-        $currentUser->role === 'talent' &&
-        $currentTalentProfile &&
-        $currentTalentProfile->photo
-    )
+                    @if (
+                        $currentUser->role === 'talent' &&
+                        $currentTalentProfile &&
+                        $currentTalentProfile->photo
+                    )
 
-        <img
-            src="{{ asset('storage/' . $currentTalentProfile->photo) }}"
-            alt="{{ $currentUser->username }}"
-        >
+                        @php
+                            $navPhoto = trim(
+                                (string) $currentTalentProfile->photo
+                            );
 
-    @else
+                            if (
+                                !filter_var(
+                                    $navPhoto,
+                                    FILTER_VALIDATE_URL
+                                )
+                            ) {
+                                $navPhoto = asset(
+                                    'storage/' .
+                                    ltrim(
+                                        preg_replace(
+                                            '#^public/#',
+                                            '',
+                                            $navPhoto
+                                        ),
+                                        '/'
+                                    )
+                                );
+                            }
+                        @endphp
 
-        {{ strtoupper(
-            substr(
-                $currentUser->username,
-                0,
-                1
-            )
-        ) }}
+                        <img
+                            src="{{ $navPhoto }}"
+                            alt="{{ $currentUser->username }}"
+                            onerror="
+                                this.onerror=null;
+                                this.src='{{ asset('assets/images/faces/1.jpg') }}';
+                            "
+                        >
 
-    @endif
+                    @else
 
-</div>
+                        {{ strtoupper(
+                            substr(
+                                $currentUser->username,
+                                0,
+                                1
+                            )
+                        ) }}
+
+                    @endif
+
+                </div>
+
 
                 <div class="whisperly-user-info">
 
@@ -1206,30 +1320,60 @@
 
                         <div class="whisperly-menu-profile-avatar">
 
-    @if (
-        $currentUser->role === 'talent' &&
-        $currentTalentProfile &&
-        $currentTalentProfile->photo
-    )
+                            @if (
+                                $currentUser->role === 'talent' &&
+                                $currentTalentProfile &&
+                                $currentTalentProfile->photo
+                            )
 
-        <img
-            src="{{ asset('storage/' . $currentTalentProfile->photo) }}"
-            alt="{{ $currentUser->username }}"
-        >
+                                @php
+                                    $menuPhoto = trim(
+                                        (string) $currentTalentProfile->photo
+                                    );
 
-    @else
+                                    if (
+                                        !filter_var(
+                                            $menuPhoto,
+                                            FILTER_VALIDATE_URL
+                                        )
+                                    ) {
+                                        $menuPhoto = asset(
+                                            'storage/' .
+                                            ltrim(
+                                                preg_replace(
+                                                    '#^public/#',
+                                                    '',
+                                                    $menuPhoto
+                                                ),
+                                                '/'
+                                            )
+                                        );
+                                    }
+                                @endphp
 
-        {{ strtoupper(
-            substr(
-                $currentUser->username,
-                0,
-                1
-            )
-        ) }}
+                                <img
+                                    src="{{ $menuPhoto }}"
+                                    alt="{{ $currentUser->username }}"
+                                    onerror="
+                                        this.onerror=null;
+                                        this.src='{{ asset('assets/images/faces/1.jpg') }}';
+                                    "
+                                >
 
-    @endif
+                            @else
 
-</div>
+                                {{ strtoupper(
+                                    substr(
+                                        $currentUser->username,
+                                        0,
+                                        1
+                                    )
+                                ) }}
+
+                            @endif
+
+                        </div>
+
 
                         <div class="whisperly-menu-profile-info">
 
@@ -1255,12 +1399,10 @@
 
                     @if ($currentUser->role === 'user')
 
-                        {{-- =================================================
-                             HOME
-                        ================================================== --}}
+                        {{-- HOME --}}
 
                         <a
-                            href="{{ url('/whisperly') }}"
+                            href="{{ route('whisperly.home') }}"
                             class="whisperly-dropdown-item"
                         >
 
@@ -1270,21 +1412,17 @@
                                     viewBox="0 0 24 24"
                                     fill="none"
                                 >
-
                                     <path
                                         d="M3.5 10.7L12 3.7L20.5 10.7V20H14.8V14.4H9.2V20H3.5V10.7Z"
                                         stroke="currentColor"
                                         stroke-width="1.6"
                                         stroke-linejoin="round"
                                     />
-
                                 </svg>
 
                             </span>
 
-
                             <span class="whisperly-dropdown-text">
-
                                 <strong>
                                     Home
                                 </strong>
@@ -1292,9 +1430,7 @@
                                 <small>
                                     Kembali ke halaman utama
                                 </small>
-
                             </span>
-
 
                             <span class="whisperly-dropdown-arrow">
                                 →
@@ -1303,9 +1439,7 @@
                         </a>
 
 
-                        {{-- =================================================
-                             CHAT
-                        ================================================== --}}
+                        {{-- CHAT --}}
 
                         <a
                             href="{{ route('whisperly.chat.index') }}"
@@ -1318,7 +1452,6 @@
                                     viewBox="0 0 24 24"
                                     fill="none"
                                 >
-
                                     <path
                                         d="M5 5.5H19V16H9L5 19V5.5Z"
                                         stroke="currentColor"
@@ -1339,14 +1472,11 @@
                                         stroke-width="1.6"
                                         stroke-linecap="round"
                                     />
-
                                 </svg>
 
                             </span>
 
-
                             <span class="whisperly-dropdown-text">
-
                                 <strong>
                                     Chat
                                 </strong>
@@ -1354,9 +1484,7 @@
                                 <small>
                                     Mulai percakapan
                                 </small>
-
                             </span>
-
 
                             <span class="whisperly-dropdown-arrow">
                                 →
@@ -1365,9 +1493,7 @@
                         </a>
 
 
-                        {{-- =================================================
-                             LIHAT TALENT
-                        ================================================== --}}
+                        {{-- LIHAT TALENT --}}
 
                         <a
                             href="{{ route('whisperly.talents.index') }}"
@@ -1380,7 +1506,6 @@
                                     viewBox="0 0 24 24"
                                     fill="none"
                                 >
-
                                     <circle
                                         cx="12"
                                         cy="8"
@@ -1395,14 +1520,11 @@
                                         stroke-width="1.6"
                                         stroke-linecap="round"
                                     />
-
                                 </svg>
 
                             </span>
 
-
                             <span class="whisperly-dropdown-text">
-
                                 <strong>
                                     Lihat Talent
                                 </strong>
@@ -1410,9 +1532,7 @@
                                 <small>
                                     Temukan talent yang tersedia
                                 </small>
-
                             </span>
-
 
                             <span class="whisperly-dropdown-arrow">
                                 →
@@ -1421,9 +1541,7 @@
                         </a>
 
 
-                        {{-- =================================================
-                             PENGADUAN
-                        ================================================== --}}
+                        {{-- PENGADUAN --}}
 
                         <a
                             href="{{ route('pengaduan') }}"
@@ -1436,7 +1554,6 @@
                                     viewBox="0 0 24 24"
                                     fill="none"
                                 >
-
                                     <path
                                         d="M5 4.5H19V16H9L5 19.5V4.5Z"
                                         stroke="currentColor"
@@ -1457,14 +1574,11 @@
                                         stroke-width="1.6"
                                         stroke-linecap="round"
                                     />
-
                                 </svg>
 
                             </span>
 
-
                             <span class="whisperly-dropdown-text">
-
                                 <strong>
                                     Pengaduan
                                 </strong>
@@ -1472,9 +1586,7 @@
                                 <small>
                                     Sampaikan ceritamu
                                 </small>
-
                             </span>
-
 
                             <span class="whisperly-dropdown-arrow">
                                 →
@@ -1491,12 +1603,10 @@
 
                     @if ($currentUser->role === 'talent')
 
-                        {{-- =================================================
-                             HOME
-                        ================================================== --}}
+                        {{-- HOME --}}
 
                         <a
-                            href="{{ url('/whisperly') }}"
+                            href="{{ route('whisperly.home') }}"
                             class="whisperly-dropdown-item"
                         >
 
@@ -1506,18 +1616,15 @@
                                     viewBox="0 0 24 24"
                                     fill="none"
                                 >
-
                                     <path
                                         d="M3.5 10.7L12 3.7L20.5 10.7V20H14.8V14.4H9.2V20H3.5V10.7Z"
                                         stroke="currentColor"
                                         stroke-width="1.6"
                                         stroke-linejoin="round"
                                     />
-
                                 </svg>
 
                             </span>
-
 
                             <span class="whisperly-dropdown-text">
 
@@ -1531,7 +1638,6 @@
 
                             </span>
 
-
                             <span class="whisperly-dropdown-arrow">
                                 →
                             </span>
@@ -1539,9 +1645,7 @@
                         </a>
 
 
-                        {{-- =================================================
-                             LIHAT TALENT
-                        ================================================== --}}
+                        {{-- LIHAT TALENT --}}
 
                         <a
                             href="{{ route('whisperly.talents.index') }}"
@@ -1554,7 +1658,6 @@
                                     viewBox="0 0 24 24"
                                     fill="none"
                                 >
-
                                     <circle
                                         cx="12"
                                         cy="8"
@@ -1569,11 +1672,9 @@
                                         stroke-width="1.6"
                                         stroke-linecap="round"
                                     />
-
                                 </svg>
 
                             </span>
-
 
                             <span class="whisperly-dropdown-text">
 
@@ -1587,7 +1688,6 @@
 
                             </span>
 
-
                             <span class="whisperly-dropdown-arrow">
                                 →
                             </span>
@@ -1595,9 +1695,7 @@
                         </a>
 
 
-                        {{-- =================================================
-                             PENGADUAN
-                        ================================================== --}}
+                        {{-- PENGADUAN --}}
 
                         <a
                             href="{{ route('pengaduan') }}"
@@ -1610,7 +1708,6 @@
                                     viewBox="0 0 24 24"
                                     fill="none"
                                 >
-
                                     <path
                                         d="M5 4.5H19V16H9L5 19.5V4.5Z"
                                         stroke="currentColor"
@@ -1631,11 +1728,9 @@
                                         stroke-width="1.6"
                                         stroke-linecap="round"
                                     />
-
                                 </svg>
 
                             </span>
-
 
                             <span class="whisperly-dropdown-text">
 
@@ -1649,7 +1744,6 @@
 
                             </span>
 
-
                             <span class="whisperly-dropdown-arrow">
                                 →
                             </span>
@@ -1657,9 +1751,7 @@
                         </a>
 
 
-                        {{-- =================================================
-                             CHAT
-                        ================================================== --}}
+                        {{-- CHAT --}}
 
                         <a
                             href="{{ route('whisperly.chat.index') }}"
@@ -1672,7 +1764,6 @@
                                     viewBox="0 0 24 24"
                                     fill="none"
                                 >
-
                                     <path
                                         d="M5 5.5H19V16H9L5 19V5.5Z"
                                         stroke="currentColor"
@@ -1693,11 +1784,9 @@
                                         stroke-width="1.6"
                                         stroke-linecap="round"
                                     />
-
                                 </svg>
 
                             </span>
-
 
                             <span class="whisperly-dropdown-text">
 
@@ -1711,7 +1800,6 @@
 
                             </span>
 
-
                             <span class="whisperly-dropdown-arrow">
                                 →
                             </span>
@@ -1720,12 +1808,12 @@
 
 
                         {{-- =================================================
-                             EDIT PROFIL
+                             EDIT PROFIL TALENT
                         ================================================== --}}
 
                         <a
                             href="{{ route('talent.edit') }}"
-                            class="whisperly-dropdown-item"
+                            class="whisperly-dropdown-item whisperly-edit-profile-item"
                         >
 
                             <span class="whisperly-dropdown-icon">
@@ -1733,19 +1821,17 @@
                                 <svg
                                     viewBox="0 0 24 24"
                                     fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
                                 >
 
                                     <path
-                                        d="M4.5 19.5L5.4 15.2L15.8 4.8C16.6 4 17.9 4 18.7 4.8L19.2 5.3C20 6.1 20 7.4 19.2 8.2L8.8 18.6L4.5 19.5Z"
-                                        stroke="currentColor"
-                                        stroke-width="1.6"
+                                        d="M4.5 19.5L5.4 15.2L15.8 4.8C16.6 4 17.9 4 18.7 4L19.2 5.3C20 6.1 20 7.4 19.2 8.2L8.8 18.6L4.5 19.5Z"
                                         stroke-linejoin="round"
                                     />
 
                                     <path
                                         d="M14.8 5.8L18.2 9.2"
-                                        stroke="currentColor"
-                                        stroke-width="1.6"
                                         stroke-linecap="round"
                                     />
 
@@ -1782,12 +1868,10 @@
 
                     @if ($currentUser->role === 'admin')
 
-                        {{-- =================================================
-                             HOME
-                        ================================================== --}}
+                        {{-- HOME --}}
 
                         <a
-                            href="{{ url('/whisperly') }}"
+                            href="{{ route('whisperly.home') }}"
                             class="whisperly-dropdown-item"
                         >
 
@@ -1797,18 +1881,15 @@
                                     viewBox="0 0 24 24"
                                     fill="none"
                                 >
-
                                     <path
                                         d="M3.5 10.7L12 3.7L20.5 10.7V20H14.8V14.4H9.2V20H3.5V10.7Z"
                                         stroke="currentColor"
                                         stroke-width="1.6"
                                         stroke-linejoin="round"
                                     />
-
                                 </svg>
 
                             </span>
-
 
                             <span class="whisperly-dropdown-text">
 
@@ -1822,7 +1903,6 @@
 
                             </span>
 
-
                             <span class="whisperly-dropdown-arrow">
                                 →
                             </span>
@@ -1830,9 +1910,7 @@
                         </a>
 
 
-                        {{-- =================================================
-                             LIHAT TALENT
-                        ================================================== --}}
+                        {{-- LIHAT TALENT --}}
 
                         <a
                             href="{{ route('whisperly.talents.index') }}"
@@ -1845,7 +1923,6 @@
                                     viewBox="0 0 24 24"
                                     fill="none"
                                 >
-
                                     <circle
                                         cx="12"
                                         cy="8"
@@ -1860,11 +1937,9 @@
                                         stroke-width="1.6"
                                         stroke-linecap="round"
                                     />
-
                                 </svg>
 
                             </span>
-
 
                             <span class="whisperly-dropdown-text">
 
@@ -1878,7 +1953,6 @@
 
                             </span>
 
-
                             <span class="whisperly-dropdown-arrow">
                                 →
                             </span>
@@ -1886,9 +1960,7 @@
                         </a>
 
 
-                        {{-- =================================================
-                             PENGADUAN ADMIN
-                        ================================================== --}}
+                        {{-- PENGADUAN ADMIN --}}
 
                         <a
                             href="{{ route('admin.menfess.index') }}"
@@ -1901,7 +1973,6 @@
                                     viewBox="0 0 24 24"
                                     fill="none"
                                 >
-
                                     <path
                                         d="M5 4.5H19V16H9L5 19.5V4.5Z"
                                         stroke="currentColor"
@@ -1922,11 +1993,9 @@
                                         stroke-width="1.6"
                                         stroke-linecap="round"
                                     />
-
                                 </svg>
 
                             </span>
-
 
                             <span class="whisperly-dropdown-text">
 
@@ -1939,7 +2008,6 @@
                                 </small>
 
                             </span>
-
 
                             <span class="whisperly-dropdown-arrow">
                                 →
@@ -1955,7 +2023,6 @@
                     ================================================== --}}
 
                     <div class="whisperly-logout-divider"></div>
-
 
                     <form
                         method="POST"
@@ -2002,7 +2069,6 @@
 
                             </span>
 
-
                             <span>
                                 Keluar
                             </span>
@@ -2041,7 +2107,6 @@
                     'whisperlyDropdown'
                 );
 
-
             if (
                 !menuButton ||
                 !dropdown
@@ -2049,10 +2114,6 @@
                 return;
             }
 
-
-            /* =====================================================
-               OPEN MENU
-            ===================================================== */
 
             function openMenu() {
 
@@ -2067,10 +2128,6 @@
             }
 
 
-            /* =====================================================
-               CLOSE MENU
-            ===================================================== */
-
             function closeMenu() {
 
                 dropdown.classList.remove('show');
@@ -2084,30 +2141,18 @@
             }
 
 
-            /* =====================================================
-               TOGGLE MENU
-            ===================================================== */
-
             function toggleMenu() {
 
                 const isOpen =
                     dropdown.classList.contains('show');
 
                 if (isOpen) {
-
                     closeMenu();
-
                 } else {
-
                     openMenu();
-
                 }
             }
 
-
-            /* =====================================================
-               BUTTON CLICK
-            ===================================================== */
 
             menuButton.addEventListener(
                 'click',
@@ -2120,10 +2165,6 @@
             );
 
 
-            /* =====================================================
-               DROPDOWN CLICK
-            ===================================================== */
-
             dropdown.addEventListener(
                 'click',
                 function (event) {
@@ -2132,10 +2173,6 @@
                 }
             );
 
-
-            /* =====================================================
-               OUTSIDE CLICK
-            ===================================================== */
 
             document.addEventListener(
                 'click',
@@ -2156,10 +2193,6 @@
             );
 
 
-            /* =====================================================
-               ESCAPE
-            ===================================================== */
-
             document.addEventListener(
                 'keydown',
                 function (event) {
@@ -2176,10 +2209,6 @@
             );
 
 
-            /* =====================================================
-               MENU ITEM
-            ===================================================== */
-
             const menuItems =
                 dropdown.querySelectorAll(
                     '.whisperly-dropdown-item'
@@ -2194,8 +2223,10 @@
                         function () {
 
                             closeMenu();
+
                         }
                     );
+
                 }
             );
 

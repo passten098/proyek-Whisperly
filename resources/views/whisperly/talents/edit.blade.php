@@ -254,7 +254,8 @@
             letter-spacing: -.025em;
 
             text-shadow:
-                0 10px 35px rgba(0, 0, 0, .4);
+                0 10px 35px
+                rgba(0, 0, 0, .4);
         }
 
         .page-subtitle {
@@ -452,9 +453,14 @@
                 );
 
             box-shadow:
-                0 0 0 2px rgba(255,255,255,.04),
-                0 0 38px rgba(213,169,79,.22),
-                0 25px 65px rgba(0,0,0,.45);
+                0 0 0 2px
+                rgba(255,255,255,.04),
+
+                0 0 38px
+                rgba(213,169,79,.22),
+
+                0 25px 65px
+                rgba(0,0,0,.45);
         }
 
         .profile-photo {
@@ -504,8 +510,11 @@
             background: #c7a75c;
 
             box-shadow:
-                0 0 0 4px rgba(199,167,92,.10),
-                0 0 18px rgba(199,167,92,.70);
+                0 0 0 4px
+                rgba(199,167,92,.10),
+
+                0 0 18px
+                rgba(199,167,92,.70);
         }
 
 
@@ -585,7 +594,8 @@
             text-align: center;
 
             text-shadow:
-                0 8px 35px rgba(0,0,0,.40);
+                0 8px 35px
+                rgba(0,0,0,.40);
 
             word-break: break-word;
         }
@@ -632,7 +642,6 @@
 
         /* =========================================================
            INFORMATION PROFILE
-           FONT DIPERBESAR
         ========================================================== */
 
         .section-heading {
@@ -660,7 +669,6 @@
             display: flex;
 
             align-items: center;
-
             justify-content: center;
 
             width: 42px;
@@ -684,7 +692,8 @@
             color: #e2c473;
 
             box-shadow:
-                0 8px 20px rgba(0,0,0,.18);
+                0 8px 20px
+                rgba(0,0,0,.18);
         }
 
         .section-icon svg {
@@ -882,7 +891,6 @@
             display: flex;
 
             align-items: center;
-
             justify-content: center;
 
             width: 38px;
@@ -927,7 +935,6 @@
             display: inline-flex;
 
             align-items: center;
-
             justify-content: center;
 
             min-height: 38px;
@@ -967,7 +974,8 @@
                 translateY(-2px);
 
             box-shadow:
-                0 10px 25px rgba(0,0,0,.25);
+                0 10px 25px
+                rgba(0,0,0,.25);
         }
 
         #photo {
@@ -1082,7 +1090,8 @@
                 );
 
             box-shadow:
-                0 25px 70px rgba(0,0,0,.36);
+                0 25px 70px
+                rgba(0,0,0,.36);
         }
 
         .schedule-inner {
@@ -1202,7 +1211,6 @@
             left: 0;
 
             top: 12px;
-
             bottom: 12px;
 
             width: 3px;
@@ -1408,6 +1416,7 @@
             box-shadow:
                 0 10px 28px
                 rgba(0,0,0,.30),
+
                 0 0 18px
                 rgba(216,181,106,.07);
         }
@@ -1419,81 +1428,142 @@
             box-shadow:
                 0 0 0 3px
                 rgba(216,181,106,.08),
+
                 0 10px 28px
                 rgba(0,0,0,.25);
         }
 
         .status-select option {
-            background: #1b102b;
+            background:
+                #1b102b;
 
-            color: #f5edfa;
+            color:
+                #f5edfa;
 
             font-family:
                 "Manrope",
                 sans-serif;
 
-            font-size: 11px;
+            font-size:
+                11px;
         }
 
 
         /* =========================================================
-           EXPIRED / PASSED SCHEDULE
+           EXPIRED / PASSED
         ========================================================== */
 
         .expired-status {
             position: relative;
+
             z-index: 2;
+
             display: inline-flex;
+
             align-items: center;
+
             gap: 8px;
+
             min-height: 48px;
-            padding: 0 17px;
-            border: 1px solid rgba(255,255,255,.10);
-            border-radius: 13px;
-            background: rgba(255,255,255,.045);
-            color: #77727d;
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: .02em;
-            white-space: nowrap;
-            cursor: not-allowed;
-            opacity: .78;
+
+            padding:
+                0
+                17px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.10);
+
+            border-radius:
+                13px;
+
+            background:
+                rgba(255,255,255,.045);
+
+            color:
+                #77727d;
+
+            font-size:
+                10px;
+
+            font-weight:
+                800;
+
+            letter-spacing:
+                .02em;
+
+            white-space:
+                nowrap;
+
+            cursor:
+                not-allowed;
+
+            opacity:
+                .78;
         }
 
         .expired-dot {
             width: 7px;
             height: 7px;
+
             flex-shrink: 0;
-            border-radius: 50%;
-            background: #77727d;
+
+            border-radius:
+                50%;
+
+            background:
+                #77727d;
         }
 
         .schedule-item.expired {
-            border-color: rgba(255,255,255,.055);
-            background: linear-gradient(145deg, rgba(45,43,48,.72), rgba(18,16,22,.88));
-            box-shadow: none;
-            opacity: .72;
+            border-color:
+                rgba(255,255,255,.055);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(45,43,48,.72),
+                    rgba(18,16,22,.88)
+                );
+
+            box-shadow:
+                none;
+
+            opacity:
+                .72;
         }
 
         .schedule-item.expired::before {
-            background: #5e5963;
-            box-shadow: none;
+            background:
+                #5e5963;
+
+            box-shadow:
+                none;
         }
 
         .schedule-item.expired .schedule-day,
         .schedule-item.expired .schedule-time {
-            color: #77727d;
+            color:
+                #77727d;
         }
 
         .schedule-item.expired .time-dot {
-            background: #66616b;
-            box-shadow: none;
+            background:
+                #66616b;
+
+            box-shadow:
+                none;
         }
 
         .schedule-item.expired:hover {
-            transform: none;
-            border-color: rgba(255,255,255,.055);
-            box-shadow: none;
+            transform:
+                none;
+
+            border-color:
+                rgba(255,255,255,.055);
+
+            box-shadow:
+                none;
         }
 
 
@@ -1522,27 +1592,34 @@
                 1px solid
                 rgba(255,70,108,.38);
 
-            border-radius: 13px;
+            border-radius:
+                13px;
 
             background:
                 rgba(95,27,46,.38);
 
-            color: #ff9caf;
+            color:
+                #ff9caf;
 
-            font-size: 10px;
+            font-size:
+                10px;
 
-            font-weight: 800;
+            font-weight:
+                800;
 
-            white-space: nowrap;
+            white-space:
+                nowrap;
         }
 
         .booked-dot {
             width: 7px;
             height: 7px;
 
-            border-radius: 50%;
+            border-radius:
+                50%;
 
-            background: #ff416c;
+            background:
+                #ff416c;
 
             box-shadow:
                 0 0 10px
@@ -1563,23 +1640,30 @@
                 1px solid
                 rgba(255,255,255,.055);
 
-            border-radius: 15px;
+            border-radius:
+                15px;
 
             background:
                 rgba(20,12,32,.50);
 
-            text-align: center;
+            text-align:
+                center;
         }
 
         .empty-icon {
             display: flex;
 
-            align-items: center;
+            align-items:
+                center;
 
-            justify-content: center;
+            justify-content:
+                center;
 
-            width: 42px;
-            height: 42px;
+            width:
+                42px;
+
+            height:
+                42px;
 
             margin:
                 0
@@ -1590,30 +1674,41 @@
                 1px solid
                 rgba(216,181,106,.20);
 
-            border-radius: 11px;
+            border-radius:
+                11px;
 
-            color: #c8a95d;
+            color:
+                #c8a95d;
         }
 
         .empty-icon svg {
-            width: 18px;
-            height: 18px;
+            width:
+                18px;
+
+            height:
+                18px;
         }
 
         .empty-title {
-            color: #d8cfdf;
+            color:
+                #d8cfdf;
 
-            font-size: 12px;
+            font-size:
+                12px;
 
-            font-weight: 800;
+            font-weight:
+                800;
         }
 
         .empty-text {
-            margin-top: 4px;
+            margin-top:
+                4px;
 
-            color: #756b80;
+            color:
+                #756b80;
 
-            font-size: 9px;
+            font-size:
+                9px;
         }
 
 
@@ -1622,37 +1717,48 @@
         ========================================================== */
 
         .actions {
-            display: flex;
+            display:
+                flex;
 
-            justify-content: flex-end;
+            justify-content:
+                flex-end;
 
-            margin-top: 19px;
+            margin-top:
+                19px;
         }
 
         .save-button {
-            position: relative;
+            position:
+                relative;
 
-            display: inline-flex;
+            display:
+                inline-flex;
 
-            align-items: center;
+            align-items:
+                center;
 
-            justify-content: center;
+            justify-content:
+                center;
 
-            gap: 8px;
+            gap:
+                8px;
 
-            min-height: 48px;
+            min-height:
+                48px;
 
             padding:
                 0
                 25px;
 
-            overflow: hidden;
+            overflow:
+                hidden;
 
             border:
                 1px solid
                 rgba(245,216,132,.62);
 
-            border-radius: 12px;
+            border-radius:
+                12px;
 
             background:
                 linear-gradient(
@@ -1661,13 +1767,17 @@
                     #bc9146
                 );
 
-            color: #211509;
+            color:
+                #211509;
 
-            font-size: 10px;
+            font-size:
+                10px;
 
-            font-weight: 800;
+            font-weight:
+                800;
 
-            cursor: pointer;
+            cursor:
+                pointer;
 
             box-shadow:
                 0 13px 32px
@@ -1688,8 +1798,11 @@
         }
 
         .save-button svg {
-            width: 15px;
-            height: 15px;
+            width:
+                15px;
+
+            height:
+                15px;
         }
 
 
@@ -1711,56 +1824,69 @@
                     320px
                     minmax(0,1fr);
 
-                gap: 45px;
+                gap:
+                    45px;
             }
 
             .photo-stage {
-                width: 205px;
-                height: 205px;
+                width:
+                    205px;
+
+                height:
+                    205px;
             }
 
             .profile-name {
-                font-size: 38px;
+                font-size:
+                    38px;
             }
 
             .availability-title,
             .page-title {
-                font-size: 35px;
+                font-size:
+                    35px;
             }
 
             .availability-subtitle {
-                font-size: 11px;
+                font-size:
+                    11px;
             }
 
             .schedule-day {
-                font-size: 22px;
+                font-size:
+                    22px;
             }
 
             .schedule-time {
-                font-size: 13px;
+                font-size:
+                    13px;
             }
 
             .status-select {
-                min-width: 160px;
+                min-width:
+                    160px;
             }
 
             .section-heading h2 {
-                font-size: 16px;
+                font-size:
+                    16px;
             }
 
             .section-heading p {
-                font-size: 10px;
+                font-size:
+                    10px;
             }
 
             .form-label {
-                font-size: 9px;
+                font-size:
+                    9px;
             }
 
             .input,
             .textarea {
-                font-size: 12px;
+                font-size:
+                    12px;
             }
-
         }
 
 
@@ -1774,63 +1900,81 @@
             }
 
             .profile-layout {
-                grid-template-columns: 1fr;
+                grid-template-columns:
+                    1fr;
 
-                gap: 32px;
+                gap:
+                    32px;
             }
 
             .profile-column {
-                position: relative;
+                position:
+                    relative;
 
-                top: auto;
+                top:
+                    auto;
             }
 
             .photo-stage {
-                width: 200px;
-                height: 200px;
+                width:
+                    200px;
+
+                height:
+                    200px;
             }
 
             .profile-name {
-                font-size: 36px;
+                font-size:
+                    36px;
             }
 
             .availability-title,
             .page-title {
-                font-size: 32px;
+                font-size:
+                    32px;
             }
 
             .schedule-item {
-                align-items: flex-start;
+                align-items:
+                    flex-start;
 
-                flex-direction: column;
+                flex-direction:
+                    column;
 
-                gap: 16px;
+                gap:
+                    16px;
 
-                min-height: 0;
+                min-height:
+                    0;
             }
 
             .status-select,
-            .booked-status {
-                width: 100%;
+            .booked-status,
+            .expired-status {
+                width:
+                    100%;
             }
 
             .section-heading h2 {
-                font-size: 17px;
+                font-size:
+                    17px;
             }
 
             .section-heading p {
-                font-size: 11px;
+                font-size:
+                    11px;
             }
 
             .form-label {
-                font-size: 10px;
+                font-size:
+                    10px;
             }
 
             .input,
             .textarea {
-                font-size: 13px;
+                font-size:
+                    13px;
             }
-
         }
 
 
@@ -1844,41 +1988,53 @@
             }
 
             .photo-stage {
-                width: 175px;
-                height: 175px;
+                width:
+                    175px;
+
+                height:
+                    175px;
             }
 
             .profile-name {
-                font-size: 31px;
+                font-size:
+                    31px;
             }
 
             .availability-title,
             .page-title {
-                font-size: 29px;
+                font-size:
+                    29px;
             }
 
             .availability-subtitle {
-                font-size: 10px;
+                font-size:
+                    10px;
             }
 
             .schedule-inner {
-                padding: 15px;
+                padding:
+                    15px;
             }
 
             .schedule-top {
-                align-items: flex-start;
+                align-items:
+                    flex-start;
 
-                flex-direction: column;
+                flex-direction:
+                    column;
 
-                gap: 5px;
+                gap:
+                    5px;
             }
 
             .schedule-top-title {
-                font-size: 13px;
+                font-size:
+                    13px;
             }
 
             .schedule-top-note {
-                font-size: 9px;
+                font-size:
+                    9px;
             }
 
             .schedule-item {
@@ -1890,53 +2046,66 @@
             }
 
             .schedule-day {
-                font-size: 22px;
+                font-size:
+                    22px;
             }
 
             .schedule-time {
-                font-size: 13px;
+                font-size:
+                    13px;
             }
 
             .section-icon {
-                width: 40px;
-                height: 40px;
+                width:
+                    40px;
+
+                height:
+                    40px;
             }
 
             .section-heading h2 {
-                font-size: 16px;
+                font-size:
+                    16px;
             }
 
             .section-heading p {
-                font-size: 10px;
+                font-size:
+                    10px;
             }
 
             .form-label {
-                font-size: 9px;
+                font-size:
+                    9px;
             }
 
             .input,
             .textarea {
-                font-size: 12px;
+                font-size:
+                    12px;
             }
 
             .upload-area {
-                align-items: flex-start;
+                align-items:
+                    flex-start;
 
-                flex-direction: column;
+                flex-direction:
+                    column;
             }
 
             .upload-button {
-                width: 100%;
+                width:
+                    100%;
             }
 
             .actions {
-                justify-content: stretch;
+                justify-content:
+                    stretch;
             }
 
             .save-button {
-                width: 100%;
+                width:
+                    100%;
             }
-
         }
 
     </style>
@@ -1945,7 +2114,6 @@
 
 
 <body>
-
 
     <div class="ambient-orb orb-purple"></div>
 
@@ -2090,7 +2258,8 @@
 
                                             $photoUrl =
                                                 asset(
-                                                    'storage/' . $photo
+                                                    'storage/' .
+                                                    $photo
                                                 );
 
                                         }
@@ -2150,7 +2319,7 @@
 
 
                     {{-- =================================================
-                         IDENTITAS CENTER
+                         IDENTITAS
                     ================================================== --}}
 
                     <div class="profile-info">
@@ -2167,8 +2336,6 @@
                             {{ $user->email }}
                         </div>
 
-
-                        {{-- GARIS --}}
 
                         <div class="profile-divider"></div>
 
@@ -2402,61 +2569,149 @@
 
                             @if ($talent->schedules->count())
 
-
                                 <div class="schedule-list">
 
 
                                     @foreach ($talent->schedules as $schedule)
 
-
                                         @php
-                                            $timezone = config('app.timezone');
-                                            $now = now($timezone);
 
-                                            $scheduleDate = \Carbon\Carbon::parse(
-                                                $schedule->date,
-                                                $timezone
-                                            )->toDateString();
+                                            $timezone =
+                                                config('app.timezone');
 
-                                            $scheduleStart = \Carbon\Carbon::parse(
-                                                $scheduleDate . ' ' . $schedule->start_time,
-                                                $timezone
-                                            );
+                                            $now =
+                                                now($timezone);
 
-                                            $scheduleEnd = \Carbon\Carbon::parse(
-                                                $scheduleDate . ' ' . $schedule->end_time,
-                                                $timezone
-                                            );
-
-                                            // Jadwal baru dianggap lewat setelah JAM SELESAI.
-                                            // Contoh: 20:00-21:00 tetap bisa diedit sampai 21:00.
-                                            if ($scheduleEnd->lt($scheduleStart)) {
-                                                $scheduleEnd->addDay();
-                                            }
-
-                                            $isExpired = $scheduleEnd->lessThanOrEqualTo($now);
-
-                                            $status = $schedule->resolveStatusForDate(
-                                                $scheduleDate
-                                            );
 
                                             /*
-                                             * Jadwal yang belum lewat otomatis dianggap tersedia.
-                                             * Jika sudah dibooking, status booked tetap dipertahankan.
+                                             * =====================================================
+                                             * TANGGAL JADWAL
+                                             * =====================================================
                                              */
-                                            if (! $isExpired && $status !== 'booked') {
-                                                $status = 'available';
+
+                                            $scheduleDate =
+                                                \Carbon\Carbon::parse(
+                                                    $schedule->schedule_date,
+                                                    $timezone
+                                                )->toDateString();
+
+
+                                            /*
+                                             * =====================================================
+                                             * JAM MULAI
+                                             * =====================================================
+                                             */
+
+                                            $scheduleStart =
+                                                \Carbon\Carbon::parse(
+                                                    $scheduleDate .
+                                                    ' ' .
+                                                    $schedule->start_time,
+                                                    $timezone
+                                                );
+
+
+                                            /*
+                                             * =====================================================
+                                             * JAM SELESAI
+                                             * =====================================================
+                                             */
+
+                                            $scheduleEnd =
+                                                \Carbon\Carbon::parse(
+                                                    $scheduleDate .
+                                                    ' ' .
+                                                    $schedule->end_time,
+                                                    $timezone
+                                                );
+
+
+                                            /*
+                                             * Jika jam selesai melewati tengah malam.
+                                             */
+
+                                            if (
+                                                $scheduleEnd->lt(
+                                                    $scheduleStart
+                                                )
+                                            ) {
+
+                                                $scheduleEnd->addDay();
+
                                             }
+
+
+                                            /*
+                                             * =====================================================
+                                             * CEK SUDAH LEWAT
+                                             * =====================================================
+                                             */
+
+                                            $isExpired =
+                                                $scheduleEnd
+                                                    ->lessThanOrEqualTo(
+                                                        $now
+                                                    );
+
+
+                                            /*
+                                             * =====================================================
+                                             * AMBIL STATUS ASLI DATABASE
+                                             * =====================================================
+                                             *
+                                             * Jangan ubah status database.
+                                             */
+
+                                            $status =
+                                                $schedule->resolveStatusForDate(
+                                                    $scheduleDate
+                                                );
+
+
+                                            /*
+                                             * =====================================================
+                                             * NORMALISASI
+                                             * =====================================================
+                                             */
+
+                                            if (
+                                                !in_array(
+                                                    $status,
+                                                    [
+                                                        'available',
+                                                        'unavailable',
+                                                        'booked',
+                                                    ],
+                                                    true
+                                                )
+                                            ) {
+
+                                                $status =
+                                                    'unavailable';
+
+                                            }
+
                                         @endphp
 
 
-                                        <div class="schedule-item {{ $isExpired ? 'expired' : '' }}">
+                                        <div
+                                            class="
+                                                schedule-item
+                                                {{ $isExpired ? 'expired' : '' }}
+                                            "
+                                        >
 
+
+                                            {{-- =================================================
+                                                 DAY + TIME
+                                            ================================================== --}}
 
                                             <div class="schedule-main">
 
                                                 <div class="schedule-day">
+
                                                     {{ $schedule->day }}
+
                                                 </div>
 
 
@@ -2464,18 +2719,34 @@
 
                                                     <span class="time-dot"></span>
 
-                                                    {{ substr($schedule->start_time, 0, 5) }}
+                                                    {{
+                                                        substr(
+                                                            $schedule->start_time,
+                                                            0,
+                                                            5
+                                                        )
+                                                    }}
 
                                                     <span>
                                                         —
                                                     </span>
 
-                                                    {{ substr($schedule->end_time, 0, 5) }}
+                                                    {{
+                                                        substr(
+                                                            $schedule->end_time,
+                                                            0,
+                                                            5
+                                                        )
+                                                    }}
 
                                                 </div>
 
                                             </div>
 
+
+                                            {{-- =================================================
+                                                 SUDAH LEWAT
+                                            ================================================== --}}
 
                                             @if ($isExpired)
 
@@ -2483,18 +2754,27 @@
                                                     class="expired-status"
                                                     title="Jadwal ini sudah lewat dan tidak dapat diubah."
                                                 >
+
                                                     <span class="expired-dot"></span>
+
                                                     Waktu sudah lewat
+
                                                 </div>
 
-                                                {{-- Status lama tetap dikirim agar jadwal yang sudah lewat tidak berubah. --}}
-                                                @if ($status !== 'booked')
-                                                    <input
-                                                        type="hidden"
-                                                        name="schedule[{{ $schedule->id }}]"
-                                                        value="{{ $status }}"
-                                                    >
-                                                @endif
+                                                {{--
+                                                    PENTING:
+                                                    Jadwal yang sudah lewat TIDAK
+                                                    dikirim kembali ke controller.
+
+                                                    Jadi kalau status-nya "booked",
+                                                    tidak akan menghasilkan error
+                                                    validasi "schedule.xxx is invalid".
+                                                --}}
+
+
+                                            {{-- =================================================
+                                                 SUDAH BOOKED
+                                            ================================================== --}}
 
                                             @elseif ($status === 'booked')
 
@@ -2505,6 +2785,11 @@
                                                     Sudah Dibooking
 
                                                 </div>
+
+
+                                            {{-- =================================================
+                                                 STATUS BISA DIUBAH
+                                            ================================================== --}}
 
                                             @else
 
@@ -2537,12 +2822,10 @@
 
                                     @endforeach
 
-
                                 </div>
 
 
                             @else
-
 
                                 <div class="empty-schedule">
 
@@ -2584,7 +2867,6 @@
                                     </div>
 
                                 </div>
-
 
                             @endif
 
@@ -2650,10 +2932,14 @@
         ========================================================== */
 
         const photoInput =
-            document.getElementById("photo");
+            document.getElementById(
+                "photo"
+            );
 
         const photoPreview =
-            document.getElementById("photoPreview");
+            document.getElementById(
+                "photoPreview"
+            );
 
 
         if (
@@ -2756,6 +3042,7 @@
                 return;
             }
 
+
             charCount.textContent =
                 `${description.value.length} / 2000`;
 
@@ -2778,4 +3065,3 @@
 </body>
 
 </html>
-
