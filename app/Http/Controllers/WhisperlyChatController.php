@@ -609,6 +609,7 @@ class WhisperlyChatController extends Controller
                     ->first();
 
             if ($laralagBooking) {
+
                 $existingRating =
                     ratings::query()
                         ->where(
@@ -1194,17 +1195,6 @@ class WhisperlyChatController extends Controller
         |--------------------------------------------------------------------------
         | SINKRONKAN BOOKING
         |--------------------------------------------------------------------------
-        |
-        | Whisperly:
-        | whisperly_bookings.id
-        |
-        | Laralag:
-        | bookings.id
-        |
-        | Hubungannya:
-        | bookings.source_booking_id
-        | = whisperly_bookings.id
-        |
         */
 
         $booking->syncLaralagBooking(
@@ -1483,11 +1473,19 @@ class WhisperlyChatController extends Controller
         if ($chatStatus !== 'active') {
 
             if ($request->expectsJson()) {
+
                 return response()->json([
-                    'ok' => false,
-                    'expired' => true,
-                    'status' => $chatStatus,
-                    'message' => 'Waktu booking telah selesai. Chat sudah ditutup.',
+                    'ok' =>
+                        false,
+
+                    'expired' =>
+                        true,
+
+                    'status' =>
+                        $chatStatus,
+
+                    'message' =>
+                        'Waktu booking telah selesai. Chat sudah ditutup.',
                 ], 409);
             }
 
@@ -1570,6 +1568,93 @@ class WhisperlyChatController extends Controller
                 'status',
                 'Pesan terkirim.'
             );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | AMBIL PESAN TERBARU
+    |--------------------------------------------------------------------------
+    */
+
+    public function messages(
+        Request $request,
+        WhisperlyBooking $booking
+    ): JsonResponse {
+
+        $user =
+            $request->user('whisperly');
+
+        abort_unless(
+            $user,
+            403
+        );
+
+        $this->authorizeBookingAccess(
+            $user,
+            $booking
+        );
+
+        $conversation =
+            $booking
+                ->conversation()
+                ->first();
+
+        if (! $conversation) {
+
+            return response()->json([
+                'messages' => [],
+            ]);
+        }
+
+        $messages =
+            $conversation
+                ->messages()
+                ->with('sender')
+                ->orderBy('created_at')
+                ->get();
+
+        return response()->json([
+            'messages' =>
+                $messages->map(
+                    function ($message) {
+
+                        return [
+                            'id' =>
+                                $message->id,
+
+                            'sender_id' =>
+                                $message->sender_id,
+
+                            'sender_name' =>
+                                $message
+                                    ->sender
+                                    ?->username
+                                ?? 'Pengguna',
+
+                            'message' =>
+                                $message->message,
+
+                            'created_at' =>
+                                $message
+                                    ->created_at
+                                    ?->toIso8601String(),
+
+                            'time' =>
+                                $message
+                                    ->created_at
+                                    ?->format('H:i'),
+
+                            'is_read' =>
+                                (bool) (
+                                    $message->is_read
+                                    ?? false
+                                ),
+                        ];
+                    }
+                )
+                ->values(),
+        ]);
     }
 
 
