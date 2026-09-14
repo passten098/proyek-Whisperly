@@ -166,44 +166,52 @@ Route::middleware([
     */
 
     Route::get('/whisperly/chat', [
-        WhisperlyChatController::class,
-        'index'
-    ])->name('whisperly.chat.index');
+    WhisperlyChatController::class,
+    'index'
+])->name('whisperly.chat.index');
 
-    Route::post('/whisperly/chat/{booking}/delete', [
-        WhisperlyChatController::class,
-        'deleteChat'
-    ])->name('whisperly.chat.delete');
+Route::post('/whisperly/chat/{booking}/delete', [
+    WhisperlyChatController::class,
+    'deleteChat'
+])->name('whisperly.chat.delete');
 
-    Route::post('/whisperly/chat/{booking}/clear', [
-        WhisperlyChatController::class,
-        'clearChat'
-    ])->name('whisperly.chat.clear');
+Route::post('/whisperly/chat/{booking}/clear', [
+    WhisperlyChatController::class,
+    'clearChat'
+])->name('whisperly.chat.clear');
 
-    Route::post('/whisperly/chat/heartbeat', [
-        WhisperlyChatController::class,
-        'heartbeat'
-    ])->name('whisperly.chat.heartbeat');
+Route::post('/whisperly/chat/heartbeat', [
+    WhisperlyChatController::class,
+    'heartbeat'
+])->name('whisperly.chat.heartbeat');
 
-    Route::post('/whisperly/chat/typing', [
-        WhisperlyChatController::class,
-        'typing'
-    ])->name('whisperly.chat.typing');
+Route::post('/whisperly/chat/typing', [
+    WhisperlyChatController::class,
+    'typing'
+])->name('whisperly.chat.typing');
 
-    Route::get('/whisperly/chat/{booking}/presence', [
-        WhisperlyChatController::class,
-        'presence'
-    ])->name('whisperly.chat.presence');
 
-    Route::get('/whisperly/chat/{booking}', [
-        WhisperlyChatController::class,
-        'show'
-    ])->name('whisperly.chat.show');
+/* TAMBAHKAN INI */
+Route::get('/whisperly/chat/{booking}/messages', [
+    WhisperlyChatController::class,
+    'messages'
+])->name('whisperly.chat.messages');
 
-    Route::post('/whisperly/chat/{booking}', [
-        WhisperlyChatController::class,
-        'store'
-    ])->name('whisperly.chat.store');
+
+Route::get('/whisperly/chat/{booking}/presence', [
+    WhisperlyChatController::class,
+    'presence'
+])->name('whisperly.chat.presence');
+
+Route::get('/whisperly/chat/{booking}', [
+    WhisperlyChatController::class,
+    'show'
+])->name('whisperly.chat.show');
+
+Route::post('/whisperly/chat/{booking}', [
+    WhisperlyChatController::class,
+    'store'
+])->name('whisperly.chat.store');
 
 
     /*
