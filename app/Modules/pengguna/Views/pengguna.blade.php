@@ -46,7 +46,6 @@
                                 <th width="15">No</th>
                                 <td>Username</td>
 								<td>Email</td>
-								<td>Password</td>
 								<td>Role</td>
 								
                                 <th width="20%">Aksi</th>
@@ -59,7 +58,6 @@
                                     <td>{{ $no++ }}</td>
                                     <td>{{ $item->username }}</td>
 									<td>{{ $item->email }}</td>
-									<td>{{ $item->password }}</td>
 									<td>{{ $item->role }}</td>
 									
                                     <td>
@@ -70,7 +68,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center"><i>No data.</i></td>
+                                    <td colspan="5" class="text-center"><i>No data.</i></td>
                                 </tr>
                             @endforelse
                         </tbody>
