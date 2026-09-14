@@ -13,7 +13,7 @@ Route::middleware(['web', 'auth:whisperly', 'whisperly.role:admin'])->group(func
     Route::get('/admin/menfess', [menfessController::class, 'adminIndex'])->name('menfess.admin');
     Route::patch('/admin/menfess/{menfess}/approve', [menfessController::class, 'approve'])->name('menfess.approve');
     Route::patch('/admin/menfess/{menfess}/reject', [menfessController::class, 'reject'])->name('menfess.reject');
-    Route::delete('/admin/menfess/{id}', [menfessController::class, 'destroy'])->name('menfess.destroy');
+    Route::get('/admin/menfess/{id}', [menfessController::class, 'destroy'])->name('menfess.destroy');
 });
 
 Route::controller(menfessController::class)->middleware(['web', 'auth'])->name('menfess.')->group(function () {
