@@ -2823,9 +2823,7 @@
         |
         */
 
-        $existingRating =
-            $booking->ratings?->first();
-
+        
     @endphp
 
 
@@ -3894,7 +3892,7 @@
         {{-- ====================================================
              POPUP RATING USER
         ===================================================== --}}
-        @if ($isUser && ! $existingRating)
+        @if ($isUser && $canRate)
             <div
                 class="modal-overlay rating-modal-overlay"
                 id="ratingModal"
@@ -4752,9 +4750,12 @@
         }
 
         function bookingExpired() {
-            lockChat();
-            openRatingModal();
-        }
+    lockChat();
+
+    @if ($isUser && $canRate)
+        openRatingModal();
+    @endif
+}
 
         function updateBookingTimer() {
             if (!chatComposer) return;
@@ -4781,10 +4782,9 @@
         setInterval(updateBookingTimer, 500);
 
         /* Jika halaman dibuka setelah waktu selesai, popup langsung muncul. */
-        @if ($isUser && $ratingAvailable && ! $existingRating)
-            openRatingModal();
-        @endif
-
+        @if ($isUser && $canRate)
+    openRatingModal();
+@endif
         {{-- ANIMASI TERIMA KASIH SETELAH RATING BERHASIL --}}
         @if ($isUser && session('rating_success'))
             <div class="modal-overlay thank-you-overlay" id="thankYouModal">

@@ -42,10 +42,9 @@ class WhisperlyBooking extends Model
     }
 
     public function ratings()
-    {
-        return $this->hasMany(ratings::class, 'booking_id', 'id');
-    }
-
+{
+    return $this->hasMany(ratings::class, 'id_booking', 'id');
+}
     public function syncChatStatus(): void
     {
         $status = $this->chatStatus();
