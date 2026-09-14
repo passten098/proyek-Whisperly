@@ -5,6 +5,7 @@ namespace App\Modules\talents\Models;
 use App\Helpers\UsesUuid;
 use App\Modules\pengguna\Models\pengguna;
 use App\Modules\ratings\Models\ratings;
+use App\Modules\bookings\Models\bookings; 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -107,4 +108,21 @@ class talents extends Model
     {
         return (int) $this->ratings()->count();
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | BOOKING (TAMBAHAN UNTUK RIWAYAT)
+    |--------------------------------------------------------------------------
+    */
+
+    public function bookings()
+    {
+        return $this->hasMany(
+            bookings::class,
+            'talent_id',
+            'id'
+        );
+    }
+
 }
