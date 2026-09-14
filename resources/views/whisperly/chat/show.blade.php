@@ -47,10 +47,7 @@
             background-color: #a9d2f5;
 
             background-image:
-                linear-gradient(
-                    rgba(183,216,246,0.55),
-                    rgba(183,216,246,0.55)
-                ),
+    
                 url('{{ asset('assets/images/chat-background.jpg') }}');
 
             background-position: center;
@@ -478,10 +475,7 @@
             background-color: #a9d2f5;
 
             background-image:
-                linear-gradient(
-                    rgba(183,216,246,0.55),
-                    rgba(183,216,246,0.55)
-                ),
+                
                 url('{{ asset('assets/images/chat-background.jpg') }}');
 
             background-size: cover;
@@ -3450,13 +3444,14 @@
 
 
                         <div
-                            class="
-                                message-row
-                                {{ $mine
-                                    ? 'sent'
-                                    : 'received' }}
-                            "
-                        >
+    class="
+        message-row
+        {{ $mine
+            ? 'sent'
+            : 'received' }}
+    "
+    data-message-id="{{ $message->id }}"
+>
 
                             <div class="message-avatar">
 
@@ -4850,6 +4845,382 @@
                     document.body.style.overflow = '';
                 }, 450);
             }, 1800);
+        }
+
+                /* ==========================================================
+           AUTO UPDATE PESAN
+        ========================================================== */
+
+        const messagesContainer =
+            document.getElementById('messages');
+
+        const messagesUrl =
+            @json(
+                route(
+                    'whisperly.chat.messages',
+                    $booking->id
+                )
+            );
+
+        let latestMessageId = null;
+
+
+        if (messagesContainer) {
+
+            const existingMessageRows =
+                messagesContainer.querySelectorAll(
+                    '.message-row[data-message-id]'
+                );
+
+
+            if (existingMessageRows.length > 0) {
+
+                const lastRow =
+                    existingMessageRows[
+                        existingMessageRows.length - 1
+                    ];
+
+                latestMessageId =
+                    lastRow.dataset.messageId;
+
+            }
+
+
+            function loadNewMessages() {
+
+                fetch(
+                    messagesUrl,
+                    {
+                        headers: {
+                            'Accept':
+                                'application/json'
+                        },
+
+                        cache: 'no-store'
+                    }
+                )
+
+                .then(function (response) {
+
+                    if (!response.ok) {
+                        throw new Error(
+                            'Gagal mengambil pesan.'
+                        );
+                    }
+
+                    return response.json();
+
+                })
+
+                .then(function (data) {
+
+                    if (
+                        !data.messages
+                        ||
+                        !Array.isArray(
+                            data.messages
+                        )
+                    ) {
+                        return;
+                    }
+
+
+                    if (
+                        data.messages.length === 0
+                    ) {
+                        return;
+                    }
+
+
+                    let newMessages = [];
+
+
+                    if (latestMessageId) {
+
+                        const latestIndex =
+                            data.messages.findIndex(
+                                function (message) {
+
+                                    return String(
+                                        message.id
+                                    )
+                                    ===
+                                    String(
+                                        latestMessageId
+                                    );
+
+                                }
+                            );
+
+
+                        if (latestIndex !== -1) {
+
+                            newMessages =
+                                data.messages.slice(
+                                    latestIndex + 1
+                                );
+
+                        } else {
+
+                            return;
+
+                        }
+
+                    } else {
+
+                        newMessages =
+                            data.messages;
+
+                    }
+
+
+                    if (
+                        newMessages.length === 0
+                    ) {
+                        return;
+                    }
+
+
+                    newMessages.forEach(
+                        function (message) {
+
+                            appendNewMessage(
+                                message
+                            );
+
+                        }
+                    );
+
+
+                    latestMessageId =
+                        data.messages[
+                            data.messages.length - 1
+                        ].id;
+
+
+                    messagesContainer.scrollTop =
+                        messagesContainer.scrollHeight;
+
+                })
+
+                .catch(function () {
+                    /*
+                     * Jangan tampilkan error ke user.
+                     * Polling akan mencoba lagi.
+                     */
+                });
+
+            }
+
+
+            function appendNewMessage(message) {
+
+                if (!messagesContainer) {
+                    return;
+                }
+
+
+                /*
+                 * Cegah pesan yang sama muncul dua kali.
+                 */
+
+                if (
+                    messagesContainer.querySelector(
+                        '[data-message-id="' +
+                        message.id +
+                        '"]'
+                    )
+                ) {
+                    return;
+                }
+
+
+                const currentUserId =
+                    '{{ $currentUser->id }}';
+
+
+                const mine =
+                    String(
+                        message.sender_id
+                    )
+                    ===
+                    String(
+                        currentUserId
+                    );
+
+
+                const senderName =
+                    mine
+                        ? 'Anda'
+                        : (
+                            message.sender_name
+                            || '{{ $otherName }}'
+                        );
+
+
+                const senderInitial =
+                    senderName
+                        .substring(0, 1)
+                        .toUpperCase();
+
+
+                const row =
+                    document.createElement(
+                        'div'
+                    );
+
+                row.className =
+                    'message-row ' +
+                    (
+                        mine
+                            ? 'sent'
+                            : 'received'
+                    );
+
+                row.dataset.messageId =
+                    message.id;
+
+
+                const avatar =
+                    document.createElement(
+                        'div'
+                    );
+
+                avatar.className =
+                    'message-avatar';
+
+                avatar.textContent =
+                    senderInitial;
+
+
+                const content =
+                    document.createElement(
+                        'div'
+                    );
+
+                content.className =
+                    'message-content';
+
+
+                const sender =
+                    document.createElement(
+                        'div'
+                    );
+
+                sender.className =
+                    'sender-name';
+
+                sender.textContent =
+                    senderName;
+
+
+                const bubble =
+                    document.createElement(
+                        'div'
+                    );
+
+                bubble.className =
+                    'message-bubble';
+
+                bubble.textContent =
+                    message.message;
+
+
+                const footer =
+                    document.createElement(
+                        'div'
+                    );
+
+                footer.className =
+                    'message-footer';
+
+
+                const time =
+                    document.createElement(
+                        'div'
+                    );
+
+                time.className =
+                    'message-time';
+
+                time.textContent =
+                    message.time || '';
+
+
+                footer.appendChild(time);
+
+
+                if (mine) {
+
+                    const check =
+                        document.createElement(
+                            'span'
+                        );
+
+                    check.className =
+                        message.is_read
+                            ? 'message-check double'
+                            : 'message-check single';
+
+                    check.title =
+                        message.is_read
+                            ? 'Sudah dibaca'
+                            : 'Terkirim';
+
+
+                    if (!message.is_read) {
+
+                        check.textContent =
+                            '✓';
+
+                    }
+
+
+                    footer.appendChild(
+                        check
+                    );
+
+                }
+
+
+                content.appendChild(
+                    sender
+                );
+
+                content.appendChild(
+                    bubble
+                );
+
+                content.appendChild(
+                    footer
+                );
+
+
+                row.appendChild(
+                    avatar
+                );
+
+                row.appendChild(
+                    content
+                );
+
+
+                messagesContainer.appendChild(
+                    row
+                );
+
+            }
+
+
+            /*
+             * Cek pesan baru setiap 1 detik.
+             */
+
+            setInterval(
+                loadNewMessages,
+                1000
+            );
+
         }
     </script>
 
