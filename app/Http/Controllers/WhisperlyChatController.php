@@ -14,6 +14,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class WhisperlyChatController extends Controller
@@ -326,6 +328,162 @@ class WhisperlyChatController extends Controller
 
     /*
     |--------------------------------------------------------------------------
+    | REALTIME UPDATE LIST CHAT
+    |--------------------------------------------------------------------------
+    */
+
+    public function updates(Request $request): JsonResponse
+    {
+        $user = $request->user('whisperly');
+
+        abort_unless($user, 403);
+
+        $query = WhisperlyBooking::query()
+            ->with([
+                'pengguna',
+                'talent.pengguna',
+                'schedule',
+                'conversation.messages.sender',
+            ])
+            ->orderByDesc('created_at');
+
+        if ($user->role === 'user') {
+            $query->where('pengguna_id', $user->id);
+        } elseif ($user->role === 'talent') {
+            $profile = talents::query()
+                ->where('pengguna_id', $user->id)
+                ->first();
+
+            if ($profile) {
+                $query->where('talent_id', $profile->id);
+            } else {
+                return response()->json(['chats' => []]);
+            }
+        } else {
+            abort(403);
+        }
+
+        $allBookings = $query->get()
+            ->filter(function (WhisperlyBooking $booking) use ($user) {
+                $state = $this->chatUserState($user, $booking, true);
+
+                return ! $state?->archived_at
+                    && ! $state?->deleted_at;
+            })
+            ->values()
+            ->map(function (WhisperlyBooking $booking) {
+                $booking->syncChatStatus();
+                return $booking;
+            });
+
+        $bookings = $allBookings
+            ->groupBy(fn (WhisperlyBooking $booking) => $this->roomKey($user, $booking))
+            ->map(function (Collection $roomBookings) {
+                return $roomBookings
+                    ->sortByDesc('created_at')
+                    ->first();
+            })
+            ->values();
+
+        $readTimes = session()->get('whisperly_chat_read', []);
+
+        $result = $bookings->map(function (WhisperlyBooking $booking) use ($user, $allBookings, $readTimes) {
+            $roomKey = $this->roomKey($user, $booking);
+
+            $userChatState = $this->chatUserState($user, $booking);
+
+            $roomBookings = $allBookings->filter(function (WhisperlyBooking $item) use ($user, $booking) {
+                return $this->roomKey($user, $item) === $this->roomKey($user, $booking);
+            });
+
+            $unreadCount = 0;
+            $lastMessage = null;
+
+            foreach ($roomBookings as $roomBooking) {
+                $conversation = $roomBooking->conversation;
+
+                if (! $conversation) {
+                    continue;
+                }
+
+                $messages = $conversation->messages()
+                    ->when(
+                        $userChatState?->cleared_at,
+                        function ($query, $clearedAt) {
+                            $query->where('created_at', '>', $clearedAt);
+                        }
+                    )
+                    ->get();
+
+                foreach ($messages as $message) {
+                    if (
+                        ! $lastMessage
+                        || (
+                            $message->created_at
+                            && $message->created_at->gt($lastMessage->created_at)
+                        )
+                    ) {
+                        $lastMessage = $message;
+                    }
+
+                    if ((string) $message->sender_id === (string) $user->id) {
+                        continue;
+                    }
+
+                    $lastRead = $readTimes[$roomKey] ?? null;
+                    $messageTime = $message->created_at;
+
+                    if (
+                        ! $lastRead
+                        || (
+                            $messageTime
+                            && $messageTime->gt(Carbon::parse($lastRead))
+                        )
+                    ) {
+                        $unreadCount++;
+                    }
+                }
+            }
+
+            $otherName = $user->role === 'user'
+                ? ($booking->talent?->pengguna?->username ?? 'Talent')
+                : ($booking->pengguna?->username ?? 'User');
+
+            $lastMessageTime = $lastMessage?->created_at;
+
+            return [
+                'booking_id' => (string) $booking->id,
+                'name' => $otherName,
+                'last_message' => $lastMessage?->message ?? 'Belum ada pesan',
+                'time' => $lastMessageTime
+                    ? $lastMessageTime->format('H:i')
+                    : substr($booking->schedule?->start_time ?? '00:00', 0, 5),
+                'timestamp' => $lastMessageTime
+                    ? $lastMessageTime->toIso8601String()
+                    : ($booking->created_at?->toIso8601String() ?? ''),
+                'unread_count' => $unreadCount,
+                'last_message_from_me' => $lastMessage
+                    ? (string) $lastMessage->sender_id === (string) $user->id
+                    : false,
+                'last_message_is_read' => $lastMessage
+                    && (string) $lastMessage->sender_id === (string) $user->id
+                    && isset($readTimes[$roomKey])
+                    && $lastMessage->created_at->lte(Carbon::parse($readTimes[$roomKey])),
+            ];
+        })->values()->all();
+
+        usort($result, function (array $a, array $b) {
+            return strcmp($b['timestamp'], $a['timestamp']);
+        });
+
+        return response()->json([
+            'chats' => $result,
+        ]);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
     | ROOM CHAT
     |--------------------------------------------------------------------------
     */
@@ -531,6 +689,12 @@ class WhisperlyChatController extends Controller
                             );
                         }
                     )
+                    ->whereNotIn(
+                        'id',
+                        DB::table('whisperly_message_user_deletions')
+                            ->where('user_id', (string) $user->id)
+                            ->pluck('message_id')
+                    )
                     ->orderBy('created_at')
                     ->get();
 
@@ -609,7 +773,6 @@ class WhisperlyChatController extends Controller
                     ->first();
 
             if ($laralagBooking) {
-
                 $existingRating =
                     ratings::query()
                         ->where(
@@ -809,22 +972,22 @@ class WhisperlyChatController extends Controller
                 }
             );
 
-        $allBookings =
-            $allBookings
-                ->filter(
-                    function (
-                        WhisperlyBooking $item
-                    ) {
+        /*
+        |--------------------------------------------------------------------------
+        | JANGAN SEMBUNYIKAN BOOKING YANG BELUM PUNYA PESAN
+        |--------------------------------------------------------------------------
+        |
+        | Room yang sedang dibuka tetap harus muncul di sidebar walaupun
+        | belum pernah ada pesan. Sebelumnya booking tanpa pesan difilter
+        | di sini sehingga room Zuzup bisa terbuka di kanan tetapi hilang
+        | dari daftar chat di kiri.
+        |
+        | Booking yang sudah di-archive/delete tetap sudah difilter di atas.
+        |--------------------------------------------------------------------------
+        */
 
-                        return
-                            $item->conversation
-                            &&
-                            $item->conversation
-                                ->messages
-                                ->isNotEmpty();
-                    }
-                )
-                ->values();
+        $allBookings =
+            $allBookings->values();
 
         /*
         |--------------------------------------------------------------------------
@@ -1195,6 +1358,17 @@ class WhisperlyChatController extends Controller
         |--------------------------------------------------------------------------
         | SINKRONKAN BOOKING
         |--------------------------------------------------------------------------
+        |
+        | Whisperly:
+        | whisperly_bookings.id
+        |
+        | Laralag:
+        | bookings.id
+        |
+        | Hubungannya:
+        | bookings.source_booking_id
+        | = whisperly_bookings.id
+        |
         */
 
         $booking->syncLaralagBooking(
@@ -1437,10 +1611,327 @@ class WhisperlyChatController extends Controller
     |--------------------------------------------------------------------------
     */
 
+    public function messages(
+        Request $request,
+        WhisperlyBooking $booking
+    ): JsonResponse {
+        $user = $request->user('whisperly');
+
+        abort_unless($user, 403);
+
+        $this->authorizeBookingAccess(
+            $user,
+            $booking
+        );
+
+        $userChatState = $this->chatUserState(
+            $user,
+            $booking
+        );
+
+        /*
+         |--------------------------------------------------------------------------
+         | AMBIL SEMUA BOOKING DALAM ROOM YANG SAMA
+         |--------------------------------------------------------------------------
+         |
+         | Satu room Whisperly bisa mempunyai beberapa booking dengan orang yang
+         | sama. Karena halaman show juga menampilkan gabungan pesan satu room,
+         | endpoint realtime harus mengembalikan pesan dari seluruh booking room.
+         |
+         */
+        $roomBookingsQuery = WhisperlyBooking::query()
+            ->with([
+                'conversation.messages.sender',
+            ]);
+
+        if ($user->role === 'user') {
+            $roomBookingsQuery
+                ->where('pengguna_id', $user->id)
+                ->where('talent_id', $booking->talent_id);
+        } elseif ($user->role === 'talent') {
+            $roomBookingsQuery
+                ->where('pengguna_id', $booking->pengguna_id)
+                ->where('talent_id', $booking->talent_id);
+        } else {
+            abort(403);
+        }
+
+        $roomBookings = $roomBookingsQuery->get();
+
+        $messages = collect();
+
+        foreach ($roomBookings as $roomBooking) {
+            $conversation = $roomBooking->conversation;
+
+            if (! $conversation) {
+                continue;
+            }
+
+            $roomMessages = $conversation->messages
+                ->when(
+                    $userChatState?->cleared_at,
+                    function ($messages, $clearedAt) {
+                        return $messages->filter(
+                            function ($message) use ($clearedAt) {
+                                return $message->created_at
+                                    && $message->created_at->gt($clearedAt);
+                            }
+                        );
+                    }
+                )
+                ->reject(function ($message) use ($user) {
+                    return DB::table('whisperly_message_user_deletions')
+                        ->where('message_id', (string) $message->id)
+                        ->where('user_id', (string) $user->id)
+                        ->exists();
+                });
+
+            foreach ($roomMessages as $message) {
+                $messages->push($message);
+            }
+        }
+
+        $messages = $messages
+            ->sortBy(function ($message) {
+                return $message->created_at?->timestamp ?? 0;
+            })
+            ->values();
+
+        /* Status baca tidak lagi digunakan oleh UI chat. */
+
+        $messageIds = $messages
+            ->pluck('id')
+            ->map(fn ($id) => (string) $id)
+            ->values()
+            ->all();
+
+        $reactionsByMessage = empty($messageIds)
+            ? collect()
+            : DB::table('whisperly_message_reactions')
+                ->whereIn('message_id', $messageIds)
+                ->get(['message_id', 'user_id', 'emoji'])
+                ->groupBy(fn ($reaction) => (string) $reaction->message_id);
+
+        $result = $messages->map(function ($message) use ($user, $reactionsByMessage) {
+            $isMine =
+                (string) $message->sender_id
+                ===
+                (string) $user->id;
+
+            $messageReactions = $reactionsByMessage
+                ->get((string) $message->id, collect())
+                ->map(function ($reaction) {
+                    return [
+                        'user_id' => (string) $reaction->user_id,
+                        'emoji' => (string) $reaction->emoji,
+                    ];
+                })
+                ->values()
+                ->all();
+
+            return [
+                'id' => (string) $message->id,
+                'sender_id' => (string) $message->sender_id,
+                'sender_name' =>
+                    $message->sender?->username
+                    ?? ($isMine ? 'Anda' : 'User'),
+                'message' => $message->message,
+                'image_url' => $message->image_path
+                    ? asset('storage/' . $message->image_path)
+                    : null,
+                'time' => $message->created_at
+                    ? $message->created_at->format('H:i')
+                    : '',
+                'created_at' => $message->created_at
+                    ? $message->created_at->toIso8601String()
+                    : null,
+                'is_read' => (bool) ($message->is_read ?? false),
+                'reactions' => $messageReactions,
+            ];
+        })->values();
+
+        return response()->json([
+            'messages' => $result,
+        ]);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | REACTION PESAN
+    |--------------------------------------------------------------------------
+    */
+
+    public function react(
+        Request $request,
+        WhisperlyBooking $booking,
+        string $message
+    ): JsonResponse {
+        $user = $request->user('whisperly');
+
+        abort_unless($user, 403);
+
+        $this->authorizeBookingAccess($user, $booking);
+
+        $messageModel = $this->findRoomMessage($user, $booking, $message);
+
+        abort_unless($messageModel, 404);
+
+        $validated = $request->validate([
+            'emoji' => ['nullable', 'string', 'max:20'],
+        ]);
+
+        $emoji = trim((string) ($validated['emoji'] ?? ''));
+
+        if ($emoji === '') {
+            DB::table('whisperly_message_reactions')
+                ->where('message_id', (string) $messageModel->id)
+                ->where('user_id', (string) $user->id)
+                ->delete();
+        } else {
+            DB::table('whisperly_message_reactions')->updateOrInsert(
+                [
+                    'message_id' => (string) $messageModel->id,
+                    'user_id' => (string) $user->id,
+                ],
+                [
+                    'emoji' => $emoji,
+                    'updated_at' => now(),
+                    'created_at' => now(),
+                ]
+            );
+        }
+
+        return response()->json([
+            'ok' => true,
+            'message_id' => (string) $messageModel->id,
+            'reactions' => $this->getMessageReactions($messageModel->id),
+        ]);
+    }
+
+
+    public function deleteMessage(
+        Request $request,
+        WhisperlyBooking $booking,
+        string $message
+    ): JsonResponse {
+        $user = $request->user('whisperly');
+
+        abort_unless($user, 403);
+
+        $this->authorizeBookingAccess($user, $booking);
+
+        $messageModel = $this->findRoomMessage($user, $booking, $message);
+
+        abort_unless($messageModel, 404);
+
+        $isMine = (string) $messageModel->sender_id === (string) $user->id;
+
+        if ($isMine) {
+            // Pesan milik sendiri: hapus untuk semua orang.
+            DB::table('whisperly_message_reactions')
+                ->where('message_id', (string) $messageModel->id)
+                ->delete();
+
+            DB::table('whisperly_message_user_deletions')
+                ->where('message_id', (string) $messageModel->id)
+                ->delete();
+
+            if (! empty($messageModel->image_path)) {
+                Storage::disk('public')->delete($messageModel->image_path);
+            }
+
+            $messageModel->delete();
+
+            return response()->json([
+                'ok' => true,
+                'message_id' => (string) $messageModel->id,
+                'scope' => 'everyone',
+            ]);
+        }
+
+        // Pesan lawan: hanya sembunyikan untuk user yang menekan Hapus.
+        DB::table('whisperly_message_user_deletions')->updateOrInsert(
+            [
+                'message_id' => (string) $messageModel->id,
+                'user_id' => (string) $user->id,
+            ],
+            [
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
+        return response()->json([
+            'ok' => true,
+            'message_id' => (string) $messageModel->id,
+            'scope' => 'me',
+        ]);
+    }
+
+
+    private function findRoomMessage(
+        pengguna $user,
+        WhisperlyBooking $booking,
+        string $messageId
+    ) {
+        $roomBookingsQuery = WhisperlyBooking::query()
+            ->with('conversation');
+
+        if ($user->role === 'user') {
+            $roomBookingsQuery
+                ->where('pengguna_id', $user->id)
+                ->where('talent_id', $booking->talent_id);
+        } elseif ($user->role === 'talent') {
+            $roomBookingsQuery
+                ->where('pengguna_id', $booking->pengguna_id)
+                ->where('talent_id', $booking->talent_id);
+        } else {
+            return null;
+        }
+
+        foreach ($roomBookingsQuery->get() as $roomBooking) {
+            $conversation = $roomBooking->conversation;
+
+            if (! $conversation) {
+                continue;
+            }
+
+            $found = $conversation
+                ->messages()
+                ->whereKey($messageId)
+                ->first();
+
+            if ($found) {
+                return $found;
+            }
+        }
+
+        return null;
+    }
+
+
+    private function getMessageReactions($messageId): array
+    {
+        return DB::table('whisperly_message_reactions')
+            ->where('message_id', (string) $messageId)
+            ->orderBy('created_at')
+            ->get(['user_id', 'emoji'])
+            ->map(function ($reaction) {
+                return [
+                    'user_id' => (string) $reaction->user_id,
+                    'emoji' => (string) $reaction->emoji,
+                ];
+            })
+            ->values()
+            ->all();
+    }
+
+
     public function store(
         Request $request,
         WhisperlyBooking $booking
-    ): RedirectResponse {
+    ): RedirectResponse|JsonResponse {
 
         $user =
             $request->user('whisperly');
@@ -1457,11 +1948,31 @@ class WhisperlyChatController extends Controller
 
         $request->validate([
             'message' => [
-                'required',
+                'nullable',
                 'string',
                 'max:2000',
+                'required_without:image',
+            ],
+            'image' => [
+                'nullable',
+                'image',
+                'mimes:jpg,jpeg,png,webp,gif',
+                'max:5120',
             ],
         ]);
+
+        if (! $request->filled('message') && ! $request->hasFile('image')) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'ok' => false,
+                    'message' => 'Pesan atau foto wajib diisi.',
+                ], 422);
+            }
+
+            return redirect()
+                ->route('whisperly.chat.show', $booking->id)
+                ->with('message_error', 'Pesan atau foto wajib diisi.');
+        }
 
         $booking->syncChatStatus();
 
@@ -1473,19 +1984,11 @@ class WhisperlyChatController extends Controller
         if ($chatStatus !== 'active') {
 
             if ($request->expectsJson()) {
-
                 return response()->json([
-                    'ok' =>
-                        false,
-
-                    'expired' =>
-                        true,
-
-                    'status' =>
-                        $chatStatus,
-
-                    'message' =>
-                        'Waktu booking telah selesai. Chat sudah ditutup.',
+                    'ok' => false,
+                    'expired' => true,
+                    'status' => $chatStatus,
+                    'message' => 'Waktu booking telah selesai. Chat sudah ditutup.',
                 ], 409);
             }
 
@@ -1544,20 +2047,63 @@ class WhisperlyChatController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $conversation
-            ->messages()
-            ->create([
-                'sender_id' =>
-                    $user->id,
+        $message =
+            $conversation
+                ->messages()
+                ->create([
+                    'sender_id' =>
+                        $user->id,
 
-                'message' =>
-                    trim(
-                        (string)
-                        $request->input(
-                            'message'
-                        )
-                    ),
+                    'message' =>
+                        trim(
+                            (string)
+                            $request->input(
+                                'message'
+                            )
+                        ),
+                ]);
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store(
+                'whisperly/chat-images',
+                'public'
+            );
+
+            $message->image_path = $imagePath;
+            $message->save();
+        }
+
+        $message->load('sender');
+
+        /*
+         |--------------------------------------------------------------------------
+         | AJAX / REALTIME
+         |--------------------------------------------------------------------------
+         */
+        if ($request->expectsJson()) {
+            return response()->json([
+                'ok' => true,
+                'message' => [
+                    'id' => (string) $message->id,
+                    'sender_id' => (string) $message->sender_id,
+                    'sender_name' =>
+                        $message->sender?->username
+                        ?? 'Anda',
+                    'message' => $message->message,
+                    'image_url' => $message->image_path
+                        ? asset('storage/' . $message->image_path)
+                        : null,
+                    'time' => $message->created_at
+                        ? $message->created_at->format('H:i')
+                        : '',
+                    'created_at' => $message->created_at
+                        ? $message->created_at->toIso8601String()
+                        : null,
+                    'is_read' => (bool) ($message->is_read ?? false),
+                    'reactions' => [],
+                ],
             ]);
+        }
 
         return redirect()
             ->route(
@@ -1568,93 +2114,6 @@ class WhisperlyChatController extends Controller
                 'status',
                 'Pesan terkirim.'
             );
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | AMBIL PESAN TERBARU
-    |--------------------------------------------------------------------------
-    */
-
-    public function messages(
-        Request $request,
-        WhisperlyBooking $booking
-    ): JsonResponse {
-
-        $user =
-            $request->user('whisperly');
-
-        abort_unless(
-            $user,
-            403
-        );
-
-        $this->authorizeBookingAccess(
-            $user,
-            $booking
-        );
-
-        $conversation =
-            $booking
-                ->conversation()
-                ->first();
-
-        if (! $conversation) {
-
-            return response()->json([
-                'messages' => [],
-            ]);
-        }
-
-        $messages =
-            $conversation
-                ->messages()
-                ->with('sender')
-                ->orderBy('created_at')
-                ->get();
-
-        return response()->json([
-            'messages' =>
-                $messages->map(
-                    function ($message) {
-
-                        return [
-                            'id' =>
-                                $message->id,
-
-                            'sender_id' =>
-                                $message->sender_id,
-
-                            'sender_name' =>
-                                $message
-                                    ->sender
-                                    ?->username
-                                ?? 'Pengguna',
-
-                            'message' =>
-                                $message->message,
-
-                            'created_at' =>
-                                $message
-                                    ->created_at
-                                    ?->toIso8601String(),
-
-                            'time' =>
-                                $message
-                                    ->created_at
-                                    ?->format('H:i'),
-
-                            'is_read' =>
-                                (bool) (
-                                    $message->is_read
-                                    ?? false
-                                ),
-                        ];
-                    }
-                )
-                ->values(),
-        ]);
     }
 
 
