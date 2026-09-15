@@ -503,29 +503,15 @@
 
                     <tr>
 
-                        <th class="col-no">
-                            No
-                        </th>
-
-                        <th class="col-booking">
-                            Booking
-                        </th>
-
-                        <th class="col-user">
-                            Pengguna
-                        </th>
-
-                        <th class="col-rating">
-                            Nilai Rating
-                        </th>
-
-                        <th class="col-review">
-                            Ulasan
-                        </th>
-
-                        <th class="col-action">
-                            Aksi
-                        </th>
+                        <th>No</th>
+                        <th>ID Booking</th>
+                        <th>Pengguna</th>
+                        <th>Talent</th>
+                        <th>Tanggal Booking</th>
+                        <th>Durasi Jam</th>
+                        <th>Nilai Rating</th>
+                        <th>Ulasan</th>
+                        <th>Aksi</th>
 
                     </tr>
 
@@ -543,48 +529,35 @@
                                 {{ $data->firstItem() + $loop->index }}
                             </td>
 
-
-                            {{-- BOOKING --}}
                             <td>
-
-                                @if ($item->booking)
-
-                                    <div class="booking-value">
-                                        {{ $item->booking->no ?? $item->booking->id }}
-                                    </div>
-
-                                @elseif ($item->id_booking)
-
-                                    <div class="booking-value">
-                                        {{ $item->id_booking }}
-                                    </div>
-
-                                @else
-
-                                    -
-
-                                @endif
-
+                                {{ $item->id}}
                             </td>
 
-
-                            {{-- PENGGUNA --}}
                             <td>
-
-                                @if ($item->pengguna)
-
-                                    <div class="username-value">
-                                        {{ $item->pengguna->username ?? '-' }}
-                                    </div>
-
-                                @else
-
-                                    -
-
-                                @endif
-
+                                {{ $item->booking->pengguna->username ?? '-' }}
                             </td>
 
+                            <td>
+                                {{ $item->booking->talent->pengguna->username ?? '-' }}
+                            </td>
+
+                            <td>
+                                {{ $item->booking->tanggal_booking ?? '-' }}
+                            </td>
+
+                            <td>
+                                @php
+                                    $schedule = $item->booking?->whisperlyBooking?->schedule;
+                                @endphp
+
+                                @if ($schedule)
+                                    {{ \Carbon\Carbon::parse($schedule->start_time)->format('H.i') }}
+                                    -
+                                    {{ \Carbon\Carbon::parse($schedule->end_time)->format('H.i') }}
+                                @else
+                                    -
+                                @endif
+                            </td>
 
                             {{-- NILAI RATING --}}
                             <td>
@@ -688,7 +661,7 @@
                         <tr>
 
                             <td
-                                colspan="6"
+                                colspan="7"
                                 class="empty-data"
                             >
                                 Belum ada data rating.

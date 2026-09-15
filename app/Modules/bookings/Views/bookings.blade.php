@@ -44,6 +44,7 @@
                         <thead>
                             <tr>
                                 <th width="15">No</th>
+                                <th>Kode Booking</th>
                                 <td>Pengguna</td>
 								<td>Talent</td>
 								<td>Tanggal Booking</td>
@@ -58,10 +59,20 @@
                             @forelse ($data as $item)
                                 <tr>
                                     <td>{{ $no++ }}</td>
+                                    <td>{{ $item->whisperlyBooking?->id ?? '-' }}</td>
                                     <td>{{ $item->pengguna?->username ?? '-' }}</td>
                                     <td>{{ $item->talent?->pengguna?->username ?? '-' }}</td>
 									<td>{{ $item->tanggal_booking }}</td>
-									<td>{{ $item->durasi_jam }}</td>
+									<td>
+                                        @if($item->whisperlyBooking?->schedule)
+                                            
+                                    {{ $item->whisperlyBooking->schedule->start_time_formatted }}
+                                        -
+                                            {{ $item->whisperlyBooking->schedule->end_time_formatted }}
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
 									<td>{{ $item->status }}</td>
 									
                                     <td>
@@ -72,7 +83,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="text-center"><i>No data.</i></td>
+                                    <td colspan="8" class="text-center"><i>No data.</i></td>
                                 </tr>
                             @endforelse
                         </tbody>

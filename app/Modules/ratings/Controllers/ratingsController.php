@@ -23,7 +23,12 @@ class ratingsController extends Controller
 
     public function index(Request $request)
     {
-        $query = ratings::with(['booking.talent', 'pengguna']);
+        $query = ratings::with([
+            'booking.pengguna',
+            'booking.talent.pengguna',
+            'booking.whisperlyBooking.schedule',
+            'pengguna',
+        ]);
 
         if ($request->filled('search')) {
             $search = $request->get('search');
@@ -196,6 +201,7 @@ class ratingsController extends Controller
         ]);
 
         $rating = ratings::findOrFail($id);
+        $rating->id_booking = $validated['id_booking'];
         $rating->id_booking = $validated['id_booking'];
         $rating->id_pengguna = $validated['id_pengguna'];
         $rating->nilai_rating = $validated['nilai_rating'];

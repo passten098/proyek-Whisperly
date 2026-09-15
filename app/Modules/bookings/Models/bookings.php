@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Modules\Pengguna\Models\Pengguna;
 use App\Modules\talents\Models\talents;
+use App\Modules\bookings\Models\WhisperlyBooking;
 
 class bookings extends Model
 {
@@ -23,6 +24,13 @@ class bookings extends Model
 	}
 public function talent(){
 		return $this->belongsTo(talents::class,"id_talent","id");
+	}
+	public function whisperlyBooking(){
+		return $this->belongsTo(
+			WhisperlyBooking::class,
+			'source_booking_id',
+			'id'
+		);
 	}
 
 }

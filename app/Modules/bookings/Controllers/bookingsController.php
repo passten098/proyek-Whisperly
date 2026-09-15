@@ -22,7 +22,7 @@ class bookingsController extends Controller
 
 	public function index(Request $request)
 	{
-		$query = bookings::query();
+		$query = bookings::with('whisperlyBooking');
 		if($request->has('search')){
 			$search = $request->get('search');
 			// $query->where('name', 'like', "%$search%");
