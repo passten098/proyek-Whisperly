@@ -1,3 +1,4 @@
+```blade
 @extends('layouts.app')
 
 @section('page-css')
@@ -529,35 +530,54 @@
                                 {{ $data->firstItem() + $loop->index }}
                             </td>
 
+
+                            {{-- ID BOOKING --}}
                             <td>
-                                {{ $item->id}}
+                                <div class="booking-value">
+                                    {{ $item->id_booking ?? '-' }}
+                                </div>
                             </td>
 
+
+                            {{-- PENGGUNA --}}
                             <td>
-                                {{ $item->booking->pengguna->username ?? '-' }}
+                                {{ $item->booking?->pengguna?->username ?? '-' }}
                             </td>
 
+
+                            {{-- TALENT --}}
                             <td>
-                                {{ $item->booking->talent->pengguna->username ?? '-' }}
+                                {{ $item->booking?->talent?->pengguna?->username ?? '-' }}
                             </td>
 
+
+                            {{-- TANGGAL BOOKING --}}
                             <td>
-                                {{ $item->booking->tanggal_booking ?? '-' }}
+                                {{ $item->booking?->tanggal_booking ?? '-' }}
                             </td>
 
+
+                            {{-- DURASI / JADWAL --}}
                             <td>
+
                                 @php
                                     $schedule = $item->booking?->whisperlyBooking?->schedule;
                                 @endphp
 
                                 @if ($schedule)
+
                                     {{ \Carbon\Carbon::parse($schedule->start_time)->format('H.i') }}
                                     -
                                     {{ \Carbon\Carbon::parse($schedule->end_time)->format('H.i') }}
+
                                 @else
+
                                     -
+
                                 @endif
+
                             </td>
+
 
                             {{-- NILAI RATING --}}
                             <td>
@@ -661,7 +681,7 @@
                         <tr>
 
                             <td
-                                colspan="7"
+                                colspan="9"
                                 class="empty-data"
                             >
                                 Belum ada data rating.

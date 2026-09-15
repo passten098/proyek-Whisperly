@@ -38,8 +38,13 @@ class ratings extends Model
 
     /*
     |--------------------------------------------------------------------------
-    | BOOKING LARALAG
+    | BOOKING
     |--------------------------------------------------------------------------
+    |
+    | ratings.id_booking
+    |        ↓
+    | bookings.kode_booking
+    |
     */
 
     public function booking()
@@ -47,7 +52,7 @@ class ratings extends Model
         return $this->belongsTo(
             bookings::class,
             'id_booking',
-            'id'
+            'kode_booking'
         );
     }
 
@@ -55,6 +60,11 @@ class ratings extends Model
     |--------------------------------------------------------------------------
     | PENGGUNA
     |--------------------------------------------------------------------------
+    |
+    | ratings.id_pengguna
+    |        ↓
+    | pengguna.id
+    |
     */
 
     public function pengguna()

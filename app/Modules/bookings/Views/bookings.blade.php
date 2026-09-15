@@ -1,3 +1,4 @@
+```blade
 @extends('layouts.app')
 
 @section('page-css')
@@ -11,11 +12,17 @@
                 <p class="kt-eyebrow mb-1">Data Management</p>
                 <h3 class="mb-0">{{ $title }}</h3>
             </div>
+
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">{{ $title }}</li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('dashboard') }}">Dashboard</a>
+                        </li>
+
+                        <li class="breadcrumb-item active" aria-current="page">
+                            {{ $title }}
+                        </li>
                     </ol>
                 </nav>
             </div>
@@ -25,74 +32,135 @@
     <section class="section">
         <div class="card kt-table-card">
             <div class="card-body">
+
                 <div class="row align-items-center mb-3 g-2">
+
                     <div class="col-12 col-md-9">
                         <form action="{{ route('bookings.index') }}" method="get">
                             <div class="form-group has-icon-left position-relative kt-search-input">
-                                <input type="text" class="form-control rounded-pill" value="{{ request()->get('search') }}" name="search" placeholder="Search">
-                                <div class="form-control-icon"><i class="fa fa-search"></i></div>
+
+                                <input
+                                    type="text"
+                                    class="form-control rounded-pill"
+                                    value="{{ request()->get('search') }}"
+                                    name="search"
+                                    placeholder="Search"
+                                >
+
+                                <div class="form-control-icon">
+                                    <i class="fa fa-search"></i>
+                                </div>
+
                             </div>
                         </form>
                     </div>
+
                     <div class="col-12 col-md-3 text-md-end">
-						{!! button('bookings.create', $title) !!}
+                        {!! button('bookings.create', $title) !!}
                     </div>
+
                 </div>
+
                 @include('include.flash')
+
                 <div class="table-responsive-md col-12">
                     <table class="table table-hover align-middle kt-table" id="table1">
+
                         <thead>
                             <tr>
                                 <th width="15">No</th>
                                 <th>Kode Booking</th>
                                 <td>Pengguna</td>
-								<td>Talent</td>
-								<td>Tanggal Booking</td>
-								<td>Durasi Jam</td>
-								<td>Status</td>
-								
+                                <td>Talent</td>
+                                <td>Tanggal Booking</td>
+                                <td>Durasi Jam</td>
+                                <td>Status</td>
                                 <th width="20%">Aksi</th>
                             </tr>
                         </thead>
+
                         <tbody>
-                            @php $no = $data->firstItem(); @endphp
+
+                            @php
+                                $no = $data->firstItem();
+                            @endphp
+
                             @forelse ($data as $item)
+
                                 <tr>
-                                    <td>{{ $no++ }}</td>
-                                    <td>{{ $item->whisperlyBooking?->id ?? '-' }}</td>
-                                    <td>{{ $item->pengguna?->username ?? '-' }}</td>
-                                    <td>{{ $item->talent?->pengguna?->username ?? '-' }}</td>
-									<td>{{ $item->tanggal_booking }}</td>
-									<td>
+
+                                    <td>
+                                        {{ $no++ }}
+                                    </td>
+
+                                    {{-- Kode Booking --}}
+                                    <td>
+                                        {{ $item->kode_booking ?? '-' }}
+                                    </td>
+
+                                    {{-- Pengguna --}}
+                                    <td>
+                                        {{ $item->pengguna?->username ?? '-' }}
+                                    </td>
+
+                                    {{-- Talent --}}
+                                    <td>
+                                        {{ $item->talent?->pengguna?->username ?? '-' }}
+                                    </td>
+
+                                    {{-- Tanggal Booking --}}
+                                    <td>
+                                        {{ $item->tanggal_booking }}
+                                    </td>
+
+                                    {{-- Durasi / Jadwal --}}
+                                    <td>
                                         @if($item->whisperlyBooking?->schedule)
-                                            
-                                    {{ $item->whisperlyBooking->schedule->start_time_formatted }}
-                                        -
-                                            {{ $item->whisperlyBooking->schedule->end_time_formatted }}
-                                        @else
+
+                                            {{ $item->whisperlyBooking->schedule->start_time_formatted }}
                                             -
+                                            {{ $item->whisperlyBooking->schedule->end_time_formatted }}
+
+                                        @else
+
+                                            -
+
                                         @endif
                                     </td>
-									<td>{{ $item->status }}</td>
-									
+
+                                    {{-- Status --}}
                                     <td>
-										{!! button('bookings.show','', $item->id) !!}
-										{!! button('bookings.edit', $title, $item->id) !!}
+                                        {{ $item->status }}
+                                    </td>
+
+                                    {{-- Aksi --}}
+                                    <td>
+                                        {!! button('bookings.show', '', $item->id) !!}
+                                        {!! button('bookings.edit', $title, $item->id) !!}
                                         {!! button('bookings.destroy', $title, $item->id) !!}
                                     </td>
+
                                 </tr>
+
                             @empty
+
                                 <tr>
-                                    <td colspan="8" class="text-center"><i>No data.</i></td>
+                                    <td colspan="8" class="text-center">
+                                        <i>No data.</i>
+                                    </td>
                                 </tr>
+
                             @endforelse
+
                         </tbody>
+
                     </table>
                 </div>
-				{{ $data->links() }}
+
+                {{ $data->links() }}
+
             </div>
         </div>
-
     </section>
 </div>
 @endsection
