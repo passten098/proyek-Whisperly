@@ -26,6 +26,12 @@ class WhisperlyBooking extends Model
         'status',
     ];
 
+    /*
+    |--------------------------------------------------------------------------
+    | PENGGUNA
+    |--------------------------------------------------------------------------
+    */
+
     public function pengguna()
     {
         return $this->belongsTo(
@@ -33,6 +39,12 @@ class WhisperlyBooking extends Model
             'pengguna_id'
         );
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | TALENT
+    |--------------------------------------------------------------------------
+    */
 
     public function talent()
     {
@@ -42,6 +54,12 @@ class WhisperlyBooking extends Model
         );
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | SCHEDULE
+    |--------------------------------------------------------------------------
+    */
+
     public function schedule()
     {
         return $this->belongsTo(
@@ -49,6 +67,12 @@ class WhisperlyBooking extends Model
             'schedule_id'
         );
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | CONVERSATION
+    |--------------------------------------------------------------------------
+    */
 
     public function conversation()
     {
@@ -67,7 +91,7 @@ class WhisperlyBooking extends Model
     |       ↓
     | bookings.source_booking_id
     |       ↓
-    | bookings.id
+    | bookings.kode_booking
     |       ↓
     | ratings.id_booking
     |
@@ -81,9 +105,15 @@ class WhisperlyBooking extends Model
             'source_booking_id',
             'id_booking',
             'id',
-            'id'
+            'kode_booking'
         );
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | SYNC CHAT STATUS
+    |--------------------------------------------------------------------------
+    */
 
     public function syncChatStatus(): void
     {
@@ -106,11 +136,35 @@ class WhisperlyBooking extends Model
         $this->syncLaralagBooking(false);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | SYNC KE TABEL BOOKINGS LARALAG
+    |--------------------------------------------------------------------------
+    |
+    | Whisperly:
+    | whisperly_bookings.id
+    |
+    | Laralag:
+    | bookings.id
+    |
+    | Hubungan:
+    | bookings.source_booking_id
+    | =
+    | whisperly_bookings.id
+    |
+    */
+
     public function syncLaralagBooking(bool $allowCreate = true): void
     {
         $status = $this->chatStatus();
 
         DB::transaction(function () use ($status, $allowCreate) {
+
+            /*
+            |--------------------------------------------------------------------------
+            | CARI BOOKING LARALAG
+            |--------------------------------------------------------------------------
+            */
 
             $booking = bookings::withTrashed()
                 ->where(
@@ -119,6 +173,12 @@ class WhisperlyBooking extends Model
                 )
                 ->lockForUpdate()
                 ->first();
+
+            /*
+            |--------------------------------------------------------------------------
+            | JIKA BELUM ADA
+            |--------------------------------------------------------------------------
+            */
 
             if (! $booking) {
 
@@ -129,8 +189,94 @@ class WhisperlyBooking extends Model
                 $booking = new bookings();
             }
 
+            /*
+            |--------------------------------------------------------------------------
+            | JIKA TERHAPUS
+            |--------------------------------------------------------------------------
+            */
+
             elseif ($booking->trashed()) {
                 $booking->restore();
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | GENERATE KODE BOOKING
+            |--------------------------------------------------------------------------
+            |
+            | Format:
+            |
+            | BK-000001
+            | BK-000002
+            | BK-000003
+            | ...
+            |
+            | Kalau booking sudah punya kode, kode TIDAK diubah.
+            |
+            */
+
+            if (
+                empty($booking->kode_booking)
+            ) {
+
+                /*
+                |--------------------------------------------------------------------------
+                | AMBIL KODE BOOKING TERAKHIR
+                |--------------------------------------------------------------------------
+                */
+
+                $lastBooking = bookings::withTrashed()
+                    ->whereNotNull('kode_booking')
+                    ->where(
+                        'kode_booking',
+                        'like',
+                        'BK-%'
+                    )
+                    ->orderByRaw(
+                        'CAST(SUBSTRING(kode_booking, 4) AS UNSIGNED) DESC'
+                    )
+                    ->lockForUpdate()
+                    ->first();
+
+                /*
+                |--------------------------------------------------------------------------
+                | NOMOR BERIKUTNYA
+                |--------------------------------------------------------------------------
+                */
+
+                $nextNumber = 1;
+
+                if ($lastBooking) {
+
+                    $lastCode =
+                        (string) $lastBooking->kode_booking;
+
+                    if (
+                        preg_match(
+                            '/^BK-(\d+)$/',
+                            $lastCode,
+                            $matches
+                        )
+                    ) {
+                        $nextNumber =
+                            ((int) $matches[1]) + 1;
+                    }
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | BENTUK KODE
+                |--------------------------------------------------------------------------
+                */
+
+                $booking->kode_booking =
+                    'BK-' .
+                    str_pad(
+                        (string) $nextNumber,
+                        6,
+                        '0',
+                        STR_PAD_LEFT
+                    );
             }
 
             /*
@@ -139,30 +285,76 @@ class WhisperlyBooking extends Model
             |--------------------------------------------------------------------------
             */
 
-            $booking->source_booking_id = $this->id;
+            $booking->source_booking_id =
+                $this->id;
 
-            $booking->id_pengguna = $this->pengguna_id;
+            /*
+            |--------------------------------------------------------------------------
+            | PENGGUNA
+            |--------------------------------------------------------------------------
+            */
 
-            $booking->id_talent = $this->talent_id;
+            $booking->id_pengguna =
+                $this->pengguna_id;
 
             $booking->pengguna_username =
                 $this->pengguna?->username;
 
+            /*
+            |--------------------------------------------------------------------------
+            | TALENT
+            |--------------------------------------------------------------------------
+            */
+
+            $booking->id_talent =
+                $this->talent_id;
+
             $booking->talent_username =
                 $this->talent?->pengguna?->username;
+
+            /*
+            |--------------------------------------------------------------------------
+            | TANGGAL BOOKING
+            |--------------------------------------------------------------------------
+            */
 
             $booking->tanggal_booking =
                 $this->created_at?->toDateString()
                 ?? now()->toDateString();
 
+            /*
+            |--------------------------------------------------------------------------
+            | DURASI
+            |--------------------------------------------------------------------------
+            */
+
             $booking->durasi_jam =
                 $this->durationHours();
 
-            $booking->status = $status;
+            /*
+            |--------------------------------------------------------------------------
+            | STATUS
+            |--------------------------------------------------------------------------
+            */
+
+            $booking->status =
+                $status;
+
+            /*
+            |--------------------------------------------------------------------------
+            | SIMPAN
+            |--------------------------------------------------------------------------
+            */
 
             $booking->save();
         });
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | DURASI BOOKING
+    |--------------------------------------------------------------------------
+    */
 
     public function durationHours(): float
     {
@@ -192,6 +384,12 @@ class WhisperlyBooking extends Model
             2
         );
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | CONVERT TIME KE MENIT
+    |--------------------------------------------------------------------------
+    */
 
     protected function toMinutes(
         string $timeValue
@@ -225,6 +423,12 @@ class WhisperlyBooking extends Model
             );
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | CEK BOLEH RATING
+    |--------------------------------------------------------------------------
+    */
+
     public function canBeRatedBy(
         pengguna $user
     ): bool {
@@ -232,6 +436,12 @@ class WhisperlyBooking extends Model
         return $this->pengguna_id === $user->id
             && $this->chatStatus() === 'completed';
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | STATUS CHAT
+    |--------------------------------------------------------------------------
+    */
 
     public function chatStatus(): string
     {
