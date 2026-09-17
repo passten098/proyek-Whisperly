@@ -1694,6 +1694,11 @@
 
                         {{-- =================================================
                              ITEM CHAT
+                             CATATAN PERBAIKAN:
+                             Ditambahkan atribut data-booking-id agar
+                             JavaScript realtime update bisa menemukan
+                             item ini secara akurat, terlepas dari
+                             format ID (numeric / UUID).
                         ================================================== --}}
 
                         <a
@@ -1705,6 +1710,8 @@
                             data-name="{{ strtolower($otherName) }}"
 
                             data-unread="{{ $unreadCount > 0 ? 'true' : 'false' }}"
+
+                            data-booking-id="{{ $booking->id }}"
                         >
 
 
@@ -1911,6 +1918,11 @@
 
         /* =========================================================
            SEARCH CHAT
+
+           CATATAN PERBAIKAN:
+           Logika search sekarang didelegasikan ke applyChatFilter()
+           supaya konsisten dengan filter "Semua / Belum Dibaca"
+           dan tidak bentrok dengan update DOM dari polling.
         ========================================================= */
 
         const searchInput =
@@ -1931,33 +1943,7 @@
                 'input',
                 function () {
 
-                    const keyword =
-                        this.value
-                            .toLowerCase()
-                            .trim();
-
-
-                    chatItems.forEach(
-                        function (item) {
-
-                            const name =
-                                item.dataset.name
-                                || '';
-
-
-                            const matches =
-                                name.includes(
-                                    keyword
-                                );
-
-
-                            item.style.display =
-                                matches
-                                    ? 'grid'
-                                    : 'none';
-
-                        }
-                    );
+                    applyChatFilter();
 
                 }
             );
@@ -1967,6 +1953,12 @@
 
         /* =========================================================
            FILTER BELUM DIBACA
+
+           CATATAN PERBAIKAN:
+           Tombol filter sekarang hanya mengubah state
+           currentFilter, lalu memanggil applyChatFilter()
+           supaya search & filter selalu sinkron, baik saat
+           interaksi user maupun setelah polling update DOM.
         ========================================================= */
 
         const filterButtons =
@@ -2003,53 +1995,291 @@
                         );
 
 
-                        const filter =
+                        currentFilter =
                             this.dataset.filter;
 
 
-                        /* =================================================
-                           FILTER CHAT
-                        ================================================= */
-
-                        chatItems.forEach(
-                            function (item) {
-
-
-                                if (
-                                    filter === 'all'
-                                ) {
-
-                                    item.style.display =
-                                        'grid';
-
-                                    return;
-                                }
-
-
-                                if (
-                                    filter === 'unread'
-                                ) {
-
-                                    const unread =
-                                        item.dataset.unread
-                                        === 'true';
-
-
-                                    item.style.display =
-                                        unread
-                                            ? 'grid'
-                                            : 'none';
-
-                                }
-
-                            }
-                        );
+                        applyChatFilter();
 
                     }
                 );
 
             }
         );
+
+
+        /* =========================================================
+           REALTIME CHAT LIST
+
+           CATATAN PERBAIKAN (baru):
+           Blok ini menambahkan mekanisme update otomatis tanpa
+           refresh: polling ke endpoint /whisperly/chat/updates
+           setiap 2.5 detik, lalu memperbarui preview pesan, jam,
+           badge unread, indikator centang, dan urutan chat
+           (chat dengan pesan terbaru naik ke atas). Desain HTML/CSS
+           yang sudah ada TIDAK diubah — hanya konten & urutan DOM
+           yang di-refresh lewat JavaScript.
+        ========================================================= */
+
+        let currentFilter = 'all';
+        let isUpdatingChatList = false;
+
+        async function updateChatList() {
+
+            if (isUpdatingChatList) {
+                return;
+            }
+
+            isUpdatingChatList = true;
+
+            try {
+
+                const response = await fetch(
+                    "{{ route('whisperly.chat.updates') }}",
+                    {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        cache: 'no-store'
+                    }
+                );
+
+                if (!response.ok) {
+                    return;
+                }
+
+                const data = await response.json();
+
+                if (!data.chats) {
+                    return;
+                }
+
+                data.chats.forEach(function (chat) {
+
+                    const item = document.querySelector(
+                        `.chat-item[data-booking-id="${chat.booking_id}"]`
+                    );
+
+                    if (!item) {
+                        return;
+                    }
+
+                    const preview = item.querySelector(
+                        '.chat-item-preview'
+                    );
+
+                    const time = item.querySelector(
+                        '.chat-item-time'
+                    );
+
+                    const right = item.querySelector(
+                        '.chat-item-right'
+                    );
+
+                    if (preview) {
+                        preview.textContent = chat.last_message;
+                    }
+
+                    if (time) {
+                        time.textContent = chat.time;
+                    }
+
+                    /*
+                     * Hapus badge unread lama
+                     */
+                    const oldBadge = item.querySelector(
+                        '.unread-badge'
+                    );
+
+                    if (oldBadge) {
+                        oldBadge.remove();
+                    }
+
+                    /*
+                     * Update class unread
+                     */
+                    if (chat.unread_count > 0) {
+
+                        item.classList.add('unread');
+                        item.dataset.unread = 'true';
+
+                        if (right) {
+
+                            const badge = document.createElement('span');
+
+                            badge.className = 'unread-badge';
+
+                            badge.textContent =
+                                chat.unread_count > 99
+                                    ? '99+'
+                                    : chat.unread_count;
+
+                            right.appendChild(badge);
+                        }
+
+                    } else {
+
+                        item.classList.remove('unread');
+                        item.dataset.unread = 'false';
+                    }
+
+                    /*
+                     * Update indikator pesan terakhir
+                     */
+                    const oldIndicator = item.querySelector(
+                        '.message-indicator'
+                    );
+
+                    if (oldIndicator) {
+                        oldIndicator.remove();
+                    }
+
+                    if (
+                        chat.last_message &&
+                        chat.last_message_from_me &&
+                        right
+                    ) {
+
+                        const indicator = document.createElement('span');
+
+                        indicator.className = 'message-indicator';
+
+                        indicator.textContent =
+                            chat.last_message_is_read
+                                ? '✓✓'
+                                : '✓';
+
+                        right.appendChild(indicator);
+                    }
+
+                });
+
+                /*
+                 * Pindahkan chat yang punya pesan terbaru ke atas.
+                 */
+                sortChatList(data.chats);
+
+                /*
+                 * Terapkan kembali filter & search.
+                 */
+                applyChatFilter();
+
+            } catch (error) {
+
+                console.error(
+                    'Gagal memperbarui chat list:',
+                    error
+                );
+
+            } finally {
+
+                isUpdatingChatList = false;
+            }
+        }
+
+
+        /* =========================================================
+           SORT CHAT
+        ========================================================= */
+
+        function sortChatList(chats) {
+
+            const chatList =
+                document.getElementById('chat-list');
+
+            if (!chatList) {
+                return;
+            }
+
+            const items = Array.from(
+                chatList.querySelectorAll('.chat-item')
+            );
+
+            const order = {};
+
+            chats.forEach(function (chat, index) {
+                order[String(chat.booking_id)] = index;
+            });
+
+            items.sort(function (a, b) {
+
+                const aId =
+                    a.dataset.bookingId || '';
+
+                const bId =
+                    b.dataset.bookingId || '';
+
+                const aOrder =
+                    order[String(aId)] ?? 999999;
+
+                const bOrder =
+                    order[String(bId)] ?? 999999;
+
+                return aOrder - bOrder;
+            });
+
+            items.forEach(function (item) {
+                chatList.appendChild(item);
+            });
+        }
+
+
+        /* =========================================================
+           FILTER (SEARCH + BELUM DIBACA)
+        ========================================================= */
+
+        function applyChatFilter() {
+
+            const keyword =
+                searchInput
+                    ? searchInput.value.toLowerCase().trim()
+                    : '';
+
+            document
+                .querySelectorAll('.chat-item')
+                .forEach(function (item) {
+
+                    const name =
+                        item.dataset.name || '';
+
+                    const matchesSearch =
+                        name.includes(keyword);
+
+                    const matchesFilter =
+                        currentFilter === 'all'
+                            ||
+                        (
+                            currentFilter === 'unread'
+                            &&
+                            item.dataset.unread === 'true'
+                        );
+
+                    item.style.display =
+                        matchesSearch && matchesFilter
+                            ? 'grid'
+                            : 'none';
+                });
+        }
+
+
+        /* =========================================================
+           POLLING
+        ========================================================= */
+
+        setInterval(
+            updateChatList,
+            2500
+        );
+
+
+        /*
+         * Jalankan sekali saat halaman selesai dibuka,
+         * supaya data langsung fresh tanpa menunggu interval
+         * pertama (2.5 detik).
+         */
+        updateChatList();
 
     </script>
 

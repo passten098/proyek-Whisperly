@@ -1,3 +1,4 @@
+```blade
 @extends('layouts.app')
 
 @section('page-css')
@@ -503,29 +504,15 @@
 
                     <tr>
 
-                        <th class="col-no">
-                            No
-                        </th>
-
-                        <th class="col-booking">
-                            Booking
-                        </th>
-
-                        <th class="col-user">
-                            Pengguna
-                        </th>
-
-                        <th class="col-rating">
-                            Nilai Rating
-                        </th>
-
-                        <th class="col-review">
-                            Ulasan
-                        </th>
-
-                        <th class="col-action">
-                            Aksi
-                        </th>
+                        <th>No</th>
+                        <th>ID Booking</th>
+                        <th>Pengguna</th>
+                        <th>Talent</th>
+                        <th>Tanggal Booking</th>
+                        <th>Durasi Jam</th>
+                        <th>Nilai Rating</th>
+                        <th>Ulasan</th>
+                        <th>Aksi</th>
 
                     </tr>
 
@@ -544,38 +531,44 @@
                             </td>
 
 
-                            {{-- BOOKING --}}
+                            {{-- ID BOOKING --}}
                             <td>
-
-                                @if ($item->booking)
-
-                                    <div class="booking-value">
-                                        {{ $item->booking->no ?? $item->booking->id }}
-                                    </div>
-
-                                @elseif ($item->id_booking)
-
-                                    <div class="booking-value">
-                                        {{ $item->id_booking }}
-                                    </div>
-
-                                @else
-
-                                    -
-
-                                @endif
-
+                                <div class="booking-value">
+                                    {{ $item->id_booking ?? '-' }}
+                                </div>
                             </td>
 
 
                             {{-- PENGGUNA --}}
                             <td>
+                                {{ $item->booking?->pengguna?->username ?? '-' }}
+                            </td>
 
-                                @if ($item->pengguna)
 
-                                    <div class="username-value">
-                                        {{ $item->pengguna->username ?? '-' }}
-                                    </div>
+                            {{-- TALENT --}}
+                            <td>
+                                {{ $item->booking?->talent?->pengguna?->username ?? '-' }}
+                            </td>
+
+
+                            {{-- TANGGAL BOOKING --}}
+                            <td>
+                                {{ $item->booking?->tanggal_booking ?? '-' }}
+                            </td>
+
+
+                            {{-- DURASI / JADWAL --}}
+                            <td>
+
+                                @php
+                                    $schedule = $item->booking?->whisperlyBooking?->schedule;
+                                @endphp
+
+                                @if ($schedule)
+
+                                    {{ \Carbon\Carbon::parse($schedule->start_time)->format('H.i') }}
+                                    -
+                                    {{ \Carbon\Carbon::parse($schedule->end_time)->format('H.i') }}
 
                                 @else
 
@@ -688,7 +681,7 @@
                         <tr>
 
                             <td
-                                colspan="6"
+                                colspan="9"
                                 class="empty-data"
                             >
                                 Belum ada data rating.

@@ -931,29 +931,23 @@ class menfessController extends Controller
         */
 
         $parentComment = null;
+        $rootComment = null;
 
         if ($replyTo) {
-
-            $parentComment = comments::with('pengguna')
-                ->where(
-                    'id',
-                    $replyTo
-                )
-                ->where(
-                    'id_menfess',
-                    $menfess->id
-                )
-                ->first();
-
-
             /*
             |--------------------------------------------------------------------------
-            | JIKA PARENT TIDAK DITEMUKAN
+            | AMBIL KOMENTAR YANG DIKLIK
             |--------------------------------------------------------------------------
+            | Tombol Balas boleh diklik pada komentar utama maupun reply.
+            | Semua reply dalam satu percakapan akan disimpan ke root yang sama.
             */
 
-            if (!$parentComment) {
+            $parentComment = comments::with('pengguna')
+                ->where('id', $replyTo)
+                ->where('id_menfess', $menfess->id)
+                ->first();
 
+            if (!$parentComment) {
                 return back()
                     ->with(
                         'message_error',
@@ -961,40 +955,44 @@ class menfessController extends Controller
                     );
             }
 
+            /* Cari komentar utama/root percakapan. */
+            $rootComment = $parentComment;
+            $visited = [];
 
-            /*
-            |--------------------------------------------------------------------------
-            | TAMBAHKAN MENTION @USERNAME
-            |--------------------------------------------------------------------------
-            */
+            while (!empty($rootComment->reply_to)) {
+                if (isset($visited[$rootComment->id])) {
+                    break;
+                }
 
+                $visited[$rootComment->id] = true;
+
+                $nextParent = comments::where('id', $rootComment->reply_to)
+                    ->where('id_menfess', $menfess->id)
+                    ->first();
+
+                if (!$nextParent) {
+                    break;
+                }
+
+                $rootComment = $nextParent;
+            }
+
+            /* Mention tetap menuju user yang tombol Balas-nya diklik. */
             $targetUsername =
                 $parentComment->pengguna?->username
                 ?? 'Pengguna';
 
+            $mention = '@' . $targetUsername;
 
-            $mention =
-                '@' . $targetUsername;
-
-
-            /*
-            |--------------------------------------------------------------------------
-            | CEGAH @USERNAME DOBEL
-            |--------------------------------------------------------------------------
-            */
-
-            if (
-                !str_starts_with(
-                    strtolower($komentar),
-                    strtolower($mention)
-                )
-            ) {
-
-                $komentar =
-                    $mention
-                    . ' '
-                    . $komentar;
+            if (!str_starts_with(
+                strtolower($komentar),
+                strtolower($mention)
+            )) {
+                $komentar = $mention . ' ' . $komentar;
             }
+
+            /* PENTING: reply_to selalu diarahkan ke root. */
+            $replyTo = $rootComment->id;
         }
 
 
@@ -1010,8 +1008,8 @@ class menfessController extends Controller
         | Kalau komentar utama:
         |     reply_to = null
         |
-        | Kalau membalas komentar:
-        |     reply_to = ID komentar yang dibalas
+        | Kalau membalas komentar atau reply:
+        |     reply_to = ID komentar utama/root percakapan
         |
         */
 
@@ -1029,7 +1027,7 @@ class menfessController extends Controller
                 'active',
 
             'reply_to' =>
-                $parentComment?->id,
+                $replyTo,
         ]);
 
 
@@ -1050,7 +1048,7 @@ class menfessController extends Controller
                     $user->id,
 
                 'reply_to' =>
-                    $parentComment?->id,
+                    $replyTo,
             ]
         );
 

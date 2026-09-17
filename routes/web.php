@@ -20,7 +20,8 @@ use Illuminate\Support\Facades\Auth;
 |--------------------------------------------------------------------------
 */
 
-Route::view('/', 'landing')->name('frontend.index');
+Route::view('/', 'landing')
+    ->name('frontend.index');
 
 
 /*
@@ -103,8 +104,42 @@ Route::middleware([
     })->name('whisperly.home');
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | PROFIL WHISPERLY
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/whisperly/profile', [
+        WhisperlyProfileController::class,
+        'show'
+    ])->name('whisperly.profile');
+
+    Route::post('/whisperly/profile/bio', [
+        WhisperlyProfileController::class,
+        'updateBio'
+    ])->name('whisperly.profile.bio.update');
+
+    Route::post('/whisperly/profile/photo', [
+        WhisperlyProfileController::class,
+        'updatePhoto'
+    ])->name('whisperly.profile.photo.update');
+
+    Route::delete('/whisperly/profile/photo', [
+        WhisperlyProfileController::class,
+        'deletePhoto'
+    ])->name('whisperly.profile.photo.delete');
+
+
     Route::view('/selamat', 'whisperly.home')
         ->name('selamat');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | BOOKING
+    |--------------------------------------------------------------------------
+    */
 
     Route::view('/booking', 'whisperly.booking')
         ->name('booking');
@@ -114,9 +149,6 @@ Route::middleware([
     |--------------------------------------------------------------------------
     | PENGADUAN / MENFESS
     |--------------------------------------------------------------------------
-    |
-    | Halaman menfess dapat dilihat oleh semua akun Whisperly.
-    |
     */
 
     Route::get('/pengaduan', [
@@ -129,11 +161,6 @@ Route::middleware([
     |--------------------------------------------------------------------------
     | KOMENTAR / BALAS MENFESS
     |--------------------------------------------------------------------------
-    |
-    | User   -> bisa membalas
-    | Talent -> bisa membalas
-    | Admin  -> bisa membalas
-    |
     */
 
     Route::post('/pengaduan/{menfess}/comments', [
@@ -166,52 +193,141 @@ Route::middleware([
     */
 
     Route::get('/whisperly/chat', [
-    WhisperlyChatController::class,
-    'index'
-])->name('whisperly.chat.index');
-
-Route::post('/whisperly/chat/{booking}/delete', [
-    WhisperlyChatController::class,
-    'deleteChat'
-])->name('whisperly.chat.delete');
-
-Route::post('/whisperly/chat/{booking}/clear', [
-    WhisperlyChatController::class,
-    'clearChat'
-])->name('whisperly.chat.clear');
-
-Route::post('/whisperly/chat/heartbeat', [
-    WhisperlyChatController::class,
-    'heartbeat'
-])->name('whisperly.chat.heartbeat');
-
-Route::post('/whisperly/chat/typing', [
-    WhisperlyChatController::class,
-    'typing'
-])->name('whisperly.chat.typing');
+        WhisperlyChatController::class,
+        'index'
+    ])->name('whisperly.chat.index');
 
 
-/* TAMBAHKAN INI */
-Route::get('/whisperly/chat/{booking}/messages', [
-    WhisperlyChatController::class,
-    'messages'
-])->name('whisperly.chat.messages');
+    /*
+    |--------------------------------------------------------------------------
+    | REALTIME CHAT LIST UPDATE
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/whisperly/chat/updates', [
+        WhisperlyChatController::class,
+        'updates'
+    ])->name('whisperly.chat.updates');
 
 
-Route::get('/whisperly/chat/{booking}/presence', [
-    WhisperlyChatController::class,
-    'presence'
-])->name('whisperly.chat.presence');
+    /*
+    |--------------------------------------------------------------------------
+    | DELETE CHAT
+    |--------------------------------------------------------------------------
+    */
 
-Route::get('/whisperly/chat/{booking}', [
-    WhisperlyChatController::class,
-    'show'
-])->name('whisperly.chat.show');
+    Route::post('/whisperly/chat/{booking}/delete', [
+        WhisperlyChatController::class,
+        'deleteChat'
+    ])->name('whisperly.chat.delete');
 
-Route::post('/whisperly/chat/{booking}', [
-    WhisperlyChatController::class,
-    'store'
-])->name('whisperly.chat.store');
+
+    /*
+    |--------------------------------------------------------------------------
+    | CLEAR CHAT
+    |--------------------------------------------------------------------------
+    */
+
+    Route::post('/whisperly/chat/{booking}/clear', [
+        WhisperlyChatController::class,
+        'clearChat'
+    ])->name('whisperly.chat.clear');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | HEARTBEAT
+    |--------------------------------------------------------------------------
+    */
+
+    Route::post('/whisperly/chat/heartbeat', [
+        WhisperlyChatController::class,
+        'heartbeat'
+    ])->name('whisperly.chat.heartbeat');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | TYPING
+    |--------------------------------------------------------------------------
+    */
+
+    Route::post('/whisperly/chat/typing', [
+        WhisperlyChatController::class,
+        'typing'
+    ])->name('whisperly.chat.typing');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | MESSAGES
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/whisperly/chat/{booking}/messages', [
+        WhisperlyChatController::class,
+        'messages'
+    ])->name('whisperly.chat.messages');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | PRESENCE
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/whisperly/chat/{booking}/presence', [
+        WhisperlyChatController::class,
+        'presence'
+    ])->name('whisperly.chat.presence');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | REACTION PESAN
+    |--------------------------------------------------------------------------
+    */
+
+    Route::post('/whisperly/chat/{booking}/message/{message}/reaction', [
+        WhisperlyChatController::class,
+        'react'
+    ])->name('whisperly.chat.message.react');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | DELETE SATU PESAN
+    |--------------------------------------------------------------------------
+    */
+
+    Route::post('/whisperly/chat/{booking}/message/{message}/delete', [
+        WhisperlyChatController::class,
+        'deleteMessage'
+    ])->name('whisperly.chat.message.delete');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | ROOM CHAT
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/whisperly/chat/{booking}', [
+        WhisperlyChatController::class,
+        'show'
+    ])->name('whisperly.chat.show');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | STORE MESSAGE
+    |--------------------------------------------------------------------------
+    */
+
+    Route::post('/whisperly/chat/{booking}', [
+        WhisperlyChatController::class,
+        'store'
+    ])->name('whisperly.chat.store');
 
 
     /*
@@ -250,10 +366,6 @@ Route::middleware([
     |--------------------------------------------------------------------------
     | RATING LAMA
     |--------------------------------------------------------------------------
-    |
-    | Tetap dipertahankan agar route lama yang mungkin masih digunakan
-    | tidak langsung rusak.
-    |
     */
 
     Route::post('/whisperly/bookings/{booking}/rating', [
@@ -271,13 +383,6 @@ Route::middleware([
 |--------------------------------------------------------------------------
 | WHISPERLY ADMIN
 |--------------------------------------------------------------------------
-|
-| /admin
-|       = Dashboard Admin
-|
-| /admin/menfess
-|       = Halaman ACC / Tolak / Hapus Menfess
-|
 */
 
 Route::middleware([
@@ -301,11 +406,25 @@ Route::middleware([
 
     /*
     |--------------------------------------------------------------------------
+    | PROFIL ADMIN
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/admin/profile', [
+        WhisperlyProfileController::class,
+        'adminProfile'
+    ])->name('admin.profile');
+
+    Route::patch('/admin/profile', [
+        WhisperlyProfileController::class,
+        'updateAdminProfile'
+    ])->name('admin.profile.update');
+
+
+    /*
+    |--------------------------------------------------------------------------
     | MODERASI MENFESS
     |--------------------------------------------------------------------------
-    |
-    | Halaman utama moderasi menfess.
-    |
     */
 
     Route::get('/admin/menfess', [
@@ -342,13 +461,6 @@ Route::middleware([
     |--------------------------------------------------------------------------
     | HAPUS MENFESS
     |--------------------------------------------------------------------------
-    |
-    | Route ini menggunakan DELETE.
-    | Blade harus menggunakan:
-    |
-    | @csrf
-    | @method('DELETE')
-    |
     */
 
     Route::delete('/admin/menfess/{menfess}', [
@@ -390,7 +502,7 @@ Route::middleware([
 
 /*
 |--------------------------------------------------------------------------
-| LARALAG DASHBOARD
+| LARAVEL DASHBOARD
 |--------------------------------------------------------------------------
 */
 

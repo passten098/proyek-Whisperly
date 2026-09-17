@@ -8,9 +8,9 @@ function deleteConfirm(url){
 	})
 	.then((willDelete) => {
 		if (willDelete) {
-			window.location.href = url;
+    window.location.href = url;
 		}
-	});
+    });
 }
 
 function loadDatePicker(element){

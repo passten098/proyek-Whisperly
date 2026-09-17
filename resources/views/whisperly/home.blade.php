@@ -3261,19 +3261,21 @@
 
                 <!-- USER -->
 
-                <div class="user-pill">
+                <a
+                    href="{{ $currentUser->role === 'admin' ? route('admin.profile') : route('whisperly.profile') }}"
+                    class="user-pill"
+                    aria-label="Buka profil {{ $currentUser->username }}"
+                    style="text-decoration: none; color: inherit; cursor: pointer;"
+                >
 
                     <div class="user-avatar">
 
-    @if (
-        $currentUser->role === 'talent' &&
-        $currentTalentProfile &&
-        $currentTalentProfile->photo
-    )
+    @if ($currentUser->avatar_url)
 
         <img
-            src="{{ asset('storage/' . $currentTalentProfile->photo) }}"
+            src="{{ $currentUser->avatar_url }}"
             alt="{{ $currentUser->username }}"
+            onerror="this.onerror=null; this.src='{{ asset('assets/images/faces/1.jpg') }}';"
         >
 
     @else
@@ -3303,7 +3305,7 @@
     </span>
 </div>
 
-                </div>
+                </a>
 
 
                 <!-- MENU -->
@@ -3346,15 +3348,12 @@
 
                             <div class="menu-profile-avatar">
 
-    @if (
-        $currentUser->role === 'talent' &&
-        $currentTalentProfile &&
-        $currentTalentProfile->photo
-    )
+    @if ($currentUser->avatar_url)
 
         <img
-            src="{{ asset('storage/' . $currentTalentProfile->photo) }}"
+            src="{{ $currentUser->avatar_url }}"
             alt="{{ $currentUser->username }}"
+            onerror="this.onerror=null; this.src='{{ asset('assets/images/faces/1.jpg') }}';"
         >
 
     @else

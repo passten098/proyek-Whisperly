@@ -36,7 +36,12 @@ class ProfileController extends Controller
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
+    public function whisperlyProfile()
+{
+    $pengguna = Auth::guard('whisperly')->user();
 
+    return view('whisperly.profil', compact('pengguna'));
+}
     /**
      * Delete the user's account.
      */

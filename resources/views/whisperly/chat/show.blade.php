@@ -24,6 +24,11 @@
 
 
     <style>
+        /* Global font: Arial */
+        * {
+            font-family: Arial, sans-serif !important;
+        }
+
 
         * {
             box-sizing: border-box;
@@ -1293,263 +1298,139 @@
 
 
         /* ==========================================================
-           MESSAGE ROW
+           MESSAGE ROW — GAYA iMESSAGE / iPHONE
         ========================================================== */
 
         .message-row {
-
             display: flex;
-
             align-items: flex-end;
-
-            gap: 9px;
-
-            max-width: 75%;
-
+            width: 100%;
+            max-width: 100%;
             flex-shrink: 0;
+            padding: 0 8px;
         }
-
 
         .message-row.sent {
-
             align-self: flex-end;
-
-            flex-direction: row-reverse;
+            justify-content: flex-end;
         }
-
 
         .message-row.received {
-
             align-self: flex-start;
+            justify-content: flex-start;
         }
 
-
+        /* Tidak ada PP/avatar di dalam isi chat. PP hanya di header room. */
         .message-avatar {
-
-            width: 35px;
-
-            height: 35px;
-
-            flex-shrink: 0;
-
-            border-radius: 50%;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #c6e4ff,
-                    #75b9f5
-                );
-
-            color: #1169b8;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            font-weight: 700;
-
-            font-size: 13px;
-
-            box-shadow:
-                0 3px 10px
-                rgba(39, 105, 160, .15);
+            display: none !important;
         }
-
 
         .message-content {
-
             display: flex;
-
             flex-direction: column;
-
             min-width: 0;
+            width: fit-content;
+            max-width: min(72%, 620px);
         }
-
 
         .sender-name {
-
-            font-size: 11px;
-
-            color: #416584;
-
-            margin:
-                0 0 5px 7px;
+            display: none !important;
         }
-
-
-        .message-row.sent .sender-name {
-
-            text-align: right;
-
-            margin:
-                0 7px 5px 0;
-        }
-
 
         .message-bubble {
-
-            padding:
-                12px 16px;
-
-            border-radius: 18px;
-
-            font-size: 14px;
-
-            line-height: 1.55;
-
-            box-shadow:
-                0 6px 18px
-                rgba(37, 103, 161, .18);
-
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 15px;
+            line-height: 1.38;
             word-break: break-word;
-
             overflow-wrap: anywhere;
+            box-shadow: none;
+            border: none;
         }
 
-
-        .message-row.received
-        .message-bubble {
-
-            background:
-                rgba(239, 247, 255, .97);
-
-            color: #244968;
-
-            border-bottom-left-radius: 5px;
+        .message-row.received .message-bubble {
+            background: #f1f2f6;
+            color: #172033;
+            border-bottom-left-radius: 6px;
         }
 
-
-        .message-row.sent
-        .message-bubble {
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #2587ed,
-                    #1374d6
-                );
-
+        .message-row.sent .message-bubble {
+            background: #1683f7;
             color: #ffffff;
-
-            border-bottom-right-radius: 5px;
-
-            box-shadow:
-                0 7px 20px
-                rgba(23, 113, 204, .30);
+            border-bottom-right-radius: 6px;
+            box-shadow: none;
         }
-
 
         .message-footer {
-
             display: flex;
-
             align-items: center;
-
             justify-content: flex-end;
-
             gap: 4px;
-
-            margin-top: 5px;
-
-            padding:
-                0 5px;
+            margin-top: 3px;
+            padding: 0 5px;
         }
-
 
         .message-time {
-
-            font-size: 10px;
-
-            color: #6d88a2;
+            font-size: 9px;
+            color: rgba(67, 91, 118, .72);
         }
-
 
         .message-row.sent .message-time {
-
-            color: #5f7f9d;
+            color: rgba(67, 91, 118, .72);
         }
-
 
         .message-check {
-
             display: inline-flex;
-
             align-items: center;
-
             justify-content: center;
-
-            font-size: 13px;
-
-            line-height: 1;
-
-            font-weight: 700;
-
-            letter-spacing: -4px;
-
-            width: 18px;
-
-            height: 14px;
-
-            position: relative;
-
-            margin-right: 2px;
-        }
-
-
-        .message-check.single {
-
-            color: #6f879d;
-
-            letter-spacing: 0;
-        }
-
-
-        .message-check.double {
-
-            color: #2386e8;
-
-            letter-spacing: -4px;
-        }
-
-
-        .message-check.double::before {
-
-            content: "✓✓";
-        }
-
-
-        .message-check.double {
-
             font-size: 12px;
+            line-height: 1;
+            font-weight: 700;
+            letter-spacing: -3px;
+            width: 17px;
+            height: 13px;
+            position: relative;
+            margin-right: 1px;
         }
 
+        .message-check.single { color: #7188a0; }
+        .message-check.double { color: #1683f7; }
 
-        .empty-message {
-
-            margin: auto;
-
-            text-align: center;
-
-            background:
-                rgba(255, 255, 255, .75);
-
-            padding:
-                18px 25px;
-
-            border-radius: 18px;
-
-            color: #557492;
-
-            box-shadow:
-                0 5px 18px
-                rgba(37, 103, 161, .10);
-
-            flex-shrink: 0;
+        /* Status hanya dipasang pada bubble terakhir dalam satu rangkaian. */
+        .message-row.sent .message-check {
+            margin-left: 2px;
+            transform: translateY(-1px);
         }
 
+        .messages {
+            gap: 8px;
+            padding: 18px 14px 22px;
+        }
+
+        .booking-divider {
+            margin: 2px 0 10px;
+            opacity: .85;
+        }
+
+        .booking-divider-line { display: none; }
+
+        .booking-divider-content {
+            justify-content: center;
+            gap: 5px;
+            border: 0;
+            background: rgba(255,255,255,.72);
+            border-radius: 999px;
+            padding: 5px 11px;
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        .booking-divider-title { display: none; }
+
+        .booking-divider-time,
+        .booking-divider-status {
+            font-size: 10px;
+        }
 
         /* ==========================================================
            COMPOSER
@@ -2691,6 +2572,1804 @@
             }
         }
 
+
+        /* ==========================================================
+           iMESSAGE OVERRIDE — PESAN TANPA FOTO PROFILE
+        ========================================================== */
+        .messages .message-row .message-avatar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .messages .message-row .sender-name {
+            display: none !important;
+        }
+
+        .messages .message-row.sent .message-content,
+        .messages .message-row.received .message-content {
+            margin: 0;
+        }
+
+        @media (max-width: 700px) {
+            .message-content { max-width: 82%; }
+            .message-bubble {
+                font-size: 15px;
+                padding: 9px 14px;
+            }
+        }
+
+    
+
+        /* ==========================================================
+           DARK iMESSAGE THEME
+           ----------------------------------------------------------
+           Room chat dibuat hitam seperti iPhone Messages.
+           Bubble lawan = dark gray, bubble sendiri = iMessage blue.
+        ========================================================== */
+
+        html,
+        body {
+            background: #000000 !important;
+            color: #f5f5f7 !important;
+        }
+
+        body {
+            background-color: #000000 !important;
+            background-image: none !important;
+        }
+
+        .chat-wrapper {
+            background: #000000 !important;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, .45) !important;
+        }
+
+        .sidebar {
+            background: #050506 !important;
+            border-right-color: #242428 !important;
+        }
+
+        .sidebar-header,
+        .chat-list {
+            background: #050506 !important;
+        }
+
+        .sidebar-title h1 {
+            color: #f5f5f7 !important;
+        }
+
+        .search-box input {
+            background: #17171b !important;
+            border-color: #303036 !important;
+            color: #f5f5f7 !important;
+        }
+
+        .search-box input::placeholder {
+            color: #8e8e93 !important;
+        }
+
+        .search-icon,
+        .filter {
+            color: #a1a1a6 !important;
+        }
+
+        .filter:hover {
+            background: #1c1c20 !important;
+        }
+
+        .filter.active {
+            background: #1d3556 !important;
+            color: #5eb0ff !important;
+        }
+
+        .chat-item {
+            color: #f5f5f7 !important;
+        }
+
+        .chat-item:hover {
+            background: #17171b !important;
+        }
+
+        .chat-item.active {
+            background: #202a3d !important;
+        }
+
+        .chat-name {
+            color: #f5f5f7 !important;
+        }
+
+        .chat-preview,
+        .chat-time {
+            color: #98989f !important;
+        }
+
+        .chat-item.unread .chat-name,
+        .chat-item.unread .chat-preview {
+            color: #5eb0ff !important;
+        }
+
+        .room {
+            background: #000000 !important;
+            background-image: none !important;
+        }
+
+        .room-header {
+            background: #1c1c1e !important;
+            border-bottom-color: #38383a !important;
+            color: #f5f5f7 !important;
+        }
+
+        .room-person-info h2 {
+            color: #f5f5f7 !important;
+        }
+
+        .online-text {
+            color: #8e8e93 !important;
+        }
+
+        .info-button {
+            background: #2c2c2e !important;
+            color: #5eb0ff !important;
+        }
+
+        .schedule {
+            background: #101012 !important;
+            border-bottom-color: #2c2c2e !important;
+            color: #8e8e93 !important;
+        }
+
+        .booking-divider-content {
+            background: #1c1c1e !important;
+            border-color: #38383a !important;
+            box-shadow: none !important;
+        }
+
+        .booking-divider-title,
+        .booking-divider-status {
+            color: #98989f !important;
+        }
+
+        .booking-divider-time {
+            color: #5eb0ff !important;
+        }
+
+        .messages {
+            background: #000000 !important;
+            background-image: none !important;
+            scrollbar-color: #3a3a3c #000000;
+        }
+
+        .messages::-webkit-scrollbar-track {
+            background: #000000;
+        }
+
+        .messages::-webkit-scrollbar-thumb {
+            background: #3a3a3c !important;
+        }
+
+        .message-bubble {
+            font-size: 16px !important;
+            line-height: 1.3 !important;
+            padding: 9px 14px !important;
+            border-radius: 19px !important;
+            box-shadow: none !important;
+        }
+
+        .message-row.received .message-bubble {
+            background: #2c2c2e !important;
+            color: #f5f5f7 !important;
+            border-bottom-left-radius: 5px !important;
+        }
+
+        .message-row.sent .message-bubble {
+            background: #0a84ff !important;
+            color: #ffffff !important;
+            border-bottom-right-radius: 5px !important;
+        }
+
+        .message-time {
+            color: #8e8e93 !important;
+        }
+
+        .message-row.sent .message-time {
+            color: #8e8e93 !important;
+        }
+
+        .message-check.single,
+        .message-check.double {
+            color: #5eb0ff !important;
+        }
+
+        .empty-message,
+        .empty-message-small {
+            color: #8e8e93 !important;
+        }
+
+        /* ==========================================================
+           TYPING INDICATOR — tiga titik seperti iMessage
+        ========================================================== */
+
+        .typing-indicator {
+            display: none;
+            align-self: flex-start;
+            align-items: center;
+            gap: 4px;
+            width: fit-content;
+            min-width: 52px;
+            height: 31px;
+            padding: 7px 11px;
+            margin: 0 0 2px 4px;
+            border-radius: 17px;
+            background: #2c2c2e;
+            flex-shrink: 0;
+        }
+
+        .typing-indicator.active {
+            display: flex;
+        }
+
+        /* ==========================================================
+           TYPING DOCK — SLOT KHUSUS DI BAWAH AREA PESAN
+           BUKAN overlay dan BUKAN bagian dari scroll pesan.
+           Posisi dock selalu tepat di atas composer.
+        ========================================================== */
+        .room {
+            position: relative !important;
+        }
+
+        .typing-dock {
+            position: relative !important;
+            flex: 0 0 30px !important;
+            width: 100% !important;
+            height: 30px !important;
+            min-height: 30px !important;
+            display: flex !important;
+            align-items: flex-end !important;
+            justify-content: flex-start !important;
+            padding: 0 0 5px 14px !important;
+            box-sizing: border-box !important;
+            z-index: 6 !important;
+            pointer-events: none !important;
+            background: transparent !important;
+        }
+
+        .typing-dock .typing-indicator {
+            position: static !important;
+            margin: 0 !important;
+            flex: 0 0 auto !important;
+            pointer-events: none !important;
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #8e8e93;
+            animation: whisperlyTyping 1.15s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: .15s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: .30s;
+        }
+
+        @keyframes whisperlyTyping {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: .45;
+            }
+            30% {
+                transform: translateY(-4px);
+                opacity: 1;
+            }
+        }
+
+        /* Composer hitam seperti iMessage */
+        .composer {
+            background: #000000 !important;
+            border-top-color: #242428 !important;
+            color: #f5f5f7 !important;
+        }
+
+        .composer form {
+            background: #000000 !important;
+        }
+
+        .composer textarea,
+        #messageInput {
+            background: #1c1c1e !important;
+            border-color: #3a3a3c !important;
+            color: #f5f5f7 !important;
+            border-radius: 20px !important;
+        }
+
+        .composer textarea::placeholder,
+        #messageInput::placeholder {
+            color: #8e8e93 !important;
+        }
+
+        .composer textarea:focus,
+        #messageInput:focus {
+            border-color: #5eb0ff !important;
+            box-shadow: 0 0 0 2px rgba(10, 132, 255, .18) !important;
+        }
+
+        .send-button {
+            background: #0a84ff !important;
+            color: #ffffff !important;
+            border-radius: 50% !important;
+        }
+
+        .chat-countdown {
+            color: #8e8e93 !important;
+        }
+
+        .chat-countdown-dot {
+            background: #30d158 !important;
+        }
+
+        .closed-composer {
+            background: #1c1c1e !important;
+            color: #98989f !important;
+        }
+
+        @media (max-width: 700px) {
+            .message-content {
+                max-width: 82% !important;
+            }
+
+            .message-bubble {
+                font-size: 16px !important;
+            }
+        }
+
+
+        /* ==========================================================
+           iMESSAGE ENHANCEMENTS — DARK / LIGHT + ACTIONS
+        ========================================================== */
+        :root {
+            --im-bg: #000000;
+            --im-surface: #1c1c1e;
+            --im-surface-2: #2c2c2e;
+            --im-text: #f5f5f7;
+            --im-muted: #8e8e93;
+            --im-blue: #0a84ff;
+            --im-blue-soft: #5eb0ff;
+            --im-divider: #2c2c2e;
+        }
+
+        body.theme-dark {
+            background: #000 !important;
+            color: var(--im-text) !important;
+        }
+
+        body.theme-dark .chat-wrapper,
+        body.theme-dark .room,
+        body.theme-dark .messages,
+        body.theme-dark .composer {
+            background: var(--im-bg) !important;
+            color: var(--im-text) !important;
+        }
+
+        body.theme-dark .sidebar {
+            background: #0b0b0d !important;
+            border-right-color: #2c2c2e !important;
+        }
+
+        body.theme-dark .sidebar-header,
+        body.theme-dark .chat-list,
+        body.theme-dark .chat-item,
+        body.theme-dark .chat-search,
+        body.theme-dark .room-header {
+            background: #0b0b0d !important;
+            color: var(--im-text) !important;
+        }
+
+        body.theme-dark .chat-item:hover { background: #1c1c1e !important; }
+        body.theme-dark .chat-item.active { background: #1c1c1e !important; }
+        body.theme-dark .sidebar-title,
+        body.theme-dark .chat-name,
+        body.theme-dark .chat-preview,
+        body.theme-dark .chat-time,
+        body.theme-dark .room-person-info h2 { color: var(--im-text) !important; }
+
+        body.theme-dark .search-input,
+        body.theme-dark .composer textarea,
+        body.theme-dark #messageInput {
+            background: #1c1c1e !important;
+            color: #fff !important;
+            border-color: #3a3a3c !important;
+        }
+
+        body.theme-dark .room-header { border-bottom-color: #2c2c2e !important; }
+        body.theme-dark .booking-divider-content { background: #1c1c1e !important; }
+        body.theme-dark .booking-divider { color: #8e8e93 !important; }
+
+        body.theme-light {
+            background: #f2f2f7 !important;
+            color: #111 !important;
+        }
+
+        body.theme-light .chat-wrapper,
+        body.theme-light .room,
+        body.theme-light .messages,
+        body.theme-light .composer {
+            background: #fff !important;
+            color: #111 !important;
+        }
+
+        body.theme-light .sidebar,
+        body.theme-light .sidebar-header,
+        body.theme-light .chat-list,
+        body.theme-light .chat-item,
+        body.theme-light .room-header {
+            background: #fff !important;
+            color: #111 !important;
+        }
+
+        body.theme-light .chat-item:hover { background: #f2f2f7 !important; }
+        body.theme-light .chat-item.active { background: #dceeff !important; }
+        body.theme-light .sidebar-title,
+        body.theme-light .chat-name,
+        body.theme-light .chat-preview,
+        body.theme-light .chat-time,
+        body.theme-light .room-person-info h2 { color: #111 !important; }
+
+        body.theme-light .messages {
+            background: #fff !important;
+            background-image: none !important;
+            scrollbar-color: #c7c7cc #fff;
+        }
+
+        body.theme-light .composer { border-top-color: #d1d1d6 !important; }
+        body.theme-light .composer textarea,
+        body.theme-light #messageInput {
+            background: #f2f2f7 !important;
+            color: #111 !important;
+            border-color: #c7c7cc !important;
+        }
+        body.theme-light .typing-indicator { background: #e5e5ea !important; }
+        body.theme-light .typing-dot { background: #636366 !important; }
+        body.theme-light .message-row.received .message-bubble {
+            background: #e5e5ea !important;
+            color: #111 !important;
+        }
+        body.theme-light .message-time { color: #8e8e93 !important; }
+
+        .theme-toggle-button,
+        .emoji-button {
+            border: 0;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #1c1c1e;
+            color: #fff;
+            font-size: 19px;
+            flex: 0 0 auto;
+        }
+
+        .theme-toggle-button:hover,
+        .emoji-button:hover { background: #2c2c2e; }
+
+        .composer form { position: relative; }
+        .composer-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+        }
+        .composer-controls #messageInput { flex: 1 1 auto; min-width: 0; }
+
+        /* FOTO / ATTACHMENT */
+        .attachment-button { width: 40px; height: 40px; flex: 0 0 auto; border: 0; border-radius: 50%; background: #1c1c1e; color: #fff; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; font-size: 25px; }
+        .attachment-button:hover { background: #2c2c2e; }
+        .attachment-input { display: none; }
+        .image-preview { display: none; position: relative; width: min(100%, 520px); margin: 0 0 8px; padding: 8px; border-radius: 18px; background: #1c1c1e; border: 1px solid #3a3a3c; }
+        .image-preview.active { display: block; }
+        .image-preview img { display: block; width: 100%; max-height: 300px; object-fit: contain; border-radius: 13px; background: #000; }
+        .image-preview-remove { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border: 0; border-radius: 50%; background: rgba(70,70,73,.9); color: #fff; font-size: 22px; line-height: 1; cursor: pointer; }
+        .message-image { display: block; width: min(100%, 360px); max-height: 430px; object-fit: cover; border-radius: 15px; cursor: pointer; }
+
+        /* Foto + teks: bubble mengikuti isi, tanpa ruang kosong di kanan. */
+        .message-bubble {
+            width: fit-content;
+            max-width: 100%;
+        }
+
+        /* Beri jarak yang jelas antara foto dan caption/pesan. */
+        .message-bubble .message-image + .message-text {
+            margin-top: 11px;
+            padding: 0 6px 4px;
+        }
+
+        .message-bubble.image-only { padding: 4px !important; overflow: hidden; }
+        .message-bubble.image-only .message-image { border-radius: 16px; }
+        body.theme-light .attachment-button { background: #e5e5ea; color: #111; }
+        body.theme-light .attachment-button:hover { background: #d1d1d6; }
+        body.theme-light .image-preview { background: #f2f2f7; border-color: #d1d1d6; }
+
+        .emoji-picker {
+            position: absolute;
+            left: 14px;
+            bottom: 72px;
+            z-index: 1000;
+            width: min(330px, calc(100vw - 28px));
+            padding: 10px;
+            border: 1px solid #3a3a3c;
+            border-radius: 18px;
+            background: rgba(28,28,30,.98);
+            box-shadow: 0 14px 40px rgba(0,0,0,.5);
+            display: none;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 4px;
+        }
+        .emoji-picker.open { display: grid; }
+        .emoji-picker button {
+            border: 0;
+            background: transparent;
+            cursor: pointer;
+            font-size: 25px;
+            padding: 5px;
+            border-radius: 9px;
+        }
+        .emoji-picker button:hover { background: #3a3a3c; }
+
+        .reply-preview {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            margin: 0 0 8px;
+            padding: 8px 10px;
+            border-left: 3px solid var(--im-blue);
+            border-radius: 8px;
+            background: #1c1c1e;
+            color: #f5f5f7;
+        }
+        .reply-preview.active { display: flex; }
+        .reply-preview-text { flex: 1; min-width: 0; }
+        .reply-preview-label { font-size: 11px; color: #5eb0ff; font-weight: 700; }
+        .reply-preview-quote { font-size: 12px; color: #c7c7cc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .reply-cancel { border: 0; background: transparent; color: #8e8e93; cursor: pointer; font-size: 20px; }
+
+        .message-content { position: relative; }
+        .message-bubble { cursor: pointer; user-select: text; }
+        .message-reply-quote {
+            margin: -3px 0 7px;
+            padding: 6px 9px;
+            border-left: 3px solid rgba(255,255,255,.55);
+            border-radius: 6px;
+            background: rgba(0,0,0,.18);
+            font-size: 12px;
+            line-height: 1.25;
+            color: rgba(255,255,255,.78);
+        }
+        .received .message-reply-quote { border-left-color: #0a84ff; color: #b9dfff; }
+
+        .message-reaction {
+            position: absolute;
+            bottom: -12px;
+            left: 8px;
+            min-width: 25px;
+            height: 25px;
+            padding: 2px 6px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            background: #3a3a3c;
+            border: 2px solid #000;
+            font-size: 14px;
+            z-index: 5;
+        }
+        .message-row.sent .message-reaction { left: auto; right: 8px; }
+        .message-reaction.active { display: flex; }
+
+        .message-action-sheet {
+            position: fixed;
+            z-index: 3000;
+            width: min(340px, calc(100vw - 24px));
+            border-radius: 16px;
+            overflow: hidden;
+            background: rgba(28,28,30,.98);
+            border: 1px solid #3a3a3c;
+            box-shadow: 0 18px 50px rgba(0,0,0,.6);
+            backdrop-filter: blur(20px);
+        }
+        .reaction-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 8px 7px;
+            border-bottom: 1px solid #3a3a3c;
+        }
+        .reaction-choice {
+            border: 0;
+            background: transparent;
+            cursor: pointer;
+            font-size: 25px;
+            padding: 3px 5px;
+            border-radius: 9px;
+        }
+        .reaction-choice:hover { background: #3a3a3c; transform: scale(1.1); }
+        .message-action {
+            width: 100%;
+            border: 0;
+            border-bottom: 1px solid #3a3a3c;
+            background: #1c1c1e;
+            color: #f5f5f7;
+            text-align: left;
+            padding: 12px 15px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .message-action:last-child { border-bottom: 0; }
+        .message-action:hover { background: #2c2c2e; }
+
+        body.theme-light .theme-toggle-button,
+        body.theme-light .emoji-button { background: #e5e5ea; color: #111; }
+        body.theme-light .emoji-picker,
+        body.theme-light .message-action-sheet { background: rgba(255,255,255,.98); border-color: #c7c7cc; }
+        body.theme-light .reaction-row,
+        body.theme-light .message-action { border-color: #d1d1d6; }
+        body.theme-light .message-action { background: #fff; color: #111; }
+        body.theme-light .message-action:hover,
+        body.theme-light .reaction-choice:hover,
+        body.theme-light .emoji-picker button:hover { background: #f2f2f7; }
+        body.theme-light .message-reaction { border-color: #fff; background: #e5e5ea; }
+
+        @media (max-width: 700px) {
+            .theme-toggle-button { width: 36px; height: 36px; }
+            .emoji-button { width: 38px; height: 38px; }
+            .composer-controls { gap: 5px; }
+            .message-content { max-width: 84% !important; }
+        }
+
+
+        /* ==========================================================
+           iMESSAGE LONG-PRESS / DOUBLE-CLICK OVERLAY
+           Pesan terpilih dibuat benar-benar "mengambang" di atas chat.
+        ========================================================== */
+        .message-focus-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 3998;
+            background: rgba(0,0,0,.62);
+            backdrop-filter: blur(7px);
+            -webkit-backdrop-filter: blur(7px);
+        }
+
+        .message-focus-stage {
+            position: fixed;
+            z-index: 3999;
+            left: 0;
+            top: 0;
+            width: min(92vw, 430px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        /* Saat pesan dipilih, bubble + menu mengikuti posisi pesan asal. */
+        .message-focus-stage .message-focus-card {
+            width: 100%;
+            display: flex;
+        }
+
+        .message-focus-reaction-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        .message-focus-reaction-hint {
+            color: #f5f5f7;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            text-shadow: 0 1px 3px rgba(0,0,0,.4);
+        }
+        .message-focus-reactions {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: rgba(44,44,46,.98);
+            box-shadow: 0 10px 30px rgba(0,0,0,.45);
+            border: 1px solid rgba(255,255,255,.08);
+            pointer-events: auto;
+        }
+
+        .message-focus-reaction {
+            width: 42px;
+            height: 42px;
+            border: 0;
+            border-radius: 50%;
+            background: transparent;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform .14s ease, background .14s ease;
+        }
+        .message-focus-reaction:hover {
+            transform: scale(1.15);
+            background: rgba(255,255,255,.09);
+        }
+        .message-focus-reaction-more {
+            font-size: 29px;
+            color: #f5f5f7;
+        }
+
+        .message-focus-card {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .message-focus-row {
+            width: auto !important;
+            max-width: 88% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            display: flex !important;
+            pointer-events: none;
+        }
+        .message-focus-row.sent { justify-content: flex-end !important; align-self: flex-end !important; }
+        .message-focus-row.received { justify-content: flex-start !important; align-self: flex-start !important; }
+        .message-focus-row .message-content {
+            max-width: 100% !important;
+            width: auto !important;
+        }
+        .message-focus-row .message-bubble {
+            font-size: 17px !important;
+            line-height: 1.34 !important;
+            padding: 11px 16px !important;
+            box-shadow: 0 12px 35px rgba(0,0,0,.45) !important;
+        }
+        .message-focus-row .message-footer { margin-top: 4px !important; }
+        .message-focus-row .message-reaction { display: none !important; }
+
+        .message-focus-actions {
+            width: min(300px, 82vw);
+            overflow: hidden;
+            border-radius: 14px;
+            background: rgba(44,44,46,.98);
+            border: 1px solid rgba(255,255,255,.08);
+            box-shadow: 0 15px 45px rgba(0,0,0,.5);
+            pointer-events: auto;
+        }
+        .message-focus-action {
+            width: 100%;
+            min-height: 48px;
+            padding: 0 18px;
+            border: 0;
+            border-bottom: 1px solid rgba(255,255,255,.12);
+            background: transparent;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 16px;
+            text-align: left;
+            cursor: pointer;
+        }
+        .message-focus-action:last-child { border-bottom: 0; }
+        .message-focus-action:hover { background: rgba(255,255,255,.08); }
+        .message-focus-action.delete { color: #ff375f; }
+        .message-focus-action-icon { font-size: 18px; opacity: .9; }
+
+        body.theme-light .message-focus-backdrop { background: rgba(0,0,0,.22); }
+        body.theme-light .message-focus-reactions,
+        body.theme-light .message-focus-actions {
+            background: rgba(255,255,255,.98);
+            border-color: #d1d1d6;
+        }
+        body.theme-light .message-focus-reaction-more { color: #111; }
+        body.theme-light .message-focus-action {
+            color: #111;
+            border-bottom-color: #d1d1d6;
+        }
+        body.theme-light .message-focus-action:hover { background: #f2f2f7; }
+        body.theme-light .message-focus-action.delete { color: #ff375f; }
+
+        .message-row.message-selected-original {
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
+        /* ==========================================================
+           FINAL THEME FIX
+           Mode terang benar-benar terang, tanpa panel hitam.
+           Tombol tema berada di menu ☰, bukan di header.
+        ========================================================== */
+
+        .theme-menu-item {
+            display: flex !important;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+        }
+
+        body.theme-light,
+        body.theme-light .navbar-wrapper,
+        body.theme-light .chat-wrapper,
+        body.theme-light .sidebar,
+        body.theme-light .sidebar-header,
+        body.theme-light .chat-list,
+        body.theme-light .room,
+        body.theme-light .room-header,
+        body.theme-light .messages,
+        body.theme-light .composer {
+            background: #ffffff !important;
+            background-image: none !important;
+            color: #111111 !important;
+        }
+
+        body.theme-light .sidebar {
+            border-right-color: #e5e5ea !important;
+        }
+
+        body.theme-light .room-header {
+            border-bottom-color: #e5e5ea !important;
+        }
+
+        body.theme-light .schedule {
+            background: #f8f8fa !important;
+            border-bottom-color: #e5e5ea !important;
+            color: #636366 !important;
+        }
+
+        body.theme-light .booking-divider-content {
+            background: #f2f2f7 !important;
+            border-color: #d1d1d6 !important;
+        }
+
+        body.theme-light .booking-divider-time {
+            color: #007aff !important;
+        }
+
+        body.theme-light .booking-divider-status,
+        body.theme-light .online-text,
+        body.theme-light .message-time {
+            color: #8e8e93 !important;
+        }
+
+        body.theme-light .sidebar-title h1,
+        body.theme-light .room-person-info h2,
+        body.theme-light .chat-name {
+            color: #111111 !important;
+        }
+
+        body.theme-light .chat-preview,
+        body.theme-light .chat-time {
+            color: #636366 !important;
+        }
+
+        body.theme-light .search-box input,
+        body.theme-light .composer textarea,
+        body.theme-light #messageInput {
+            background: #f2f2f7 !important;
+            color: #111111 !important;
+            border-color: #d1d1d6 !important;
+        }
+
+        body.theme-light .search-box input::placeholder,
+        body.theme-light #messageInput::placeholder {
+            color: #8e8e93 !important;
+        }
+
+        body.theme-light .chat-item:hover {
+            background: #f2f2f7 !important;
+        }
+
+        body.theme-light .chat-item.active {
+            background: #dceeff !important;
+        }
+
+        body.theme-light .message-row.received .message-bubble {
+            background: #e5e5ea !important;
+            color: #111111 !important;
+        }
+
+        body.theme-light .message-row.sent .message-bubble {
+            background: #007aff !important;
+            color: #ffffff !important;
+        }
+
+        body.theme-light .typing-indicator {
+            background: #e5e5ea !important;
+        }
+
+        body.theme-light .typing-dot {
+            background: #636366 !important;
+        }
+
+        /* FINAL TYPING DOCK: tetap menjadi baris tersendiri di atas composer */
+        .room .typing-dock {
+            position: relative !important;
+            bottom: auto !important;
+            left: auto !important;
+            right: auto !important;
+            height: 30px !important;
+            min-height: 30px !important;
+            flex: 0 0 30px !important;
+        }
+
+        body.theme-light .info-button {
+            background: #f2f2f7 !important;
+            color: #007aff !important;
+        }
+
+        body.theme-light .info-menu-list {
+            background: #ffffff !important;
+            border-color: #d1d1d6 !important;
+            box-shadow: 0 8px 25px rgba(0,0,0,.12) !important;
+        }
+
+        body.theme-light .info-menu-list button {
+            color: #111111 !important;
+        }
+
+        body.theme-light .info-menu-list button:hover {
+            background: #f2f2f7 !important;
+        }
+
+        body.theme-light .composer {
+            border-top-color: #d1d1d6 !important;
+        }
+
+        body.theme-light .send-button {
+            background: #007aff !important;
+            color: #ffffff !important;
+        }
+
+        body.theme-light .emoji-button {
+            background: #e5e5ea !important;
+            color: #111111 !important;
+        }
+
+        body.theme-light .emoji-picker {
+            background: #ffffff !important;
+            border-color: #d1d1d6 !important;
+        }
+
+        body.theme-light .message-focus-backdrop {
+            background: rgba(0,0,0,.28) !important;
+            backdrop-filter: blur(7px);
+        }
+
+        body.theme-light .message-focus-reaction-hint {
+            color: #ffffff !important;
+        }
+
+        body.theme-light .message-focus-reactions,
+        body.theme-light .message-focus-actions {
+            background: rgba(255,255,255,.98) !important;
+            border-color: #d1d1d6 !important;
+            color: #111111 !important;
+        }
+
+        body.theme-light .message-focus-action {
+            background: #ffffff !important;
+            color: #111111 !important;
+            border-bottom-color: #d1d1d6 !important;
+        }
+
+        body.theme-light .message-focus-action:hover {
+            background: #f2f2f7 !important;
+        }
+
+        body.theme-light .message-focus-action.delete {
+            color: #ff375f !important;
+        }
+
+        /* Navbar partial: paksa permukaan navigasi ikut tema halaman. */
+        body.theme-light .navbar-wrapper {
+            background: #ffffff !important;
+            color: #111111 !important;
+        }
+
+        /* Navbar ikut terang juga, termasuk dropdown menu global. */
+        body.theme-light .whisperly-nav {
+            background: rgba(255,255,255,.96) !important;
+            border-bottom-color: #e5e5ea !important;
+            box-shadow: 0 8px 24px rgba(0,0,0,.08) !important;
+            color: #111111 !important;
+        }
+
+        body.theme-light .whisperly-brand {
+            color: #111111 !important;
+        }
+
+        body.theme-light .whisperly-username {
+            color: #111111 !important;
+        }
+
+        body.theme-light .whisperly-user-role {
+            color: #8e8e93 !important;
+        }
+
+        body.theme-light .whisperly-user-pill {
+            background: #f2f2f7 !important;
+            border-color: #d1d1d6 !important;
+        }
+
+        body.theme-light .whisperly-menu-button {
+            background: #f2f2f7 !important;
+            border-color: #d1d1d6 !important;
+            color: #111111 !important;
+        }
+
+        body.theme-light .whisperly-dropdown {
+            background: rgba(255,255,255,.99) !important;
+            border-color: #d1d1d6 !important;
+            box-shadow: 0 20px 55px rgba(0,0,0,.16) !important;
+        }
+
+        body.theme-light .whisperly-dropdown-item {
+            color: #111111 !important;
+        }
+
+        body.theme-light .whisperly-dropdown-item:hover {
+            background: #f2f2f7 !important;
+        }
+
+        body.theme-light .whisperly-dropdown-text strong {
+            color: #111111 !important;
+        }
+
+        body.theme-light .whisperly-dropdown-text small {
+            color: #8e8e93 !important;
+        }
+
+        body.theme-light .whisperly-dropdown-icon {
+            background: #f2f2f7 !important;
+            border-color: #d1d1d6 !important;
+            color: #007aff !important;
+        }
+
+        body.theme-light .whisperly-divider {
+            background: #e5e5ea !important;
+        }
+
+        body.theme-light .whisperly-logout {
+            color: #ff375f !important;
+        }
+
+        body.theme-light .navbar-wrapper * {
+            border-color: #e5e5ea !important;
+        }
+
+        @media (max-width: 700px) {
+            .message-focus-stage {
+                width: min(94vw, 390px);
+            }
+        }
+
+    
+        /* ==========================================================
+           FIX BUBBLE FOTO — JANGAN STRETCH KE LEBAR ROOM
+           Bubble harus mengikuti ukuran foto/teks yang sebenarnya.
+        ========================================================== */
+        .messages .message-row .message-content {
+            align-items: flex-start !important;
+        }
+
+        .messages .message-row .message-bubble {
+            width: fit-content !important;
+            max-width: min(360px, 100%) !important;
+            align-self: flex-start !important;
+        }
+
+        .messages .message-row.sent .message-bubble {
+            align-self: flex-end !important;
+        }
+
+        .messages .message-row .message-bubble .message-image {
+            display: block !important;
+            width: 100% !important;
+            max-width: 360px !important;
+            height: auto !important;
+            max-height: 430px !important;
+            object-fit: cover !important;
+        }
+
+        .messages .message-row .message-bubble .message-image + .message-text {
+            margin-top: 16px !important;
+            padding: 0 2px 3px !important;
+        }
+
+
+
+        /* ==========================================================
+           iOS / iMESSAGE POLISH — POPUP + THEME MENU
+           - Popup translucent, mengikuti tema
+           - Sudut lembut, tidak kotak
+           - Muncul smooth seperti iPhone
+           - Menu info tetap gelap walaupun halaman sedang terang
+           - Label tema hanya menunjukkan aksi berikutnya: Terang/Gelap
+        ========================================================== */
+        .message-focus-backdrop {
+            background: rgba(0, 0, 0, .46) !important;
+            backdrop-filter: blur(12px) saturate(115%) !important;
+            -webkit-backdrop-filter: blur(12px) saturate(115%) !important;
+            animation: whisperlyBackdropIn .22s ease-out both;
+        }
+
+        .message-focus-stage {
+            gap: 11px !important;
+            pointer-events: none;
+        }
+
+        .message-focus-reaction-wrap,
+        .message-focus-card,
+        .message-focus-actions {
+            animation: whisperlyPopupIn .28s cubic-bezier(.22, 1, .36, 1) both;
+        }
+
+        .message-focus-reactions,
+        .message-focus-actions {
+            background: rgba(38, 38, 40, .72) !important;
+            border: 1px solid rgba(255, 255, 255, .13) !important;
+            box-shadow:
+                0 18px 50px rgba(0, 0, 0, .32),
+                inset 0 1px 0 rgba(255, 255, 255, .06) !important;
+            backdrop-filter: blur(24px) saturate(145%) !important;
+            -webkit-backdrop-filter: blur(24px) saturate(145%) !important;
+            border-radius: 20px !important;
+        }
+
+        .message-focus-reactions {
+            padding: 7px 9px !important;
+        }
+
+        .message-focus-actions {
+            overflow: hidden;
+        }
+
+        .message-focus-action {
+            min-height: 49px !important;
+            background: transparent !important;
+            border-bottom-color: rgba(255, 255, 255, .10) !important;
+            transition: background .16s ease, transform .16s ease;
+        }
+
+        .message-focus-action:hover {
+            background: rgba(255, 255, 255, .09) !important;
+        }
+
+        .message-focus-action:active {
+            background: rgba(255, 255, 255, .14) !important;
+            transform: scale(.985);
+        }
+
+        /* Saat halaman terang, popup tetap terang/transparan dan teks gelap. */
+        body.theme-light .message-focus-backdrop {
+            background: rgba(0, 0, 0, .25) !important;
+            backdrop-filter: blur(12px) saturate(110%) !important;
+            -webkit-backdrop-filter: blur(12px) saturate(110%) !important;
+        }
+
+        body.theme-light .message-focus-reactions,
+        body.theme-light .message-focus-actions {
+            background: rgba(255, 255, 255, .68) !important;
+            border-color: rgba(0, 0, 0, .10) !important;
+            box-shadow:
+                0 18px 50px rgba(0, 0, 0, .18),
+                inset 0 1px 0 rgba(255, 255, 255, .72) !important;
+            backdrop-filter: blur(24px) saturate(145%) !important;
+            -webkit-backdrop-filter: blur(24px) saturate(145%) !important;
+        }
+
+        body.theme-light .message-focus-action {
+            color: #111 !important;
+            border-bottom-color: rgba(0, 0, 0, .08) !important;
+        }
+
+        body.theme-light .message-focus-action:hover {
+            background: rgba(0, 0, 0, .055) !important;
+        }
+
+        body.theme-light .message-focus-action:active {
+            background: rgba(0, 0, 0, .09) !important;
+        }
+
+        /* Info menu: selalu glass gelap ala iOS, termasuk saat halaman terang. */
+        .info-menu-list {
+            border-radius: 18px !important;
+            background: rgba(36, 36, 38, .82) !important;
+            border: 1px solid rgba(255, 255, 255, .12) !important;
+            box-shadow:
+                0 18px 45px rgba(0, 0, 0, .28),
+                inset 0 1px 0 rgba(255, 255, 255, .06) !important;
+            backdrop-filter: blur(24px) saturate(140%) !important;
+            -webkit-backdrop-filter: blur(24px) saturate(140%) !important;
+        }
+
+        .info-menu-list button {
+            color: #fff !important;
+        }
+
+        .info-menu-list button:hover {
+            background: rgba(255, 255, 255, .09) !important;
+        }
+
+        body.theme-light .info-menu-list {
+            background: rgba(36, 36, 38, .84) !important;
+            border-color: rgba(255, 255, 255, .12) !important;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, .25) !important;
+        }
+
+        body.theme-light .info-menu-list button {
+            color: #fff !important;
+        }
+
+        body.theme-light .info-menu-list button:hover {
+            background: rgba(255, 255, 255, .10) !important;
+        }
+
+        .theme-menu-item #themeMenuIcon {
+            opacity: .9;
+            transition: transform .25s ease;
+        }
+
+        .theme-menu-item:active #themeMenuIcon {
+            transform: rotate(15deg) scale(.92);
+        }
+
+        @keyframes whisperlyBackdropIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes whisperlyPopupIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px) scale(.94);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .message-focus-backdrop,
+            .message-focus-reaction-wrap,
+            .message-focus-card,
+            .message-focus-actions {
+                animation: none !important;
+            }
+        }
+
+
+        /* ==========================================================
+           FINAL iOS GLASS + CHAT THEME OVERRIDES
+           - light mode benar-benar tanpa strip/panel hitam
+           - info menu tetap gelap
+           - popup double-click tetap di sisi chat dan muncul di bawahnya
+        ========================================================== */
+
+        /* LIGHT: jangan biarkan closed-composer mewarisi hitam dari dark CSS */
+        body.theme-light .closed-composer {
+            background: rgba(242, 242, 247, .92) !important;
+            color: #636366 !important;
+            border: 1px solid rgba(60, 60, 67, .12) !important;
+            box-shadow: none !important;
+        }
+
+        body.theme-light .composer,
+        body.theme-light .composer form {
+            background: #ffffff !important;
+            color: #111111 !important;
+        }
+
+        body.theme-light .messages,
+        body.theme-light .room,
+        body.theme-light .chat-wrapper {
+            background: #ffffff !important;
+        }
+
+        /* Popup glass: transparan, lembut, tidak terlalu kotak */
+        .message-focus-backdrop {
+            background: rgba(0, 0, 0, .30) !important;
+            backdrop-filter: blur(10px) saturate(115%) !important;
+            -webkit-backdrop-filter: blur(10px) saturate(115%) !important;
+            opacity: 0;
+            animation: focusBackdropIn .20s ease-out forwards;
+        }
+
+        .message-focus-stage {
+            width: max-content !important;
+            max-width: min(340px, calc(100vw - 20px)) !important;
+            align-items: stretch !important;
+            gap: 8px !important;
+            opacity: 0;
+            transform: translateY(-5px) scale(.97);
+            transform-origin: top center;
+            animation: focusStageIn .24s cubic-bezier(.22, .8, .24, 1) forwards;
+        }
+
+        .message-focus-stage.focus-align-sent {
+            align-items: flex-end !important;
+        }
+
+        .message-focus-stage.focus-align-received {
+            align-items: flex-start !important;
+        }
+
+        .message-focus-stage .message-focus-card {
+            width: auto !important;
+            max-width: min(340px, calc(100vw - 20px)) !important;
+            display: flex !important;
+        }
+
+        .message-focus-stage.focus-align-sent .message-focus-card {
+            justify-content: flex-end !important;
+        }
+
+        .message-focus-stage.focus-align-received .message-focus-card {
+            justify-content: flex-start !important;
+        }
+
+        .message-focus-stage .message-focus-row {
+            width: auto !important;
+            max-width: min(340px, calc(100vw - 20px)) !important;
+        }
+
+        .message-focus-stage .message-focus-actions {
+            width: min(300px, calc(100vw - 28px)) !important;
+            border-radius: 17px !important;
+            background: rgba(36, 36, 38, .78) !important;
+            border: 1px solid rgba(255, 255, 255, .13) !important;
+            box-shadow:
+                0 18px 48px rgba(0, 0, 0, .32),
+                inset 0 1px 0 rgba(255, 255, 255, .07) !important;
+            backdrop-filter: blur(26px) saturate(150%) !important;
+            -webkit-backdrop-filter: blur(26px) saturate(150%) !important;
+            overflow: hidden !important;
+        }
+
+        .message-focus-stage .message-focus-action {
+            min-height: 46px !important;
+            background: transparent !important;
+            border-bottom-color: rgba(255, 255, 255, .10) !important;
+            color: #ffffff !important;
+            transition: background .16s ease, transform .12s ease !important;
+        }
+
+        .message-focus-stage .message-focus-action:hover {
+            background: rgba(255, 255, 255, .08) !important;
+        }
+
+        .message-focus-stage .message-focus-action:active {
+            background: rgba(255, 255, 255, .13) !important;
+            transform: scale(.985);
+        }
+
+        .message-focus-stage .message-focus-reactions {
+            background: rgba(36, 36, 38, .76) !important;
+            border: 1px solid rgba(255, 255, 255, .13) !important;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, .28) !important;
+            backdrop-filter: blur(26px) saturate(150%) !important;
+            -webkit-backdrop-filter: blur(26px) saturate(150%) !important;
+        }
+
+        /* Light mode: popup tetap gelap/transparan seperti menu iOS,
+           tetapi halaman di belakang tetap terang. */
+        body.theme-light .message-focus-backdrop {
+            background: rgba(0, 0, 0, .20) !important;
+        }
+
+        body.theme-light .message-focus-stage .message-focus-actions,
+        body.theme-light .message-focus-stage .message-focus-reactions {
+            background: rgba(36, 36, 38, .76) !important;
+            border-color: rgba(255, 255, 255, .13) !important;
+            color: #ffffff !important;
+        }
+
+        body.theme-light .message-focus-stage .message-focus-action {
+            color: #ffffff !important;
+            border-bottom-color: rgba(255, 255, 255, .10) !important;
+        }
+
+        body.theme-light .message-focus-stage .message-focus-action:hover {
+            background: rgba(255, 255, 255, .08) !important;
+        }
+
+        @keyframes focusBackdropIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes focusStageIn {
+            from {
+                opacity: 0;
+                transform: translateY(-5px) scale(.97);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .message-focus-backdrop,
+            .message-focus-stage {
+                animation: none !important;
+                opacity: 1 !important;
+                transform: none !important;
+            }
+        }
+
+
+        /* ==========================================================
+           FINAL FINAL — iOS GLASS THEME POLISH
+           - Popup benar-benar translucent dan mengikuti tema
+           - Light: teks popup hitam
+           - Dark: teks popup putih
+           - Filter Semua/Belum Dibaca tetap terbaca di dark mode
+           - Tidak ada panel hitam tersisa di light mode
+        ========================================================== */
+
+        /* Popup glass default = dark translucent */
+        .message-focus-stage .message-focus-actions,
+        .message-focus-stage .message-focus-reactions {
+            background: rgba(30, 30, 32, .52) !important;
+            border: 1px solid rgba(255,255,255,.16) !important;
+            box-shadow:
+                0 18px 55px rgba(0,0,0,.24),
+                inset 0 1px 0 rgba(255,255,255,.08) !important;
+            backdrop-filter: blur(30px) saturate(155%) !important;
+            -webkit-backdrop-filter: blur(30px) saturate(155%) !important;
+        }
+
+        .message-focus-stage .message-focus-action {
+            color: #ffffff !important;
+            background: transparent !important;
+            border-bottom-color: rgba(255,255,255,.10) !important;
+        }
+
+        .message-focus-stage .message-focus-action:hover {
+            background: rgba(255,255,255,.07) !important;
+        }
+
+        .message-focus-stage .message-focus-reaction-hint {
+            color: #ffffff !important;
+        }
+
+        /* Light mode: glass putih, transparan, teks hitam */
+        body.theme-light .message-focus-backdrop {
+            background: rgba(80,80,85,.12) !important;
+            backdrop-filter: blur(14px) saturate(115%) !important;
+            -webkit-backdrop-filter: blur(14px) saturate(115%) !important;
+        }
+
+        body.theme-light .message-focus-stage .message-focus-actions,
+        body.theme-light .message-focus-stage .message-focus-reactions {
+            background: rgba(255,255,255,.48) !important;
+            border-color: rgba(60,60,67,.16) !important;
+            box-shadow:
+                0 18px 55px rgba(0,0,0,.18),
+                inset 0 1px 0 rgba(255,255,255,.62) !important;
+            backdrop-filter: blur(30px) saturate(150%) !important;
+            -webkit-backdrop-filter: blur(30px) saturate(150%) !important;
+        }
+
+        body.theme-light .message-focus-stage .message-focus-action {
+            color: #111111 !important;
+            border-bottom-color: rgba(60,60,67,.12) !important;
+            text-shadow: none !important;
+        }
+
+        body.theme-light .message-focus-stage .message-focus-action:hover {
+            background: rgba(255,255,255,.30) !important;
+        }
+
+        body.theme-light .message-focus-stage .message-focus-action-icon {
+            color: #111111 !important;
+        }
+
+        body.theme-light .message-focus-stage .message-focus-action.delete,
+        body.theme-light .message-focus-stage .message-focus-action.delete .message-focus-action-icon {
+            color: #ff375f !important;
+        }
+
+        body.theme-light .message-focus-stage .message-focus-reaction-hint {
+            color: #111111 !important;
+            text-shadow: 0 1px 2px rgba(255,255,255,.65) !important;
+        }
+
+        body.theme-light .message-focus-stage .message-focus-reaction-more {
+            color: #111111 !important;
+        }
+
+        /* Bubble terpilih juga sedikit translucent agar menyatu dengan tema. */
+        body.theme-light .message-focus-row.received .message-bubble {
+            background: rgba(229,229,234,.86) !important;
+            color: #111111 !important;
+        }
+
+        body.theme-light .message-focus-row.sent .message-bubble {
+            background: rgba(0,122,255,.88) !important;
+            color: #ffffff !important;
+        }
+
+        body.theme-dark .message-focus-row.received .message-bubble {
+            background: rgba(58,58,60,.88) !important;
+            color: #ffffff !important;
+        }
+
+        body.theme-dark .message-focus-row.sent .message-bubble {
+            background: rgba(10,132,255,.90) !important;
+            color: #ffffff !important;
+        }
+
+        /* Dark mode: tombol filter harus terang/terbaca, bukan hitam. */
+        body.theme-dark .filter {
+            color: #b8b8bf !important;
+            background: transparent !important;
+        }
+
+        body.theme-dark .filter:hover {
+            color: #ffffff !important;
+            background: rgba(255,255,255,.08) !important;
+        }
+
+        body.theme-dark .filter.active {
+            color: #ffffff !important;
+            background: rgba(10,132,255,.24) !important;
+            font-weight: 700 !important;
+        }
+
+        body.theme-dark .chat-item.unread .chat-name {
+            color: #5eb0ff !important;
+        }
+
+        body.theme-dark .chat-item.unread .chat-preview {
+            color: #a9d5ff !important;
+        }
+
+        /* Light mode: pastikan tidak ada latar hitam pada area chat bawah. */
+        body.theme-light .closed-composer,
+        body.theme-light .composer,
+        body.theme-light .composer form {
+            background-color: #ffffff !important;
+            background-image: none !important;
+            color: #111111 !important;
+        }
+
+</style>
+
+
+<style id="final-all-light-theme-fix">
+/* ==========================================================
+   FINAL LIGHT MODE — SEMUA KOMPONEN TERANG
+   ========================================================== */
+
+body.theme-light,
+body.theme-light html {
+    background: #ffffff !important;
+    color: #111111 !important;
+}
+
+/* Header / sidebar / room */
+body.theme-light .navbar,
+body.theme-light .topbar,
+body.theme-light .sidebar,
+body.theme-light .chat-sidebar,
+body.theme-light .chat-main,
+body.theme-light .chat-room,
+body.theme-light .messages,
+body.theme-light .messages-container,
+body.theme-light .chat-content,
+body.theme-light .room-header,
+body.theme-light .chat-header,
+body.theme-light .schedule-bar,
+body.theme-light .composer,
+body.theme-light .composer-bar,
+body.theme-light .closed-composer {
+    background: #ffffff !important;
+    color: #111111 !important;
+}
+
+/* Remove any inherited black strip/panel */
+body.theme-light .messages,
+body.theme-light .messages-container,
+body.theme-light .chat-main {
+    background-image: none !important;
+}
+
+/* Main text */
+body.theme-light h1,
+body.theme-light h2,
+body.theme-light h3,
+body.theme-light p,
+body.theme-light span,
+body.theme-light label,
+body.theme-light .chat-title,
+body.theme-light .chat-subtitle {
+    color: #111111;
+}
+
+/* Search + composer */
+body.theme-light input,
+body.theme-light textarea,
+body.theme-light .message-input,
+body.theme-light #messageInput {
+    background: rgba(245,245,250,.88) !important;
+    color: #111111 !important;
+    border-color: rgba(60,60,67,.22) !important;
+}
+
+body.theme-light input::placeholder,
+body.theme-light textarea::placeholder {
+    color: #6d6d72 !important;
+}
+
+/* Filter buttons */
+body.theme-light .filter-button,
+body.theme-light .chat-filter,
+body.theme-light .filter-btn {
+    background: rgba(242,242,247,.9) !important;
+    color: #111111 !important;
+    border-color: rgba(60,60,67,.16) !important;
+}
+
+body.theme-light .filter-button.active,
+body.theme-light .chat-filter.active,
+body.theme-light .filter-btn.active,
+body.theme-light [class*="filter"].active {
+    background: #dcecff !important;
+    color: #0879e8 !important;
+    border-color: rgba(10,132,255,.18) !important;
+}
+
+/* Hamburger / info button */
+body.theme-light .info-button,
+body.theme-light .menu-button,
+body.theme-light .chat-menu-button,
+body.theme-light #infoButton,
+body.theme-light #chatInfoButton {
+    background: rgba(242,242,247,.88) !important;
+    color: #0879e8 !important;
+    border-color: rgba(60,60,67,.12) !important;
+}
+
+/* Info menu becomes light glass too */
+body.theme-light .info-menu-list,
+body.theme-light .info-menu,
+body.theme-light .chat-info-menu {
+    background: rgba(255,255,255,.70) !important;
+    color: #111111 !important;
+    border: 1px solid rgba(60,60,67,.14) !important;
+    box-shadow: 0 18px 50px rgba(0,0,0,.16) !important;
+    backdrop-filter: blur(28px) saturate(155%) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(155%) !important;
+}
+
+body.theme-light .info-menu-list button,
+body.theme-light .info-menu button,
+body.theme-light .chat-info-menu button,
+body.theme-light .theme-menu-item {
+    color: #111111 !important;
+}
+
+body.theme-light .info-menu-list button:hover,
+body.theme-light .info-menu button:hover,
+body.theme-light .chat-info-menu button:hover {
+    background: rgba(0,0,0,.055) !important;
+}
+
+/* Light message bubbles */
+body.theme-light .message-row.received .message-bubble,
+body.theme-light .message-row:not(.sent) .message-bubble,
+body.theme-light .incoming-message,
+body.theme-light .received-message {
+    background: #e5e5ea !important;
+    color: #111111 !important;
+}
+
+body.theme-light .message-row.sent .message-bubble,
+body.theme-light .outgoing-message,
+body.theme-light .sent-message {
+    background: #a9d8ff !important;
+    color: #111111 !important;
+}
+
+/* Message metadata */
+body.theme-light .message-time,
+body.theme-light .message-status,
+body.theme-light .message-meta {
+    color: #6d6d72 !important;
+}
+
+/* Closed composer */
+body.theme-light .closed-composer {
+    border: 1px solid rgba(60,60,67,.16) !important;
+    box-shadow: none !important;
+}
+
+/* ==========================================================
+   DOUBLE CLICK POPUP — LIGHT GLASS
+   ========================================================== */
+body.theme-light .message-focus-backdrop {
+    background: rgba(255,255,255,.42) !important;
+    backdrop-filter: blur(8px) saturate(110%) !important;
+    -webkit-backdrop-filter: blur(8px) saturate(110%) !important;
+}
+
+body.theme-light .message-focus-stage .message-focus-reactions,
+body.theme-light .message-focus-stage .message-focus-actions {
+    background: rgba(255,255,255,.62) !important;
+    color: #111111 !important;
+    border: 1px solid rgba(60,60,67,.18) !important;
+    box-shadow:
+        0 18px 50px rgba(0,0,0,.15),
+        inset 0 1px 0 rgba(255,255,255,.75) !important;
+    backdrop-filter: blur(30px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(160%) !important;
+}
+
+body.theme-light .message-focus-stage .message-focus-action {
+    color: #111111 !important;
+    border-bottom-color: rgba(60,60,67,.12) !important;
+}
+
+body.theme-light .message-focus-stage .message-focus-action:hover {
+    background: rgba(0,0,0,.055) !important;
+}
+
+body.theme-light .message-focus-reaction-hint {
+    color: #111111 !important;
+    text-shadow: none !important;
+}
+
+/* Selected message remains readable */
+body.theme-light .message-focus-stage .message-focus-card,
+body.theme-light .message-focus-stage .message-focus-row {
+    color: #111111 !important;
+}
+
+/* Buttons / icons in light mode */
+body.theme-light .emoji-button,
+body.theme-light .theme-toggle-button {
+    background: rgba(242,242,247,.9) !important;
+    color: #111111 !important;
+    border-color: rgba(60,60,67,.14) !important;
+}
+
+/* Don't let old dark declarations win */
+body.theme-light [style*="background: #000"],
+body.theme-light [style*="background:#000"],
+body.theme-light [style*="background: rgb(0, 0, 0)"] {
+    background: #ffffff !important;
+    color: #111111 !important;
+}
+</style>
+
+<style id="final-delete-red-fix">
+        .message-focus-action.delete,
+        .message-focus-action.delete span,
+        .message-focus-action.delete .message-focus-action-icon {
+            color: #ff3b30 !important;
+        }
+        body.theme-light .message-focus-action.delete,
+        body.theme-light .message-focus-action.delete span,
+        body.theme-light .message-focus-action.delete .message-focus-action-icon {
+            color: #ff3b30 !important;
+        }
     </style>
 
 </head>
@@ -2739,6 +4418,18 @@
                     1
                 )
             );
+
+        /*
+         * FOTO PROFIL LAWAN CHAT
+         *
+         * USER  -> foto talent
+         * TALENT -> foto pengguna
+         *
+         * Jika foto tidak tersedia, otomatis kembali ke inisial.
+         */
+        $otherPhoto = $isUser
+            ? ($talent?->photo ?? null)
+            : ($pengguna?->photo ?? null);
 
 
         /*
@@ -2823,9 +4514,7 @@
         |
         */
 
-        $existingRating =
-            $booking->ratings?->first();
-
+        
     @endphp
 
 
@@ -3014,9 +4703,17 @@
 
                         <div class="avatar">
 
-                            @if ($isUser && $item->talent?->photo)
+                            @if (
+                                $isUser
+                                    ? $item->talent?->photo
+                                    : $item->pengguna?->photo
+                            )
                                 <img
-                                    src="{{ asset('storage/' . $item->talent->photo) }}"
+                                    src="{{ asset(
+                                        'storage/' . ($isUser
+                                            ? $item->talent->photo
+                                            : $item->pengguna->photo)
+                                    ) }}"
                                     alt="Profil {{ $itemName }}"
                                 >
                             @else
@@ -3145,9 +4842,9 @@
 
                     <div class="avatar">
 
-                        @if ($isUser && $talent?->photo)
+                        @if ($otherPhoto)
                             <img
-                                src="{{ asset('storage/' . $talent->photo) }}"
+                                src="{{ asset('storage/' . $otherPhoto) }}"
                                 alt="Profil {{ $otherName }}"
                             >
                         @else
@@ -3198,6 +4895,16 @@
                         class="info-menu-list"
                         onclick="event.stopPropagation()"
                     >
+
+                        <button
+                            type="button"
+                            id="themeToggleButton"
+                            class="theme-menu-item"
+                            aria-label="Ganti tema gelap atau terang"
+                        >
+                            <span id="themeMenuLabel">Terang</span>
+                            <span id="themeMenuIcon" aria-hidden="true">☀️</span>
+                        </button>
 
                         <button
                             type="button"
@@ -3449,13 +5156,16 @@
             : 'received' }}
     "
     data-message-id="{{ $message->id }}"
+    data-sender-id="{{ $message->sender_id }}"
+    data-sender-name="{{ e($senderName) }}"
+    data-is-read="{{ ($message->is_read ?? false) ? '1' : '0' }}"
 >
 
                             <div class="message-avatar">
 
-                                @if (!$mine && $isUser && $talent?->photo)
+                                @if (!$mine && $otherPhoto)
                                     <img
-                                        src="{{ asset('storage/' . $talent->photo) }}"
+                                        src="{{ asset('storage/' . $otherPhoto) }}"
                                         alt="Profil {{ $senderName }}"
                                     >
                                 @else
@@ -3476,11 +5186,37 @@
                                 </div>
 
 
-                                <div class="message-bubble">
+                                @php
+                                    $rawMessage = (string) $message->message;
+                                    $replyMatch = preg_match('/^↪\s*([^:]+):\s*"(.*?)"\s*\n(.*)$/us', $rawMessage, $replyParts);
+                                    $displayMessage = $replyMatch ? $replyParts[3] : $rawMessage;
+                                @endphp
 
-                                    {{ $message->message }}
+                                <div
+                                    class="message-bubble {{ $message->image_path && !$displayMessage ? 'image-only' : '' }}"
+                                    data-plain-text="{{ e($displayMessage) }}"
+                                >
+                                    @if ($message->image_path)
+                                        <img
+                                            class="message-image"
+                                            src="{{ asset('storage/' . $message->image_path) }}"
+                                            alt="Foto yang dikirim"
+                                            loading="lazy"
+                                        >
+                                    @endif
 
+                                    @if ($replyMatch)
+                                        <div class="message-reply-quote">
+                                            {{ $replyParts[1] }}: “{{ $replyParts[2] }}”
+                                        </div>
+                                    @endif
+
+                                    @if ($displayMessage !== '')
+                                        <div class="message-text">{{ $displayMessage }}</div>
+                                    @endif
                                 </div>
+
+                                <span class="message-reaction" aria-label="Reaksi"></span>
 
 
                                 <div class="message-footer">
@@ -3493,38 +5229,6 @@
                                     </div>
 
 
-                                    @if ($mine)
-
-                                        @php
-
-                                            $isRead =
-                                                $message->is_read
-                                                ?? false;
-
-                                        @endphp
-
-
-                                        @if ($isRead)
-
-                                            <span
-                                                class="message-check double"
-                                                title="Sudah dibaca"
-                                            >
-                                                ✓✓
-                                            </span>
-
-                                        @else
-
-                                            <span
-                                                class="message-check single"
-                                                title="Terkirim"
-                                            >
-                                                ✓
-                                            </span>
-
-                                        @endif
-
-                                    @endif
 
                                 </div>
 
@@ -3561,6 +5265,23 @@
 
             </div>
 
+            {{-- Typing dock sengaja DI LUAR .messages supaya posisinya
+                 selalu menempel di bawah area chat, tepat di atas composer. --}}
+            <div
+                class="typing-dock"
+                aria-hidden="true"
+            >
+                <div
+                    class="typing-indicator"
+                    id="typingIndicator"
+                    aria-live="polite"
+                    aria-label="Sedang mengetik"
+                >
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                </div>
+            </div>
 
 
             {{-- ====================================================
@@ -3577,25 +5298,62 @@
                         method="POST"
                         action="{{ route('whisperly.chat.store', $booking->id) }}"
                         id="messageForm"
+                        enctype="multipart/form-data"
                     >
                         @csrf
 
-                        <textarea
-                            name="message"
-                            id="messageInput"
-                            placeholder="Ketik pesan..."
-                            required
-                            maxlength="2000"
-                        ></textarea>
+                        <div class="reply-preview" id="replyPreview">
+                            <div class="reply-preview-text">
+                                <div class="reply-preview-label" id="replyPreviewLabel">Membalas</div>
+                                <div class="reply-preview-quote" id="replyPreviewQuote"></div>
+                            </div>
+                            <button type="button" class="reply-cancel" id="replyCancel" aria-label="Batal membalas">×</button>
+                        </div>
 
-                        <button
-                            type="submit"
-                            class="send-button"
-                            id="sendButton"
-                            title="Kirim pesan"
-                        >
-                            ➤
-                        </button>
+                        <div class="image-preview" id="imagePreview">
+                            <img id="imagePreviewImg" src="" alt="Pratinjau foto">
+                            <button type="button" class="image-preview-remove" id="imagePreviewRemove" aria-label="Hapus foto">×</button>
+                        </div>
+
+                        <input type="file" name="image" id="imageInput" class="attachment-input" accept="image/jpeg,image/png,image/webp,image/gif">
+
+                        <div class="composer-controls">
+                            <button type="button" class="attachment-button" id="attachmentButton" title="Kirim foto" aria-label="Kirim foto">+</button>
+
+                            <button
+                                type="button"
+                                class="emoji-button"
+                                id="emojiButton"
+                                title="Emoji"
+                                aria-label="Buka emoji"
+                            >
+                                😊
+                            </button>
+
+                            <textarea
+                                name="message"
+                                id="messageInput"
+                                placeholder="iMessage"
+                                maxlength="2000"
+                                rows="1"
+                            ></textarea>
+
+                            <button
+                                type="submit"
+                                class="send-button"
+                                id="sendButton"
+                                title="Kirim pesan"
+                            >
+                                ➤
+                            </button>
+                        </div>
+
+                        <div class="emoji-picker" id="emojiPicker" aria-label="Pilihan emoji">
+                            <button type="button">😀</button><button type="button">😂</button><button type="button">🤣</button><button type="button">😍</button><button type="button">🥰</button><button type="button">😘</button><button type="button">😭</button><button type="button">😡</button>
+                            <button type="button">👍</button><button type="button">👎</button><button type="button">👏</button><button type="button">🙏</button><button type="button">❤️</button><button type="button">💔</button><button type="button">🔥</button><button type="button">✨</button>
+                            <button type="button">🤣</button><button type="button">😎</button><button type="button">🥹</button><button type="button">😱</button><button type="button">🤔</button><button type="button">🙄</button><button type="button">💀</button><button type="button">💯</button>
+                            <button type="button">🎉</button><button type="button">🥳</button><button type="button">💙</button><button type="button">💖</button><button type="button">🤍</button><button type="button">🫶</button><button type="button">👀</button><button type="button">💩</button>
+                        </div>
                     </form>
 
                     <div class="chat-countdown" id="chatCountdown" aria-live="polite">
@@ -3654,14 +5412,11 @@
 
                         <div class="account-profile-avatar">
 
-                            @if (
-                                $isUser
-                                && $talent?->photo
-                            )
+                            @if ($otherPhoto)
 
                                 <img
                                     src="{{ asset(
-                                        'storage/' . $talent->photo
+                                        'storage/' . $otherPhoto
                                     ) }}"
                                     alt="Avatar {{ $otherName }}"
                                 >
@@ -3702,7 +5457,7 @@
                                 class="account-status-dot"
                             ></span>
 
-                            {{ $contactStatus }}
+                            <span id="profilePresenceText">{{ $contactStatus }}</span>
 
                         </div>
 
@@ -3894,7 +5649,7 @@
         {{-- ====================================================
              POPUP RATING USER
         ===================================================== --}}
-        @if ($isUser && ! $existingRating)
+        @if ($isUser && $canRate)
             <div
                 class="modal-overlay rating-modal-overlay"
                 id="ratingModal"
@@ -4088,6 +5843,26 @@
                     const status =
                         data.status;
 
+                    const typingIndicator =
+                        document.getElementById(
+                            'typingIndicator'
+                        );
+
+                    const isTyping =
+                        status === 'Mengetik...';
+
+                    if (typingIndicator) {
+                        typingIndicator.classList.toggle(
+                            'active',
+                            isTyping
+                        );
+
+                        if (isTyping && messages) {
+                            messages.scrollTop =
+                                messages.scrollHeight;
+                        }
+                    }
+
 
                     const roomStatus =
                         document.getElementById(
@@ -4100,20 +5875,28 @@
                             'profilePresenceStatus'
                         );
 
+                    const profilePresenceText =
+                        document.getElementById(
+                            'profilePresenceText'
+                        );
+
 
                     if (roomStatus) {
 
                         roomStatus.textContent =
-                            status;
+                            isTyping ? 'Mengetik...' : status;
 
                     }
 
 
+                    if (profilePresenceText) {
+
+                        profilePresenceText.textContent =
+                            isTyping ? 'Mengetik...' : status;
+
+                    }
+
                     if (profileStatus) {
-
-                        profileStatus.lastChild.textContent =
-                            ` ${status}`;
-
 
                         profileStatus.classList.toggle(
                             'online',
@@ -4154,6 +5937,15 @@
 
             },
             10000
+        );
+
+
+        /* Cek status lawan lebih cepat supaya indikator mengetik terasa realtime. */
+        updateContactStatus();
+
+        setInterval(
+            updateContactStatus,
+            1000
         );
 
 
@@ -4694,6 +6486,11 @@
         ========================================================== */
         const chatComposer = document.getElementById('chatComposer');
         const messageForm = document.getElementById('messageForm');
+        const attachmentButton = document.getElementById('attachmentButton');
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const imagePreviewImg = document.getElementById('imagePreviewImg');
+        const imagePreviewRemove = document.getElementById('imagePreviewRemove');
         const chatCountdown = document.getElementById('chatCountdown');
         const chatCountdownText = document.getElementById('chatCountdownText');
         const ratingModal = document.getElementById('ratingModal');
@@ -4752,9 +6549,12 @@
         }
 
         function bookingExpired() {
-            lockChat();
-            openRatingModal();
-        }
+    lockChat();
+
+    @if ($isUser && $canRate)
+        openRatingModal();
+    @endif
+}
 
         function updateBookingTimer() {
             if (!chatComposer) return;
@@ -4781,10 +6581,9 @@
         setInterval(updateBookingTimer, 500);
 
         /* Jika halaman dibuka setelah waktu selesai, popup langsung muncul. */
-        @if ($isUser && $ratingAvailable && ! $existingRating)
-            openRatingModal();
-        @endif
-
+        @if ($isUser && $canRate)
+    openRatingModal();
+@endif
         {{-- ANIMASI TERIMA KASIH SETELAH RATING BERHASIL --}}
         @if ($isUser && session('rating_success'))
             <div class="modal-overlay thank-you-overlay" id="thankYouModal">
@@ -4796,16 +6595,169 @@
             </div>
         @endif
 
-        /* Jangan biarkan Enter mencoba mengirim pesan setelah timer habis. */
+        /*
+         * KIRIM PESAN TANPA REFRESH
+         *
+         * Form tetap memakai route Laravel yang sama, tetapi submit diambil
+         * alih oleh fetch(). Server mengembalikan JSON, lalu pesan langsung
+         * dimasukkan ke DOM. Jadi pengirim dan penerima sama-sama melihat
+         * pesan tanpa perlu menekan refresh.
+         */
+        function clearSelectedImage() {
+            if (imageInput) imageInput.value = '';
+            if (imagePreviewImg) imagePreviewImg.src = '';
+            if (imagePreview) imagePreview.classList.remove('active');
+        }
+
+        if (attachmentButton && imageInput) {
+            attachmentButton.addEventListener('click', function () {
+                imageInput.click();
+            });
+        }
+
+        if (imageInput) {
+            imageInput.addEventListener('change', function () {
+                const file = this.files && this.files[0];
+                if (!file) { clearSelectedImage(); return; }
+                if (!file.type.startsWith('image/')) { alert('File yang dipilih harus berupa foto.'); clearSelectedImage(); return; }
+                if (file.size > 5 * 1024 * 1024) { alert('Ukuran foto maksimal 5 MB.'); clearSelectedImage(); return; }
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    if (imagePreviewImg) imagePreviewImg.src = event.target.result;
+                    if (imagePreview) imagePreview.classList.add('active');
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        if (imagePreviewRemove) {
+            imagePreviewRemove.addEventListener('click', clearSelectedImage);
+        }
+
+        let sendingMessage = false;
+
         if (messageForm) {
             messageForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                /*
+                 * Jangan mengandalkan disabled pada tombol untuk mencegah
+                 * double-submit. Setelah request selesai, flag ini selalu
+                 * dikembalikan ke false sehingga foto/pesan berikutnya bisa
+                 * dikirim tanpa refresh halaman.
+                 */
+                if (sendingMessage) return;
+
                 const endValue = chatComposer?.dataset.bookingEnd;
                 const endTime = endValue ? new Date(endValue).getTime() : NaN;
 
                 if (!Number.isNaN(endTime) && Date.now() >= endTime) {
-                    event.preventDefault();
                     bookingExpired();
+                    return;
                 }
+
+                const input = document.getElementById('messageInput');
+                const button = document.getElementById('sendButton');
+                const message = input ? input.value.trim() : '';
+                const hasImage = !!(imageInput && imageInput.files && imageInput.files.length);
+
+                if (!message && !hasImage) {
+                    return;
+                }
+
+                sendingMessage = true;
+
+                const formData = new FormData(messageForm);
+
+                if (replyTarget) {
+                    const quoted = escapeText(replyTarget.quote).replace(/"/g, '\"');
+                    const original = String(formData.get('message') || '').trim();
+                    formData.set('message', '↪ ' + replyTarget.sender + ': "' + quoted + '"\n' + original);
+                }
+
+                fetch(messageForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    credentials: 'same-origin'
+                })
+                    .then(async function (response) {
+                        let data = null;
+
+                        try {
+                            data = await response.json();
+                        } catch (error) {
+                            throw new Error('Server tidak mengembalikan JSON.');
+                        }
+
+                        if (!response.ok) {
+                            if (data && data.expired) {
+                                bookingExpired();
+                            }
+
+                            throw new Error(
+                                data?.message || 'Pesan gagal dikirim.'
+                            );
+                        }
+
+                        return data;
+                    })
+                    .then(function (data) {
+                        if (!data || !data.ok || !data.message) {
+                            throw new Error('Data pesan tidak valid.');
+                        }
+
+                        /*
+                         * appendNewMessage() didefinisikan di bawah, tetapi
+                         * function declaration tetap tersedia saat event ini
+                         * dijalankan.
+                         */
+                        appendNewMessage(data.message);
+
+                        if (input) {
+                            input.value = '';
+                            input.focus();
+                        }
+
+                        clearSelectedImage();
+                        clearReplyTarget();
+                        if (emojiPicker) emojiPicker.classList.remove('open');
+
+                        const container =
+                            document.getElementById('messages');
+
+                        if (container) {
+                            container.scrollTop =
+                                container.scrollHeight;
+                        }
+                    })
+                    .catch(function (error) {
+                        console.error('Gagal mengirim pesan:', error);
+                    })
+                    .finally(function () {
+                        sendingMessage = false;
+
+                        /*
+                         * WAJIB aktif lagi setelah setiap request, baik
+                         * berhasil maupun gagal. Ini yang membuat user bisa
+                         * mengirim foto kedua/ketiga tanpa refresh.
+                         */
+                        if (button) {
+                            button.disabled = false;
+                            button.removeAttribute('aria-busy');
+                        }
+
+                        if (attachmentButton) {
+                            attachmentButton.disabled = false;
+                        }
+
+                        if (imageInput) {
+                            imageInput.disabled = false;
+                        }
+                    });
             });
         }
 
@@ -4843,7 +6795,554 @@
         }
 
                 /* ==========================================================
+           iMESSAGE INTERACTIONS
+           - dark/light mode
+           - emoji picker
+           - double click message => reaction/action sheet
+           - reaction badge
+           - reply (disimpan sebagai quote di isi pesan)
+           - copy message
+        ========================================================== */
+
+        const themeToggleButton = document.getElementById('themeToggleButton');
+        const themeMenuIcon = document.getElementById('themeMenuIcon');
+        const themeMenuLabel = document.getElementById('themeMenuLabel');
+        const savedTheme = localStorage.getItem('whisperly-chat-theme') || 'dark';
+
+        function applyTheme(theme) {
+            const dark = theme === 'dark';
+            document.body.classList.toggle('theme-dark', dark);
+            document.body.classList.toggle('theme-light', !dark);
+            localStorage.setItem('whisperly-chat-theme', dark ? 'dark' : 'light');
+
+            if (themeMenuIcon) {
+                themeMenuIcon.textContent = dark ? '☀️' : '🌙';
+            }
+
+            if (themeMenuLabel) {
+                themeMenuLabel.textContent = dark ? 'Terang' : 'Gelap';
+            }
+
+            if (themeToggleButton) {
+                themeToggleButton.title = dark ? 'Beralih ke mode terang' : 'Beralih ke mode gelap';
+                themeToggleButton.setAttribute('aria-label', dark ? 'Beralih ke mode terang' : 'Beralih ke mode gelap');
+            }
+        }
+
+        applyTheme(savedTheme === 'light' ? 'light' : 'dark');
+
+        if (themeToggleButton) {
+            themeToggleButton.addEventListener('click', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                const dark = document.body.classList.contains('theme-dark');
+                applyTheme(dark ? 'light' : 'dark');
+            });
+        }
+
+        const emojiButton = document.getElementById('emojiButton');
+        const emojiPicker = document.getElementById('emojiPicker');
+        const messageInputForEmoji = document.getElementById('messageInput');
+
+        if (emojiButton && emojiPicker) {
+            emojiButton.addEventListener('click', function (event) {
+                event.stopPropagation();
+                emojiPicker.classList.toggle('open');
+            });
+
+            emojiPicker.querySelectorAll('button').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    if (!messageInputForEmoji) return;
+                    const emoji = button.textContent;
+                    const start = messageInputForEmoji.selectionStart ?? messageInputForEmoji.value.length;
+                    const end = messageInputForEmoji.selectionEnd ?? messageInputForEmoji.value.length;
+                    messageInputForEmoji.value = messageInputForEmoji.value.slice(0, start) + emoji + messageInputForEmoji.value.slice(end);
+                    messageInputForEmoji.focus();
+                    const next = start + emoji.length;
+                    messageInputForEmoji.setSelectionRange(next, next);
+                    messageInputForEmoji.dispatchEvent(new Event('input', { bubbles: true }));
+                });
+            });
+        }
+
+        document.addEventListener('click', function (event) {
+            if (emojiPicker && !emojiPicker.contains(event.target) && event.target !== emojiButton) {
+                emojiPicker.classList.remove('open');
+            }
+        });
+
+        const replyPreview = document.getElementById('replyPreview');
+        const replyPreviewLabel = document.getElementById('replyPreviewLabel');
+        const replyPreviewQuote = document.getElementById('replyPreviewQuote');
+        const replyCancel = document.getElementById('replyCancel');
+        let replyTarget = null;
+
+        function escapeText(value) {
+            return String(value ?? '').replace(/\s+/g, ' ').trim();
+        }
+
+        function setReplyTarget(row) {
+            if (!row) return;
+            const bubble = row.querySelector('.message-bubble');
+            const quote = escapeText(bubble?.dataset?.plainText || bubble?.textContent || '');
+            const sender = row.classList.contains('sent') ? 'Anda' : (row.dataset.senderName || '{{ addslashes($otherName) }}');
+            replyTarget = { sender: sender, quote: quote };
+            if (replyPreviewLabel) replyPreviewLabel.textContent = 'Membalas ' + sender;
+            if (replyPreviewQuote) replyPreviewQuote.textContent = quote;
+            replyPreview?.classList.add('active');
+            messageInput?.focus();
+        }
+
+        function clearReplyTarget() {
+            replyTarget = null;
+            replyPreview?.classList.remove('active');
+            if (replyPreviewQuote) replyPreviewQuote.textContent = '';
+        }
+
+        replyCancel?.addEventListener('click', clearReplyTarget);
+
+        function getMessagePlainText(row) {
+            const bubble = row?.querySelector('.message-bubble');
+            if (!bubble) return '';
+            return bubble.dataset.plainText || bubble.textContent || '';
+        }
+
+        @php
+            $reactionUrlTemplate = route(
+                'whisperly.chat.message.react',
+                [
+                    'booking' => $booking->id,
+                    'message' => '__MESSAGE__',
+                ]
+            );
+
+            $deleteMessageUrlTemplate = route(
+                'whisperly.chat.message.delete',
+                [
+                    'booking' => $booking->id,
+                    'message' => '__MESSAGE__',
+                ]
+            );
+        @endphp
+
+        const currentUserId = String(@json((string) $currentUser->id));
+
+        const reactionUrlTemplate = @json($reactionUrlTemplate);
+
+        const deleteMessageUrlTemplate = @json($deleteMessageUrlTemplate);
+
+        function messageActionUrl(template, messageId) {
+            return template.replace('__MESSAGE__', encodeURIComponent(String(messageId)));
+        }
+
+        function normalizeReactions(reactions) {
+            if (!Array.isArray(reactions)) return [];
+
+            return reactions
+                .map(function (reaction) {
+                    if (typeof reaction === 'string') {
+                        return {
+                            user_id: '',
+                            emoji: reaction
+                        };
+                    }
+
+                    return {
+                        user_id: String(reaction?.user_id ?? ''),
+                        emoji: String(reaction?.emoji ?? '')
+                    };
+                })
+                .filter(function (reaction) {
+                    return reaction.emoji !== '';
+                });
+        }
+
+        function renderMessageReactions(row, reactions) {
+            if (!row) return;
+
+            let badge = row.querySelector('.message-reaction');
+
+            if (!badge) {
+                badge = document.createElement('span');
+                badge.className = 'message-reaction';
+
+                const content = row.querySelector('.message-content');
+                if (content) content.appendChild(badge);
+            }
+
+            const normalized = normalizeReactions(reactions);
+            const emojis = normalized.map(function (reaction) {
+                return reaction.emoji;
+            });
+
+            badge.textContent = emojis.join(' ');
+            badge.classList.toggle('active', emojis.length > 0);
+            row._reactions = normalized;
+        }
+
+        function getRowReactions(row) {
+            return normalizeReactions(row?._reactions || []);
+        }
+
+        function getMyReaction(row) {
+            return getRowReactions(row).find(function (reaction) {
+                return String(reaction.user_id) === currentUserId;
+            })?.emoji || '';
+        }
+
+        async function setReaction(row, emoji) {
+            if (!row) return;
+
+            const messageId = String(row.dataset.messageId || '');
+            if (!messageId) return;
+
+            const myCurrentReaction = getMyReaction(row);
+            const nextEmoji = myCurrentReaction === emoji ? '' : emoji;
+
+            const formData = new FormData();
+            formData.append('emoji', nextEmoji);
+
+            const response = await fetch(
+                messageActionUrl(reactionUrlTemplate, messageId),
+                {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    credentials: 'same-origin',
+                    cache: 'no-store'
+                }
+            );
+
+            let data = null;
+            try {
+                data = await response.json();
+            } catch (error) {}
+
+            if (!response.ok || !data?.ok) {
+                throw new Error(data?.message || 'Reaction gagal disimpan.');
+            }
+
+            renderMessageReactions(row, data.reactions || []);
+
+            /* Clone di popup juga langsung mengikuti reaction terbaru. */
+            if (activeMessageOverlay?.originalRow === row) {
+                const clone = activeMessageOverlay.root?.querySelector('.message-focus-row');
+                if (clone) renderMessageReactions(clone, data.reactions || []);
+            }
+
+            return data;
+        }
+
+        function restoreServerReactions(row, reactions) {
+            renderMessageReactions(row, reactions || []);
+        }
+
+        let activeMessageOverlay = null;
+
+        function closeActionSheet() {
+            if (activeMessageOverlay) {
+                const original = activeMessageOverlay.originalRow;
+                if (original) original.classList.remove('message-selected-original');
+                activeMessageOverlay.root?.remove();
+                activeMessageOverlay.backdrop?.remove();
+                activeMessageOverlay = null;
+            }
+        }
+
+        function makeFocusAction(label, icon, handler, extraClass) {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'message-focus-action' + (extraClass ? ' ' + extraClass : '');
+            btn.innerHTML = '<span>' + label + '</span><span class="message-focus-action-icon">' + icon + '</span>';
+            btn.addEventListener('click', function (event) {
+                event.stopPropagation();
+                handler();
+            });
+            return btn;
+        }
+
+        function openMessageActions(row) {
+            if (!row) return;
+            closeActionSheet();
+
+            row.classList.add('message-selected-original');
+
+            const backdrop = document.createElement('div');
+            backdrop.className = 'message-focus-backdrop';
+
+            const stage = document.createElement('div');
+            stage.className = 'message-focus-stage';
+
+            /* Reaction bar ala iMessage */
+            const reactionBar = document.createElement('div');
+            const reactionWrap = document.createElement('div');
+            reactionWrap.className = 'message-focus-reaction-wrap';
+
+            const reactionHint = document.createElement('div');
+            reactionHint.className = 'message-focus-reaction-hint';
+            reactionHint.textContent = 'Tap and hold to super react';
+            reactionWrap.appendChild(reactionHint);
+
+            reactionBar.className = 'message-focus-reactions';
+            reactionBar.setAttribute('aria-label', 'Reaction pesan');
+
+            ['❤️', '😂', '😮', '😢', '😡', '👎'].forEach(function (emoji) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'message-focus-reaction';
+                btn.textContent = emoji;
+                btn.title = 'React ' + emoji;
+                btn.addEventListener('click', async function (event) {
+                    event.stopPropagation();
+                    btn.disabled = true;
+                    try {
+                        await setReaction(row, emoji);
+                        closeActionSheet();
+                    } catch (error) {
+                        console.error('Gagal menyimpan reaction:', error);
+                    } finally {
+                        btn.disabled = false;
+                    }
+                });
+                reactionBar.appendChild(btn);
+            });
+
+            const moreReaction = document.createElement('button');
+            moreReaction.type = 'button';
+            moreReaction.className = 'message-focus-reaction message-focus-reaction-more';
+            moreReaction.textContent = '+';
+            moreReaction.title = 'Reaction lainnya';
+            moreReaction.addEventListener('click', async function (event) {
+                event.stopPropagation();
+                const emoji = window.prompt('Masukkan emoji reaction:');
+                if (emoji && emoji.trim()) {
+                    try {
+                        await setReaction(row, emoji.trim());
+                        closeActionSheet();
+                    } catch (error) {
+                        console.error('Gagal menyimpan reaction:', error);
+                    }
+                }
+            });
+            reactionBar.appendChild(moreReaction);
+            reactionWrap.appendChild(reactionBar);
+            stage.appendChild(reactionWrap);
+
+            /* Bubble dibuat clone supaya benar-benar terapung */
+            const card = document.createElement('div');
+            card.className = 'message-focus-card';
+            const clone = row.cloneNode(true);
+
+            /*
+             * PENTING: row asli diberi class message-selected-original agar
+             * disembunyikan saat overlay terbuka. cloneNode() ikut menyalin
+             * class tersebut, sehingga sebelumnya bubble clone ikut opacity:0
+             * dan TIDAK KELIHATAN. Hapus class itu dari clone.
+             */
+            clone.classList.remove('message-selected-original');
+            clone.classList.add('message-focus-row');
+            clone.dataset.interactionsBound = '1';
+            clone.querySelectorAll('.message-reaction').forEach(function (el) { el.remove(); });
+            card.appendChild(clone);
+            stage.appendChild(card);
+
+            /* Menu bawah: hanya Reply, Copy, Delete */
+            const actions = document.createElement('div');
+            actions.className = 'message-focus-actions';
+
+            actions.appendChild(makeFocusAction('Salin', '▢', async function () {
+                const text = getMessagePlainText(row);
+                try {
+                    await navigator.clipboard.writeText(text);
+                } catch (error) {
+                    const helper = document.createElement('textarea');
+                    helper.value = text;
+                    helper.style.position = 'fixed';
+                    helper.style.opacity = '0';
+                    document.body.appendChild(helper);
+                    helper.select();
+                    document.execCommand('copy');
+                    helper.remove();
+                }
+                closeActionSheet();
+            }));
+
+            actions.appendChild(makeFocusAction('Balas', '↩', function () {
+                setReplyTarget(row);
+                closeActionSheet();
+            }));
+
+            actions.appendChild(makeFocusAction('Hapus', '⌫', function () {
+                const messageId = String(row.dataset.messageId || '');
+                if (!messageId) return;
+
+                const mine = String(row.dataset.senderId || '') === String(currentUserId);
+                const confirmText = mine
+                    ? 'Hapus pesan ini untuk semua orang? Pesan akan dihapus permanen dari chat.'
+                    : 'Hapus pesan ini untuk saya saja? Pesan akan tetap terlihat oleh orang lain.';
+
+                if (!window.confirm(confirmText)) return;
+
+                fetch(
+                    messageActionUrl(deleteMessageUrlTemplate, messageId),
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                        },
+                        credentials: 'same-origin',
+                        cache: 'no-store'
+                    }
+                )
+                    .then(async function (response) {
+                        let data = null;
+                        try { data = await response.json(); } catch (error) {}
+
+                        if (!response.ok || !data?.ok) {
+                            throw new Error(data?.message || 'Pesan gagal dihapus.');
+                        }
+
+                        row.remove();
+                        closeActionSheet();
+                    })
+                    .catch(function (error) {
+                        console.error('Gagal menghapus pesan:', error);
+                    });
+            }, 'delete'));
+
+            stage.appendChild(actions);
+            document.body.appendChild(backdrop);
+            document.body.appendChild(stage);
+
+            activeMessageOverlay = { root: stage, backdrop: backdrop, originalRow: row };
+
+            /*
+             * Posisikan seluruh popup berdasarkan pesan yang benar-benar
+             * diklik. Bubble clone berada di tengah, reaction di atasnya,
+             * dan Salin/Balas/Hapus tepat di bawah bubble.
+             */
+            requestAnimationFrame(function () {
+                const originalRect = row.getBoundingClientRect();
+                const stageRect = stage.getBoundingClientRect();
+                const selectedBubble = stage.querySelector('.message-focus-row .message-bubble');
+                const margin = 10;
+                const gap = 10;
+
+                if (!selectedBubble) return;
+
+                /*
+                 * iMessage:
+                 * Popup TIDAK dipindah ke tengah layar.
+                 * Stage mengikuti sisi bubble asli:
+                 * - pesan kanan -> popup rata kanan di bawah pesan
+                 * - pesan kiri -> popup rata kiri di bawah pesan
+                 */
+                const isSent = row.classList.contains('sent');
+
+                let left = isSent
+                    ? originalRect.right - stageRect.width
+                    : originalRect.left;
+
+                let top = originalRect.bottom + gap;
+
+                /* Tetap berada di dalam viewport. */
+                left = Math.max(
+                    margin,
+                    Math.min(left, window.innerWidth - stageRect.width - margin)
+                );
+
+                /*
+                 * Utamakan posisi DI BAWAH bubble. Kalau ruang bawah tidak cukup,
+                 * naik sedikit agar popup tetap terlihat, tanpa memindahkannya
+                 * ke tengah layar.
+                 */
+                const maxTop = window.innerHeight - stageRect.height - margin;
+                if (top > maxTop) {
+                    top = Math.max(margin, maxTop);
+                }
+
+                stage.style.left = left + 'px';
+                stage.style.top = top + 'px';
+                stage.classList.add(isSent ? 'focus-align-sent' : 'focus-align-received');
+            });
+
+            backdrop.addEventListener('click', closeActionSheet);
+            document.addEventListener('keydown', function escHandler(event) {
+                if (event.key === 'Escape') {
+                    closeActionSheet();
+                    document.removeEventListener('keydown', escHandler);
+                }
+            });
+        }
+
+        /*
+         * STATUS PESAN — GAYA iMESSAGE
+         * Centang hanya muncul pada pesan TERAKHIR dari rangkaian pesan
+         * yang dikirim berturut-turut oleh user. Jadi spam 4 pesan akan
+         * terlihat sebagai 4 bubble bersih, lalu hanya bubble ke-4 yang
+         * mempunyai ✓ / ✓✓ di bagian bawahnya.
+         */
+        function updateOutgoingMessageChecks(root) {
+            if (!root) return;
+
+            /*
+             * Status centang sengaja DIHAPUS sesuai permintaan UI.
+             * Yang tetap dipertahankan hanya aturan jam: jam tampil pada
+             * pesan terakhir dari rangkaian pesan sender yang sama.
+             */
+            const rows = Array.from(
+                root.querySelectorAll('.message-row[data-message-id]')
+            );
+
+            rows.forEach(function (row, index) {
+                const footer = row.querySelector('.message-footer');
+                if (!footer) return;
+
+                const time = footer.querySelector('.message-time');
+                const nextRow = rows[index + 1] || null;
+                const currentSender = row.classList.contains('sent') ? 'sent' : 'received';
+                const nextSender = nextRow
+                    ? (nextRow.classList.contains('sent') ? 'sent' : 'received')
+                    : null;
+
+                const isLastInSenderGroup =
+                    !nextRow || nextSender !== currentSender;
+
+                if (time) {
+                    time.style.display = isLastInSenderGroup ? 'block' : 'none';
+                }
+
+                /* Hapus sisa centang dari versi lama jika masih ada di DOM. */
+                footer.querySelectorAll('.message-check').forEach(function (check) {
+                    check.remove();
+                });
+            });
+        }
+
+        function bindMessageInteractions(root) {
+            if (!root) return;
+            root.querySelectorAll('.message-row[data-message-id]').forEach(function (row) {
+                if (row.dataset.interactionsBound === '1') return;
+                row.dataset.interactionsBound = '1';
+                restoreServerReactions(row, []);
+                row.addEventListener('dblclick', function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    openMessageActions(row);
+                });
+            });
+        }
+
+        /* ==========================================================
            AUTO UPDATE PESAN
+           ----------------------------------------------------------
+           Pesan baru dicek otomatis setiap 1 detik.
+           Tidak perlu refresh halaman.
         ========================================================== */
 
         const messagesContainer =
@@ -4858,7 +7357,7 @@
             );
 
         let latestMessageId = null;
-
+        let loadingMessages = false;
 
         if (messagesContainer) {
 
@@ -4867,9 +7366,7 @@
                     '.message-row[data-message-id]'
                 );
 
-
             if (existingMessageRows.length > 0) {
-
                 const lastRow =
                     existingMessageRows[
                         existingMessageRows.length - 1
@@ -4877,136 +7374,147 @@
 
                 latestMessageId =
                     lastRow.dataset.messageId;
-
             }
 
-
             function loadNewMessages() {
+
+                if (loadingMessages) {
+                    return;
+                }
+
+                loadingMessages = true;
 
                 fetch(
                     messagesUrl,
                     {
+                        method: 'GET',
                         headers: {
-                            'Accept':
-                                'application/json'
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
                         },
-
                         cache: 'no-store'
                     }
                 )
+                    .then(function (response) {
+                        if (!response.ok) {
+                            throw new Error('Gagal mengambil pesan.');
+                        }
 
-                .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (data) {
 
-                    if (!response.ok) {
-                        throw new Error(
-                            'Gagal mengambil pesan.'
+                        if (
+                            !data.messages ||
+                            !Array.isArray(data.messages)
+                        ) {
+                            return;
+                        }
+
+                        /*
+                         * Sinkronkan reaction/read state sekaligus hapus pesan
+                         * yang sudah benar-benar dihapus dari database.
+                         * Jadi kalau user A menekan Hapus, user B yang sedang
+                         * membuka room yang sama juga kehilangan pesan itu
+                         * pada polling berikutnya tanpa refresh.
+                         */
+                        const serverIds = new Set(
+                            data.messages.map(function (message) {
+                                return String(message.id);
+                            })
                         );
-                    }
 
-                    return response.json();
+                        messagesContainer
+                            .querySelectorAll('.message-row[data-message-id]')
+                            .forEach(function (row) {
+                                const id = String(row.dataset.messageId || '');
 
-                })
+                                if (id && !serverIds.has(id)) {
+                                    row.remove();
+                                }
+                            });
 
-                .then(function (data) {
+                        data.messages.forEach(function (message) {
+                            const row = messagesContainer.querySelector(
+                                '.message-row[data-message-id="' + message.id + '"]'
+                            );
 
-                    if (
-                        !data.messages
-                        ||
-                        !Array.isArray(
-                            data.messages
-                        )
-                    ) {
-                        return;
-                    }
+                            if (row) {
+                                restoreServerReactions(row, message.reactions || []);
+                                row.dataset.isRead = message.is_read ? '1' : '0';
+                            }
+                        });
 
+                        /*
+                         * Gunakan semua ID yang sudah ada di DOM.
+                         * Jangan hanya membandingkan latestMessageId karena
+                         * room dapat berisi riwayat dari beberapa booking.
+                         */
+                        const existingIds = new Set();
 
-                    if (
-                        data.messages.length === 0
-                    ) {
-                        return;
-                    }
+                        messagesContainer
+                            .querySelectorAll(
+                                '.message-row[data-message-id]'
+                            )
+                            .forEach(function (row) {
+                                existingIds.add(
+                                    String(row.dataset.messageId)
+                                );
+                            });
 
-
-                    let newMessages = [];
-
-
-                    if (latestMessageId) {
-
-                        const latestIndex =
-                            data.messages.findIndex(
+                        const newMessages =
+                            data.messages.filter(
                                 function (message) {
-
-                                    return String(
-                                        message.id
-                                    )
-                                    ===
-                                    String(
-                                        latestMessageId
-                                    );
-
+                                    const id = String(message.id);
+                                    return !existingIds.has(id);
                                 }
                             );
 
+                        if (newMessages.length === 0) {
+                            if (data.messages.length > 0) {
+                                latestMessageId =
+                                    data.messages[
+                                        data.messages.length - 1
+                                    ].id;
+                            }
 
-                        if (latestIndex !== -1) {
-
-                            newMessages =
-                                data.messages.slice(
-                                    latestIndex + 1
-                                );
-
-                        } else {
-
+                            updateOutgoingMessageChecks(messagesContainer);
                             return;
-
                         }
 
-                    } else {
+                        messagesContainer
+                            .querySelectorAll(
+                                '.empty-message, .empty-message-small'
+                            )
+                            .forEach(function (element) {
+                                element.remove();
+                            });
 
-                        newMessages =
-                            data.messages;
+                        newMessages.forEach(
+                            function (message) {
+                                appendNewMessage(message);
+                            }
+                        );
 
-                    }
-
-
-                    if (
-                        newMessages.length === 0
-                    ) {
-                        return;
-                    }
-
-
-                    newMessages.forEach(
-                        function (message) {
-
-                            appendNewMessage(
-                                message
-                            );
-
+                        if (data.messages.length > 0) {
+                            latestMessageId =
+                                data.messages[
+                                    data.messages.length - 1
+                                ].id;
                         }
-                    );
 
+                        updateOutgoingMessageChecks(messagesContainer);
 
-                    latestMessageId =
-                        data.messages[
-                            data.messages.length - 1
-                        ].id;
-
-
-                    messagesContainer.scrollTop =
-                        messagesContainer.scrollHeight;
-
-                })
-
-                .catch(function () {
-                    /*
-                     * Jangan tampilkan error ke user.
-                     * Polling akan mencoba lagi.
-                     */
-                });
-
+                        messagesContainer.scrollTop =
+                            messagesContainer.scrollHeight;
+                    })
+                    .catch(function () {
+                        /* Polling akan mencoba lagi. */
+                    })
+                    .finally(function () {
+                        loadingMessages = false;
+                    });
             }
-
 
             function appendNewMessage(message) {
 
@@ -5014,72 +7522,50 @@
                     return;
                 }
 
-
-                /*
-                 * Cegah pesan yang sama muncul dua kali.
-                 */
-
                 if (
                     messagesContainer.querySelector(
-                        '[data-message-id="' +
-                        message.id +
-                        '"]'
+                        '[data-message-id="' + message.id + '"]'
                     )
                 ) {
                     return;
                 }
 
-
                 const currentUserId =
                     '{{ $currentUser->id }}';
 
-
                 const mine =
-                    String(
-                        message.sender_id
-                    )
-                    ===
-                    String(
-                        currentUserId
-                    );
-
+                    String(message.sender_id) ===
+                    String(currentUserId);
 
                 const senderName =
                     mine
                         ? 'Anda'
                         : (
-                            message.sender_name
-                            || '{{ $otherName }}'
+                            message.sender_name ||
+                            '{{ $otherName }}'
                         );
-
 
                 const senderInitial =
                     senderName
                         .substring(0, 1)
                         .toUpperCase();
 
-
                 const row =
-                    document.createElement(
-                        'div'
-                    );
+                    document.createElement('div');
 
                 row.className =
                     'message-row ' +
-                    (
-                        mine
-                            ? 'sent'
-                            : 'received'
-                    );
+                    (mine ? 'sent' : 'received');
 
                 row.dataset.messageId =
                     message.id;
-
+                row.dataset.senderId =
+                    String(message.sender_id || '');
+                row.dataset.isRead =
+                    message.is_read ? '1' : '0';
 
                 const avatar =
-                    document.createElement(
-                        'div'
-                    );
+                    document.createElement('div');
 
                 avatar.className =
                     'message-avatar';
@@ -5087,20 +7573,14 @@
                 avatar.textContent =
                     senderInitial;
 
-
                 const content =
-                    document.createElement(
-                        'div'
-                    );
+                    document.createElement('div');
 
                 content.className =
                     'message-content';
 
-
                 const sender =
-                    document.createElement(
-                        'div'
-                    );
+                    document.createElement('div');
 
                 sender.className =
                     'sender-name';
@@ -5108,32 +7588,49 @@
                 sender.textContent =
                     senderName;
 
-
                 const bubble =
-                    document.createElement(
-                        'div'
-                    );
+                    document.createElement('div');
 
                 bubble.className =
                     'message-bubble';
 
-                bubble.textContent =
-                    message.message;
+                const rawText = String(message.message || '');
+                const replyMatch = rawText.match(/^↪\s*([^:]+):\s*"(.*?)"\s*\n(.*)$/s);
+                const displayText = replyMatch ? replyMatch[3] : rawText;
+                bubble.dataset.plainText = displayText;
 
+                if (message.image_url) {
+                    const image = document.createElement('img');
+                    image.className = 'message-image';
+                    image.src = message.image_url;
+                    image.alt = 'Foto yang dikirim';
+                    image.loading = 'lazy';
+                    bubble.appendChild(image);
+                    if (!displayText) bubble.classList.add('image-only');
+                }
+
+                if (replyMatch) {
+                    const quote = document.createElement('div');
+                    quote.className = 'message-reply-quote';
+                    quote.textContent = replyMatch[1] + ': “' + replyMatch[2] + '”';
+                    bubble.appendChild(quote);
+                }
+
+                if (displayText) {
+                    const textNode = document.createElement('div');
+                    textNode.className = 'message-text';
+                    textNode.textContent = displayText;
+                    bubble.appendChild(textNode);
+                }
 
                 const footer =
-                    document.createElement(
-                        'div'
-                    );
+                    document.createElement('div');
 
                 footer.className =
                     'message-footer';
 
-
                 const time =
-                    document.createElement(
-                        'div'
-                    );
+                    document.createElement('div');
 
                 time.className =
                     'message-time';
@@ -5141,82 +7638,41 @@
                 time.textContent =
                     message.time || '';
 
-
                 footer.appendChild(time);
 
+                content.appendChild(sender);
+                content.appendChild(bubble);
 
-                if (mine) {
+                const reaction = document.createElement('span');
+                reaction.className = 'message-reaction';
+                reaction.setAttribute('aria-label', 'Reaksi');
+                content.appendChild(reaction);
 
-                    const check =
-                        document.createElement(
-                            'span'
-                        );
+                renderMessageReactions(row, message.reactions || []);
 
-                    check.className =
-                        message.is_read
-                            ? 'message-check double'
-                            : 'message-check single';
+                content.appendChild(footer);
 
-                    check.title =
-                        message.is_read
-                            ? 'Sudah dibaca'
-                            : 'Terkirim';
+                row.appendChild(avatar);
+                row.appendChild(content);
 
-
-                    if (!message.is_read) {
-
-                        check.textContent =
-                            '✓';
-
-                    }
-
-
-                    footer.appendChild(
-                        check
-                    );
-
-                }
-
-
-                content.appendChild(
-                    sender
-                );
-
-                content.appendChild(
-                    bubble
-                );
-
-                content.appendChild(
-                    footer
-                );
-
-
-                row.appendChild(
-                    avatar
-                );
-
-                row.appendChild(
-                    content
-                );
-
-
-                messagesContainer.appendChild(
-                    row
-                );
-
+                row.dataset.senderName = senderName;
+                messagesContainer.appendChild(row);
+                bindMessageInteractions(messagesContainer);
+                updateOutgoingMessageChecks(messagesContainer);
             }
 
+            bindMessageInteractions(messagesContainer);
+            updateOutgoingMessageChecks(messagesContainer);
 
-            /*
-             * Cek pesan baru setiap 1 detik.
-             */
+            /* Cek langsung saat halaman dibuka, lalu setiap 1 detik. */
+            loadNewMessages();
 
             setInterval(
                 loadNewMessages,
                 1000
             );
-
         }
+
     </script>
 
 </body>

@@ -141,11 +141,45 @@
 
 
     /* =========================================================
+       USER PROFILE LINK
+    ========================================================== */
+
+    .whisperly-user-profile-link {
+        position: relative;
+        z-index: 10001;
+
+        display: block;
+
+        color: inherit;
+
+        text-decoration: none;
+
+        border-radius: 999px;
+
+        outline: none;
+
+        cursor: pointer;
+
+        pointer-events: auto;
+    }
+
+    .whisperly-user-profile-link:focus-visible {
+        outline:
+            2px solid
+            rgba(201, 185, 239, 0.55);
+
+        outline-offset: 3px;
+    }
+
+
+    /* =========================================================
        USER PILL
     ========================================================== */
 
     .whisperly-user-pill {
         min-height: 45px;
+        position: relative;
+        z-index: 10001;
 
         display: flex;
         align-items: center;
@@ -164,17 +198,24 @@
         background:
             rgba(255, 255, 255, 0.045);
 
+        cursor: pointer;
+
         transition:
             background 0.25s ease,
-            border-color 0.25s ease;
+            border-color 0.25s ease,
+            transform 0.25s ease;
     }
 
-    .whisperly-user-pill:hover {
+    .whisperly-user-profile-link:hover
+    .whisperly-user-pill {
         background:
             rgba(255, 255, 255, 0.075);
 
         border-color:
             rgba(255, 255, 255, 0.17);
+
+        transform:
+            translateY(-1px);
     }
 
 
@@ -1031,6 +1072,7 @@
     @media (max-width: 900px) {
 
         .whisperly-nav {
+            pointer-events: auto;
             padding:
                 13px
                 24px;
@@ -1199,81 +1241,46 @@
         @if ($currentUser)
 
             {{-- =================================================
-                 USER PILL
+                 USER PROFILE
+                 KLIK UNTUK MEMBUKA HALAMAN PROFIL
             ================================================== --}}
 
-            <div class="whisperly-user-pill">
+            {{-- PROFIL ADMIN --}}
+            <a
+                href="{{ $currentUser->role === 'admin' ? route('admin.profile') : route('whisperly.profile') }}"
+                class="whisperly-user-profile-link"
+                aria-label="Buka profil {{ $currentUser->username }}"
+            >
+                <div class="whisperly-user-pill">
 
-                <div class="whisperly-user-avatar">
+                    <div class="whisperly-user-avatar">
 
-                    @if (
-                        $currentUser->role === 'talent' &&
-                        $currentTalentProfile &&
-                        $currentTalentProfile->photo
-                    )
+                        @if ($currentUser->avatar_url)
+                            <img
+                                src="{{ $currentUser->avatar_url }}"
+                                alt="{{ $currentUser->username }}"
+                                onerror="this.onerror=null; this.src='{{ asset('assets/images/faces/1.jpg') }}';"
+                            >
+                        @else
+                            {{ strtoupper(substr($currentUser->username, 0, 1)) }}
+                        @endif
 
-                        @php
-                            $navPhoto = trim(
-                                (string) $currentTalentProfile->photo
-                            );
+                    </div>
 
-                            if (
-                                !filter_var(
-                                    $navPhoto,
-                                    FILTER_VALIDATE_URL
-                                )
-                            ) {
-                                $navPhoto = asset(
-                                    'storage/' .
-                                    ltrim(
-                                        preg_replace(
-                                            '#^public/#',
-                                            '',
-                                            $navPhoto
-                                        ),
-                                        '/'
-                                    )
-                                );
-                            }
-                        @endphp
+                    <div class="whisperly-user-info">
 
-                        <img
-                            src="{{ $navPhoto }}"
-                            alt="{{ $currentUser->username }}"
-                            onerror="
-                                this.onerror=null;
-                                this.src='{{ asset('assets/images/faces/1.jpg') }}';
-                            "
-                        >
+                        <span class="whisperly-username">
+                            {{ $currentUser->username }}
+                        </span>
 
-                    @else
+                        <span class="whisperly-user-role">
+                            {{ $currentUser->role }}
+                        </span>
 
-                        {{ strtoupper(
-                            substr(
-                                $currentUser->username,
-                                0,
-                                1
-                            )
-                        ) }}
-
-                    @endif
+                    </div>
 
                 </div>
-
-
-                <div class="whisperly-user-info">
-
-                    <span class="whisperly-username">
-                        {{ $currentUser->username }}
-                    </span>
-
-                    <span class="whisperly-user-role">
-                        {{ $currentUser->role }}
-                    </span>
-
-                </div>
-
-            </div>
+            </a>
 
 
             {{-- =================================================
@@ -1320,58 +1327,15 @@
 
                         <div class="whisperly-menu-profile-avatar">
 
-                            @if (
-                                $currentUser->role === 'talent' &&
-                                $currentTalentProfile &&
-                                $currentTalentProfile->photo
-                            )
-
-                                @php
-                                    $menuPhoto = trim(
-                                        (string) $currentTalentProfile->photo
-                                    );
-
-                                    if (
-                                        !filter_var(
-                                            $menuPhoto,
-                                            FILTER_VALIDATE_URL
-                                        )
-                                    ) {
-                                        $menuPhoto = asset(
-                                            'storage/' .
-                                            ltrim(
-                                                preg_replace(
-                                                    '#^public/#',
-                                                    '',
-                                                    $menuPhoto
-                                                ),
-                                                '/'
-                                            )
-                                        );
-                                    }
-                                @endphp
-
+                            @if ($currentUser->avatar_url)
                                 <img
-                                    src="{{ $menuPhoto }}"
+                                    src="{{ $currentUser->avatar_url }}"
                                     alt="{{ $currentUser->username }}"
-                                    onerror="
-                                        this.onerror=null;
-                                        this.src='{{ asset('assets/images/faces/1.jpg') }}';
-                                    "
+                                    onerror="this.onerror=null; this.src='{{ asset('assets/images/faces/1.jpg') }}';"
                                 >
-
                             @else
-
-                                {{ strtoupper(
-                                    substr(
-                                        $currentUser->username,
-                                        0,
-                                        1
-                                    )
-                                ) }}
-
+                                {{ strtoupper(substr($currentUser->username, 0, 1)) }}
                             @endif
-
                         </div>
 
 
@@ -1423,6 +1387,7 @@
                             </span>
 
                             <span class="whisperly-dropdown-text">
+
                                 <strong>
                                     Home
                                 </strong>
@@ -1430,6 +1395,7 @@
                                 <small>
                                     Kembali ke halaman utama
                                 </small>
+
                             </span>
 
                             <span class="whisperly-dropdown-arrow">
@@ -1477,6 +1443,7 @@
                             </span>
 
                             <span class="whisperly-dropdown-text">
+
                                 <strong>
                                     Chat
                                 </strong>
@@ -1484,6 +1451,7 @@
                                 <small>
                                     Mulai percakapan
                                 </small>
+
                             </span>
 
                             <span class="whisperly-dropdown-arrow">
@@ -1525,6 +1493,7 @@
                             </span>
 
                             <span class="whisperly-dropdown-text">
+
                                 <strong>
                                     Lihat Talent
                                 </strong>
@@ -1532,6 +1501,7 @@
                                 <small>
                                     Temukan talent yang tersedia
                                 </small>
+
                             </span>
 
                             <span class="whisperly-dropdown-arrow">
@@ -1579,6 +1549,7 @@
                             </span>
 
                             <span class="whisperly-dropdown-text">
+
                                 <strong>
                                     Pengaduan
                                 </strong>
@@ -1586,6 +1557,7 @@
                                 <small>
                                     Sampaikan ceritamu
                                 </small>
+
                             </span>
 
                             <span class="whisperly-dropdown-arrow">
@@ -1807,9 +1779,7 @@
                         </a>
 
 
-                        {{-- =================================================
-                             EDIT PROFIL TALENT
-                        ================================================== --}}
+                        {{-- EDIT PROFIL TALENT --}}
 
                         <a
                             href="{{ route('talent.edit') }}"

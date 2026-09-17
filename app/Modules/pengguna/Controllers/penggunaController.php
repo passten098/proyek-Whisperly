@@ -72,7 +72,7 @@ class penggunaController extends Controller
 		$this->log($request, $text, ['pengguna.id' => $pengguna->id]);
 		return redirect()->route('pengguna.index')->with('message_success', 'Pengguna berhasil ditambahkan!');
 	}
-
+	
 	public function show(Request $request, pengguna $pengguna)
 	{
 		$data['pengguna'] = $pengguna;
@@ -126,7 +126,48 @@ class penggunaController extends Controller
 		$this->log($request, $text, ['pengguna.id' => $pengguna->id]);
 		return redirect()->route('pengguna.index')->with('message_success', 'Pengguna berhasil diubah!');
 	}
+public function profile(Request $request)
+	{
+    $pengguna = Auth::guard('whisperly')->user();
 
+    return view('pengguna::profil', [
+        'pengguna' => $pengguna,
+        'title' => 'Profil Pengguna'
+    ]);
+	}
+
+public function updateProfile(Request $request)
+	{
+    $pengguna = Auth::guard('whisperly')->user();
+
+    $this->validate($request, [
+        'username' => 'required|unique:pengguna,username,' . $pengguna->id,
+        'email' => 'required|email|unique:pengguna,email,' . $pengguna->id,
+        'bio' => 'nullable',
+        'profil' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
+
+    $pengguna->username = $request->username;
+    $pengguna->email = $request->email;
+    $pengguna->bio = $request->bio;
+
+    if ($request->hasFile('profil')) {
+    $file = $request->file('profil');
+
+    $filename = time() . '_' . $file->getClientOriginalName();
+
+    $file->storeAs('profil', $filename, 'public');
+
+    $pengguna->profil = $filename;
+}
+
+
+    $pengguna->save();
+
+    return redirect()
+        ->route('pengguna.profile')
+        ->with('message_success', 'Profil berhasil diperbarui!');
+	}
 	public function destroy(Request $request, $id)
 	{
 		$pengguna = pengguna::find($id);

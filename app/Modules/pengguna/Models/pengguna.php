@@ -29,6 +29,8 @@ class pengguna extends Authenticatable
         'email',
         'password',
         'role',
+        'bio',
+        'profil',
         'created_by',
         'updated_by',
         'deleted_by'
@@ -52,5 +54,41 @@ class pengguna extends Authenticatable
             'pengguna_id',
             'id'
         );
+    }
+
+    /**
+     * URL foto profil pengguna (Whisperly & Talent)
+     */
+    public function getAvatarUrlAttribute()
+    {
+        if (!empty($this->profil)) {
+            $photo = trim((string) $this->profil);
+
+            if (filter_var($photo, FILTER_VALIDATE_URL)) {
+                return $photo;
+            }
+
+            if (str_starts_with($photo, 'profil/')) {
+                return asset('storage/' . $photo);
+            }
+
+            if (str_starts_with($photo, 'storage/')) {
+                return asset($photo);
+            }
+
+            return asset('storage/profil/' . ltrim($photo, '/'));
+        }
+
+        if ($this->role === 'talent' && $this->talent && !empty($this->talent->photo)) {
+            $talentPhoto = trim((string) $this->talent->photo);
+
+            if (filter_var($talentPhoto, FILTER_VALIDATE_URL)) {
+                return $talentPhoto;
+            }
+
+            return asset('storage/' . ltrim(preg_replace('#^public/#', '', $talentPhoto), '/'));
+        }
+
+        return null;
     }
 }

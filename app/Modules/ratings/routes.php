@@ -11,5 +11,5 @@ Route::controller(ratingsController::class)->middleware(['web','auth'])->name('r
 	Route::get('/ratings/{ratings}', 'show')->name('show');
 	Route::get('/ratings/{ratings}/edit', 'edit')->name('edit');
 	Route::patch('/ratings/{ratings}', 'update')->name('update');
-	Route::get('/ratings/{ratings}/delete', 'destroy')->name('destroy');
+	Route::delete('/ratings/{ratings}/delete', 'destroy')->name('destroy');
 });

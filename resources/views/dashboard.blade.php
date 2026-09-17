@@ -405,19 +405,17 @@
             {{-- =====================================================
                  PROFIL USER
             ====================================================== --}}
-            <div class="card">
-
-                <div class="card-body py-4 px-5">
-
-                    <div class="d-flex align-items-center">
-
-                        <div class="avatar avatar-xl bg-primary">
-
-                            <div class="avatar-content">
-                                {{ Auth::user()->initials() }}
-                            </div>
-
-                        </div>
+            <div class="avatar avatar-xl">
+    @if(Auth::user()->profil)
+        <img src="{{ asset('storage/profil/' . Auth::user()->profil) }}"
+             alt="Foto Profil"
+             style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+    @else
+        <div class="avatar-content bg-primary">
+            {{ Auth::user()->initials() }}
+        </div>
+    @endif
+</div>
 
 
                         <div class="ms-3 name">
