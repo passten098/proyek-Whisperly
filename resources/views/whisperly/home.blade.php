@@ -3270,15 +3270,12 @@
 
                     <div class="user-avatar">
 
-    @if (
-        $currentUser->role === 'talent' &&
-        $currentTalentProfile &&
-        $currentTalentProfile->photo
-    )
+    @if ($currentUser->avatar_url)
 
         <img
-            src="{{ asset('storage/' . $currentTalentProfile->photo) }}"
+            src="{{ $currentUser->avatar_url }}"
             alt="{{ $currentUser->username }}"
+            onerror="this.onerror=null; this.src='{{ asset('assets/images/faces/1.jpg') }}';"
         >
 
     @else
@@ -3351,15 +3348,12 @@
 
                             <div class="menu-profile-avatar">
 
-    @if (
-        $currentUser->role === 'talent' &&
-        $currentTalentProfile &&
-        $currentTalentProfile->photo
-    )
+    @if ($currentUser->avatar_url)
 
         <img
-            src="{{ asset('storage/' . $currentTalentProfile->photo) }}"
+            src="{{ $currentUser->avatar_url }}"
             alt="{{ $currentUser->username }}"
+            onerror="this.onerror=null; this.src='{{ asset('assets/images/faces/1.jpg') }}';"
         >
 
     @else

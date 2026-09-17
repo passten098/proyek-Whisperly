@@ -113,4 +113,20 @@ class WhisperlyProfileTest extends TestCase
         $this->assertNull($user->profil);
         Storage::disk('public')->assertMissing('profil/test_old_photo.jpg');
     }
+
+    public function test_home_page_uses_logged_in_user_avatar_url_in_navbar(): void
+    {
+        $user = $this->createWhisperlyUser([
+            'username' => '05',
+            'role' => 'user',
+            'profil' => 'profil/avatar-05.png',
+        ]);
+
+        $response = $this->actingAs($user, 'whisperly')
+            ->get(route('whisperly.home'));
+
+        $response->assertOk();
+        $response->assertSee($user->avatar_url, false);
+        $response->assertDontSee('>0<');
+    }
 }
