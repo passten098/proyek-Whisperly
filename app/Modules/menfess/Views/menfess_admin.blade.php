@@ -2434,16 +2434,46 @@
                                     ->values();
 
                             /*
-                             * Semua reply dikelompokkan berdasarkan
-                             * ID komentar induknya.
+                             * Semua reply dikumpulkan berdasarkan komentar
+                             * utama/root percakapannya.
+                             *
+                             * Ini juga menangani data lama yang terlanjur
+                             * tersimpan bertingkat (reply -> reply).
                              */
 
-                            $repliesByParent =
-                                $allComments
-                                    ->filter(function ($comment) {
-                                        return !empty($comment->reply_to);
-                                    })
-                                    ->groupBy('reply_to');
+                            $commentById =
+                                $allComments->keyBy('id');
+
+                            $repliesByParent = collect();
+
+                            foreach ($allComments as $replyComment) {
+                                if (empty($replyComment->reply_to)) {
+                                    continue;
+                                }
+
+                                $rootId = $replyComment->reply_to;
+                                $visited = [];
+
+                                while (
+                                    isset($commentById[$rootId])
+                                    && !empty($commentById[$rootId]->reply_to)
+                                ) {
+                                    if (isset($visited[$rootId])) {
+                                        break;
+                                    }
+
+                                    $visited[$rootId] = true;
+                                    $rootId = $commentById[$rootId]->reply_to;
+                                }
+
+                                if (!$repliesByParent->has($rootId)) {
+                                    $repliesByParent->put($rootId, collect());
+                                }
+
+                                $repliesByParent
+                                    ->get($rootId)
+                                    ->push($replyComment);
+                            }
 
                             $commentCount =
                                 $allComments->count();
