@@ -144,24 +144,24 @@
        USER PROFILE LINK
     ========================================================== */
 
-.whisperly-user-profile-link {
-    position: relative;
-    z-index: 10001;
+    .whisperly-user-profile-link {
+        position: relative;
+        z-index: 10001;
 
-    display: block;
+        display: block;
 
-    color: inherit;
+        color: inherit;
 
-    text-decoration: none;
+        text-decoration: none;
 
-    border-radius: 999px;
+        border-radius: 999px;
 
-    outline: none;
+        outline: none;
 
-    cursor: pointer;
+        cursor: pointer;
 
-    pointer-events: auto;
-}
+        pointer-events: auto;
+    }
 
     .whisperly-user-profile-link:focus-visible {
         outline:
@@ -178,8 +178,9 @@
 
     .whisperly-user-pill {
         min-height: 45px;
-            position: relative;
-    z-index: 10001;
+        position: relative;
+        z-index: 10001;
+
         display: flex;
         align-items: center;
 
@@ -1244,40 +1245,42 @@
                  KLIK UNTUK MEMBUKA HALAMAN PROFIL
             ================================================== --}}
 
-<a
-    href="{{ route('whisperly.profile') }}"
-    class="whisperly-user-profile-link"
-    aria-label="Buka profil {{ $currentUser->username }}"
->
-    <div class="whisperly-user-pill">
+            {{-- PROFIL ADMIN --}}
+            <a
+                href="{{ $currentUser->role === 'admin' ? route('admin.profile') : route('whisperly.profile') }}"
+                class="whisperly-user-profile-link"
+                aria-label="Buka profil {{ $currentUser->username }}"
+            >
+                <div class="whisperly-user-pill">
 
-        <div class="whisperly-user-avatar">
+                    <div class="whisperly-user-avatar">
 
-            @if ($currentUser->avatar_url)
-                <img
-                    src="{{ $currentUser->avatar_url }}"
-                    alt="{{ $currentUser->username }}"
-                    onerror="this.onerror=null; this.src='{{ asset('assets/images/faces/1.jpg') }}';"
-                >
-            @else
-                {{ strtoupper(substr($currentUser->username, 0, 1)) }}
-            @endif
-        </div>
+                        @if ($currentUser->avatar_url)
+                            <img
+                                src="{{ $currentUser->avatar_url }}"
+                                alt="{{ $currentUser->username }}"
+                                onerror="this.onerror=null; this.src='{{ asset('assets/images/faces/1.jpg') }}';"
+                            >
+                        @else
+                            {{ strtoupper(substr($currentUser->username, 0, 1)) }}
+                        @endif
 
-        <div class="whisperly-user-info">
+                    </div>
 
-            <span class="whisperly-username">
-                {{ $currentUser->username }}
-            </span>
+                    <div class="whisperly-user-info">
 
-            <span class="whisperly-user-role">
-                {{ $currentUser->role }}
-            </span>
+                        <span class="whisperly-username">
+                            {{ $currentUser->username }}
+                        </span>
 
-        </div>
+                        <span class="whisperly-user-role">
+                            {{ $currentUser->role }}
+                        </span>
 
-    </div>
-</a>
+                    </div>
+
+                </div>
+            </a>
 
 
             {{-- =================================================

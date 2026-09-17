@@ -9,24 +9,14 @@ return new class extends Migration
 {
     public function up(): void
     {
-        /*
-        |--------------------------------------------------------------------------
-        | 1. Pastikan bookings.kode_booking tersedia
-        |--------------------------------------------------------------------------
-        */
-
+        // Pastikan kode booking tersedia.
         if (!Schema::hasColumn('bookings', 'kode_booking')) {
             throw new RuntimeException(
                 'Kolom bookings.kode_booking belum tersedia.'
             );
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | 2. Pastikan semua kode booking sudah terisi
-        |--------------------------------------------------------------------------
-        */
-
+        // Pastikan semua booking sudah memiliki kode booking.
         $emptyBookings = DB::table('bookings')
             ->whereNull('kode_booking')
             ->count();
@@ -38,69 +28,37 @@ return new class extends Migration
             );
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | 3. Hapus foreign key/index lama pada id_booking
-        |--------------------------------------------------------------------------
-        */
-
+        // Hapus foreign key lama jika ada.
         try {
             Schema::table('ratings', function (Blueprint $table) {
                 $table->dropForeign('ratings_id_booking_foreign');
             });
         } catch (\Throwable $e) {
-            // Foreign key tidak ada, lanjut.
+            // Tidak ada foreign key lama.
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | 4. Hapus index lama jika masih ada
-        |--------------------------------------------------------------------------
-        */
-
-        try {
-            Schema::table('ratings', function (Blueprint $table) {
-                $table->dropIndex('ratings_id_booking_foreign');
-            });
-        } catch (\Throwable $e) {
-            // Index tidak ada, lanjut.
-        }
+        // Ubah id_booking agar bisa menyimpan kode seperti BK-000001.
+        Schema::table('ratings', function (Blueprint $table) {
+            $table->string('id_booking', 36)->change();
+        });
 
         /*
-        |--------------------------------------------------------------------------
-        | 5. Pastikan id_booking VARCHAR(36)
-        |--------------------------------------------------------------------------
-        |
-        | Kolom saat ini sudah VARCHAR(36), jadi tidak perlu
-        | melakukan ->change() lagi.
-        |
-        */
-
-        /*
-        |--------------------------------------------------------------------------
-        | 6. Konversi data lama
-        |--------------------------------------------------------------------------
-        |
-        | Jika ratings.id_booking masih berisi bookings.id,
-        | ubah menjadi bookings.kode_booking.
-        |
-        */
-
-        DB::statement('
+         * Data legacy menggunakan angka:
+         *
+         * 1 -> BK-000001
+         * 2 -> BK-000002
+         * dst.
+         */
+        DB::statement("
             UPDATE ratings
-            INNER JOIN bookings
-                ON bookings.id = ratings.id_booking
-            SET ratings.id_booking = bookings.kode_booking
-            WHERE ratings.id_booking IS NOT NULL
-              AND ratings.id_booking <> bookings.kode_booking
-        ');
+            SET id_booking = CONCAT(
+                'BK-',
+                LPAD(CAST(id_booking AS UNSIGNED), 6, '0')
+            )
+            WHERE id_booking REGEXP '^[0-9]+$'
+        ");
 
-        /*
-        |--------------------------------------------------------------------------
-        | 7. Pastikan tidak ada rating orphan
-        |--------------------------------------------------------------------------
-        */
-
+        // Pastikan semua rating memiliki booking yang valid.
         $orphanRatings = DB::table('ratings')
             ->leftJoin(
                 'bookings',
@@ -130,12 +88,7 @@ return new class extends Migration
             );
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | 8. Tambahkan foreign key baru
-        |--------------------------------------------------------------------------
-        */
-
+        // Buat foreign key baru ke bookings.kode_booking.
         Schema::table('ratings', function (Blueprint $table) {
             $table->foreign(
                 'id_booking',
@@ -150,49 +103,25 @@ return new class extends Migration
 
     public function down(): void
     {
-        /*
-        |--------------------------------------------------------------------------
-        | 1. Hapus foreign key
-        |--------------------------------------------------------------------------
-        */
-
         try {
             Schema::table('ratings', function (Blueprint $table) {
                 $table->dropForeign('ratings_id_booking_foreign');
             });
         } catch (\Throwable $e) {
-            // Tidak ada foreign key.
+            // Foreign key tidak ada.
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | 2. Kembalikan kode_booking menjadi bookings.id
-        |--------------------------------------------------------------------------
-        */
-
-        DB::statement('
-            UPDATE ratings
-            INNER JOIN bookings
-                ON bookings.kode_booking = ratings.id_booking
-            SET ratings.id_booking = bookings.id
-            WHERE ratings.id_booking IS NOT NULL
-        ');
-
-        /*
-        |--------------------------------------------------------------------------
-        | 3. Buat kembali foreign key lama
-        |--------------------------------------------------------------------------
-        */
-
+        // Kembalikan BK-000001 menjadi 1, BK-000002 menjadi 2, dst.
         Schema::table('ratings', function (Blueprint $table) {
-            $table->foreign(
-                'id_booking',
-                'ratings_id_booking_foreign'
-            )
-                ->references('id')
-                ->on('bookings')
-                ->cascadeOnUpdate()
-                ->restrictOnDelete();
+            $table->unsignedBigInteger('id_booking')->change();
         });
+
+        DB::statement("
+            UPDATE ratings
+            SET id_booking = CAST(
+                SUBSTRING(id_booking, 4) AS UNSIGNED
+            )
+            WHERE id_booking LIKE 'BK-%'
+        ");
     }
 };

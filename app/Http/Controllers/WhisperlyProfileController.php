@@ -35,6 +35,80 @@ class WhisperlyProfileController extends Controller
         ));
     }
 
+
+    /**
+     * Tampilkan halaman profil admin Whisperly.
+     */
+    public function adminProfile()
+    {
+        $currentUser = Auth::guard('whisperly')->user();
+
+        if (!$currentUser) {
+            return redirect()->route('login.baru');
+        }
+
+        return view('admin.profile', [
+            'currentUser' => $currentUser,
+        ]);
+    }
+
+
+    /**
+     * Perbarui profil admin Whisperly.
+     *
+     * Username dan email hanya ditampilkan,
+     * yang dapat diubah adalah bio dan foto profil.
+     */
+    public function updateAdminProfile(Request $request)
+    {
+        $currentUser = Auth::guard('whisperly')->user();
+
+        if (!$currentUser) {
+            return redirect()->route('login.baru');
+        }
+
+        $validated = $request->validate([
+            'bio' => 'nullable|string|max:500',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif|max:3072',
+        ]);
+
+        $currentUser->bio = $validated['bio'] ?? null;
+
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+
+            // Hapus foto lama jika ada
+            if (
+                !empty($currentUser->profil) &&
+                !filter_var($currentUser->profil, FILTER_VALIDATE_URL)
+            ) {
+                $oldFilename = ltrim(
+                    preg_replace('#^storage/#', '', $currentUser->profil),
+                    '/'
+                );
+
+                if (Storage::disk('public')->exists('profil/' . $oldFilename)) {
+                    Storage::disk('public')->delete('profil/' . $oldFilename);
+                } elseif (Storage::disk('public')->exists($oldFilename)) {
+                    Storage::disk('public')->delete($oldFilename);
+                }
+            }
+
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+
+            $file->storeAs('profil', $filename, 'public');
+
+            $currentUser->profil = $filename;
+        }
+
+        $currentUser->save();
+
+        return redirect()
+            ->route('admin.profile')
+            ->with('success', 'Profil admin berhasil diperbarui.');
+    }
+
+
     /**
      * Perbarui teks bio pengguna.
      */
@@ -44,8 +118,12 @@ class WhisperlyProfileController extends Controller
 
         if (!$currentUser) {
             if ($request->expectsJson() || $request->ajax()) {
-                return response()->json(['success' => false, 'message' => 'Sesi login telah berakhir.'], 401);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Sesi login telah berakhir.'
+                ], 401);
             }
+
             return redirect()->route('login.baru');
         }
 
@@ -55,7 +133,10 @@ class WhisperlyProfileController extends Controller
             'bio.max' => 'Bio tidak boleh lebih dari 500 karakter.',
         ]);
 
-        $currentUser->bio = !empty($validated['bio']) ? trim($validated['bio']) : null;
+        $currentUser->bio = !empty($validated['bio'])
+            ? trim($validated['bio'])
+            : null;
+
         $currentUser->save();
 
         if ($request->expectsJson() || $request->ajax()) {
@@ -71,6 +152,7 @@ class WhisperlyProfileController extends Controller
             ->with('success', 'Bio berhasil diperbarui!');
     }
 
+
     /**
      * Unggah / ganti foto profil pengguna.
      */
@@ -80,8 +162,12 @@ class WhisperlyProfileController extends Controller
 
         if (!$currentUser) {
             if ($request->expectsJson() || $request->ajax()) {
-                return response()->json(['success' => false, 'message' => 'Sesi login telah berakhir.'], 401);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Sesi login telah berakhir.'
+                ], 401);
             }
+
             return redirect()->route('login.baru');
         }
 
@@ -95,8 +181,15 @@ class WhisperlyProfileController extends Controller
         ]);
 
         // Hapus foto lama jika ada di storage lokal
-        if (!empty($currentUser->profil) && !filter_var($currentUser->profil, FILTER_VALIDATE_URL)) {
-            $oldFilename = ltrim(preg_replace('#^storage/#', '', $currentUser->profil), '/');
+        if (
+            !empty($currentUser->profil) &&
+            !filter_var($currentUser->profil, FILTER_VALIDATE_URL)
+        ) {
+            $oldFilename = ltrim(
+                preg_replace('#^storage/#', '', $currentUser->profil),
+                '/'
+            );
+
             if (Storage::disk('public')->exists('profil/' . $oldFilename)) {
                 Storage::disk('public')->delete('profil/' . $oldFilename);
             } elseif (Storage::disk('public')->exists($oldFilename)) {
@@ -105,10 +198,13 @@ class WhisperlyProfileController extends Controller
         }
 
         $file = $request->file('photo');
+
         $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+
         $file->storeAs('profil', $filename, 'public');
 
         $currentUser->profil = $filename;
+
         $currentUser->save();
 
         if ($request->expectsJson() || $request->ajax()) {
@@ -124,6 +220,7 @@ class WhisperlyProfileController extends Controller
             ->with('success', 'Foto profil berhasil diperbarui!');
     }
 
+
     /**
      * Hapus foto profil pengguna (kembali ke avatar inisial).
      */
@@ -133,13 +230,24 @@ class WhisperlyProfileController extends Controller
 
         if (!$currentUser) {
             if ($request->expectsJson() || $request->ajax()) {
-                return response()->json(['success' => false, 'message' => 'Sesi login telah berakhir.'], 401);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Sesi login telah berakhir.'
+                ], 401);
             }
+
             return redirect()->route('login.baru');
         }
 
-        if (!empty($currentUser->profil) && !filter_var($currentUser->profil, FILTER_VALIDATE_URL)) {
-            $oldFilename = ltrim(preg_replace('#^storage/#', '', $currentUser->profil), '/');
+        if (
+            !empty($currentUser->profil) &&
+            !filter_var($currentUser->profil, FILTER_VALIDATE_URL)
+        ) {
+            $oldFilename = ltrim(
+                preg_replace('#^storage/#', '', $currentUser->profil),
+                '/'
+            );
+
             if (Storage::disk('public')->exists('profil/' . $oldFilename)) {
                 Storage::disk('public')->delete('profil/' . $oldFilename);
             } elseif (Storage::disk('public')->exists($oldFilename)) {
@@ -148,6 +256,7 @@ class WhisperlyProfileController extends Controller
         }
 
         $currentUser->profil = null;
+
         $currentUser->save();
 
         if ($request->expectsJson() || $request->ajax()) {

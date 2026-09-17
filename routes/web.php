@@ -109,6 +109,7 @@ Route::middleware([
     | PROFIL WHISPERLY
     |--------------------------------------------------------------------------
     */
+
     Route::get('/whisperly/profile', [
         WhisperlyProfileController::class,
         'show'
@@ -401,6 +402,23 @@ Route::middleware([
         WhisperlyTalentController::class,
         'admin'
     ])->name('admin');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | PROFIL ADMIN
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/admin/profile', [
+        WhisperlyProfileController::class,
+        'adminProfile'
+    ])->name('admin.profile');
+
+    Route::patch('/admin/profile', [
+        WhisperlyProfileController::class,
+        'updateAdminProfile'
+    ])->name('admin.profile.update');
 
 
     /*

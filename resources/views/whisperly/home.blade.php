@@ -3262,7 +3262,7 @@
                 <!-- USER -->
 
                 <a
-                    href="{{ route('whisperly.profile') }}"
+                    href="{{ $currentUser->role === 'admin' ? route('admin.profile') : route('whisperly.profile') }}"
                     class="user-pill"
                     aria-label="Buka profil {{ $currentUser->username }}"
                     style="text-decoration: none; color: inherit; cursor: pointer;"
