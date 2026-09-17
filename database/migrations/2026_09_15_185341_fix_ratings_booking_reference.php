@@ -110,6 +110,7 @@ return new class extends Migration
             )
             ->whereNotNull('ratings.id_booking')
             ->whereNull('bookings.id')
+            ->whereNull('ratings.deleted_at')
             ->select(
                 'ratings.id',
                 'ratings.id_booking'

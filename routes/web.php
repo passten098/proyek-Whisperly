@@ -104,8 +104,41 @@ Route::middleware([
     })->name('whisperly.home');
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | PROFIL WHISPERLY
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/whisperly/profile', [
+        WhisperlyProfileController::class,
+        'show'
+    ])->name('whisperly.profile');
+
+    Route::post('/whisperly/profile/bio', [
+        WhisperlyProfileController::class,
+        'updateBio'
+    ])->name('whisperly.profile.bio.update');
+
+    Route::post('/whisperly/profile/photo', [
+        WhisperlyProfileController::class,
+        'updatePhoto'
+    ])->name('whisperly.profile.photo.update');
+
+    Route::delete('/whisperly/profile/photo', [
+        WhisperlyProfileController::class,
+        'deletePhoto'
+    ])->name('whisperly.profile.photo.delete');
+
+
     Route::view('/selamat', 'whisperly.home')
         ->name('selamat');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | BOOKING
+    |--------------------------------------------------------------------------
+    */
 
     Route::view('/booking', 'whisperly.booking')
         ->name('booking');
@@ -252,10 +285,6 @@ Route::middleware([
     |--------------------------------------------------------------------------
     | REACTION PESAN
     |--------------------------------------------------------------------------
-    |
-    | Route ini harus berada sebelum route:
-    | /whisperly/chat/{booking}
-    |
     */
 
     Route::post('/whisperly/chat/{booking}/message/{message}/reaction', [
@@ -360,6 +389,7 @@ Route::middleware([
     'auth:whisperly',
     'whisperly.role:admin'
 ])->group(function () {
+
 
     /*
     |--------------------------------------------------------------------------

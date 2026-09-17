@@ -3261,7 +3261,12 @@
 
                 <!-- USER -->
 
-                <div class="user-pill">
+                <a
+                    href="{{ route('whisperly.profile') }}"
+                    class="user-pill"
+                    aria-label="Buka profil {{ $currentUser->username }}"
+                    style="text-decoration: none; color: inherit; cursor: pointer;"
+                >
 
                     <div class="user-avatar">
 
@@ -3303,7 +3308,7 @@
     </span>
 </div>
 
-                </div>
+                </a>
 
 
                 <!-- MENU -->

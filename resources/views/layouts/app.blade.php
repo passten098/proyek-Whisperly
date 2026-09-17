@@ -87,13 +87,13 @@
                                 </li>
                             </ul>
                           @php
-    $whisperlyUser = auth('whisperly')->user();
+     $whisperlyUser = Auth::guard('whisperly')->user();
 @endphp
 
 @if ($whisperlyUser)
 
     <div class="dropdown">
-        <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
+        <a href="{{ route('pengguna.profile') }}">
 
             <div class="user-menu d-flex">
 
@@ -111,27 +111,27 @@
 
                 <div class="user-img d-flex align-items-center">
 
-                    <div class="avatar avatar-md bg-primary">
+        <div class="avatar avatar-md bg-primary"
+                style="width: 40px; height: 40px; overflow: hidden; border-radius: 50%;">
 
-                        <div class="avatar-content">
-                            {{ strtoupper(substr(
-                                $whisperlyUser->name
-                                    ?? $whisperlyUser->username
-                                    ?? 'U',
-                                0,
-                                1
-                            )) }}
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </a>
-
-
+    @if($whisperlyUser->profil)
+        <img src="{{ asset('storage/profil/' . $whisperlyUser->profil) }}"
+                alt="Foto Profil"
+                style="width: 100%; height: 100%; object-fit: cover; display: block;">
+    @else
+        <div class="avatar-content">
+            {{ strtoupper
+            (substr
+            ($whisperlyUser->name ??
+            $whisperlyUser->username ??
+            'U',
+            0,
+            1)) }}
+        </div>
+    @endif
+</div>
+    </div>
+</a>
         <ul class="dropdown-menu dropdown-menu-end"
             aria-labelledby="dropdownMenuButton"
             style="min-width: 11rem;">
@@ -144,10 +144,10 @@
 
 
             <li>
-                <a class="dropdown-item" href="#">
-                    <i class="icon-mid bi bi-person me-2"></i>
-                    My Profile
-                </a>
+            <a class="dropdown-item" href="{{ route('pengguna.profile') }}">
+                <i class="icon-mid bi bi-person me-2"></i>
+                 My Profile
+        </a>
             </li>
 
 
@@ -182,7 +182,7 @@
     {{-- Kalau halaman menggunakan login Laralag biasa --}}
     <div class="dropdown">
 
-        <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
+        <a href="{{ route('whisperly.profile') }}">
 
             <div class="user-menu d-flex">
 

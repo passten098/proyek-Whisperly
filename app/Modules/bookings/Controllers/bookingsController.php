@@ -121,6 +121,17 @@ class bookingsController extends Controller
 		$bookings->durasi_jam = $request->input("durasi_jam");
 		$bookings->status = $request->input("status");
 		
+		$lastKode = bookings::withTrashed()
+   	 	->whereNotNull('kode_booking')
+    	->orderByDesc('kode_booking')
+    	->value('kode_booking');
+
+		$number = $lastKode
+    	? ((int) substr($lastKode, 3)) + 1
+    	: 1;
+
+		$bookings->kode_booking = 'BK-' . str_pad($number, 6, '0', STR_PAD_LEFT);
+
 		$bookings->created_by = Auth::id();
 		$bookings->save();
 
