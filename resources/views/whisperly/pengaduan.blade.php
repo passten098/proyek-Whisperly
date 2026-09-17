@@ -2947,16 +2947,69 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                             @php
 
                                 $allComments = $item->comments
-                                    ->sortBy('created_at');
+                                    ->sortBy('created_at')
+                                    ->values();
 
+                                /*
+                                |--------------------------------------------------------------------------
+                                | KOMENTAR UTAMA
+                                |--------------------------------------------------------------------------
+                                */
                                 $mainComments = $allComments
                                     ->filter(function ($comment) {
+                                        return empty($comment->reply_to);
+                                    })
+                                    ->values();
 
-                                        return empty(
-                                            $comment->reply_to
-                                        );
+                                /*
+                                |--------------------------------------------------------------------------
+                                | INDEX KOMENTAR BERDASARKAN ID
+                                |--------------------------------------------------------------------------
+                                */
+                                $commentById = $allComments->keyBy('id');
 
-                                    });
+                                /*
+                                |--------------------------------------------------------------------------
+                                | KELOMPOKKAN SEMUA BALASAN KE KOMENTAR ROOT
+                                |
+                                | Ini menangani data lama yang masih bertingkat.
+                                | Contoh: 100 <- 101 <- 102 <- 103
+                                | Semua 101, 102, dan 103 dihitung sebagai balasan
+                                | dari komentar utama 100.
+                                |--------------------------------------------------------------------------
+                                */
+                                $repliesByRoot = collect();
+
+                                foreach ($allComments as $replyComment) {
+
+                                    if (empty($replyComment->reply_to)) {
+                                        continue;
+                                    }
+
+                                    $rootId = $replyComment->reply_to;
+                                    $visited = [];
+
+                                    while (
+                                        isset($commentById[$rootId]) &&
+                                        !empty($commentById[$rootId]->reply_to)
+                                    ) {
+
+                                        if (isset($visited[$rootId])) {
+                                            break;
+                                        }
+
+                                        $visited[$rootId] = true;
+                                        $rootId = $commentById[$rootId]->reply_to;
+                                    }
+
+                                    if (!$repliesByRoot->has($rootId)) {
+                                        $repliesByRoot->put($rootId, collect());
+                                    }
+
+                                    $repliesByRoot
+                                        ->get($rootId)
+                                        ->push($replyComment);
+                                }
 
                                 $totalComments =
                                     $allComments->count();
@@ -3043,19 +3096,12 @@ Ceritakan apa saja yang ingin kamu sampaikan...
 
 
                                                 $replies =
-                                                    $allComments->filter(
-                                                        function ($reply) use ($comment) {
-
-                                                            return
-                                                                (string)
-                                                                $reply->reply_to
-                                                                ===
-                                                                (string)
-                                                                $comment->id;
-
-                                                        }
-                                                    );
-
+                                                    $repliesByRoot->get(
+                                                        $comment->id,
+                                                        collect()
+                                                    )
+                                                    ->sortBy('created_at')
+                                                    ->values();
 
                                                 $replyCount =
                                                     $replies->count();
