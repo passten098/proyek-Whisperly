@@ -590,6 +590,11 @@ class WhisperlyChatController extends Controller
                     'name' =>
                         $otherName,
 
+                    'avatar_url' =>
+                        $user->role === 'user'
+                            ? ($booking->talent?->pengguna?->avatar_url ?? null)
+                            : ($booking->pengguna?->avatar_url ?? null),
+
                     'last_message' =>
                         $lastMessage?->message
                         ?? 'Belum ada pesan',
@@ -2107,6 +2112,9 @@ class WhisperlyChatController extends Controller
                                         : 'User'
                                 ),
 
+                            'sender_avatar_url' =>
+                                $message->sender?->avatar_url ?? null,
+
                             'message' =>
                                 $message->message,
 
@@ -2760,6 +2768,9 @@ class WhisperlyChatController extends Controller
                             ?->username
                         ??
                         'Anda',
+
+                    'sender_avatar_url' =>
+                        $message->sender?->avatar_url ?? null,
 
                     'message' =>
                         $message->message,
