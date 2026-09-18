@@ -2881,7 +2881,8 @@
         }
 
         .composer textarea,
-        #messageInput {
+        #messageInput,
+        .message-input-editor {
             background: #1c1c1e !important;
             border-color: #3a3a3c !important;
             color: #f5f5f7 !important;
@@ -2889,12 +2890,14 @@
         }
 
         .composer textarea::placeholder,
-        #messageInput::placeholder {
+        #messageInput::placeholder,
+        .message-input-editor::placeholder {
             color: #8e8e93 !important;
         }
 
         .composer textarea:focus,
-        #messageInput:focus {
+        #messageInput:focus,
+        .message-input-editor:focus {
             border-color: #5eb0ff !important;
             box-shadow: 0 0 0 2px rgba(10, 132, 255, .18) !important;
         }
@@ -3102,26 +3105,174 @@
             left: 14px;
             bottom: 72px;
             z-index: 1000;
-            width: min(330px, calc(100vw - 28px));
-            padding: 10px;
+            width: min(360px, calc(100vw - 28px));
+            max-height: 310px;
+            padding: 12px;
             border: 1px solid #3a3a3c;
-            border-radius: 18px;
+            border-radius: 20px;
             background: rgba(28,28,30,.98);
             box-shadow: 0 14px 40px rgba(0,0,0,.5);
             display: none;
-            grid-template-columns: repeat(8, 1fr);
-            gap: 4px;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 6px;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            scrollbar-width: thin;
         }
-        .emoji-picker.open { display: grid; }
-        .emoji-picker button {
+
+        .emoji-picker.open {
+            display: grid;
+        }
+
+        .emoji-picker button.custom-emoji-option {
+            width: 50px;
+            height: 50px;
             border: 0;
+            border-radius: 12px;
             background: transparent;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            font-size: 25px;
-            padding: 5px;
-            border-radius: 9px;
+            transition: background .15s ease, transform .15s ease;
         }
-        .emoji-picker button:hover { background: #3a3a3c; }
+
+        .emoji-picker button.custom-emoji-option img {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+            display: block;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .emoji-picker button.custom-emoji-option:hover {
+            background: #3a3a3c;
+            transform: scale(1.08);
+        }
+
+        .emoji-picker button.custom-emoji-option:active {
+            transform: scale(.92);
+        }
+
+        .emoji-picker::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .emoji-picker::-webkit-scrollbar-thumb {
+            background: rgba(142,142,147,.45);
+            border-radius: 10px;
+        }
+
+        /* ==========================================================
+           INPUT PESAN BERGAMBAR
+           Contenteditable dipakai supaya gambar emoji benar-benar
+           terlihat DI DALAM kotak chat, bukan hanya Unicode.
+        ========================================================== */
+        .message-input-editor {
+            flex: 1 1 auto;
+            min-width: 0;
+            min-height: 50px;
+            max-height: 130px;
+            overflow-y: auto;
+            border: 1px solid #cfe2f6;
+            border-radius: 20px;
+            padding: 10px 16px;
+            outline: none;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.4;
+            color: #23466d;
+            background: #f8fcff;
+            word-break: break-word;
+            white-space: pre-wrap;
+            cursor: text;
+        }
+
+        .message-input-editor:focus {
+            border-color: #4b9bed;
+            box-shadow: 0 0 0 3px rgba(75,155,237,.10);
+        }
+
+        .message-input-editor:empty::before {
+            content: attr(data-placeholder);
+            color: #91a6bb;
+            pointer-events: none;
+        }
+
+        .message-input-editor img.custom-emoji-inline {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+            vertical-align: middle;
+            display: inline-block;
+            margin: 0 1px;
+            user-select: none;
+        }
+
+        .composer-controls #messageInput {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        body.theme-dark .message-input-editor {
+            background: #1c1c1e !important;
+            color: #fff !important;
+            border-color: #3a3a3c !important;
+        }
+
+        body.theme-dark .message-input-editor:focus {
+            border-color: #5eb0ff !important;
+            box-shadow: 0 0 0 2px rgba(10,132,255,.18) !important;
+        }
+
+        body.theme-dark .message-input-editor:empty::before {
+            color: #8e8e93 !important;
+        }
+
+        body.theme-light .message-input-editor {
+            background: #f2f2f7 !important;
+            color: #111 !important;
+            border-color: #c7c7cc !important;
+        }
+
+        body.theme-light .message-input-editor:empty::before {
+            color: #8e8e93 !important;
+        }
+
+
+        .message-text .message-custom-emoji {
+            width: 34px;
+            height: 34px;
+            object-fit: contain;
+            vertical-align: middle;
+            display: inline-block;
+            margin: -2px 1px;
+        }
+
+        .message-text:has(.message-custom-emoji) {
+            line-height: 1.5;
+        }
+        @media (max-width: 700px) {
+            .emoji-picker {
+                left: 8px;
+                bottom: 70px;
+                width: min(340px, calc(100vw - 16px));
+                grid-template-columns: repeat(6, 1fr);
+                max-height: 280px;
+            }
+
+            .emoji-picker button.custom-emoji-option {
+                width: 46px;
+                height: 46px;
+            }
+
+            .emoji-picker button.custom-emoji-option img {
+                width: 38px;
+                height: 38px;
+            }
+        }
 
         .reply-preview {
             display: none;
@@ -4372,6 +4523,87 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
         }
     </style>
 
+<style>
+
+        /* ==========================================================
+           CUSTOM CHAT BUBBLE COLORS
+        ========================================================== */
+        .bubble-color-panel {
+            margin: 2px 0 6px;
+            padding: 10px;
+            border-radius: 12px;
+            background: rgba(245, 247, 250, .96);
+            border: 1px solid #dceafb;
+        }
+
+        .bubble-color-panel[hidden] { display: none !important; }
+        .bubble-color-title {
+            margin: 2px 2px 7px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #5c7895;
+        }
+        .bubble-color-title-received { margin-top: 12px; }
+        .bubble-color-swatches {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+        .bubble-color-swatch {
+            width: 25px;
+            height: 25px;
+            padding: 0;
+            border: 2px solid rgba(255,255,255,.9);
+            border-radius: 50%;
+            background: var(--swatch);
+            box-shadow: 0 0 0 1px rgba(0,0,0,.12);
+            cursor: pointer;
+        }
+        .bubble-color-swatch:hover { transform: scale(1.08); }
+        .bubble-color-custom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 11px;
+            color: #5c7895;
+        }
+        .bubble-color-custom input {
+            width: 34px;
+            height: 24px;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            cursor: pointer;
+        }
+        .bubble-color-reset {
+            width: 100%;
+            margin-top: 10px;
+            padding: 7px 8px;
+            border: 1px solid #d6e6f8;
+            border-radius: 8px;
+            background: #fff;
+            color: #315e87;
+            font-size: 11px;
+            cursor: pointer;
+        }
+        .bubble-color-reset:hover { background: #eef7ff; }
+
+        body .message-row.sent .message-bubble {
+            background: var(--whisperly-sent-bubble, #0a84ff) !important;
+            color: var(--whisperly-sent-text, #fff) !important;
+        }
+        body .message-row.received .message-bubble {
+            background: var(--whisperly-received-bubble, #2c2c2e) !important;
+            color: var(--whisperly-received-text, #f5f5f7) !important;
+        }
+        body.theme-light .message-row.received .message-bubble {
+            color: var(--whisperly-received-text, #111) !important;
+        }
+        body.theme-light .message-row.sent .message-bubble {
+            color: var(--whisperly-sent-text, #fff) !important;
+        }
+</style>
 </head>
 
 
@@ -4908,6 +5140,48 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
 
                         <button
                             type="button"
+                            id="bubbleColorToggle"
+                            class="theme-menu-item"
+                            aria-expanded="false"
+                        >
+                            <span>🎨 Warna Bubble</span>
+                            <span aria-hidden="true">›</span>
+                        </button>
+
+                        <div id="bubbleColorPanel" class="bubble-color-panel" hidden>
+                            <div class="bubble-color-title">Warna pesan saya</div>
+                            <div class="bubble-color-swatches" data-color-target="sent">
+                                <button type="button" class="bubble-color-swatch" data-color="#0a84ff" style="--swatch:#0a84ff" aria-label="Biru"></button>
+                                <button type="button" class="bubble-color-swatch" data-color="#34c759" style="--swatch:#34c759" aria-label="Hijau"></button>
+                                <button type="button" class="bubble-color-swatch" data-color="#ff9500" style="--swatch:#ff9500" aria-label="Oranye"></button>
+                                <button type="button" class="bubble-color-swatch" data-color="#ff2d55" style="--swatch:#ff2d55" aria-label="Pink"></button>
+                                <button type="button" class="bubble-color-swatch" data-color="#af52de" style="--swatch:#af52de" aria-label="Ungu"></button>
+                                <button type="button" class="bubble-color-swatch" data-color="#5856d6" style="--swatch:#5856d6" aria-label="Indigo"></button>
+                                <button type="button" class="bubble-color-swatch" data-color="#8e8e93" style="--swatch:#8e8e93" aria-label="Abu-abu"></button>
+                            </div>
+                            <label class="bubble-color-custom">
+                                Pilih sendiri
+                                <input type="color" id="sentBubbleColor" value="#0a84ff" aria-label="Pilih warna bubble saya">
+                            </label>
+
+                            <div class="bubble-color-title bubble-color-title-received">Warna pesan lawan</div>
+                            <div class="bubble-color-swatches" data-color-target="received">
+                                <button type="button" class="bubble-color-swatch" data-color="#2c2c2e" style="--swatch:#2c2c2e" aria-label="Abu gelap"></button>
+                                <button type="button" class="bubble-color-swatch" data-color="#e5e5ea" style="--swatch:#e5e5ea" aria-label="Abu terang"></button>
+                                <button type="button" class="bubble-color-swatch" data-color="#d1f7c4" style="--swatch:#d1f7c4" aria-label="Hijau muda"></button>
+                                <button type="button" class="bubble-color-swatch" data-color="#d9eaff" style="--swatch:#d9eaff" aria-label="Biru muda"></button>
+                                <button type="button" class="bubble-color-swatch" data-color="#ffe0b2" style="--swatch:#ffe0b2" aria-label="Oranye muda"></button>
+                            </div>
+                            <label class="bubble-color-custom">
+                                Pilih sendiri
+                                <input type="color" id="receivedBubbleColor" value="#2c2c2e" aria-label="Pilih warna bubble lawan">
+                            </label>
+
+                            <button type="button" id="resetBubbleColors" class="bubble-color-reset">Kembalikan warna awal</button>
+                        </div>
+
+                        <button
+                            type="button"
                             id="accountInfoToggle"
                         >
                             Informasi Akun
@@ -5330,15 +5604,22 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
                                 😊
                             </button>
 
-                            <textarea
+                            <input
+                                type="hidden"
                                 name="message"
-                                id="messageInput"
-                                placeholder="iMessage"
-                                maxlength="2000"
-                                rows="1"
-                            ></textarea>
+                                id="messageValue"
+                                value=""
+                            >
 
-                            <button
+                            <div
+                                id="messageInput"
+                                class="message-input-editor"
+                                contenteditable="true"
+                                role="textbox"
+                                aria-multiline="true"
+                                data-placeholder="Whisperly"
+                                tabindex="0"
+                            ></div><button
                                 type="submit"
                                 class="send-button"
                                 id="sendButton"
@@ -5348,11 +5629,143 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
                             </button>
                         </div>
 
-                        <div class="emoji-picker" id="emojiPicker" aria-label="Pilihan emoji">
-                            <button type="button">😀</button><button type="button">😂</button><button type="button">🤣</button><button type="button">😍</button><button type="button">🥰</button><button type="button">😘</button><button type="button">😭</button><button type="button">😡</button>
-                            <button type="button">👍</button><button type="button">👎</button><button type="button">👏</button><button type="button">🙏</button><button type="button">❤️</button><button type="button">💔</button><button type="button">🔥</button><button type="button">✨</button>
-                            <button type="button">🤣</button><button type="button">😎</button><button type="button">🥹</button><button type="button">😱</button><button type="button">🤔</button><button type="button">🙄</button><button type="button">💀</button><button type="button">💯</button>
-                            <button type="button">🎉</button><button type="button">🥳</button><button type="button">💙</button><button type="button">💖</button><button type="button">🤍</button><button type="button">🫶</button><button type="button">👀</button><button type="button">💩</button>
+                        <div
+                            class="emoji-picker"
+                            id="emojiPicker"
+                            aria-label="Pilihan emoji"
+                        >
+                            <button type="button" class="custom-emoji-option" data-emoji="🙂" data-emoji-id="01" aria-label="Emoji 01">
+                                <img src="{{ asset('assets/images/emoji_01.png') }}" alt="Emoji 01" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😵‍💫" data-emoji-id="02" aria-label="Emoji 02">
+                                <img src="{{ asset('assets/images/emoji_02.png') }}" alt="Emoji 02" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😭" data-emoji-id="03" aria-label="Emoji 03">
+                                <img src="{{ asset('assets/images/emoji_03.png') }}" alt="Emoji 03" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="🤭" data-emoji-id="04" aria-label="Emoji 04">
+                                <img src="{{ asset('assets/images/emoji_04.png') }}" alt="Emoji 04" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😲" data-emoji-id="05" aria-label="Emoji 05">
+                                <img src="{{ asset('assets/images/emoji_05.png') }}" alt="Emoji 05" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😓" data-emoji-id="06" aria-label="Emoji 06">
+                                <img src="{{ asset('assets/images/emoji_06.png') }}" alt="Emoji 06" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😑" data-emoji-id="07" aria-label="Emoji 07">
+                                <img src="{{ asset('assets/images/emoji_07.png') }}" alt="Emoji 07" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😂" data-emoji-id="08" aria-label="Emoji 08">
+                                <img src="{{ asset('assets/images/emoji_08.png') }}" alt="Emoji 08" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😏" data-emoji-id="09" aria-label="Emoji 09">
+                                <img src="{{ asset('assets/images/emoji_09.png') }}" alt="Emoji 09" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😎" data-emoji-id="10" aria-label="Emoji 10">
+                                <img src="{{ asset('assets/images/emoji_10.png') }}" alt="Emoji 10" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😐" data-emoji-id="11" aria-label="Emoji 11">
+                                <img src="{{ asset('assets/images/emoji_11.png') }}" alt="Emoji 11" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😆" data-emoji-id="12" aria-label="Emoji 12">
+                                <img src="{{ asset('assets/images/emoji_12.png') }}" alt="Emoji 12" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😢" data-emoji-id="13" aria-label="Emoji 13">
+                                <img src="{{ asset('assets/images/emoji_13.png') }}" alt="Emoji 13" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="🤩" data-emoji-id="14" aria-label="Emoji 14">
+                                <img src="{{ asset('assets/images/emoji_14.png') }}" alt="Emoji 14" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😗" data-emoji-id="15" aria-label="Emoji 15">
+                                <img src="{{ asset('assets/images/emoji_15.png') }}" alt="Emoji 15" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😍" data-emoji-id="16" aria-label="Emoji 16">
+                                <img src="{{ asset('assets/images/emoji_16.png') }}" alt="Emoji 16" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="🥶" data-emoji-id="17" aria-label="Emoji 17">
+                                <img src="{{ asset('assets/images/emoji_17.png') }}" alt="Emoji 17" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="🤣" data-emoji-id="18" aria-label="Emoji 18">
+                                <img src="{{ asset('assets/images/emoji_18.png') }}" alt="Emoji 18" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="🥵" data-emoji-id="19" aria-label="Emoji 19">
+                                <img src="{{ asset('assets/images/emoji_19.png') }}" alt="Emoji 19" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😚" data-emoji-id="20" aria-label="Emoji 20">
+                                <img src="{{ asset('assets/images/emoji_20.png') }}" alt="Emoji 20" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😎" data-emoji-id="21" aria-label="Emoji 21">
+                                <img src="{{ asset('assets/images/emoji_21.png') }}" alt="Emoji 21" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😁" data-emoji-id="22" aria-label="Emoji 22">
+                                <img src="{{ asset('assets/images/emoji_22.png') }}" alt="Emoji 22" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😊" data-emoji-id="23" aria-label="Emoji 23">
+                                <img src="{{ asset('assets/images/emoji_23.png') }}" alt="Emoji 23" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😒" data-emoji-id="24" aria-label="Emoji 24">
+                                <img src="{{ asset('assets/images/emoji_24.png') }}" alt="Emoji 24" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="🤓" data-emoji-id="25" aria-label="Emoji 25">
+                                <img src="{{ asset('assets/images/emoji_25.png') }}" alt="Emoji 25" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😪" data-emoji-id="26" aria-label="Emoji 26">
+                                <img src="{{ asset('assets/images/emoji_26.png') }}" alt="Emoji 26" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="🤢" data-emoji-id="27" aria-label="Emoji 27">
+                                <img src="{{ asset('assets/images/emoji_27.png') }}" alt="Emoji 27" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😶" data-emoji-id="28" aria-label="Emoji 28">
+                                <img src="{{ asset('assets/images/emoji_28.png') }}" alt="Emoji 28" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😍" data-emoji-id="29" aria-label="Emoji 29">
+                                <img src="{{ asset('assets/images/emoji_29.png') }}" alt="Emoji 29" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😠" data-emoji-id="30" aria-label="Emoji 30">
+                                <img src="{{ asset('assets/images/emoji_30.png') }}" alt="Emoji 30" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😊" data-emoji-id="31" aria-label="Emoji 31">
+                                <img src="{{ asset('assets/images/emoji_31.png') }}" alt="Emoji 31" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😛" data-emoji-id="32" aria-label="Emoji 32">
+                                <img src="{{ asset('assets/images/emoji_32.png') }}" alt="Emoji 32" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😮" data-emoji-id="33" aria-label="Emoji 33">
+                                <img src="{{ asset('assets/images/emoji_33.png') }}" alt="Emoji 33" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😂" data-emoji-id="34" aria-label="Emoji 34">
+                                <img src="{{ asset('assets/images/emoji_34.png') }}" alt="Emoji 34" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😡" data-emoji-id="35" aria-label="Emoji 35">
+                                <img src="{{ asset('assets/images/emoji_35.png') }}" alt="Emoji 35" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😎" data-emoji-id="36" aria-label="Emoji 36">
+                                <img src="{{ asset('assets/images/emoji_36.png') }}" alt="Emoji 36" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😉" data-emoji-id="37" aria-label="Emoji 37">
+                                <img src="{{ asset('assets/images/emoji_37.png') }}" alt="Emoji 37" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😞" data-emoji-id="38" aria-label="Emoji 38">
+                                <img src="{{ asset('assets/images/emoji_38.png') }}" alt="Emoji 38" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="🥺" data-emoji-id="39" aria-label="Emoji 39">
+                                <img src="{{ asset('assets/images/emoji_39.png') }}" alt="Emoji 39" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😛" data-emoji-id="40" aria-label="Emoji 40">
+                                <img src="{{ asset('assets/images/emoji_40.png') }}" alt="Emoji 40" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😇" data-emoji-id="41" aria-label="Emoji 41">
+                                <img src="{{ asset('assets/images/emoji_41.png') }}" alt="Emoji 41" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😎" data-emoji-id="42" aria-label="Emoji 42">
+                                <img src="{{ asset('assets/images/emoji_42.png') }}" alt="Emoji 42" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😌" data-emoji-id="43" aria-label="Emoji 43">
+                                <img src="{{ asset('assets/images/emoji_43.png') }}" alt="Emoji 43" draggable="false">
+                            </button>
+                            <button type="button" class="custom-emoji-option" data-emoji="😏" data-emoji-id="44" aria-label="Emoji 44">
+                                <img src="{{ asset('assets/images/emoji_44.png') }}" alt="Emoji 44" draggable="false">
+                            </button>
                         </div>
                     </form>
 
@@ -5744,6 +6157,190 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
 
         const messageInput =
             document.getElementById('messageInput');
+
+        const messageValue =
+            document.getElementById('messageValue');
+
+        /*
+         * Daftar emoji custom. Gambar dipakai sebagai tampilan,
+         * sedangkan data-emoji menyimpan karakter yang dikirim ke server.
+         */
+        const CUSTOM_EMOJI_MAP = {
+            '01': { emoji: '🙂', file: 'emoji_01.png' },
+            '02': { emoji: '😵‍💫', file: 'emoji_02.png' },
+            '03': { emoji: '😭', file: 'emoji_03.png' },
+            '04': { emoji: '🤭', file: 'emoji_04.png' },
+            '05': { emoji: '😲', file: 'emoji_05.png' },
+            '06': { emoji: '😓', file: 'emoji_06.png' },
+            '07': { emoji: '😑', file: 'emoji_07.png' },
+            '08': { emoji: '😂', file: 'emoji_08.png' },
+            '09': { emoji: '😏', file: 'emoji_09.png' },
+            '10': { emoji: '😎', file: 'emoji_10.png' },
+            '11': { emoji: '😐', file: 'emoji_11.png' },
+            '12': { emoji: '😆', file: 'emoji_12.png' },
+            '13': { emoji: '😢', file: 'emoji_13.png' },
+            '14': { emoji: '🤩', file: 'emoji_14.png' },
+            '15': { emoji: '😗', file: 'emoji_15.png' },
+            '16': { emoji: '😍', file: 'emoji_16.png' },
+            '17': { emoji: '🥶', file: 'emoji_17.png' },
+            '18': { emoji: '🤣', file: 'emoji_18.png' },
+            '19': { emoji: '🥵', file: 'emoji_19.png' },
+            '20': { emoji: '😚', file: 'emoji_20.png' },
+            '21': { emoji: '😎', file: 'emoji_21.png' },
+            '22': { emoji: '😁', file: 'emoji_22.png' },
+            '23': { emoji: '😊', file: 'emoji_23.png' },
+            '24': { emoji: '😒', file: 'emoji_24.png' },
+            '25': { emoji: '🤓', file: 'emoji_25.png' },
+            '26': { emoji: '😪', file: 'emoji_26.png' },
+            '27': { emoji: '🤢', file: 'emoji_27.png' },
+            '28': { emoji: '😶', file: 'emoji_28.png' },
+            '29': { emoji: '😍', file: 'emoji_29.png' },
+            '30': { emoji: '😠', file: 'emoji_30.png' },
+            '31': { emoji: '😊', file: 'emoji_31.png' },
+            '32': { emoji: '😛', file: 'emoji_32.png' },
+            '33': { emoji: '😮', file: 'emoji_33.png' },
+            '34': { emoji: '😂', file: 'emoji_34.png' },
+            '35': { emoji: '😡', file: 'emoji_35.png' },
+            '36': { emoji: '😎', file: 'emoji_36.png' },
+            '37': { emoji: '😉', file: 'emoji_37.png' },
+            '38': { emoji: '😞', file: 'emoji_38.png' },
+            '39': { emoji: '🥺', file: 'emoji_39.png' },
+            '40': { emoji: '😛', file: 'emoji_40.png' },
+            '41': { emoji: '😇', file: 'emoji_41.png' },
+            '42': { emoji: '😎', file: 'emoji_42.png' },
+            '43': { emoji: '😌', file: 'emoji_43.png' },
+            '44': { emoji: '😏', file: 'emoji_44.png' }
+        };
+
+        const CUSTOM_EMOJI_FALLBACK = {};
+        Object.keys(CUSTOM_EMOJI_MAP).forEach(function (id) {
+            const item = CUSTOM_EMOJI_MAP[id];
+            if (!CUSTOM_EMOJI_FALLBACK[item.emoji]) {
+                CUSTOM_EMOJI_FALLBACK[item.emoji] = id;
+            }
+        });
+
+        function emojiToken(id) {
+            const normalizedId = String(id || '').padStart(2, '0');
+            if (!CUSTOM_EMOJI_MAP[normalizedId]) return '';
+
+            /*
+             * Gunakan marker saja untuk emoji custom. Jangan menyimpan
+             * Unicode emoji + ID sekaligus, karena beberapa proses/server
+             * dapat memotong atau membersihkan karakter setelah emoji.
+             * Marker ini nantinya diubah kembali menjadi gambar saat dirender.
+             */
+            return '[[WEMO:' + normalizedId + ']]';
+        }
+
+        function serializeComposerNode(node) {
+            let result = '';
+
+            node.childNodes.forEach(function (child) {
+                if (child.nodeType === Node.TEXT_NODE) {
+                    result += child.nodeValue || '';
+                    return;
+                }
+
+                if (child.nodeType !== Node.ELEMENT_NODE) {
+                    return;
+                }
+
+                const element = child;
+
+                if (element.matches('img.custom-emoji-inline')) {
+                    const id = element.dataset.emojiId || '';
+                    const token = emojiToken(id);
+                    result += token || (element.dataset.emoji || '');
+                    return;
+                }
+
+                if (element.tagName === 'BR') {
+                    result += '\n';
+                    return;
+                }
+
+                result += serializeComposerNode(element);
+
+                /* Block elements created by contenteditable need a newline
+                 * between them so normal text is never swallowed. */
+                if (/^(DIV|P|LI)$/.test(element.tagName)) {
+                    result += '\n';
+                }
+            });
+
+            return result;
+        }
+
+        function getComposerText() {
+            if (!messageInput) return '';
+
+            return serializeComposerNode(messageInput)
+                .replace(/\u00a0/g, ' ')
+                .replace(/\n{3,}/g, '\n\n')
+                .trim();
+        }
+
+        function syncComposerValue() {
+            if (messageValue) {
+                messageValue.value = getComposerText();
+            }
+
+            return messageValue ? messageValue.value : '';
+        }
+
+        function clearComposer() {
+            if (messageInput) {
+                messageInput.innerHTML = '';
+            }
+
+            if (messageValue) {
+                messageValue.value = '';
+            }
+        }
+
+        function insertCustomEmoji(emoji, imageUrl, emojiId) {
+            if (!messageInput) return;
+
+            messageInput.focus();
+
+            const selection = window.getSelection();
+            let range = null;
+
+            if (selection && selection.rangeCount > 0 && messageInput.contains(selection.anchorNode)) {
+                range = selection.getRangeAt(0);
+            } else {
+                range = document.createRange();
+                range.selectNodeContents(messageInput);
+                range.collapse(false);
+            }
+
+            range.deleteContents();
+
+            const img = document.createElement('img');
+            img.className = 'custom-emoji-inline';
+            img.src = imageUrl;
+            img.alt = emoji;
+            img.dataset.emoji = emoji;
+            img.dataset.emojiId = String(emojiId || '').padStart(2, '0');
+            img.draggable = false;
+
+            range.insertNode(img);
+
+            const spacer = document.createTextNode('');
+            range.setStartAfter(img);
+            range.collapse(true);
+            range.insertNode(spacer);
+            range.setStartAfter(spacer);
+            range.collapse(true);
+
+            selection.removeAllRanges();
+            selection.addRange(range);
+
+            syncComposerValue();
+
+            messageInput.dispatchEvent(new Event('input', { bubbles: true }));
+        }
 
 
         if (messageInput) {
@@ -6284,7 +6881,15 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
 
                         e.preventDefault();
 
-                        this.form.requestSubmit();
+                        /*
+                         * messageInput sekarang adalah DIV contenteditable,
+                         * bukan <textarea>, jadi this.form tidak tersedia.
+                         * Ambil form chat secara langsung.
+                         */
+                        const form = document.getElementById('messageForm');
+                        if (form) {
+                            form.requestSubmit();
+                        }
 
                     }
 
@@ -6516,14 +7121,15 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
 
         function lockChat() {
             if (messageForm) {
-                messageForm.querySelectorAll('textarea, button').forEach(function (el) {
+                messageForm.querySelectorAll('textarea, button, [contenteditable="true"]').forEach(function (el) {
                     el.disabled = true;
                 });
             }
 
             if (messageInput) {
-                messageInput.disabled = true;
-                messageInput.placeholder = 'Sesi booking telah berakhir.';
+                messageInput.setAttribute('contenteditable', 'false');
+                messageInput.setAttribute('aria-disabled', 'true');
+                messageInput.dataset.placeholder = 'Sesi booking telah berakhir.';
             }
 
             if (chatCountdown) {
@@ -6658,7 +7264,7 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
 
                 const input = document.getElementById('messageInput');
                 const button = document.getElementById('sendButton');
-                const message = input ? input.value.trim() : '';
+                const message = syncComposerValue().trim();
                 const hasImage = !!(imageInput && imageInput.files && imageInput.files.length);
 
                 if (!message && !hasImage) {
@@ -6666,6 +7272,8 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
                 }
 
                 sendingMessage = true;
+
+                syncComposerValue();
 
                 const formData = new FormData(messageForm);
 
@@ -6718,7 +7326,7 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
                         appendNewMessage(data.message);
 
                         if (input) {
-                            input.value = '';
+                            clearComposer();
                             input.focus();
                         }
 
@@ -6840,27 +7448,127 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
             });
         }
 
+
+        /* ==========================================================
+           CUSTOM BUBBLE COLOR
+           Warna disimpan di browser agar tetap sama setelah refresh.
+        ========================================================== */
+        const bubbleColorToggle = document.getElementById('bubbleColorToggle');
+        const bubbleColorPanel = document.getElementById('bubbleColorPanel');
+        const sentBubbleColor = document.getElementById('sentBubbleColor');
+        const receivedBubbleColor = document.getElementById('receivedBubbleColor');
+        const resetBubbleColors = document.getElementById('resetBubbleColors');
+        const bubbleColorDefaults = {
+            sent: '#0a84ff',
+            received: '#2c2c2e'
+        };
+
+        function colorToTextColor(hex) {
+            const clean = String(hex || '').replace('#', '');
+            if (clean.length !== 6) return '#ffffff';
+            const r = parseInt(clean.slice(0, 2), 16);
+            const g = parseInt(clean.slice(2, 4), 16);
+            const b = parseInt(clean.slice(4, 6), 16);
+            const luminance = (0.299 * r) + (0.587 * g) + (0.114 * b);
+            return luminance > 165 ? '#111111' : '#ffffff';
+        }
+
+        function applyBubbleColor(target, color, save = true) {
+            const safeColor = /^#[0-9a-fA-F]{6}$/.test(String(color || ''))
+                ? String(color)
+                : bubbleColorDefaults[target];
+
+            if (target === 'sent') {
+                document.documentElement.style.setProperty('--whisperly-sent-bubble', safeColor);
+                document.documentElement.style.setProperty('--whisperly-sent-text', colorToTextColor(safeColor));
+                if (sentBubbleColor) sentBubbleColor.value = safeColor;
+                if (save) localStorage.setItem('whisperly-sent-bubble', safeColor);
+            }
+
+            if (target === 'received') {
+                document.documentElement.style.setProperty('--whisperly-received-bubble', safeColor);
+                document.documentElement.style.setProperty('--whisperly-received-text', colorToTextColor(safeColor));
+                if (receivedBubbleColor) receivedBubbleColor.value = safeColor;
+                if (save) localStorage.setItem('whisperly-received-bubble', safeColor);
+            }
+        }
+
+        applyBubbleColor('sent', localStorage.getItem('whisperly-sent-bubble') || bubbleColorDefaults.sent, false);
+        applyBubbleColor('received', localStorage.getItem('whisperly-received-bubble') || bubbleColorDefaults.received, false);
+
+        if (bubbleColorToggle && bubbleColorPanel) {
+            bubbleColorToggle.addEventListener('click', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                const willOpen = bubbleColorPanel.hidden;
+                bubbleColorPanel.hidden = !willOpen;
+                bubbleColorToggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+            });
+        }
+
+        document.querySelectorAll('.bubble-color-swatch').forEach(function (button) {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                const target = button.closest('.bubble-color-swatches')?.dataset.colorTarget;
+                if (target) applyBubbleColor(target, button.dataset.color);
+            });
+        });
+
+        if (sentBubbleColor) {
+            sentBubbleColor.addEventListener('input', function () {
+                applyBubbleColor('sent', this.value);
+            });
+        }
+        if (receivedBubbleColor) {
+            receivedBubbleColor.addEventListener('input', function () {
+                applyBubbleColor('received', this.value);
+            });
+        }
+        if (resetBubbleColors) {
+            resetBubbleColors.addEventListener('click', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                applyBubbleColor('sent', bubbleColorDefaults.sent);
+                applyBubbleColor('received', bubbleColorDefaults.received);
+            });
+        }
+
         const emojiButton = document.getElementById('emojiButton');
         const emojiPicker = document.getElementById('emojiPicker');
-        const messageInputForEmoji = document.getElementById('messageInput');
 
         if (emojiButton && emojiPicker) {
             emojiButton.addEventListener('click', function (event) {
+                event.preventDefault();
                 event.stopPropagation();
                 emojiPicker.classList.toggle('open');
             });
 
-            emojiPicker.querySelectorAll('button').forEach(function (button) {
-                button.addEventListener('click', function () {
-                    if (!messageInputForEmoji) return;
-                    const emoji = button.textContent;
-                    const start = messageInputForEmoji.selectionStart ?? messageInputForEmoji.value.length;
-                    const end = messageInputForEmoji.selectionEnd ?? messageInputForEmoji.value.length;
-                    messageInputForEmoji.value = messageInputForEmoji.value.slice(0, start) + emoji + messageInputForEmoji.value.slice(end);
-                    messageInputForEmoji.focus();
-                    const next = start + emoji.length;
-                    messageInputForEmoji.setSelectionRange(next, next);
-                    messageInputForEmoji.dispatchEvent(new Event('input', { bubbles: true }));
+            emojiPicker.querySelectorAll('button.custom-emoji-option').forEach(function (button) {
+                button.addEventListener('mousedown', function (event) {
+                    /*
+                     * Jangan biarkan klik picker menghilangkan selection/cursor
+                     * pada contenteditable sebelum emoji dimasukkan.
+                     */
+                    event.preventDefault();
+                });
+
+                button.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    const emoji = button.dataset.emoji || '';
+                    const image = button.querySelector('img');
+
+                    if (!emoji || !image) return;
+
+                    insertCustomEmoji(
+                        emoji,
+                        image.getAttribute('src'),
+                        button.dataset.emojiId
+                    );
+
+                    emojiPicker.classList.remove('open');
                 });
             });
         }
@@ -6870,6 +7578,12 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
                 emojiPicker.classList.remove('open');
             }
         });
+
+        if (messageInput) {
+            messageInput.addEventListener('input', function () {
+                syncComposerValue();
+            });
+        }
 
         const replyPreview = document.getElementById('replyPreview');
         const replyPreviewLabel = document.getElementById('replyPreviewLabel');
@@ -7376,6 +8090,125 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
                     lastRow.dataset.messageId;
             }
 
+            function emojiImageForText(text) {
+                const fragment = document.createDocumentFragment();
+                const value = String(text || '');
+                const tokenRegex = /\[\[WEMO:(\d{2})\]\]|\uE000(\d{2})\uE001|\u200B\u2060(\d{2})\u2060/g;
+
+                /*
+                 * Pesan lama pernah menyimpan ID emoji sebagai karakter biasa
+                 * pada kondisi tertentu. Jika isi pesan memang hanya rangkaian
+                 * emoji custom lalu dua digit ID, buang ID yatim tersebut agar
+                 * angka seperti 28/26/06 tidak ikut tampil.
+                 */
+                const emojiKeysForCleanup = Object.keys(CUSTOM_EMOJI_FALLBACK)
+                    .sort(function (a, b) { return b.length - a.length; });
+                const escapedEmojiKeys = emojiKeysForCleanup
+                    .map(function (emoji) {
+                        return emoji.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    })
+                    .join('|');
+                let cleanedValue = value;
+                if (escapedEmojiKeys) {
+                    const orphanIdRegex = new RegExp(
+                        '^\\s*(?:(?:' + escapedEmojiKeys + ')\\s*)+\\d{2}\\s*$'
+                    );
+                    if (orphanIdRegex.test(cleanedValue)) {
+                        cleanedValue = cleanedValue.replace(/\s*\d{2}\s*$/, '');
+                    }
+                }
+
+                /* Token legacy dan token baru sama-sama didukung. */
+                cleanedValue = cleanedValue.replace(/\u200B\u2060(\d{2})\u2060/g, '\uE000$1\uE001');
+                const renderValue = cleanedValue;
+                let last = 0;
+                let match;
+
+                function appendFallbackText(chunk) {
+                    if (!chunk) return;
+                    const emojiKeys = Object.keys(CUSTOM_EMOJI_FALLBACK).sort(function (a, b) {
+                        return b.length - a.length;
+                    });
+                    let i = 0;
+                    let buffer = '';
+                    function flush() {
+                        if (buffer) {
+                            fragment.appendChild(document.createTextNode(buffer));
+                            buffer = '';
+                        }
+                    }
+                    while (i < chunk.length) {
+                        let found = null;
+                        for (let j = 0; j < emojiKeys.length; j++) {
+                            const key = emojiKeys[j];
+                            if (chunk.startsWith(key, i)) {
+                                found = key;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            buffer += chunk[i++];
+                            continue;
+                        }
+                        flush();
+                        const id = CUSTOM_EMOJI_FALLBACK[found];
+                        const item = CUSTOM_EMOJI_MAP[id];
+                        const img = document.createElement('img');
+                        img.className = 'custom-emoji-inline message-custom-emoji';
+                        img.src = '{{ asset('assets/images') }}/' + item.file;
+                        img.alt = found;
+                        img.title = found;
+                        img.draggable = false;
+                        fragment.appendChild(img);
+                        i += found.length;
+                    }
+                    flush();
+                }
+
+                while ((match = tokenRegex.exec(renderValue)) !== null) {
+                    appendFallbackText(renderValue.slice(last, match.index));
+                    const id = match[1] || match[2] || match[3];
+                    const item = CUSTOM_EMOJI_MAP[id];
+                    if (item) {
+                        const img = document.createElement('img');
+                        img.className = 'custom-emoji-inline message-custom-emoji';
+                        img.src = '{{ asset('assets/images') }}/' + item.file;
+                        img.alt = item.emoji;
+                        img.title = item.emoji;
+                        img.draggable = false;
+                        fragment.appendChild(img);
+                    } else {
+                        appendFallbackText(match[0]);
+                    }
+                    last = tokenRegex.lastIndex;
+                }
+
+                appendFallbackText(renderValue.slice(last));
+                return fragment;
+            }
+
+            function renderCustomEmojiElement(element) {
+                if (!element || element.dataset.customEmojiRendered === '1') {
+                    return;
+                }
+
+                const text = element.textContent || '';
+                if (!text) return;
+
+                const fragment = emojiImageForText(text);
+                element.innerHTML = '';
+                element.appendChild(fragment);
+                element.dataset.customEmojiRendered = '1';
+            }
+
+            function renderCustomEmojisInMessages(root) {
+                if (!root) return;
+
+                root.querySelectorAll('.message-text').forEach(function (element) {
+                    renderCustomEmojiElement(element);
+                });
+            }
+
             function loadNewMessages() {
 
                 if (loadingMessages) {
@@ -7619,8 +8452,17 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
                 if (displayText) {
                     const textNode = document.createElement('div');
                     textNode.className = 'message-text';
+
+                    /*
+                     * WAJIB isi textContent sebelum dirender.
+                     * Sebelumnya textNode masih kosong ketika
+                     * renderCustomEmojiElement() dipanggil, sehingga pesan
+                     * baru bisa tampil sebagai bubble kecil/kosong sampai
+                     * halaman direfresh.
+                     */
                     textNode.textContent = displayText;
                     bubble.appendChild(textNode);
+                    renderCustomEmojiElement(textNode);
                 }
 
                 const footer =
@@ -7663,6 +8505,12 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
 
             bindMessageInteractions(messagesContainer);
             updateOutgoingMessageChecks(messagesContainer);
+
+            /*
+             * Ubah emoji Unicode yang sudah ada pada riwayat menjadi
+             * gambar custom sejak halaman pertama kali dibuka.
+             */
+            renderCustomEmojisInMessages(messagesContainer);
 
             /* Cek langsung saat halaman dibuka, lalu setiap 1 detik. */
             loadNewMessages();
