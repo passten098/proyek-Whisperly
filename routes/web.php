@@ -87,20 +87,24 @@ Route::middleware([
 ])->group(function () {
 
     Route::get('/whisperly', function () {
+
         $currentUser = Auth::guard('whisperly')->user();
 
         $currentTalentProfile = null;
 
         if ($currentUser) {
+
             $currentTalentProfile = talents::with('pengguna')
                 ->where('pengguna_id', $currentUser->id)
                 ->first();
+
         }
 
         return view('whisperly.home', compact(
             'currentUser',
             'currentTalentProfile'
         ));
+
     })->name('whisperly.home');
 
 
@@ -130,6 +134,41 @@ Route::middleware([
         'deletePhoto'
     ])->name('whisperly.profile.photo.delete');
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | ROUTE FOTO PROFIL
+    |--------------------------------------------------------------------------
+    |
+    | Digunakan untuk menampilkan foto profil dari:
+    |
+    | storage/app/public/profil/
+    |
+    */
+
+    Route::get('/profil/{filename}', function ($filename) {
+
+        $filename = basename($filename);
+
+        $path = storage_path(
+            'app/public/profil/' . $filename
+        );
+
+        abort_unless(is_file($path), 404);
+
+        return response()->file($path);
+
+    })->where(
+        'filename',
+        '[A-Za-z0-9._-]+'
+    )->name('profil.show');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SELAMAT
+    |--------------------------------------------------------------------------
+    */
 
     Route::view('/selamat', 'whisperly.home')
         ->name('selamat');
@@ -376,6 +415,7 @@ Route::middleware([
 
     Route::view('/user', 'user')
         ->name('user');
+
 });
 
 
@@ -497,6 +537,7 @@ Route::middleware([
         WhisperlyTalentController::class,
         'edit'
     ])->name('talent.edit');
+
 });
 
 
@@ -537,6 +578,7 @@ Route::middleware(['auth'])->group(function () {
         ProfileController::class,
         'destroy'
     ])->name('profile.destroy');
+
 });
 
 

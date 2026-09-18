@@ -919,6 +919,20 @@
 
             flex: 0 0 27px !important;
             box-sizing: border-box !important;
+            overflow: hidden !important;
+        }
+
+        .comments-section .comment-avatar img {
+            width: 100% !important;
+            height: 100% !important;
+            display: block !important;
+            object-fit: cover !important;
+            border-radius: 50% !important;
+        }
+
+        .comments-section .comment-avatar.has-photo {
+            background: transparent !important;
+            border-color: rgba(255,255,255,.9) !important;
         }
 
         .comments-section .comment-user-wrap {
@@ -2657,6 +2671,25 @@
                                                         )
                                                     );
 
+                                                // Foto profil orang yang memberikan komentar.
+                                                $commentPhoto =
+                                                    $comment->pengguna?->avatar_url
+                                                    ?? $comment->pengguna?->photo
+                                                    ?? $comment->pengguna?->foto
+                                                    ?? null;
+
+                                                if ($commentPhoto) {
+                                                    if (preg_match('/^(https?:\/\/|\/\/)/i', $commentPhoto)) {
+                                                        $commentPhotoUrl = $commentPhoto;
+                                                    } elseif (str_starts_with($commentPhoto, 'storage/')) {
+                                                        $commentPhotoUrl = asset($commentPhoto);
+                                                    } else {
+                                                        $commentPhotoUrl = asset('storage/' . ltrim($commentPhoto, '/'));
+                                                    }
+                                                } else {
+                                                    $commentPhotoUrl = null;
+                                                }
+
                                                 $isTalent =
                                                     $commentRole === 'talent';
 
@@ -2697,8 +2730,17 @@
 
                                                 <div class="comment-top">
 
-                                                    <div class="comment-avatar">
-                                                        {{ strtoupper(mb_substr($commentUsername, 0, 1)) }}
+                                                    <div class="comment-avatar {{ $commentPhotoUrl ? 'has-photo' : '' }}">
+                                                        @if ($commentPhotoUrl)
+                                                            <img
+                                                                src="{{ $commentPhotoUrl }}"
+                                                                alt="Foto profil {{ $commentUsername }}"
+                                                                loading="lazy"
+                                                                onerror="this.style.display='none'; this.parentElement.classList.remove('has-photo'); this.parentElement.innerHTML='{{ strtoupper(mb_substr($commentUsername, 0, 1)) }}';"
+                                                            >
+                                                        @else
+                                                            {{ strtoupper(mb_substr($commentUsername, 0, 1)) }}
+                                                        @endif
                                                     </div>
 
                                                     <div class="comment-user-wrap">
@@ -2824,6 +2866,25 @@
                                                                 $replyIsAdmin =
                                                                     $replyRole === 'admin';
 
+                                                                // Foto profil orang yang memberikan balasan.
+                                                                $replyPhoto =
+                                                                    $reply->pengguna?->avatar_url
+                                                                    ?? $reply->pengguna?->photo
+                                                                    ?? $reply->pengguna?->foto
+                                                                    ?? null;
+
+                                                                if ($replyPhoto) {
+                                                                    if (preg_match('/^(https?:\/\/|\/\/)/i', $replyPhoto)) {
+                                                                        $replyPhotoUrl = $replyPhoto;
+                                                                    } elseif (str_starts_with($replyPhoto, 'storage/')) {
+                                                                        $replyPhotoUrl = asset($replyPhoto);
+                                                                    } else {
+                                                                        $replyPhotoUrl = asset('storage/' . ltrim($replyPhoto, '/'));
+                                                                    }
+                                                                } else {
+                                                                    $replyPhotoUrl = null;
+                                                                }
+
                                                             @endphp
 
 
@@ -2834,8 +2895,17 @@
 
                                                                 <div class="comment-top">
 
-                                                                    <div class="comment-avatar">
-                                                                        {{ strtoupper(mb_substr($replyUsername, 0, 1)) }}
+                                                                    <div class="comment-avatar {{ $replyPhotoUrl ? 'has-photo' : '' }}">
+                                                                        @if ($replyPhotoUrl)
+                                                                            <img
+                                                                                src="{{ $replyPhotoUrl }}"
+                                                                                alt="Foto profil {{ $replyUsername }}"
+                                                                                loading="lazy"
+                                                                                onerror="this.style.display='none'; this.parentElement.classList.remove('has-photo'); this.parentElement.innerHTML='{{ strtoupper(mb_substr($replyUsername, 0, 1)) }}';"
+                                                                            >
+                                                                        @else
+                                                                            {{ strtoupper(mb_substr($replyUsername, 0, 1)) }}
+                                                                        @endif
                                                                     </div>
 
                                                                     <div class="comment-user-wrap">
@@ -2944,7 +3014,7 @@
                                         <textarea
                                             name="komentar"
                                             class="comment-input"
-                                            placeholder="Tulis balasan sebagai admin..."
+                                            placeholder="Tulis balasan..."
                                             required
                                         ></textarea>
 

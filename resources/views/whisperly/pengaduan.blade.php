@@ -8,6 +8,19 @@
     <title>Ruang Pengaduan | Whisperly</title>
 
     <style>
+        /* =====================================================
+   RAPATKAN HEADER MENFESS KE ISI PESAN
+===================================================== */
+
+.card > .card-head {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.card > .message {
+    margin-top: -27px !important;
+    padding-top: 0 !important;
+}
 
         * {
             box-sizing: border-box;
@@ -971,6 +984,26 @@
             font-size: 10px !important;
 
             font-weight: 800 !important;
+        }
+
+        .comment .avatar img {
+            width: 100% !important;
+            height: 100% !important;
+            min-width: 100% !important;
+            min-height: 100% !important;
+            display: block !important;
+            object-fit: cover !important;
+            object-position: center !important;
+            border-radius: 50% !important;
+        }
+
+        .comment .avatar .avatar-fallback {
+            width: 100% !important;
+            height: 100% !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
         }
 
 
@@ -3069,6 +3102,30 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                                                     $commentUser?->username
                                                     ?? 'Pengguna';
 
+                                                $commentProfil =
+                                                    $commentUser?->profil
+                                                    ?? null;
+
+                                                $commentProfilUrl = null;
+
+                                                if (!empty($commentProfil)) {
+                                                    $commentProfil = trim((string) $commentProfil);
+
+                                                    if (
+                                                        str_starts_with($commentProfil, 'http://') ||
+                                                        str_starts_with($commentProfil, 'https://') ||
+                                                        str_starts_with($commentProfil, '//')
+                                                    ) {
+                                                        $commentProfilUrl = $commentProfil;
+                                                    } elseif (str_starts_with($commentProfil, '/storage/')) {
+                                                        $commentProfilUrl = asset(ltrim($commentProfil, '/'));
+                                                    } elseif (str_starts_with($commentProfil, 'storage/')) {
+                                                        $commentProfilUrl = asset($commentProfil);
+                                                    } else {
+                                                        $commentProfilUrl = route('profil.show', ['filename' => basename($commentProfil)]);
+                                                    }
+                                                }
+
                                                 $commentRole =
                                                     strtolower(
                                                         trim(
@@ -3127,7 +3184,30 @@ Ceritakan apa saja yang ingin kamu sampaikan...
 
 
                                                     <div class="avatar">
-                                                        {{ $commentInitial }}
+
+                                                        @if ($commentProfilUrl)
+
+                                                            <img
+                                                                src="{{ $commentProfilUrl }}"
+                                                                alt="Foto profil {{ $commentUsername }}"
+                                                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                                            >
+
+                                                            <span
+                                                                class="avatar-fallback"
+                                                                style="display:none;"
+                                                            >
+                                                                {{ $commentInitial }}
+                                                            </span>
+
+                                                        @else
+
+                                                            <span class="avatar-fallback">
+                                                                {{ $commentInitial }}
+                                                            </span>
+
+                                                        @endif
+
                                                     </div>
 
 
@@ -3233,6 +3313,30 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                                                                     $replyUser?->username
                                                                     ?? 'Pengguna';
 
+                                                                $replyProfil =
+                                                                    $replyUser?->profil
+                                                                    ?? null;
+
+                                                                $replyProfilUrl = null;
+
+                                                                if (!empty($replyProfil)) {
+                                                                    $replyProfil = trim((string) $replyProfil);
+
+                                                                    if (
+                                                                        str_starts_with($replyProfil, 'http://') ||
+                                                                        str_starts_with($replyProfil, 'https://') ||
+                                                                        str_starts_with($replyProfil, '//')
+                                                                    ) {
+                                                                        $replyProfilUrl = $replyProfil;
+                                                                    } elseif (str_starts_with($replyProfil, '/storage/')) {
+                                                                        $replyProfilUrl = asset(ltrim($replyProfil, '/'));
+                                                                    } elseif (str_starts_with($replyProfil, 'storage/')) {
+                                                                        $replyProfilUrl = asset($replyProfil);
+                                                                    } else {
+                                                                        $replyProfilUrl = route('profil.show', ['filename' => basename($replyProfil)]);
+                                                                    }
+                                                                }
+
                                                                 $replyRole =
                                                                     strtolower(
                                                                         trim(
@@ -3265,7 +3369,30 @@ Ceritakan apa saja yang ingin kamu sampaikan...
 
 
                                                                 <div class="avatar">
-                                                                    {{ $replyInitial }}
+
+                                                                    @if ($replyProfilUrl)
+
+                                                                        <img
+                                                                            src="{{ $replyProfilUrl }}"
+                                                                            alt="Foto profil {{ $replyUsername }}"
+                                                                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                                                        >
+
+                                                                        <span
+                                                                            class="avatar-fallback"
+                                                                            style="display:none;"
+                                                                        >
+                                                                            {{ $replyInitial }}
+                                                                        </span>
+
+                                                                    @else
+
+                                                                        <span class="avatar-fallback">
+                                                                            {{ $replyInitial }}
+                                                                        </span>
+
+                                                                    @endif
+
                                                                 </div>
 
 

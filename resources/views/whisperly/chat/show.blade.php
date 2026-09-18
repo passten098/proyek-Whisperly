@@ -4422,58 +4422,14 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
         /*
          * FOTO PROFIL LAWAN CHAT
          *
-         * Ambil dari avatar_url milik pengguna terlebih dahulu.
-         * Jika belum ada, fallback ke kolom photo lama.
+         * USER  -> foto talent
+         * TALENT -> foto pengguna
          *
-         * USER   -> foto pengguna milik talent
-         * TALENT -> foto pengguna yang booking
+         * Jika foto tidak tersedia, otomatis kembali ke inisial.
          */
         $otherPhoto = $isUser
-            ? (
-                $talent?->pengguna?->avatar_url
-                ?? $talent?->pengguna?->photo
-                ?? $talent?->photo
-                ?? null
-            )
-            : (
-                $pengguna?->avatar_url
-                ?? $pengguna?->photo
-                ?? null
-            );
-
-        /*
-         * avatar_url bisa berupa:
-         * - URL lengkap (https://...)
-         * - path /storage/...
-         * - path storage/...
-         * - nama/path file biasa
-         *
-         * Jangan menambahkan "storage/" dua kali.
-         */
-        $makeAvatarUrl = function ($photo) {
-            if (!$photo) {
-                return null;
-            }
-
-            $photo = trim((string) $photo);
-
-            if (
-                str_starts_with($photo, 'http://')
-                || str_starts_with($photo, 'https://')
-                || str_starts_with($photo, '//')
-                || str_starts_with($photo, '/')
-            ) {
-                return $photo;
-            }
-
-            if (str_starts_with($photo, 'storage/')) {
-                return asset($photo);
-            }
-
-            return asset('storage/' . ltrim($photo, '/'));
-        };
-
-        $otherPhotoUrl = $makeAvatarUrl($otherPhoto);
+            ? ($talent?->photo ?? null)
+            : ($pengguna?->photo ?? null);
 
 
         /*
@@ -4745,46 +4701,21 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
                         data-unread="{{ $hasUnread ? '1' : '0' }}"
                     >
 
-                        @php
-                            /*
-                             * Foto untuk setiap item di sidebar.
-                             * Gunakan avatar_url terlebih dahulu agar sama
-                             * dengan foto profil yang dipakai sistem pengguna.
-                             */
-                            $itemPhoto = $isUser
-                                ? (
-                                    $item->talent?->pengguna?->avatar_url
-                                    ?? $item->talent?->pengguna?->photo
-                                    ?? $item->talent?->photo
-                                    ?? null
-                                )
-                                : (
-                                    $item->pengguna?->avatar_url
-                                    ?? $item->pengguna?->photo
-                                    ?? null
-                                );
-
-                            $itemPhotoUrl = $makeAvatarUrl($itemPhoto);
-                        @endphp
-
                         <div class="avatar">
 
-                            @if ($itemPhotoUrl)
+                            @if (
+                                $isUser
+                                    ? $item->talent?->photo
+                                    : $item->pengguna?->photo
+                            )
                                 <img
-                                    src="{{ $itemPhotoUrl }}"
+                                    src="{{ asset(
+                                        'storage/' . ($isUser
+                                            ? $item->talent->photo
+                                            : $item->pengguna->photo)
+                                    ) }}"
                                     alt="Profil {{ $itemName }}"
-                                    loading="lazy"
-                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
                                 >
-                                <span
-                                    style="
-                                        display:none;
-                                        width:100%;
-                                        height:100%;
-                                        align-items:center;
-                                        justify-content:center;
-                                    "
-                                >{{ $itemInitial }}</span>
                             @else
                                 {{ $itemInitial }}
                             @endif
@@ -4911,21 +4842,11 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
 
                     <div class="avatar">
 
-                        @if ($otherPhotoUrl)
+                        @if ($otherPhoto)
                             <img
-                                src="{{ $otherPhotoUrl }}"
+                                src="{{ asset('storage/' . $otherPhoto) }}"
                                 alt="Profil {{ $otherName }}"
-                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
                             >
-                            <span
-                                style="
-                                    display:none;
-                                    width:100%;
-                                    height:100%;
-                                    align-items:center;
-                                    justify-content:center;
-                                "
-                            >{{ $otherInitial }}</span>
                         @else
                             {{ $otherInitial }}
                         @endif
@@ -5244,7 +5165,7 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
 
                                 @if (!$mine && $otherPhoto)
                                     <img
-                                        src="{{ $otherPhotoUrl }}"
+                                        src="{{ asset('storage/' . $otherPhoto) }}"
                                         alt="Profil {{ $senderName }}"
                                     >
                                 @else
@@ -5412,7 +5333,7 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
                             <textarea
                                 name="message"
                                 id="messageInput"
-                                placeholder="Whisperly"
+                                placeholder="iMessage"
                                 maxlength="2000"
                                 rows="1"
                             ></textarea>
@@ -5491,23 +5412,14 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
 
                         <div class="account-profile-avatar">
 
-                            @if ($otherPhotoUrl)
+                            @if ($otherPhoto)
 
                                 <img
-                                    src="{{ $otherPhotoUrl }}"
+                                    src="{{ asset(
+                                        'storage/' . $otherPhoto
+                                    ) }}"
                                     alt="Avatar {{ $otherName }}"
-                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
                                 >
-
-                                <span
-                                    style="
-                                        display:none;
-                                        width:100%;
-                                        height:100%;
-                                        align-items:center;
-                                        justify-content:center;
-                                    "
-                                >{{ $otherInitial }}</span>
 
                             @else
 
