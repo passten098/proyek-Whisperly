@@ -64,13 +64,24 @@
                     <div class="mb-3">
                         <label class="form-label">Foto Profil</label>
 
-                        @if($pengguna->profil)
-                            <div class="mb-2">
-                                <img src="{{ asset('storage/profil/' . $pengguna->profil) }}"
-                                     width="100"
-                                     height="100"
-                                     style="object-fit: cover; border-radius: 50%;">
-                            </div>
+                        @if($pengguna->role === 'talent')
+                            @if($pengguna->talent && $pengguna->talent->photo)
+                                <div class="mb-2">
+                                    <img src="{{ asset('storage/' . $pengguna->talent->photo) }}"
+                                         width="100"
+                                         height="100"
+                                         style="object-fit: cover; border-radius: 50%;">
+                                </div>
+                            @endif
+                        @else
+                            @if($pengguna->profil)
+                                <div class="mb-2">
+                                    <img src="{{ asset('storage/profil/' . $pengguna->profil) }}"
+                                         width="100"
+                                         height="100"
+                                         style="object-fit: cover; border-radius: 50%;">
+                                </div>
+                            @endif
                         @endif
 
                         <input type="file"

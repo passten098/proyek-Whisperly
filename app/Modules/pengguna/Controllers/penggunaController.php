@@ -1,10 +1,12 @@
 <?php
+
 namespace App\Modules\pengguna\Controllers;
 
 use App\Helpers\Logger;
 use Illuminate\Http\Request;
 use App\Modules\Log\Models\Log;
 use App\Modules\pengguna\Models\pengguna;
+use App\Modules\talents\Models\talents;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -23,30 +25,74 @@ class penggunaController extends Controller
 
 	public function index(Request $request)
 	{
-		$query = pengguna::query();
-		if($request->has('search')){
+		// Ambil data pengguna beserta data talent
+		// agar foto profil Talent bisa ditampilkan
+		$query = pengguna::with('talent');
+
+		if ($request->has('search')) {
 			$search = $request->get('search');
 			// $query->where('name', 'like', "%$search%");
 		}
+
 		$data['data'] = $query->paginate(10)->withQueryString();
 
-		$this->log($request, 'melihat halaman manajemen data '.$this->title);
-		return view('pengguna::pengguna', array_merge($data, ['title' => $this->title]));
+		$this->log(
+			$request,
+			'melihat halaman manajemen data ' . $this->title
+		);
+
+		return view(
+			'pengguna::pengguna',
+			array_merge($data, ['title' => $this->title])
+		);
 	}
 
 	public function create(Request $request)
 	{
-		
 		$data['forms'] = array(
-			'username' => ['label' => 'Username', 'type' => 'text', 'value' => old("username"), 'required' => true],
-			'email' => ['label' => 'Email', 'type' => 'text', 'value' => old("email"), 'required' => true],
-			'password' => ['label' => 'Password', 'type' => 'text', 'value' => old("password"), 'required' => true],
-			'role' => ['label' => 'Role', 'type' => 'select', 'options' => ['user' => 'User', 'admin' => 'Admin', 'talent' => 'Talent'], 'value' => old("role"), 'required' => true],
-			
+			'username' => [
+				'label' => 'Username',
+				'type' => 'text',
+				'value' => old("username"),
+				'required' => true
+			],
+
+			'email' => [
+				'label' => 'Email',
+				'type' => 'text',
+				'value' => old("email"),
+				'required' => true
+			],
+
+			'password' => [
+				'label' => 'Password',
+				'type' => 'text',
+				'value' => old("password"),
+				'required' => true
+			],
+
+			'role' => [
+				'label' => 'Role',
+				'type' => 'select',
+				'options' => [
+					'user' => 'User',
+					'admin' => 'Admin',
+					'talent' => 'Talent'
+				],
+				'value' => old("role"),
+				'required' => true
+			],
 		);
 
-		$this->log($request, 'membuka form tambah '.$this->title);
-		return view('pengguna::pengguna_create', array_merge($data, ['title' => $this->title]));
+		$this->log(
+			$request,
+			'membuka form tambah ' . $this->title
+		);
+
+		return view(
+			'pengguna::pengguna_create',
+			array_merge($data, ['title' => $this->title])
+		);
 	}
 
 	function store(Request $request)
@@ -56,128 +102,246 @@ class penggunaController extends Controller
 			'email' => 'required|email|unique:pengguna,email',
 			'password' => 'required|min:8',
 			'role' => 'required|in:user,admin,talent',
-			
 		]);
 
 		$pengguna = new pengguna();
+
 		$pengguna->username = $request->input("username");
 		$pengguna->email = $request->input("email");
-		$pengguna->password = Hash::make($request->input("password"));
+		$pengguna->password = Hash::make(
+			$request->input("password")
+		);
 		$pengguna->role = $request->input("role");
-		
+
 		$pengguna->created_by = Auth::id();
 		$pengguna->save();
 
-		$text = 'membuat '.$this->title; //' baru '.$pengguna->what;
-		$this->log($request, $text, ['pengguna.id' => $pengguna->id]);
-		return redirect()->route('pengguna.index')->with('message_success', 'Pengguna berhasil ditambahkan!');
+		$text = 'membuat ' . $this->title;
+
+		$this->log(
+			$request,
+			$text,
+			['pengguna.id' => $pengguna->id]
+		);
+
+		return redirect()
+			->route('pengguna.index')
+			->with(
+				'message_success',
+				'Pengguna berhasil ditambahkan!'
+			);
 	}
-	
+
 	public function show(Request $request, pengguna $pengguna)
 	{
 		$data['pengguna'] = $pengguna;
 
-		$text = 'melihat detail '.$this->title;//.' '.$pengguna->what;
-		$this->log($request, $text, ['pengguna.id' => $pengguna->id]);
-		return view('pengguna::pengguna_detail', array_merge($data, ['title' => $this->title]));
+		$text = 'melihat detail ' . $this->title;
+
+		$this->log(
+			$request,
+			$text,
+			['pengguna.id' => $pengguna->id]
+		);
+
+		return view(
+			'pengguna::pengguna_detail',
+			array_merge($data, ['title' => $this->title])
+		);
 	}
 
 	public function edit(Request $request, pengguna $pengguna)
 	{
 		$data['pengguna'] = $pengguna;
 
-		
 		$data['forms'] = array(
-			'username' => ['label' => 'Username', 'type' => 'text', 'value' => $pengguna->username, 'required' => true, 'id' => 'username'],
-			'email' => ['label' => 'Email', 'type' => 'text', 'value' => $pengguna->email, 'required' => true, 'id' => 'email'],
-			'password' => ['label' => 'Password (kosongkan jika tidak diubah)', 'type' => 'text', 'value' => '', 'required' => false, 'id' => 'password'],
-			'role' => ['label' => 'Role', 'type' => 'select', 'options' => ['user' => 'User', 'admin' => 'Admin', 'talent' => 'Talent'], 'value' => $pengguna->role, 'required' => true, 'id' => 'role'],
-			
+			'username' => [
+				'label' => 'Username',
+				'type' => 'text',
+				'value' => $pengguna->username,
+				'required' => true,
+				'id' => 'username'
+			],
+
+			'email' => [
+				'label' => 'Email',
+				'type' => 'text',
+				'value' => $pengguna->email,
+				'required' => true,
+				'id' => 'email'
+			],
+
+			'password' => [
+				'label' => 'Password (kosongkan jika tidak diubah)',
+				'type' => 'text',
+				'value' => '',
+				'required' => false,
+				'id' => 'password'
+			],
+
+			'role' => [
+				'label' => 'Role',
+				'type' => 'select',
+				'options' => [
+					'user' => 'User',
+					'admin' => 'Admin',
+					'talent' => 'Talent'
+				],
+				'value' => $pengguna->role,
+				'required' => true,
+				'id' => 'role'
+			],
 		);
 
-		$text = 'membuka form edit '.$this->title;//.' '.$pengguna->what;
-		$this->log($request, $text, ['pengguna.id' => $pengguna->id]);
-		return view('pengguna::pengguna_update', array_merge($data, ['title' => $this->title]));
+		$text = 'membuka form edit ' . $this->title;
+
+		$this->log(
+			$request,
+			$text,
+			['pengguna.id' => $pengguna->id]
+		);
+
+		return view(
+			'pengguna::pengguna_update',
+			array_merge($data, ['title' => $this->title])
+		);
 	}
 
 	public function update(Request $request, $id)
 	{
 		$this->validate($request, [
-			'username' => 'required|unique:pengguna,username,'.$id,
-			'email' => 'required|email|unique:pengguna,email,'.$id,
+			'username' => 'required|unique:pengguna,username,' . $id,
+			'email' => 'required|email|unique:pengguna,email,' . $id,
 			'password' => 'nullable|min:8',
 			'role' => 'required|in:user,admin,talent',
-			
 		]);
 
 		$pengguna = pengguna::find($id);
+
 		$pengguna->username = $request->input("username");
 		$pengguna->email = $request->input("email");
+
 		if ($request->filled('password')) {
-			$pengguna->password = Hash::make($request->input("password"));
+			$pengguna->password = Hash::make(
+				$request->input("password")
+			);
 		}
+
 		$pengguna->role = $request->input("role");
-		
+
 		$pengguna->updated_by = Auth::id();
 		$pengguna->save();
 
+		$text = 'mengedit ' . $this->title;
 
-		$text = 'mengedit '.$this->title;//.' '.$pengguna->what;
-		$this->log($request, $text, ['pengguna.id' => $pengguna->id]);
-		return redirect()->route('pengguna.index')->with('message_success', 'Pengguna berhasil diubah!');
+		$this->log(
+			$request,
+			$text,
+			['pengguna.id' => $pengguna->id]
+		);
+
+		return redirect()
+			->route('pengguna.index')
+			->with(
+				'message_success',
+				'Pengguna berhasil diubah!'
+			);
 	}
-public function profile(Request $request)
+
+	public function profile(Request $request)
 	{
-    $pengguna = Auth::guard('whisperly')->user();
+		$pengguna = Auth::guard('whisperly')->user();
 
-    return view('pengguna::profil', [
-        'pengguna' => $pengguna,
-        'title' => 'Profil Pengguna'
-    ]);
+		$pengguna->load('talent');
+
+		return view('pengguna::profil', [
+			'pengguna' => $pengguna,
+			'title' => 'Profil Pengguna'
+		]);
 	}
 
-public function updateProfile(Request $request)
+	public function updateProfile(Request $request)
 	{
-    $pengguna = Auth::guard('whisperly')->user();
+		$pengguna = Auth::guard('whisperly')->user();
 
-    $this->validate($request, [
-        'username' => 'required|unique:pengguna,username,' . $pengguna->id,
-        'email' => 'required|email|unique:pengguna,email,' . $pengguna->id,
-        'bio' => 'nullable',
-        'profil' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-    ]);
+		$this->validate($request, [
+			'username' => 'required|unique:pengguna,username,' . $pengguna->id,
+			'email' => 'required|email|unique:pengguna,email,' . $pengguna->id,
+			'bio' => 'nullable',
+			'profil' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+		]);
 
-    $pengguna->username = $request->username;
-    $pengguna->email = $request->email;
-    $pengguna->bio = $request->bio;
+		$pengguna->username = $request->username;
+		$pengguna->email = $request->email;
+		$pengguna->bio = $request->bio;
 
-    if ($request->hasFile('profil')) {
-    $file = $request->file('profil');
+		if ($request->hasFile('profil')) {
 
-    $filename = time() . '_' . $file->getClientOriginalName();
+			$file = $request->file('profil');
 
-    $file->storeAs('profil', $filename, 'public');
+			$filename = time() . '_' . $file->getClientOriginalName();
 
-    $pengguna->profil = $filename;
-}
+			if ($pengguna->role === 'talent') {
 
+				$talent = talents::where(
+					'pengguna_id',
+					$pengguna->id
+				)->first();
 
-    $pengguna->save();
+				if ($talent) {
 
-    return redirect()
-        ->route('pengguna.profile')
-        ->with('message_success', 'Profil berhasil diperbarui!');
+					$file->storeAs(
+						'talent-profiles',
+						$filename,
+						'public'
+					);
+
+					$talent->photo = 'talent-profiles/' . $filename;
+					$talent->updated_by = $pengguna->id;
+					$talent->save();
+				}
+
+			} else {
+
+				$file->storeAs(
+					'profil',
+					$filename,
+					'public'
+				);
+
+				$pengguna->profil = $filename;
+			}
+		}
+
+		$pengguna->save();
+
+		return redirect()
+			->route('pengguna.profile')
+			->with(
+				'message_success',
+				'Profil berhasil diperbarui!'
+			);
 	}
+
 	public function destroy(Request $request, $id)
 	{
 		$pengguna = pengguna::find($id);
+
 		$pengguna->deleted_by = Auth::id();
 		$pengguna->save();
 		$pengguna->delete();
 
-		$text = 'menghapus '.$this->title;//.' '.$pengguna->what;
-		$this->log($request, $text, ['pengguna.id' => $pengguna->id]);
-		return back()->with('message_success', 'Pengguna berhasil dihapus!');
-	}
+		$text = 'menghapus ' . $this->title;
 
+		$this->log(
+			$request,
+			$text,
+			['pengguna.id' => $pengguna->id]
+		);
+
+		return back()->with(
+			'message_success',
+			'Pengguna berhasil dihapus!'
+		);
+	}
 }

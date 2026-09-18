@@ -180,32 +180,96 @@ class WhisperlyProfileController extends Controller
             'photo.max' => 'Ukuran gambar maksimal 3 MB.',
         ]);
 
-        // Hapus foto lama jika ada di storage lokal
-        if (
-            !empty($currentUser->profil) &&
-            !filter_var($currentUser->profil, FILTER_VALIDATE_URL)
-        ) {
-            $oldFilename = ltrim(
-                preg_replace('#^storage/#', '', $currentUser->profil),
-                '/'
-            );
-
-            if (Storage::disk('public')->exists('profil/' . $oldFilename)) {
-                Storage::disk('public')->delete('profil/' . $oldFilename);
-            } elseif (Storage::disk('public')->exists($oldFilename)) {
-                Storage::disk('public')->delete($oldFilename);
-            }
-        }
-
         $file = $request->file('photo');
 
         $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
 
-        $file->storeAs('profil', $filename, 'public');
 
-        $currentUser->profil = $filename;
+        /*
+         * =========================================================
+         * JIKA USER ADALAH TALENT
+         * =========================================================
+         */
+        if ($currentUser->role === 'talent') {
 
-        $currentUser->save();
+            $talent = talents::query()
+                ->where('pengguna_id', $currentUser->id)
+                ->first();
+
+            if (!$talent) {
+                if ($request->expectsJson() || $request->ajax()) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Data Talent tidak ditemukan.'
+                    ], 404);
+                }
+
+                return redirect()
+                    ->route('whisperly.profile')
+                    ->with('error', 'Data Talent tidak ditemukan.');
+            }
+
+            // Hapus foto Talent lama jika ada
+            if (!empty($talent->photo)) {
+                $oldPhoto = ltrim(
+                    preg_replace('#^storage/#', '', $talent->photo),
+                    '/'
+                );
+
+                if (Storage::disk('public')->exists($oldPhoto)) {
+                    Storage::disk('public')->delete($oldPhoto);
+                }
+            }
+
+            // Simpan foto baru ke folder talent-profiles
+            $file->storeAs(
+                'talent-profiles',
+                $filename,
+                'public'
+            );
+
+            // Simpan path foto baru ke tabel talents
+            $talent->photo = 'talent-profiles/' . $filename;
+            $talent->updated_by = $currentUser->id;
+            $talent->save();
+
+        } else {
+
+            /*
+             * =========================================================
+             * JIKA USER BUKAN TALENT
+             * =========================================================
+             */
+
+            // Hapus foto lama jika ada
+            if (
+                !empty($currentUser->profil) &&
+                !filter_var($currentUser->profil, FILTER_VALIDATE_URL)
+            ) {
+                $oldFilename = ltrim(
+                    preg_replace('#^storage/#', '', $currentUser->profil),
+                    '/'
+                );
+
+                if (Storage::disk('public')->exists('profil/' . $oldFilename)) {
+                    Storage::disk('public')->delete('profil/' . $oldFilename);
+                } elseif (Storage::disk('public')->exists($oldFilename)) {
+                    Storage::disk('public')->delete($oldFilename);
+                }
+            }
+
+            // Simpan foto ke folder profil
+            $file->storeAs(
+                'profil',
+                $filename,
+                'public'
+            );
+
+            // Simpan nama file ke tabel pengguna
+            $currentUser->profil = $filename;
+            $currentUser->save();
+        }
+
 
         if ($request->expectsJson() || $request->ajax()) {
             return response()->json([
