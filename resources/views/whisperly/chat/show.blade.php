@@ -4654,14 +4654,58 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
         /*
          * FOTO PROFIL LAWAN CHAT
          *
-         * USER  -> foto talent
-         * TALENT -> foto pengguna
+         * Ambil dari avatar_url milik pengguna terlebih dahulu.
+         * Jika belum ada, fallback ke kolom photo lama.
          *
-         * Jika foto tidak tersedia, otomatis kembali ke inisial.
+         * USER   -> foto pengguna milik talent
+         * TALENT -> foto pengguna yang booking
          */
         $otherPhoto = $isUser
-            ? ($talent?->photo ?? null)
-            : ($pengguna?->photo ?? null);
+            ? (
+                $talent?->pengguna?->avatar_url
+                ?? $talent?->pengguna?->photo
+                ?? $talent?->photo
+                ?? null
+            )
+            : (
+                $pengguna?->avatar_url
+                ?? $pengguna?->photo
+                ?? null
+            );
+
+        /*
+         * avatar_url bisa berupa:
+         * - URL lengkap (https://...)
+         * - path /storage/...
+         * - path storage/...
+         * - nama/path file biasa
+         *
+         * Jangan menambahkan "storage/" dua kali.
+         */
+        $makeAvatarUrl = function ($photo) {
+            if (!$photo) {
+                return null;
+            }
+
+            $photo = trim((string) $photo);
+
+            if (
+                str_starts_with($photo, 'http://')
+                || str_starts_with($photo, 'https://')
+                || str_starts_with($photo, '//')
+                || str_starts_with($photo, '/')
+            ) {
+                return $photo;
+            }
+
+            if (str_starts_with($photo, 'storage/')) {
+                return asset($photo);
+            }
+
+            return asset('storage/' . ltrim($photo, '/'));
+        };
+
+        $otherPhotoUrl = $makeAvatarUrl($otherPhoto);
 
 
         /*
@@ -4933,21 +4977,46 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
                         data-unread="{{ $hasUnread ? '1' : '0' }}"
                     >
 
+                        @php
+                            /*
+                             * Foto untuk setiap item di sidebar.
+                             * Gunakan avatar_url terlebih dahulu agar sama
+                             * dengan foto profil yang dipakai sistem pengguna.
+                             */
+                            $itemPhoto = $isUser
+                                ? (
+                                    $item->talent?->pengguna?->avatar_url
+                                    ?? $item->talent?->pengguna?->photo
+                                    ?? $item->talent?->photo
+                                    ?? null
+                                )
+                                : (
+                                    $item->pengguna?->avatar_url
+                                    ?? $item->pengguna?->photo
+                                    ?? null
+                                );
+
+                            $itemPhotoUrl = $makeAvatarUrl($itemPhoto);
+                        @endphp
+
                         <div class="avatar">
 
-                            @if (
-                                $isUser
-                                    ? $item->talent?->photo
-                                    : $item->pengguna?->photo
-                            )
+                            @if ($itemPhotoUrl)
                                 <img
-                                    src="{{ asset(
-                                        'storage/' . ($isUser
-                                            ? $item->talent->photo
-                                            : $item->pengguna->photo)
-                                    ) }}"
+                                    src="{{ $itemPhotoUrl }}"
                                     alt="Profil {{ $itemName }}"
+                                    loading="lazy"
+                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
                                 >
+                                <span
+                                    style="
+                                        display:none;
+                                        width:100%;
+                                        height:100%;
+                                        align-items:center;
+                                        justify-content:center;
+                                    "
+                                >{{ $itemInitial }}</span>
                             @else
                                 {{ $itemInitial }}
                             @endif
@@ -5074,11 +5143,21 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
 
                     <div class="avatar">
 
-                        @if ($otherPhoto)
+                        @if ($otherPhotoUrl)
                             <img
-                                src="{{ asset('storage/' . $otherPhoto) }}"
+                                src="{{ $otherPhotoUrl }}"
                                 alt="Profil {{ $otherName }}"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
                             >
+                            <span
+                                style="
+                                    display:none;
+                                    width:100%;
+                                    height:100%;
+                                    align-items:center;
+                                    justify-content:center;
+                                "
+                            >{{ $otherInitial }}</span>
                         @else
                             {{ $otherInitial }}
                         @endif
@@ -5439,7 +5518,7 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
 
                                 @if (!$mine && $otherPhoto)
                                     <img
-                                        src="{{ asset('storage/' . $otherPhoto) }}"
+                                        src="{{ $otherPhotoUrl }}"
                                         alt="Profil {{ $senderName }}"
                                     >
                                 @else
@@ -5619,7 +5698,9 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
                                 aria-multiline="true"
                                 data-placeholder="Whisperly"
                                 tabindex="0"
-                            ></div><button
+                            ></div>
+
+                            <button
                                 type="submit"
                                 class="send-button"
                                 id="sendButton"
@@ -5825,14 +5906,23 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
 
                         <div class="account-profile-avatar">
 
-                            @if ($otherPhoto)
+                            @if ($otherPhotoUrl)
 
                                 <img
-                                    src="{{ asset(
-                                        'storage/' . $otherPhoto
-                                    ) }}"
+                                    src="{{ $otherPhotoUrl }}"
                                     alt="Avatar {{ $otherName }}"
+                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
                                 >
+
+                                <span
+                                    style="
+                                        display:none;
+                                        width:100%;
+                                        height:100%;
+                                        align-items:center;
+                                        justify-content:center;
+                                    "
+                                >{{ $otherInitial }}</span>
 
                             @else
 
@@ -6222,15 +6312,28 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
 
         function emojiToken(id) {
             const normalizedId = String(id || '').padStart(2, '0');
-            if (!CUSTOM_EMOJI_MAP[normalizedId]) return '';
+            const item = CUSTOM_EMOJI_MAP[normalizedId];
+
+            if (!item) return '';
 
             /*
-             * Gunakan marker saja untuk emoji custom. Jangan menyimpan
-             * Unicode emoji + ID sekaligus, karena beberapa proses/server
-             * dapat memotong atau membersihkan karakter setelah emoji.
-             * Marker ini nantinya diubah kembali menjadi gambar saat dirender.
+             * PENTING:
+             * Emoji custom sebelumnya dikirim sebagai marker:
+             * [[WEMO:02]]
+             *
+             * Marker tersebut kemudian ikut masuk ke kolom `message`,
+             * sehingga preview/notifikasi daftar chat menampilkan kode
+             * mentah seperti [WEMO:02].
+             *
+             * Sekarang yang disimpan ke server adalah Unicode emoji-nya.
+             * Di dalam tampilan chat, emoji Unicode tersebut tetap akan
+             * diubah menjadi gambar custom oleh emojiImageForText().
+             * Dengan begitu:
+             *   - pesan teks + emoji tetap menjadi SATU pesan,
+             *   - preview chat tidak menampilkan kode [[WEMO:xx]],
+             *   - emoji tetap tampil sebagai gambar custom di bubble chat.
              */
-            return '[[WEMO:' + normalizedId + ']]';
+            return item.emoji;
         }
 
         function serializeComposerNode(node) {
@@ -6281,12 +6384,41 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
                 .trim();
         }
 
+        function normalizeOutgoingEmojiText(value) {
+            let text = String(value || '');
+
+            /*
+             * Jaga-jaga jika marker lama masuk ke composer melalui paste,
+             * autofill, atau DOM lama. Sebelum dikirim, ubah marker menjadi
+             * Unicode emoji sehingga kode internal tidak pernah dikirim ke
+             * server sebagai isi pesan baru.
+             */
+            text = text.replace(/\[\[WEMO:(\d{2})\]\]/g, function (full, id) {
+                const item = CUSTOM_EMOJI_MAP[String(id)];
+                return item ? item.emoji : full;
+            });
+
+            text = text.replace(/\uE000(\d{2})\uE001/g, function (full, id) {
+                const item = CUSTOM_EMOJI_MAP[String(id)];
+                return item ? item.emoji : full;
+            });
+
+            text = text.replace(/\u200B\u2060(\d{2})\u2060/g, function (full, id) {
+                const item = CUSTOM_EMOJI_MAP[String(id)];
+                return item ? item.emoji : full;
+            });
+
+            return text;
+        }
+
         function syncComposerValue() {
+            const value = normalizeOutgoingEmojiText(getComposerText());
+
             if (messageValue) {
-                messageValue.value = getComposerText();
+                messageValue.value = value;
             }
 
-            return messageValue ? messageValue.value : '';
+            return value;
         }
 
         function clearComposer() {
@@ -7277,10 +7409,26 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
 
                 const formData = new FormData(messageForm);
 
+                /*
+                 * Pastikan nilai final yang dikirim selalu bersih dari
+                 * marker emoji internal.
+                 */
+                formData.set(
+                    'message',
+                    normalizeOutgoingEmojiText(
+                        String(formData.get('message') || '')
+                    ).trim()
+                );
+
                 if (replyTarget) {
                     const quoted = escapeText(replyTarget.quote).replace(/"/g, '\"');
-                    const original = String(formData.get('message') || '').trim();
-                    formData.set('message', '↪ ' + replyTarget.sender + ': "' + quoted + '"\n' + original);
+                    const original = normalizeOutgoingEmojiText(
+                        String(formData.get('message') || '')
+                    ).trim();
+                    formData.set(
+                        'message',
+                        '↪ ' + replyTarget.sender + ': "' + quoted + '"\n' + original
+                    );
                 }
 
                 fetch(messageForm.action, {
@@ -7922,6 +8070,7 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
                         }
 
                         row.remove();
+                        syncActiveSidebarPreview();
                         closeActionSheet();
                     })
                     .catch(function (error) {
@@ -8209,6 +8358,89 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
                 });
             }
 
+            /*
+             * SIDEBAR PREVIEW
+             * ----------------
+             * Preview sidebar harus mengambil pesan TERAKHIR yang benar-benar
+             * sedang tampil di room ini, bukan bergantung pada nilai
+             * $item->last_message dari hasil render controller.
+             *
+             * Dengan begitu:
+             * - kalau room berisi "bg", "woi", "kenapa", "ada apa", "nbg",
+             *   preview menjadi "nbg";
+             * - kalau chat baru saja menerima pesan, preview ikut berubah;
+             * - kalau pesan terakhir dihapus, preview mundur ke pesan sebelumnya.
+             */
+            function syncActiveSidebarPreview() {
+                const activeChat = document.querySelector(
+                    '.chat-item.active'
+                );
+
+                if (!activeChat || !messagesContainer) {
+                    return;
+                }
+
+                const preview = activeChat.querySelector(
+                    '.chat-preview'
+                );
+
+                const time = activeChat.querySelector(
+                    '.chat-time'
+                );
+
+                if (!preview) {
+                    return;
+                }
+
+                const rows = Array.from(
+                    messagesContainer.querySelectorAll(
+                        '.message-row[data-message-id]'
+                    )
+                );
+
+                if (rows.length === 0) {
+                    preview.textContent = 'Belum ada pesan';
+                    return;
+                }
+
+                const lastRow = rows[rows.length - 1];
+                let previewText = getMessagePlainText(lastRow).trim();
+
+                /*
+                 * Pesan foto tanpa teks tidak mempunyai message-text.
+                 * Tetap tampilkan keterangan agar preview tidak kosong.
+                 */
+                if (!previewText && lastRow.querySelector('.message-image')) {
+                    previewText = '📷 Foto';
+                }
+
+                if (!previewText) {
+                    previewText = 'Pesan';
+                }
+
+                /*
+                 * Samakan batas preview dengan tampilan server-side.
+                 */
+                if (previewText.length > 35) {
+                    previewText = previewText.substring(0, 35).trimEnd() + '...';
+                }
+
+                preview.textContent = previewText;
+
+                /*
+                 * Ambil jam dari bubble terakhir yang benar-benar tampil.
+                 */
+                const lastTime = lastRow.querySelector('.message-time');
+
+                if (time && lastTime) {
+                    const timeText = lastTime.textContent.trim();
+
+                    if (timeText) {
+                        time.textContent = timeText;
+                    }
+                }
+            }
+
             function loadNewMessages() {
 
                 if (loadingMessages) {
@@ -8312,6 +8544,7 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
                             }
 
                             updateOutgoingMessageChecks(messagesContainer);
+                            syncActiveSidebarPreview();
                             return;
                         }
 
@@ -8337,6 +8570,7 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
                         }
 
                         updateOutgoingMessageChecks(messagesContainer);
+                        syncActiveSidebarPreview();
 
                         messagesContainer.scrollTop =
                             messagesContainer.scrollHeight;
@@ -8505,6 +8739,7 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
 
             bindMessageInteractions(messagesContainer);
             updateOutgoingMessageChecks(messagesContainer);
+            syncActiveSidebarPreview();
 
             /*
              * Ubah emoji Unicode yang sudah ada pada riwayat menjadi

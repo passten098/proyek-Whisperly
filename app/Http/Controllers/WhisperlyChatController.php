@@ -583,12 +583,83 @@ class WhisperlyChatController extends Controller
                 $lastMessageTime =
                     $lastMessage?->created_at;
 
+                /*
+                |--------------------------------------------------------------------------
+                | FOTO PROFIL LAWAN CHAT
+                |--------------------------------------------------------------------------
+                |
+                | Untuk USER, foto lawan chat berasal dari foto talent.
+                | Ini harus dikirim oleh endpoint realtime karena chat baru
+                | belum memiliki elemen HTML di sidebar saat halaman pertama
+                | kali dibuka.
+                |
+                |--------------------------------------------------------------------------
+                */
+
+                $avatar = null;
+
+                if ($user->role === 'user') {
+
+                    // USER login -> lihat foto TALENT.
+                    // Utamakan avatar milik pengguna talent, lalu fallback
+                    // ke kolom photo pada profil talent.
+                    $avatar =
+                        $booking->talent?->pengguna?->avatar_url
+                        ?? $booking->talent?->pengguna?->photo
+                        ?? null;
+
+                    if (!$avatar && $booking->talent?->photo) {
+                        $avatar = asset(
+                            'storage/' .
+                            ltrim(
+                                $booking->talent->photo,
+                                '/'
+                            )
+                        );
+                    }
+
+                } elseif ($user->role === 'talent') {
+
+                    // TALENT login -> lihat foto USER.
+                    $avatar =
+                        $booking->pengguna?->avatar_url
+                        ?? $booking->pengguna?->photo
+                        ?? null;
+                }
+
+                // Pastikan path relatif dari database menjadi URL yang bisa
+                // langsung dipakai oleh JavaScript.
+                if ($avatar) {
+
+                    $avatar = trim((string) $avatar);
+
+                    if (
+                        ! str_starts_with($avatar, 'http://')
+                        && ! str_starts_with($avatar, 'https://')
+                        && ! str_starts_with($avatar, '//')
+                        && ! str_starts_with($avatar, '/')
+                    ) {
+
+                        if (str_starts_with($avatar, 'storage/')) {
+                            $avatar = asset($avatar);
+                        } else {
+                            $avatar = asset(
+                                'storage/' .
+                                ltrim($avatar, '/')
+                            );
+                        }
+                    }
+                }
+
                 return [
                     'booking_id' =>
                         (string) $booking->id,
 
                     'name' =>
                         $otherName,
+
+                    'avatar' =>
+                        $avatar,
 
                     'last_message' =>
                         $lastMessage?->message

@@ -12,7 +12,6 @@
 
     <title>Chat Whisperly</title>
 
-
     <style>
 
         /* =========================================================
@@ -397,8 +396,6 @@
 
         /* =========================================================
            CHAT LIST
-           PENTING:
-           GRID TIDAK BOLEH MEMBESARKAN ITEM
         ========================================================= */
 
         .chat-list {
@@ -1582,11 +1579,14 @@
 
                             /*
                             |--------------------------------------------------------------------------
-                            | NAMA LAWAN CHAT
+                            | NAMA LAWAN CHAT + FOTO PROFIL
                             |--------------------------------------------------------------------------
                             */
 
                             if ($userRole === 'user') {
+
+                                // Jika login sebagai user,
+                                // tampilkan profil talent.
 
                                 $otherName =
                                     $booking
@@ -1595,16 +1595,15 @@
                                         ?->username
                                         ?? 'Talent';
 
-                                $avatar =
-                                    strtoupper(
-                                        substr(
-                                            $otherName,
-                                            0,
-                                            1
-                                        )
-                                    );
+                                $profilePhoto =
+                                    $booking
+                                        ->talent
+                                        ?->photo;
 
                             } else {
+
+                                // Jika login sebagai talent,
+                                // tampilkan profil user.
 
                                 $otherName =
                                     $booking
@@ -1612,15 +1611,39 @@
                                         ?->username
                                         ?? 'User';
 
-                                $avatar =
-                                    strtoupper(
-                                        substr(
-                                            $otherName,
-                                            0,
-                                            1
-                                        )
-                                    );
+                                $profilePhoto =
+                                    $booking
+                                        ->pengguna
+                                        ?->photo;
                             }
+
+
+                            /*
+                            |--------------------------------------------------------------------------
+                            | AVATAR FALLBACK
+                            |--------------------------------------------------------------------------
+                            */
+
+                            $avatar =
+                                strtoupper(
+                                    substr(
+                                        $otherName,
+                                        0,
+                                        1
+                                    )
+                                );
+
+
+                            /*
+                            |--------------------------------------------------------------------------
+                            | URL FOTO PROFIL
+                            |--------------------------------------------------------------------------
+                            */
+
+                            $avatarUrl =
+                                $profilePhoto
+                                    ? asset('storage/' . $profilePhoto)
+                                    : '';
 
 
                             /*
@@ -1694,11 +1717,6 @@
 
                         {{-- =================================================
                              ITEM CHAT
-                             CATATAN PERBAIKAN:
-                             Ditambahkan atribut data-booking-id agar
-                             JavaScript realtime update bisa menemukan
-                             item ini secara akurat, terlepas dari
-                             format ID (numeric / UUID).
                         ================================================== --}}
 
                         <a
@@ -1712,6 +1730,8 @@
                             data-unread="{{ $unreadCount > 0 ? 'true' : 'false' }}"
 
                             data-booking-id="{{ $booking->id }}"
+
+                            data-avatar="{{ $avatarUrl }}"
                         >
 
 
@@ -1719,10 +1739,10 @@
 
                             <div class="chat-avatar">
 
-                                @if ($userRole === 'user' && $booking->talent?->photo)
+                                @if ($avatarUrl)
 
                                     <img
-                                        src="{{ asset('storage/' . $booking->talent->photo) }}"
+                                        src="{{ $avatarUrl }}"
                                         alt="Profil {{ $otherName }}"
                                     >
 
@@ -1918,11 +1938,6 @@
 
         /* =========================================================
            SEARCH CHAT
-
-           CATATAN PERBAIKAN:
-           Logika search sekarang didelegasikan ke applyChatFilter()
-           supaya konsisten dengan filter "Semua / Belum Dibaca"
-           dan tidak bentrok dengan update DOM dari polling.
         ========================================================= */
 
         const searchInput =
@@ -1953,12 +1968,6 @@
 
         /* =========================================================
            FILTER BELUM DIBACA
-
-           CATATAN PERBAIKAN:
-           Tombol filter sekarang hanya mengubah state
-           currentFilter, lalu memanggil applyChatFilter()
-           supaya search & filter selalu sinkron, baik saat
-           interaksi user maupun setelah polling update DOM.
         ========================================================= */
 
         const filterButtons =
@@ -1974,10 +1983,6 @@
                     'click',
                     function () {
 
-
-                        /* =================================================
-                           BUTTON AKTIF
-                        ================================================= */
 
                         filterButtons.forEach(
                             function (btn) {
@@ -2010,19 +2015,24 @@
 
         /* =========================================================
            REALTIME CHAT LIST
-
-           CATATAN PERBAIKAN (baru):
-           Blok ini menambahkan mekanisme update otomatis tanpa
-           refresh: polling ke endpoint /whisperly/chat/updates
-           setiap 2.5 detik, lalu memperbarui preview pesan, jam,
-           badge unread, indikator centang, dan urutan chat
-           (chat dengan pesan terbaru naik ke atas). Desain HTML/CSS
-           yang sudah ada TIDAK diubah — hanya konten & urutan DOM
-           yang di-refresh lewat JavaScript.
         ========================================================= */
 
         let currentFilter = 'all';
+
         let isUpdatingChatList = false;
+
+
+        function escapeHtml(value) {
+
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/\"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+
+        }
+
 
         async function updateChatList() {
 
@@ -2030,7 +2040,9 @@
                 return;
             }
 
+
             isUpdatingChatList = true;
+
 
             try {
 
@@ -2038,133 +2050,400 @@
                     "{{ route('whisperly.chat.updates') }}",
                     {
                         method: 'GET',
+
                         headers: {
                             'Accept': 'application/json',
                             'X-Requested-With': 'XMLHttpRequest'
                         },
+
                         cache: 'no-store'
                     }
                 );
+
 
                 if (!response.ok) {
                     return;
                 }
 
-                const data = await response.json();
+
+                const data =
+                    await response.json();
+
 
                 if (!data.chats) {
                     return;
                 }
 
-                data.chats.forEach(function (chat) {
 
-                    const item = document.querySelector(
-                        `.chat-item[data-booking-id="${chat.booking_id}"]`
-                    );
+                data.chats.forEach(
+                    function (chat) {
 
-                    if (!item) {
-                        return;
-                    }
 
-                    const preview = item.querySelector(
-                        '.chat-item-preview'
-                    );
+                        let item =
+                            document.querySelector(
+                                `.chat-item[data-booking-id="${chat.booking_id}"]`
+                            );
 
-                    const time = item.querySelector(
-                        '.chat-item-time'
-                    );
 
-                    const right = item.querySelector(
-                        '.chat-item-right'
-                    );
+                        if (!item) {
 
-                    if (preview) {
-                        preview.textContent = chat.last_message;
-                    }
+                            const chatList =
+                                document.getElementById(
+                                    'chat-list'
+                                );
 
-                    if (time) {
-                        time.textContent = chat.time;
-                    }
 
-                    /*
-                     * Hapus badge unread lama
-                     */
-                    const oldBadge = item.querySelector(
-                        '.unread-badge'
-                    );
+                            if (!chatList) {
+                                return;
+                            }
 
-                    if (oldBadge) {
-                        oldBadge.remove();
-                    }
 
-                    /*
-                     * Update class unread
-                     */
-                    if (chat.unread_count > 0) {
+                            const emptyChat =
+                                chatList.querySelector(
+                                    '.empty-chat'
+                                );
 
-                        item.classList.add('unread');
-                        item.dataset.unread = 'true';
 
-                        if (right) {
+                            if (emptyChat) {
+                                emptyChat.remove();
+                            }
 
-                            const badge = document.createElement('span');
 
-                            badge.className = 'unread-badge';
+                            const name =
+                                chat.name || 'User';
 
-                            badge.textContent =
-                                chat.unread_count > 99
-                                    ? '99+'
-                                    : chat.unread_count;
 
-                            right.appendChild(badge);
+                            const avatar =
+                                name.trim()
+                                    .charAt(0)
+                                    .toUpperCase()
+                                || '?';
+
+
+                            const avatarUrl =
+                                chat.avatar ||
+                                chat.avatar_url ||
+                                '';
+
+
+                            const hasUnread =
+                                Number(
+                                    chat.unread_count || 0
+                                ) > 0;
+
+
+                            item =
+                                document.createElement('a');
+
+
+                            item.href =
+                                "{{ url('/whisperly/chat') }}/" +
+                                encodeURIComponent(
+                                    chat.booking_id
+                                );
+
+
+                            item.className =
+                                'chat-item' +
+                                (
+                                    hasUnread
+                                        ? ' unread'
+                                        : ''
+                                );
+
+
+                            item.dataset.name =
+                                name.toLowerCase();
+
+
+                            item.dataset.unread =
+                                hasUnread
+                                    ? 'true'
+                                    : 'false';
+
+
+                            item.dataset.bookingId =
+                                chat.booking_id;
+
+
+                            item.dataset.avatar =
+                                avatarUrl;
+
+
+                            item.innerHTML = `
+
+                                <div class="chat-avatar">
+
+                                    ${
+                                        avatarUrl
+                                            ? `
+                                                <img
+                                                    src="${escapeHtml(avatarUrl)}"
+                                                    alt="Profil ${escapeHtml(name)}"
+                                                >
+                                              `
+                                            : escapeHtml(avatar)
+                                    }
+
+                                </div>
+
+
+                                <div class="chat-main">
+
+                                    <span class="chat-item-name">
+                                        ${escapeHtml(name)}
+                                    </span>
+
+                                    <div class="chat-item-preview">
+                                        ${
+                                            escapeHtml(
+                                                chat.last_message ||
+                                                'Belum ada pesan'
+                                            )
+                                        }
+                                    </div>
+
+                                </div>
+
+
+                                <div class="chat-item-right">
+
+                                    <span class="chat-item-time">
+                                        ${escapeHtml(chat.time || '')}
+                                    </span>
+
+                                </div>
+
+                            `;
+
+
+                            chatList.appendChild(item);
+
                         }
 
-                    } else {
 
-                        item.classList.remove('unread');
-                        item.dataset.unread = 'false';
+                        const preview =
+                            item.querySelector(
+                                '.chat-item-preview'
+                            );
+
+
+                        const time =
+                            item.querySelector(
+                                '.chat-item-time'
+                            );
+
+
+                        const right =
+                            item.querySelector(
+                                '.chat-item-right'
+                            );
+
+
+                        /*
+                         * Update foto profil
+                         */
+
+                        const avatarContainer =
+                            item.querySelector(
+                                '.chat-avatar'
+                            );
+
+
+                        const avatarUrl =
+                            chat.avatar ||
+                            chat.avatar_url ||
+                            '';
+
+
+                        if (avatarContainer) {
+
+                            const name =
+                                chat.name ||
+                                item.dataset.name ||
+                                'User';
+
+
+                            const fallbackAvatar =
+                                name.trim()
+                                    .charAt(0)
+                                    .toUpperCase()
+                                || '?';
+
+
+                            item.dataset.avatar =
+                                avatarUrl;
+
+
+                            if (avatarUrl) {
+
+                                avatarContainer.innerHTML = `
+
+                                    <img
+                                        src="${escapeHtml(avatarUrl)}"
+                                        alt="Profil ${escapeHtml(name)}"
+                                    >
+
+                                `;
+
+                            } else {
+
+                                avatarContainer.textContent =
+                                    fallbackAvatar;
+
+                            }
+
+                        }
+
+
+                        if (preview) {
+
+                            preview.textContent =
+                                chat.last_message ||
+                                'Belum ada pesan';
+
+                        }
+
+
+                        if (time) {
+
+                            time.textContent =
+                                chat.time || '';
+
+                        }
+
+
+                        /*
+                         * Hapus badge unread lama
+                         */
+
+                        const oldBadge =
+                            item.querySelector(
+                                '.unread-badge'
+                            );
+
+
+                        if (oldBadge) {
+                            oldBadge.remove();
+                        }
+
+
+                        /*
+                         * Update class unread
+                         */
+
+                        if (
+                            Number(
+                                chat.unread_count || 0
+                            ) > 0
+                        ) {
+
+                            item.classList.add(
+                                'unread'
+                            );
+
+                            item.dataset.unread =
+                                'true';
+
+
+                            if (right) {
+
+                                const badge =
+                                    document.createElement(
+                                        'span'
+                                    );
+
+
+                                badge.className =
+                                    'unread-badge';
+
+
+                                badge.textContent =
+                                    chat.unread_count > 99
+                                        ? '99+'
+                                        : chat.unread_count;
+
+
+                                right.appendChild(
+                                    badge
+                                );
+
+                            }
+
+                        } else {
+
+                            item.classList.remove(
+                                'unread'
+                            );
+
+                            item.dataset.unread =
+                                'false';
+
+                        }
+
+
+                        /*
+                         * Update indikator pesan terakhir
+                         */
+
+                        const oldIndicator =
+                            item.querySelector(
+                                '.message-indicator'
+                            );
+
+
+                        if (oldIndicator) {
+                            oldIndicator.remove();
+                        }
+
+
+                        if (
+                            chat.last_message &&
+                            chat.last_message_from_me &&
+                            right
+                        ) {
+
+                            const indicator =
+                                document.createElement(
+                                    'span'
+                                );
+
+
+                            indicator.className =
+                                'message-indicator';
+
+
+                            indicator.textContent =
+                                chat.last_message_is_read
+                                    ? '✓✓'
+                                    : '✓';
+
+
+                            right.appendChild(
+                                indicator
+                            );
+
+                        }
+
                     }
+                );
 
-                    /*
-                     * Update indikator pesan terakhir
-                     */
-                    const oldIndicator = item.querySelector(
-                        '.message-indicator'
-                    );
-
-                    if (oldIndicator) {
-                        oldIndicator.remove();
-                    }
-
-                    if (
-                        chat.last_message &&
-                        chat.last_message_from_me &&
-                        right
-                    ) {
-
-                        const indicator = document.createElement('span');
-
-                        indicator.className = 'message-indicator';
-
-                        indicator.textContent =
-                            chat.last_message_is_read
-                                ? '✓✓'
-                                : '✓';
-
-                        right.appendChild(indicator);
-                    }
-
-                });
 
                 /*
                  * Pindahkan chat yang punya pesan terbaru ke atas.
                  */
-                sortChatList(data.chats);
+
+                sortChatList(
+                    data.chats
+                );
+
 
                 /*
                  * Terapkan kembali filter & search.
                  */
+
                 applyChatFilter();
+
 
             } catch (error) {
 
@@ -2176,7 +2455,9 @@
             } finally {
 
                 isUpdatingChatList = false;
+
             }
+
         }
 
 
@@ -2187,42 +2468,75 @@
         function sortChatList(chats) {
 
             const chatList =
-                document.getElementById('chat-list');
+                document.getElementById(
+                    'chat-list'
+                );
+
 
             if (!chatList) {
                 return;
             }
 
-            const items = Array.from(
-                chatList.querySelectorAll('.chat-item')
-            );
+
+            const items =
+                Array.from(
+                    chatList.querySelectorAll(
+                        '.chat-item'
+                    )
+                );
+
 
             const order = {};
 
-            chats.forEach(function (chat, index) {
-                order[String(chat.booking_id)] = index;
-            });
 
-            items.sort(function (a, b) {
+            chats.forEach(
+                function (chat, index) {
 
-                const aId =
-                    a.dataset.bookingId || '';
+                    order[
+                        String(chat.booking_id)
+                    ] = index;
 
-                const bId =
-                    b.dataset.bookingId || '';
+                }
+            );
 
-                const aOrder =
-                    order[String(aId)] ?? 999999;
 
-                const bOrder =
-                    order[String(bId)] ?? 999999;
+            items.sort(
+                function (a, b) {
 
-                return aOrder - bOrder;
-            });
+                    const aId =
+                        a.dataset.bookingId || '';
 
-            items.forEach(function (item) {
-                chatList.appendChild(item);
-            });
+
+                    const bId =
+                        b.dataset.bookingId || '';
+
+
+                    const aOrder =
+                        order[String(aId)] ??
+                        999999;
+
+
+                    const bOrder =
+                        order[String(bId)] ??
+                        999999;
+
+
+                    return aOrder - bOrder;
+
+                }
+            );
+
+
+            items.forEach(
+                function (item) {
+
+                    chatList.appendChild(
+                        item
+                    );
+
+                }
+            );
+
         }
 
 
@@ -2234,33 +2548,50 @@
 
             const keyword =
                 searchInput
-                    ? searchInput.value.toLowerCase().trim()
+                    ? searchInput.value
+                        .toLowerCase()
+                        .trim()
                     : '';
 
+
             document
-                .querySelectorAll('.chat-item')
-                .forEach(function (item) {
+                .querySelectorAll(
+                    '.chat-item'
+                )
+                .forEach(
+                    function (item) {
 
-                    const name =
-                        item.dataset.name || '';
 
-                    const matchesSearch =
-                        name.includes(keyword);
+                        const name =
+                            item.dataset.name || '';
 
-                    const matchesFilter =
-                        currentFilter === 'all'
+
+                        const matchesSearch =
+                            name.includes(
+                                keyword
+                            );
+
+
+                        const matchesFilter =
+                            currentFilter === 'all'
                             ||
-                        (
-                            currentFilter === 'unread'
-                            &&
-                            item.dataset.unread === 'true'
-                        );
+                            (
+                                currentFilter === 'unread'
+                                &&
+                                item.dataset.unread ===
+                                'true'
+                            );
 
-                    item.style.display =
-                        matchesSearch && matchesFilter
-                            ? 'grid'
-                            : 'none';
-                });
+
+                        item.style.display =
+                            matchesSearch &&
+                            matchesFilter
+                                ? 'grid'
+                                : 'none';
+
+                    }
+                );
+
         }
 
 
@@ -2279,6 +2610,7 @@
          * supaya data langsung fresh tanpa menunggu interval
          * pertama (2.5 detik).
          */
+
         updateChatList();
 
     </script>
