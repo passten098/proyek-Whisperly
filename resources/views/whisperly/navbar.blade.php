@@ -1211,6 +1211,79 @@
         }
     }
 
+
+    /* ============================
+        NOTIFICATION
+        ============================ */
+
+        .notification-wrapper{
+            position:relative;
+            margin-right:15px;
+        }
+
+        .notification-btn{
+            width:42px;
+            height:42px;
+            border:none;
+            border-radius:50%;
+            background:#ffffff;
+            cursor:pointer;
+            position:relative;
+            font-size:20px;
+        }
+
+        .notification-btn:hover{
+            background:#f2f2f2;
+        }
+
+        .badge{
+            position:absolute;
+            top:-5px;
+            right:-5px;
+            min-width:18px;
+            height:18px;
+            border-radius:50%;
+            background:#ff3b30;
+            color:#fff;
+            font-size:11px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-weight:bold;
+        }
+
+        .notification-dropdown{
+            display:none;
+            position:absolute;
+            right:0;
+            top:55px;
+            width:320px;
+            max-height:400px;
+            overflow-y:auto;
+            background:#fff;
+            border-radius:12px;
+            box-shadow:0 10px 25px rgba(0,0,0,.2);
+            z-index:9999;
+        }
+
+        .notification-dropdown.show{
+            display:block;
+        }
+
+        .notification-item{
+            padding:15px;
+            border-bottom:1px solid #eee;
+            color:#333;
+        }
+
+        .notification-item:last-child{
+            border-bottom:none;
+        }
+
+        .notification-item strong{
+            color:#000;
+        }
+
 </style>
 
 
@@ -1238,7 +1311,99 @@
 
     <div class="whisperly-nav-right">
 
-        @if ($currentUser)
+    @if ($currentUser)
+
+        {{-- ==========================
+             NOTIFIKASI
+        =========================== --}}
+        <div class="notification-wrapper">
+
+            <button
+                type="button"
+                class="notification-btn"
+                id="notificationButton"
+            >
+                🔔
+
+                @if($notificationCount > 0)
+                    <span class="badge">
+                        {{ $notificationCount }}
+                    </span>
+                @endif
+
+            </button>
+
+            <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+            >
+
+                @forelse($notifications as $booking)
+
+                    @php
+                        $status = $booking->chatStatus();
+                    @endphp
+
+                    @if($status === 'completed')
+                        @continue
+                    @endif
+
+                    <div class="notification-item">
+
+                        <strong>
+                            {{ $booking->pengguna->username }}
+                        </strong>
+
+                        <br>
+
+                        {{ $booking->schedule->start_time }}
+                        -
+                        {{ $booking->schedule->end_time }}
+
+                        <br><br>
+
+                        @if($currentUser->role == 'talent')
+
+                            @if($status == 'upcoming')
+                                <span class="text-secondary">
+                                    Belum waktunya chat
+                                </span>
+
+                            @elseif($status == 'active')
+
+                                <a
+                                    href="{{ route('whisperly.chat.show', $booking->id) }}"
+                                    class="btn btn-success btn-sm"
+                                >
+                                    Mulai Chat
+                                </a>
+
+                            @endif
+
+                        @else
+
+                            <span>
+                                Booking dengan
+                                {{ $booking->talent->pengguna->username }}
+                            </span>
+
+                        @endif
+
+                    </div>
+
+                @empty
+
+                    <div class="notification-item">
+                        Belum ada notifikasi.
+                    </div>
+
+                @endforelse
+
+            </div>
+
+        </div>
+
+
 
             {{-- =================================================
                  USER PROFILE
@@ -2200,6 +2365,28 @@
                 }
             );
 
-        }
-    );
+            <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const btn = document.getElementById("notificationButton");
+    const dropdown = document.getElementById("notificationDropdown");
+
+    if(btn && dropdown){
+
+        btn.addEventListener("click", function(e){
+            e.stopPropagation();
+            dropdown.classList.toggle("show");
+        });
+
+        document.addEventListener("click", function(){
+            dropdown.classList.remove("show");
+        });
+
+        dropdown.addEventListener("click", function(e){
+            e.stopPropagation();
+        });
+
+    }
+
+});
 </script>

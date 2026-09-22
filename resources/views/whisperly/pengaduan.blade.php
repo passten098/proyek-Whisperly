@@ -1192,6 +1192,82 @@
 
             transform: none !important;
         }
+        
+        /* =====================================================
+            COMMENT ACTIONS
+            ===================================================== */
+
+            .comment-actions {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-top: 4px;
+            }
+
+            .comment-action {
+                border: none !important;
+                background: transparent !important;
+                padding: 0 !important;
+                margin: 0;
+                font-size: 11px;
+                font-weight: 600;
+                color: #817970;
+                cursor: pointer;
+                text-decoration: none;
+                box-shadow: none !important;
+            }
+
+            .comment-action:hover {
+                color: #4e4640;
+            }
+
+            .comment-delete-form {
+                display: inline;
+                margin: 0;
+                padding: 0;
+            }
+
+            .comment-edit-form {
+                display: none;
+                margin-top: 8px;
+            }
+
+            .comment-edit-form textarea {
+                width: 100%;
+                min-height: 70px;
+                resize: vertical;
+                border: 1px solid rgba(120, 110, 100, 0.25);
+                border-radius: 10px;
+                padding: 8px 10px;
+                font-family: inherit;
+                font-size: 13px;
+                outline: none;
+                box-sizing: border-box;
+            }
+
+            .comment-edit-buttons {
+                display: flex;
+                gap: 8px;
+                margin-top: 6px;
+            }
+
+            .comment-edit-buttons button {
+                border: none;
+                border-radius: 8px;
+                padding: 5px 10px;
+                font-size: 11px;
+                cursor: pointer;
+            }
+
+            .comment-edit-save {
+                background: #4e4640;
+                color: white;
+            }
+
+            .comment-edit-cancel {
+                background: #eee;
+                color: #555;
+            }
 
 
         /* =====================================================
@@ -3069,6 +3145,17 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                                                     $commentUser?->username
                                                     ?? 'Pengguna';
 
+                                                    $currentUser = Auth::guard('whisperly')->user();
+
+                                                    $isCommentOwner =
+                                                        $currentUser &&
+                                                        $commentUser &&
+                                                        (string) $currentUser->id === (string) $commentUser->id;
+
+                                                    $isCurrentAdmin =
+                                                        $currentUser &&
+                                                        strtolower(trim((string) $currentUser->role)) === 'admin';
+
                                                 $commentRole =
                                                     strtolower(
                                                         trim(
@@ -3180,6 +3267,78 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                                                             Balas
                                                         </button>
 
+                                                        @if ($isCommentOwner || $isCurrentAdmin)
+
+                                                            <div class="comment-actions">
+
+                                                                @if ($isCommentOwner)
+                                                                    <button
+                                                                        type="button"
+                                                                        class="comment-action edit-comment-button"
+                                                                        data-comment-id="{{ $comment->id }}"
+                                                                    >
+                                                                        ✏️ Edit
+                                                                    </button>
+                                                                @endif
+
+                                                                <form
+                                                                    method="POST"
+                                                                    action="{{ route('pengaduan.comments.destroy', $comment->id) }}"
+                                                                    class="comment-delete-form"
+                                                                    onsubmit="return confirm('Yakin ingin menghapus komentar ini?')"
+                                                                >
+                                                                    @csrf
+                                                                    @method('DELETE')
+
+                                                                    <button
+                                                                        type="submit"
+                                                                        class="comment-action"
+                                                                    >
+                                                                        🗑️ Hapus
+                                                                    </button>
+                                                                </form>
+
+                                                            </div>
+
+                                                        @endif
+
+                                                        @if ($isCommentOwner)
+
+                                                            <form
+                                                                method="POST"
+                                                                action="{{ route('pengaduan.comments.update', $comment->id) }}"
+                                                                class="comment-edit-form"
+                                                                id="edit-comment-{{ $comment->id }}"
+                                                            >
+                                                                @csrf
+                                                                @method('PUT')
+
+                                                                <textarea
+                                                                    name="komentar"
+                                                                    required
+                                                                >{{ $comment->komentar }}</textarea>
+
+                                                                <div class="comment-edit-buttons">
+
+                                                                    <button
+                                                                        type="submit"
+                                                                        class="comment-edit-save"
+                                                                    >
+                                                                        Simpan
+                                                                    </button>
+
+                                                                    <button
+                                                                        type="button"
+                                                                        class="comment-edit-cancel"
+                                                                        data-comment-id="{{ $comment->id }}"
+                                                                    >
+                                                                        Batal
+                                                                    </button>
+
+                                                                </div>
+                                                            </form>
+
+                                                        @endif
 
                                                     </div>
 
@@ -3232,6 +3391,18 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                                                                 $replyUsername =
                                                                     $replyUser?->username
                                                                     ?? 'Pengguna';
+
+
+                                                                    $currentUser = Auth::guard('whisperly')->user();
+
+                                                                    $isReplyOwner =
+                                                                        $currentUser &&
+                                                                        $replyUser &&
+                                                                        (string) $currentUser->id === (string) $replyUser->id;
+
+                                                                    $isCurrentAdmin =
+                                                                        $currentUser &&
+                                                                        strtolower(trim((string) $currentUser->role)) === 'admin';
 
                                                                 $replyRole =
                                                                     strtolower(
@@ -3318,6 +3489,78 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                                                                         Balas
                                                                     </button>
 
+                                                                    @if ($isReplyOwner || $isCurrentAdmin)
+
+                                                                        <div class="comment-actions">
+
+                                                                            @if ($isReplyOwner)
+                                                                                <button
+                                                                                    type="button"
+                                                                                    class="comment-action edit-comment-button"
+                                                                                    data-comment-id="{{ $reply->id }}"
+                                                                                >
+                                                                                    ✏️ Edit
+                                                                                </button>
+                                                                            @endif
+
+                                                                            <form
+                                                                                method="POST"
+                                                                                action="{{ route('pengaduan.comments.destroy', $reply->id) }}"
+                                                                                class="comment-delete-form"
+                                                                                onsubmit="return confirm('Yakin ingin menghapus komentar ini?')"
+                                                                            >
+                                                                                @csrf
+                                                                                @method('DELETE')
+
+                                                                                <button
+                                                                                    type="submit"
+                                                                                    class="comment-action"
+                                                                                >
+                                                                                    🗑️ Hapus
+                                                                                </button>
+                                                                            </form>
+
+                                                                        </div>
+
+                                                                    @endif
+
+                                                                    @if ($isReplyOwner)
+
+                                                                        <form
+                                                                            method="POST"
+                                                                            action="{{ route('pengaduan.comments.update', $reply->id) }}"
+                                                                            class="comment-edit-form"
+                                                                            id="edit-comment-{{ $reply->id }}"
+                                                                        >
+                                                                            @csrf
+                                                                            @method('PUT')
+
+                                                                            <textarea
+                                                                                name="komentar"
+                                                                                required
+                                                                            >{{ $reply->komentar }}</textarea>
+
+                                                                            <div class="comment-edit-buttons">
+
+                                                                                <button
+                                                                                    type="submit"
+                                                                                    class="comment-edit-save"
+                                                                                >
+                                                                                    Simpan
+                                                                                </button>
+
+                                                                                <button
+                                                                                    type="button"
+                                                                                    class="comment-edit-cancel"
+                                                                                    data-comment-id="{{ $reply->id }}"
+                                                                                >
+                                                                                    Batal
+                                                                                </button>
+
+                                                                            </div>
+                                                                        </form>
+
+                                                                    @endif
 
                                                                 </div>
 
@@ -3950,6 +4193,65 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 });
+
+// =====================================================
+// EDIT COMMENT
+// =====================================================
+
+document.querySelectorAll('.edit-comment-button').forEach(function (button) {
+
+    button.addEventListener('click', function () {
+
+        const commentId = this.dataset.commentId;
+
+        const form = document.getElementById(
+            'edit-comment-' + commentId
+        );
+
+        if (!form) {
+            return;
+        }
+
+        form.style.display = 'block';
+
+        const textarea = form.querySelector('textarea');
+
+        if (textarea) {
+            textarea.focus();
+
+            textarea.setSelectionRange(
+                textarea.value.length,
+                textarea.value.length
+            );
+        }
+    });
+
+});
+
+
+// =====================================================
+// CANCEL EDIT COMMENT
+// =====================================================
+
+document.querySelectorAll('.comment-edit-cancel').forEach(function (button) {
+
+    button.addEventListener('click', function () {
+
+        const commentId = this.dataset.commentId;
+
+        const form = document.getElementById(
+            'edit-comment-' + commentId
+        );
+
+        if (!form) {
+            return;
+        }
+
+        form.style.display = 'none';
+    });
+
+});
+
 
 </script>
 

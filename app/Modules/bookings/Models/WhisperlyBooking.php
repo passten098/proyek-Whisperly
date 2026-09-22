@@ -453,23 +453,21 @@ class WhisperlyBooking extends Model
             'Asia/Jakarta'
         );
 
+        $bookingDate = $this->schedule->schedule_date;
+
         $start = Carbon::parse(
-            $this->schedule->start_time,
+            $bookingDate->format('Y-m-d') . ' ' . $this->schedule->start_time,
             'Asia/Jakarta'
-        )->setDate(
-            $now->year,
-            $now->month,
-            $now->day
         );
 
         $end = Carbon::parse(
-            $this->schedule->end_time,
+            $bookingDate->format('Y-m-d') . ' ' . $this->schedule->end_time,
             'Asia/Jakarta'
-        )->setDate(
-            $now->year,
-            $now->month,
-            $now->day
         );
+
+        if ($end->lessThan($start)) {
+            $end->addDay();
+        }
 
         if ($now->lt($start)) {
             return 'upcoming';

@@ -1051,6 +1051,7 @@ class menfessController extends Controller
                     $replyTo,
             ]
         );
+    
 
 
         /*
@@ -1066,5 +1067,116 @@ class menfessController extends Controller
                     ? 'Balasan berhasil dikirim.'
                     : 'Komentar berhasil dikirim.'
             );
+    
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | EDIT COMMENT
+    |--------------------------------------------------------------------------
+    */
+    }
+    public function editComment(
+        Request $request,
+        $id
+    ): RedirectResponse {
+
+        $user = Auth::guard('whisperly')->user();
+
+        if (!$user) {
+            return back()->with(
+                'message_error',
+                'Silakan login terlebih dahulu.'
+            );
+        }
+
+        $comment = comments::find($id);
+
+        if (!$comment) {
+            return back()->with(
+                'message_error',
+                'Komentar tidak ditemukan.'
+            );
+        }
+
+        $isAdmin = strtolower(
+            trim((string) ($user->role ?? ''))
+        ) === 'admin';
+
+        if (
+            !$isAdmin &&
+            (string) $comment->id_pengguna !== (string) $user->id
+        ) {
+            abort(403, 'Kamu tidak dapat mengedit komentar ini.');
+        }
+
+        $request->validate([
+            'komentar' => [
+                'required',
+                'string',
+                'min:1',
+                'max:2000',
+            ],
+        ]);
+
+        $comment->komentar = trim(
+            (string) $request->input('komentar')
+        );
+
+        $comment->save();
+
+        return back()->with(
+            'message_success',
+            'Komentar berhasil diedit.'
+        );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | DELETE COMMENT
+    |--------------------------------------------------------------------------
+    */
+
+    public function destroyComment(
+        Request $request,
+        $id
+    ): RedirectResponse {
+
+        $user = Auth::guard('whisperly')->user();
+
+        if (!$user) {
+            return back()->with(
+                'message_error',
+                'Silakan login terlebih dahulu.'
+            );
+        }
+
+        $comment = comments::find($id);
+
+        if (!$comment) {
+            return back()->with(
+                'message_error',
+                'Komentar tidak ditemukan.'
+            );
+        }
+
+        $isAdmin = strtolower(
+            trim((string) ($user->role ?? ''))
+        ) === 'admin';
+
+        if (
+            !$isAdmin &&
+            (string) $comment->id_pengguna !== (string) $user->id
+        ) {
+            abort(403, 'Kamu tidak dapat menghapus komentar ini.');
+        }
+
+        $comment->delete();
+
+        return back()->with(
+            'message_success',
+            'Komentar berhasil dihapus.'
+        );
     }
 }

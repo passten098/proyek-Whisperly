@@ -10,6 +10,7 @@ use App\Http\Controllers\WhisperlyChatController;
 use App\Http\Controllers\WhisperlyProfileController;
 use App\Modules\menfess\Controllers\menfessController;
 use App\Modules\talents\Models\talents;
+use App\Modules\bookings\Models\WhisperlyBooking;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -87,21 +88,52 @@ Route::middleware([
 ])->group(function () {
 
     Route::get('/whisperly', function () {
-        $currentUser = Auth::guard('whisperly')->user();
 
-        $currentTalentProfile = null;
+    $currentUser = Auth::guard('whisperly')->user();
 
-        if ($currentUser) {
-            $currentTalentProfile = talents::with('pengguna')
-                ->where('pengguna_id', $currentUser->id)
-                ->first();
+    $currentTalentProfile = null;
+
+    $notifications = collect();
+    $notificationCount = 0;
+
+    if ($currentUser) {
+
+        $currentTalentProfile = talents::with('pengguna')
+            ->where('pengguna_id', $currentUser->id)
+            ->first();
+
+        if ($currentUser->role == 'talent') {
+
+            $notifications = WhisperlyBooking::with([
+                'pengguna',
+                'schedule'
+            ])
+            ->where('talent_id', $currentTalentProfile->id)
+            ->latest()
+            ->get()
+            ->filter(function ($booking) {
+
+                // Sinkronkan status booking terlebih dahulu
+                $booking->syncChatStatus();
+
+                // Hanya tampilkan yang belum selesai
+                return $booking->chatStatus() !== 'completed';
+
+            })
+            ->values();
+
+            $notificationCount = $notifications->count();
         }
+    }
 
-        return view('whisperly.home', compact(
-            'currentUser',
-            'currentTalentProfile'
-        ));
-    })->name('whisperly.home');
+    return view('whisperly.home', compact(
+        'currentUser',
+        'currentTalentProfile',
+        'notifications',
+        'notificationCount'
+    ));
+
+})->name('whisperly.home');
 
 
     /*
@@ -167,6 +199,40 @@ Route::middleware([
         menfessController::class,
         'addComment'
     ])->name('pengaduan.comments.store');
+
+    Route::put('/pengaduan/comments/{comment}', [
+    menfessController::class,
+    'editComment'
+    ])->name('pengaduan.comments.update');
+
+
+    Route::delete('/pengaduan/comments/{comment}', [
+        menfessController::class,
+        'destroyComment'
+    ])->name('pengaduan.comments.destroy');
+
+        /*
+    |--------------------------------------------------------------------------
+    | EDIT KOMENTAR
+    |--------------------------------------------------------------------------
+    */
+
+    Route::put('/pengaduan/comments/{comment}', [
+        menfessController::class,
+        'editComment'
+    ])->name('pengaduan.comments.update');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | HAPUS KOMENTAR
+    |--------------------------------------------------------------------------
+    */
+
+    Route::delete('/pengaduan/comments/{comment}', [
+        menfessController::class,
+        'destroyComment'
+    ])->name('pengaduan.comments.destroy');
 
 
     /*
@@ -342,7 +408,6 @@ Route::middleware([
     ])->name('whisperly.chat.rating.store');
 
 });
-
 
 /*
 |--------------------------------------------------------------------------
