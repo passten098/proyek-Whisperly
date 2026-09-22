@@ -1474,6 +1474,216 @@
         }
     }
 
+    /* =========================================================
+        NOTIFICATION
+        ========================================================= */
+
+        .notification-wrapper {
+            position: relative;
+            margin-right: 2px;
+        }
+
+        .notification-btn {
+            width: 45px;
+            height: 45px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 15px;
+
+            background: rgba(255, 255, 255, 0.055);
+
+            color: #fffaf7;
+
+            cursor: pointer;
+
+            position: relative;
+
+            font-size: 19px;
+
+            transition:
+                background 0.25s ease,
+                border-color 0.25s ease,
+                transform 0.25s ease;
+        }
+
+        .notification-btn:hover {
+            background: rgba(201, 185, 239, 0.13);
+            border-color: rgba(201, 185, 239, 0.34);
+            transform: translateY(-2px);
+        }
+
+        .badge {
+            position: absolute;
+
+            top: -5px;
+            right: -5px;
+
+            min-width: 18px;
+            height: 18px;
+
+            padding: 0 4px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #ff3b30;
+            color: #fff;
+
+            font: 700 10px Arial, sans-serif;
+        }
+
+        .notification-dropdown {
+            position: absolute;
+
+            top: calc(100% + 14px);
+            right: 0;
+
+            width: 320px;
+            max-height: 400px;
+
+            overflow-y: auto;
+
+            padding: 10px;
+
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(37, 35, 65, 0.97),
+                    rgba(14, 13, 30, 0.99)
+                );
+
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.48);
+
+            z-index: 10000;
+
+            display: none;
+        }
+
+        .notification-dropdown.show {
+            display: block;
+        }
+
+        .notification-item {
+            padding: 13px;
+
+            border-bottom:
+                1px solid
+                rgba(255, 255, 255, 0.07);
+
+            color: rgba(255, 250, 247, 0.85);
+
+            font: 400 11px Arial, sans-serif;
+
+            line-height: 1.5;
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-item strong {
+            color: #fffaf7;
+        }
+
+        .chat-status-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 8px 14px;
+
+            border-radius: 10px;
+
+            font: 600 11px Arial, sans-serif;
+
+            text-decoration: none;
+
+            transition: .2s ease;
+        }
+
+        .chat-status-waiting {
+            color: #fff3cd;
+            background: rgba(245, 180, 60, .18);
+            border: 1px solid rgba(245, 180, 60, .3);
+
+            cursor: not-allowed;
+        }
+
+        .chat-status-active {
+            color: #d9ffe8;
+            background: rgba(40, 190, 105, .20);
+            border: 1px solid rgba(40, 190, 105, .35);
+
+            cursor: pointer;
+        }
+
+        .chat-status-active:hover {
+            background: rgba(40, 190, 105, .32);
+            transform: translateY(-1px);
+        }
+
+        /* ============================
+        PENYESUAIAN DROPDOWN
+        ============================ */
+
+        .whisperly-dropdown {
+            width: 320px !important;
+            right: 0 !important;
+        }
+
+        .notification-dropdown {
+        width: 250px !important;
+        min-width: 250px !important;
+        max-width: calc(100vw - 20px);
+    }
+
+    .notification-profile {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 8px;
+}
+
+.notification-avatar {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 50%;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #e7a2b6;
+    color: #fff;
+
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.notification-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.notification-profile strong {
+    font-size: 14px;
+}
+
 </style>
 
 
@@ -1502,6 +1712,166 @@
     <div class="whisperly-nav-right">
 
         @if ($currentUser)
+
+        {{-- =================================================
+     NOTIFICATION
+================================================== --}}
+
+<div class="notification-wrapper">
+
+    <button
+        type="button"
+        class="notification-btn"
+        id="notificationButton"
+        aria-label="Notifikasi"
+    >
+        🔔
+
+        @if(isset($notificationCount) && $notificationCount > 0)
+            <span class="badge">
+                {{ $notificationCount }}
+            </span>
+        @endif
+    </button>
+
+    <div
+        class="notification-dropdown"
+        id="notificationDropdown"
+    >
+
+        @forelse(($notifications ?? []) as $booking)
+
+    @php
+        $status = $booking->chatStatus();
+        $currentUser = auth('whisperly')->user();
+    @endphp
+
+    @if($status === 'completed')
+        @continue
+    @endif
+
+    <div class="notification-item">
+
+        @if($currentUser->role == 'talent')
+
+            <div class="notification-profile">
+
+    <div class="notification-avatar">
+
+        @if($booking->pengguna->avatar_url)
+
+            <img
+                src="{{ $booking->pengguna->avatar_url }}"
+                alt="{{ $booking->pengguna->username }}"
+                onerror="this.onerror=null; this.src='{{ asset('assets/images/faces/1.jpg') }}';"
+            >
+
+        @else
+
+            {{ strtoupper(
+                substr(
+                    $booking->pengguna->username,
+                    0,
+                    1
+                )
+            ) }}
+
+        @endif
+
+    </div>
+
+    <strong>
+        {{ $booking->pengguna->username }}
+    </strong>
+
+</div>
+
+            <br>
+
+            {{ $booking->schedule->start_time }}
+            -
+            {{ $booking->schedule->end_time }}
+
+            <br><br>
+
+        @else
+
+    <div class="notification-profile">
+
+        <div class="notification-avatar">
+
+            @if($booking->talent->pengguna->avatar_url)
+
+                <img
+                    src="{{ $booking->talent->pengguna->avatar_url }}"
+                    alt="{{ $booking->talent->pengguna->username }}"
+                >
+
+            @else
+
+                {{ strtoupper(
+                    substr(
+                        $booking->talent->pengguna->username,
+                        0,
+                        1
+                    )
+                ) }}
+
+            @endif
+
+        </div>
+
+        <strong>
+            Booking dengan
+            {{ $booking->talent->pengguna->username }}
+        </strong>
+
+    </div>
+
+    <br>
+
+    {{ $booking->schedule->start_time }}
+    -
+    {{ $booking->schedule->end_time }}
+
+    <br><br>
+
+@endif
+
+        @if($status == 'upcoming')
+
+            <button
+                type="button"
+                class="chat-status-btn chat-status-waiting"
+                disabled
+            >
+                Belum Bisa Chat
+            </button>
+
+        @elseif($status == 'active')
+
+            <a
+                href="{{ route('whisperly.chat.show', $booking->id) }}"
+                class="chat-status-btn chat-status-active"
+            >
+                Chat Sekarang
+            </a>
+
+        @endif
+
+    </div>
+
+@empty
+
+    <div class="notification-item">
+        Belum ada notifikasi.
+    </div>
+
+@endforelse
+
+    </div>
+
+</div>
 
             {{-- =================================================
                  USER PROFILE
@@ -2465,4 +2835,82 @@
 
         }
     );
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const btn = document.getElementById("notificationButton");
+    const notificationDropdown =
+        document.getElementById("notificationDropdown");
+
+    const menuButton =
+        document.getElementById("whisperlyMenuButton");
+
+    const menuDropdown =
+        document.getElementById("whisperlyDropdown");
+
+
+    if (btn && notificationDropdown) {
+
+        btn.addEventListener("click", function (e) {
+
+            e.stopPropagation();
+
+            // Tutup menu titik tiga kalau sedang terbuka
+            if (menuDropdown) {
+                menuDropdown.classList.remove("show");
+            }
+
+            if (menuButton) {
+                menuButton.classList.remove("active");
+                menuButton.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+            }
+
+            // Buka / tutup notifikasi
+            notificationDropdown.classList.toggle("show");
+
+        });
+
+
+        notificationDropdown.addEventListener(
+            "click",
+            function (e) {
+                e.stopPropagation();
+            }
+        );
+
+
+        document.addEventListener(
+            "click",
+            function () {
+
+                notificationDropdown.classList.remove("show");
+
+            }
+        );
+
+    }
+
+
+    // Kalau tombol titik tiga diklik,
+    // notifikasi juga langsung ditutup
+    if (menuButton && menuDropdown) {
+
+        menuButton.addEventListener(
+            "click",
+            function () {
+
+                if (notificationDropdown) {
+                    notificationDropdown.classList.remove("show");
+                }
+
+            }
+        );
+
+    }
+
+});
 </script>
