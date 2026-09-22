@@ -76,15 +76,12 @@
 
         color: #fffaf7;
 
-        font-family:
-            Georgia,
-            "Times New Roman",
-            serif;
+        font-family: Georgia, serif !important;
 
-        font-size: 24px;
-        font-weight: 700;
+        font-size: 26px !important;
+        font-weight: 700 !important;
 
-        letter-spacing: 0.14em;
+        letter-spacing: 1px !important;
 
         text-decoration: none;
         white-space: nowrap;
@@ -1064,6 +1061,272 @@
             rgba(255, 255, 255, 0.07);
     }
 
+        /* =========================================================
+       CHAT THEME - LIGHT MODE
+       Mengikuti tema chat dari show.blade.php
+    ========================================================== */
+
+    body.theme-light .whisperly-nav {
+        background:
+            rgba(255, 255, 255, 0.90);
+
+        border-bottom:
+            1px solid
+            rgba(0, 0, 0, 0.08);
+
+        box-shadow:
+            0 10px 35px
+            rgba(0, 0, 0, 0.08);
+    }
+
+
+    /* =========================================================
+       BRAND - LIGHT
+    ========================================================== */
+
+    body.theme-light .whisperly-brand {
+        color: #17233f;
+    }
+
+    body.theme-light .whisperly-brand:hover {
+        color: #334a78;
+    }
+
+
+    /* =========================================================
+       USER PROFILE - LIGHT
+    ========================================================== */
+
+    body.theme-light .whisperly-user-pill {
+        border-color:
+            rgba(0, 0, 0, 0.10);
+
+        background:
+            rgba(0, 0, 0, 0.045);
+    }
+
+    body.theme-light
+    .whisperly-user-profile-link:hover
+    .whisperly-user-pill {
+        background:
+            rgba(0, 0, 0, 0.075);
+
+        border-color:
+            rgba(0, 0, 0, 0.15);
+    }
+
+
+    body.theme-light .whisperly-username {
+        color:
+            rgba(23, 35, 63, 0.92);
+    }
+
+    body.theme-light .whisperly-user-role {
+        color:
+            rgba(23, 35, 63, 0.45);
+    }
+
+
+    /* =========================================================
+       MENU BUTTON - LIGHT
+    ========================================================== */
+
+    body.theme-light .whisperly-menu-button {
+        color: #17233f;
+
+        border-color:
+            rgba(0, 0, 0, 0.10);
+
+        background:
+            rgba(0, 0, 0, 0.045);
+    }
+
+    body.theme-light .whisperly-menu-button:hover {
+        background:
+            rgba(201, 185, 239, 0.18);
+
+        border-color:
+            rgba(201, 185, 239, 0.40);
+
+        box-shadow:
+            0 12px 30px
+            rgba(0, 0, 0, 0.10);
+    }
+
+    body.theme-light .whisperly-menu-button.active {
+        background:
+            rgba(231, 162, 182, 0.13);
+
+        border-color:
+            rgba(231, 162, 182, 0.35);
+
+        box-shadow:
+            0 10px 28px
+            rgba(0, 0, 0, 0.10);
+    }
+
+
+    /* =========================================================
+       DROPDOWN - LIGHT
+    ========================================================== */
+
+    body.theme-light .whisperly-dropdown {
+        border-color:
+            rgba(0, 0, 0, 0.10);
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(255, 255, 255, 0.98),
+                rgba(245, 247, 252, 0.99)
+            );
+
+        box-shadow:
+            0 30px 80px
+            rgba(0, 0, 0, 0.18);
+    }
+
+
+    /* =========================================================
+       DROPDOWN DECORATIVE GLOW - LIGHT
+    ========================================================== */
+
+    body.theme-light .whisperly-dropdown::before {
+        background:
+            rgba(201, 185, 239, 0.16);
+    }
+
+    body.theme-light .whisperly-dropdown::after {
+        background:
+            rgba(231, 162, 182, 0.10);
+    }
+
+
+    /* =========================================================
+       MINI PROFILE - LIGHT
+    ========================================================== */
+
+    body.theme-light .whisperly-menu-profile-name {
+        color:
+            rgba(23, 35, 63, 0.96);
+    }
+
+    body.theme-light .whisperly-menu-profile-role {
+        color:
+            rgba(23, 35, 63, 0.42);
+    }
+
+
+    /* =========================================================
+       DIVIDER - LIGHT
+    ========================================================== */
+
+    body.theme-light .whisperly-divider,
+    body.theme-light .whisperly-logout-divider {
+        background:
+            rgba(0, 0, 0, 0.08);
+    }
+
+
+    /* =========================================================
+       DROPDOWN ITEM - LIGHT
+    ========================================================== */
+
+    body.theme-light .whisperly-dropdown-item {
+        color: #17233f;
+    }
+
+    body.theme-light .whisperly-dropdown-item:hover {
+        background:
+            rgba(0, 0, 0, 0.045);
+    }
+
+
+    /* =========================================================
+       ICON BOX - LIGHT
+    ========================================================== */
+
+    body.theme-light .whisperly-dropdown-icon {
+        color: #6675a0;
+
+        border-color:
+            rgba(0, 0, 0, 0.08);
+
+        background:
+            rgba(0, 0, 0, 0.035);
+    }
+
+    body.theme-light
+    .whisperly-dropdown-item:hover
+    .whisperly-dropdown-icon {
+        color: #b06d86;
+
+        background:
+            rgba(231, 162, 182, 0.12);
+
+        border-color:
+            rgba(231, 162, 182, 0.20);
+    }
+
+
+    /* =========================================================
+       DROPDOWN TEXT - LIGHT
+    ========================================================== */
+
+    body.theme-light .whisperly-dropdown-text strong {
+        color:
+            rgba(23, 35, 63, 0.95);
+    }
+
+    body.theme-light .whisperly-dropdown-text small {
+        color:
+            rgba(23, 35, 63, 0.46);
+    }
+
+    body.theme-light
+    .whisperly-dropdown-item:hover
+    .whisperly-dropdown-text small {
+        color:
+            rgba(23, 35, 63, 0.66);
+    }
+
+
+    /* =========================================================
+       ARROW - LIGHT
+    ========================================================== */
+
+    body.theme-light .whisperly-dropdown-arrow {
+        color:
+            rgba(23, 35, 63, 0.30);
+    }
+
+    body.theme-light
+    .whisperly-dropdown-item:hover
+    .whisperly-dropdown-arrow {
+        color: #b06d86;
+    }
+
+
+    /* =========================================================
+       LOGOUT - LIGHT
+    ========================================================== */
+
+    body.theme-light .whisperly-logout {
+        color: #b06d86;
+    }
+
+    body.theme-light .whisperly-logout:hover {
+        background:
+            rgba(231, 162, 182, 0.10);
+    }
+
+    body.theme-light .whisperly-logout-icon {
+        border-color:
+            rgba(231, 162, 182, 0.16);
+
+        background:
+            rgba(231, 162, 182, 0.07);
+    }
 
     /* =========================================================
        TABLET
@@ -1211,79 +1474,6 @@
         }
     }
 
-
-    /* ============================
-        NOTIFICATION
-        ============================ */
-
-        .notification-wrapper{
-            position:relative;
-            margin-right:15px;
-        }
-
-        .notification-btn{
-            width:42px;
-            height:42px;
-            border:none;
-            border-radius:50%;
-            background:#ffffff;
-            cursor:pointer;
-            position:relative;
-            font-size:20px;
-        }
-
-        .notification-btn:hover{
-            background:#f2f2f2;
-        }
-
-        .badge{
-            position:absolute;
-            top:-5px;
-            right:-5px;
-            min-width:18px;
-            height:18px;
-            border-radius:50%;
-            background:#ff3b30;
-            color:#fff;
-            font-size:11px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            font-weight:bold;
-        }
-
-        .notification-dropdown{
-            display:none;
-            position:absolute;
-            right:0;
-            top:55px;
-            width:320px;
-            max-height:400px;
-            overflow-y:auto;
-            background:#fff;
-            border-radius:12px;
-            box-shadow:0 10px 25px rgba(0,0,0,.2);
-            z-index:9999;
-        }
-
-        .notification-dropdown.show{
-            display:block;
-        }
-
-        .notification-item{
-            padding:15px;
-            border-bottom:1px solid #eee;
-            color:#333;
-        }
-
-        .notification-item:last-child{
-            border-bottom:none;
-        }
-
-        .notification-item strong{
-            color:#000;
-        }
-
 </style>
 
 
@@ -1311,99 +1501,7 @@
 
     <div class="whisperly-nav-right">
 
-    @if ($currentUser)
-
-        {{-- ==========================
-             NOTIFIKASI
-        =========================== --}}
-        <div class="notification-wrapper">
-
-            <button
-                type="button"
-                class="notification-btn"
-                id="notificationButton"
-            >
-                🔔
-
-                @if($notificationCount > 0)
-                    <span class="badge">
-                        {{ $notificationCount }}
-                    </span>
-                @endif
-
-            </button>
-
-            <div
-                class="notification-dropdown"
-                id="notificationDropdown"
-            >
-
-                @forelse($notifications as $booking)
-
-                    @php
-                        $status = $booking->chatStatus();
-                    @endphp
-
-                    @if($status === 'completed')
-                        @continue
-                    @endif
-
-                    <div class="notification-item">
-
-                        <strong>
-                            {{ $booking->pengguna->username }}
-                        </strong>
-
-                        <br>
-
-                        {{ $booking->schedule->start_time }}
-                        -
-                        {{ $booking->schedule->end_time }}
-
-                        <br><br>
-
-                        @if($currentUser->role == 'talent')
-
-                            @if($status == 'upcoming')
-                                <span class="text-secondary">
-                                    Belum waktunya chat
-                                </span>
-
-                            @elseif($status == 'active')
-
-                                <a
-                                    href="{{ route('whisperly.chat.show', $booking->id) }}"
-                                    class="btn btn-success btn-sm"
-                                >
-                                    Mulai Chat
-                                </a>
-
-                            @endif
-
-                        @else
-
-                            <span>
-                                Booking dengan
-                                {{ $booking->talent->pengguna->username }}
-                            </span>
-
-                        @endif
-
-                    </div>
-
-                @empty
-
-                    <div class="notification-item">
-                        Belum ada notifikasi.
-                    </div>
-
-                @endforelse
-
-            </div>
-
-        </div>
-
-
+        @if ($currentUser)
 
             {{-- =================================================
                  USER PROFILE
@@ -2365,28 +2463,6 @@
                 }
             );
 
-            <script>
-document.addEventListener("DOMContentLoaded", function () {
-
-    const btn = document.getElementById("notificationButton");
-    const dropdown = document.getElementById("notificationDropdown");
-
-    if(btn && dropdown){
-
-        btn.addEventListener("click", function(e){
-            e.stopPropagation();
-            dropdown.classList.toggle("show");
-        });
-
-        document.addEventListener("click", function(){
-            dropdown.classList.remove("show");
-        });
-
-        dropdown.addEventListener("click", function(e){
-            e.stopPropagation();
-        });
-
-    }
-
-});
+        }
+    );
 </script>

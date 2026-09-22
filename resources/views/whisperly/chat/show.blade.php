@@ -1117,6 +1117,49 @@
 
 
         /* ==========================================================
+           PERBAIKAN TEMA PANEL INFORMASI BOOKING
+           Tambahan saja — kode asli tidak diubah
+        ========================================================== */
+
+        body.theme-dark .account-info-panel-content {
+            background: #1c1c1e !important;
+            color: #f5f5f7 !important;
+        }
+
+        body.theme-dark .account-info-header,
+        body.theme-dark .account-profile-section,
+        body.theme-dark .account-info-item {
+            border-color: #38383a !important;
+        }
+
+        body.theme-dark .account-info-header h3,
+        body.theme-dark .account-name,
+        body.theme-dark .account-info-value,
+        body.theme-dark .account-info-value strong {
+            color: #f5f5f7 !important;
+        }
+
+        body.theme-dark .account-username,
+        body.theme-dark .account-info-label,
+        body.theme-dark .account-booking-item-label {
+            color: #a1a1a6 !important;
+        }
+
+        body.theme-dark .account-status {
+            background: #2c2c2e !important;
+        }
+
+        body.theme-dark .account-booking-item {
+            background: #2c2c2e !important;
+            border-color: #38383a !important;
+        }
+
+        body.theme-dark .account-booking-item-value {
+            color: #5eb0ff !important;
+        }
+
+
+        /* ==========================================================
            SCHEDULE
            (Diubah: dari card ngambang jadi strip info rata,
            dipisah dengan garis tipis dari area pesan)
