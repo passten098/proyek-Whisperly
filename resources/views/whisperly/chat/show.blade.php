@@ -4604,6 +4604,58 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
             color: var(--whisperly-sent-text, #fff) !important;
         }
 </style>
+
+
+<style id="FINAL-CHAT-BACKGROUND">
+
+    /* ==========================================================
+       FINAL CHAT BACKGROUND
+       Override semua background lama
+    ========================================================== */
+
+    .messages {
+        background-color: #a9d2f5 !important;
+
+        background-image:
+            url('{{ asset('assets/images/chat-background.jpg') }}') !important;
+
+        background-size: cover !important;
+
+        background-position: center !important;
+
+        background-repeat: no-repeat !important;
+    }
+
+    /* DARK MODE */
+    body.theme-dark .messages {
+        background-color: #000000 !important;
+
+        background-image:
+            url('{{ asset('assets/images/chat-background.jpg') }}') !important;
+
+        background-size: cover !important;
+
+        background-position: center !important;
+
+        background-repeat: no-repeat !important;
+    }
+
+    /* LIGHT MODE */
+    body.theme-light .messages {
+        background-color: #ffffff !important;
+
+        background-image:
+            url('{{ asset('assets/images/chat-background.jpg') }}') !important;
+
+        background-size: cover !important;
+
+        background-position: center !important;
+
+        background-repeat: no-repeat !important;
+    }
+
+</style>
+
 </head>
 
 
@@ -8761,3 +8813,89 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
 </body>
 
 </html>
+
+<!-- ==========================================================
+     TAMBAHAN SAJA: PREVIEW FOTO PROFIL FULL
+     Kode asli di atas TIDAK DIUBAH.
+========================================================== -->
+
+<style>
+    .account-profile-avatar img { cursor: zoom-in !important; }
+    .profile-photo-preview-overlay {
+        position: fixed; inset: 0; z-index: 99999; display: none;
+        align-items: center; justify-content: center; padding: 24px;
+        background: rgba(0, 0, 0, .78);
+        backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    }
+    .profile-photo-preview-overlay.show { display: flex; }
+    .profile-photo-preview-content {
+        position: relative; display: flex; align-items: center; justify-content: center;
+        max-width: 95vw; max-height: 95vh;
+    }
+    .profile-photo-preview-image {
+        display: block; max-width: 90vw; max-height: 90vh;
+        width: auto; height: auto; object-fit: contain; border-radius: 18px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, .45);
+    }
+    .profile-photo-preview-close {
+        position: absolute; top: -14px; right: -14px; width: 38px; height: 38px;
+        border: none; border-radius: 50%; background: rgba(255,255,255,.95);
+        color: #222; font-size: 25px; line-height: 38px; text-align: center;
+        cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,.25); z-index: 2;
+    }
+    .profile-photo-preview-close:hover { background: #fff; transform: scale(1.05); }
+    body.theme-dark .profile-photo-preview-close { background: #2c2c2e; color: #fff; }
+    @media (max-width: 700px) {
+        .profile-photo-preview-overlay { padding: 14px; }
+        .profile-photo-preview-image { max-width: 94vw; max-height: 88vh; border-radius: 14px; }
+        .profile-photo-preview-close { top: -10px; right: -10px; width: 34px; height: 34px; line-height: 34px; font-size: 22px; }
+    }
+</style>
+
+<div class="profile-photo-preview-overlay" id="profilePhotoPreview" aria-hidden="true">
+    <div class="profile-photo-preview-content">
+        <button type="button" class="profile-photo-preview-close" id="profilePhotoPreviewClose" aria-label="Tutup foto">×</button>
+        <img src="" alt="Foto profil" class="profile-photo-preview-image" id="profilePhotoPreviewImage">
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const profilePhoto = document.querySelector('.account-profile-avatar img');
+    const preview = document.getElementById('profilePhotoPreview');
+    const previewImage = document.getElementById('profilePhotoPreviewImage');
+    const closeButton = document.getElementById('profilePhotoPreviewClose');
+
+    if (!profilePhoto || !preview || !previewImage || !closeButton) return;
+
+    function openProfilePhoto() {
+        previewImage.src = profilePhoto.src;
+        previewImage.alt = profilePhoto.alt || 'Foto profil';
+        preview.classList.add('show');
+        preview.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeProfilePhoto() {
+        preview.classList.remove('show');
+        preview.setAttribute('aria-hidden', 'true');
+        previewImage.src = '';
+        document.body.style.overflow = '';
+    }
+
+    profilePhoto.addEventListener('click', function (event) {
+        event.stopPropagation();
+        openProfilePhoto();
+    });
+    closeButton.addEventListener('click', function (event) {
+        event.stopPropagation();
+        closeProfilePhoto();
+    });
+    preview.addEventListener('click', function (event) {
+        if (event.target === preview) closeProfilePhoto();
+    });
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && preview.classList.contains('show')) closeProfilePhoto();
+    });
+});
+</script>

@@ -1482,6 +1482,59 @@
             }
         }
 
+        /* ==========================================================
+   SAMAKAN TEMA CHAT DENGAN SHOW.BLADE.PHP
+   ========================================================== */
+
+body.theme-dark .chat-content {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+}
+
+body.theme-dark .chat-sidebar {
+    background: #0b0b0d !important;
+    color: #ffffff !important;
+}
+
+body.theme-dark .chat-sidebar *,
+body.theme-dark .chat-content * {
+    color: inherit;
+}
+
+body.theme-dark .chat-search,
+body.theme-dark .chat-item {
+    background: #0b0b0d !important;
+    color: #ffffff !important;
+}
+
+body.theme-dark .chat-item:hover,
+body.theme-dark .chat-item.active {
+    background: #1c1c1e !important;
+}
+
+body.theme-light .chat-content {
+    background-color: #a9d2f5 !important;
+    color: #111111 !important;
+}
+
+body.theme-light .chat-sidebar {
+    background: #ffffff !important;
+    color: #111111 !important;
+}
+
+body.theme-light .chat-search,
+body.theme-light .chat-item {
+    background: #ffffff !important;
+    color: #111111 !important;
+}
+
+body.theme-light .chat-item:hover {
+    background: #f2f2f7 !important;
+}
+
+body.theme-light .chat-item.active {
+    background: #dceeff !important;
+}
     </style>
 
 </head>
@@ -2612,6 +2665,27 @@
          */
 
         updateChatList();
+
+        /* ==========================================================
+   SINKRONISASI TEMA DENGAN HALAMAN CHAT
+   ========================================================== */
+
+(function () {
+
+    const savedTheme =
+        localStorage.getItem('whisperly-chat-theme') || 'dark';
+
+    document.body.classList.toggle(
+        'theme-dark',
+        savedTheme === 'dark'
+    );
+
+    document.body.classList.toggle(
+        'theme-light',
+        savedTheme === 'light'
+    );
+
+})();
 
     </script>
 
