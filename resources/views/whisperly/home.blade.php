@@ -334,6 +334,80 @@
 
         }
 
+        .notification-wrapper {
+            position: relative;
+            margin-right: 5px;
+        }
+
+        .notification-btn {
+            width: 43px;
+            height: 43px;
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 50%;
+            background: rgba(255,255,255,.055);
+            color: var(--white);
+            cursor: pointer;
+            position: relative;
+            font-size: 19px;
+        }
+
+        .notification-btn:hover {
+            background: rgba(201,185,239,.13);
+            border-color: rgba(201,185,239,.34);
+        }
+
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #ff3b30;
+            color: #fff;
+            font: bold 11px Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notification-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 55px;
+
+            width: fit-content !important;
+            min-width: 0 !important;
+            max-width: calc(100vw - 20px);
+
+            max-height: 300px;
+            overflow-y: auto;
+
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,.2);
+            z-index: 9999;
+        }
+
+        .notification-dropdown.show {
+            display: block;
+        }
+
+        .notification-item {
+            padding: 12px 14px;
+            border-bottom: 1px solid #eee;
+            color: #333;
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-item strong {
+            color: #000;
+        }
+
 
         /* =========================================================
            USER AVATAR
@@ -540,39 +614,7 @@
         }
 
 
-        .menu-button.active .dots {
-
-            gap: 0;
-
-        }
-
-
-        .menu-button.active
-        .dots span:nth-child(1) {
-
-            transform:
-                translate(3px, 0)
-                rotate(45deg);
-
-        }
-
-
-        .menu-button.active
-        .dots span:nth-child(2) {
-
-            opacity: 0;
-
-        }
-
-
-        .menu-button.active
-        .dots span:nth-child(3) {
-
-            transform:
-                translate(-3px, 0)
-                rotate(-45deg);
-
-        }
+        
 
 
         /* =========================================================
@@ -3216,6 +3258,80 @@
 
         }
 
+        .notification-dropdown {
+            width: 23px !important;
+            min-width: 230px !important;
+            max-width: calc(100vw - 20px);
+        }
+
+            .chat-status-btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                padding: 8px 14px;
+                border-radius: 10px;
+                font: 600 12px Arial, sans-serif;
+                text-decoration: none;
+                transition: .2s ease;
+                opacity: 1 !important;
+            }
+
+            .chat-status-waiting {
+                color: #ffffff !important;
+                background: #5a4630 !important;
+                border: 1px solid #8a6a3f !important;
+                cursor: not-allowed;
+                opacity: 1 !important;
+            }
+
+            .chat-status-active {
+                color: #ffffff !important;
+                background: #168a5b !important;
+                border: 1px solid #25b979 !important;
+                cursor: pointer;
+                opacity: 1 !important;
+            }
+
+            .chat-status-active:hover {
+                background: #1f9f6b !important;
+            }
+
+            .notification-profile {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 8px;
+}
+
+.notification-avatar {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 50%;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #e7a2b6;
+    color: #fff;
+
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.notification-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.notification-profile strong {
+    font-size: 14px;
+}
+
     </style>
 
 </head>
@@ -3257,6 +3373,155 @@
 
 
             @if ($currentUser)
+
+
+                <!-- NOTIFICATION -->
+
+<div class="notification-wrapper">
+
+    <button
+        type="button"
+        class="notification-btn"
+        id="notificationButton"
+    >
+        🔔
+
+        @if($notificationCount > 0)
+            <span class="badge">
+                {{ $notificationCount }}
+            </span>
+        @endif
+    </button>
+
+
+    <div
+        class="notification-dropdown"
+        id="notificationDropdown"
+    >
+
+        @forelse($notifications as $booking)
+
+    @php
+        $status = $booking->chatStatus();
+    @endphp
+
+    @if($status === 'completed')
+        @continue
+    @endif
+
+    <div class="notification-item">
+
+        @if($currentUser->role === 'talent')
+
+            <div class="notification-profile">
+
+                <div class="notification-avatar">
+
+                    @if($booking->pengguna->avatar_url)
+
+                        <img
+                            src="{{ $booking->pengguna->avatar_url }}"
+                            alt="{{ $booking->pengguna->username }}"
+                        >
+
+                    @else
+
+                        {{ strtoupper(
+                            substr(
+                                $booking->pengguna->username,
+                                0,
+                                1
+                            )
+                        ) }}
+
+                    @endif
+
+                </div>
+
+                <strong>
+                    {{ $booking->pengguna->username }}
+                </strong>
+
+            </div>
+
+       @else
+
+    <div class="notification-profile">
+
+        <div class="notification-avatar">
+
+            @if($booking->talent->pengguna->avatar_url)
+
+                <img
+                    src="{{ $booking->talent->pengguna->avatar_url }}"
+                    alt="{{ $booking->talent->pengguna->username }}"
+                >
+
+            @else
+
+                {{ strtoupper(
+                    substr(
+                        $booking->talent->pengguna->username,
+                        0,
+                        1
+                    )
+                ) }}
+
+            @endif
+
+        </div>
+
+        <strong>
+            Booking dengan
+            {{ $booking->talent->pengguna->username }}
+        </strong>
+
+    </div>
+
+@endif
+
+                <br>
+
+                {{ $booking->schedule->start_time }}
+                -
+                {{ $booking->schedule->end_time }}
+
+                <br><br>
+
+                @if($status === 'upcoming')
+
+                    <button
+                        type="button"
+                        class="chat-status-btn chat-status-waiting"
+                        disabled
+                    >
+                        Belum Bisa Chat
+                    </button>
+
+                @elseif($status === 'active')
+
+                    <a
+                        href="{{ route('whisperly.chat.show', $booking->id) }}"
+                        class="chat-status-btn chat-status-active"
+                    >
+                        Chat Sekarang
+                    </a>
+
+                @endif
+
+            </div>
+
+        @empty
+
+            <div class="notification-item">
+                Belum ada notifikasi.
+            </div>
+
+        @endforelse
+
+    </div>
+
+</div>
 
 
                 <!-- USER -->
@@ -3306,7 +3571,6 @@
 </div>
 
                 </a>
-
 
                 <!-- MENU -->
 
@@ -4375,6 +4639,13 @@
 
                 event.stopPropagation();
 
+                const notificationDropdown =
+                document.getElementById('notificationDropdown');
+
+            if (notificationDropdown) {
+                notificationDropdown.classList.remove('show');
+            }
+
                 const isOpen =
                     dropdownMenu.classList.contains('show');
 
@@ -4504,7 +4775,76 @@
 
 </script>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
-</body>
+    const notificationButton =
+        document.getElementById("notificationButton");
 
-</html>
+    const notificationDropdown =
+        document.getElementById("notificationDropdown");
+
+    const menuButton =
+        document.getElementById("menuButton");
+
+    const dropdownMenu =
+        document.getElementById("dropdownMenu");
+
+
+    if (
+        notificationButton &&
+        notificationDropdown
+    ) {
+
+        notificationButton.addEventListener(
+            "click",
+            function (event) {
+
+                event.stopPropagation();
+
+                // Tutup menu •••
+                if (dropdownMenu) {
+                    dropdownMenu.classList.remove("show");
+                }
+
+                if (menuButton) {
+                    menuButton.classList.remove("active");
+
+                    menuButton.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+                }
+
+                // Buka/tutup notifikasi
+                notificationDropdown.classList.toggle("show");
+
+            }
+        );
+
+
+        notificationDropdown.addEventListener(
+            "click",
+            function (event) {
+
+                event.stopPropagation();
+
+            }
+        );
+
+
+        document.addEventListener(
+            "click",
+            function () {
+
+                notificationDropdown.classList.remove(
+                    "show"
+                );
+
+            }
+        );
+
+    }
+
+});
+</script>

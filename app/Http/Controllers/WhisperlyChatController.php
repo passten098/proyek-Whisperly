@@ -851,6 +851,35 @@ class WhisperlyChatController extends Controller
 
         /*
         |--------------------------------------------------------------------------
+        | PULIHKAN ROOM CHAT YANG SEBELUMNYA DIHAPUS
+        |--------------------------------------------------------------------------
+        |
+        | Jika user/talent pernah menekan "Hapus Chat", state chat menyimpan
+        | deleted_at sehingga room disembunyikan dari sidebar. Begitu pesan baru
+        | dikirim, room harus otomatis aktif kembali tanpa Tinker dan tanpa
+        | menghapus riwayat/fungsi chat lainnya.
+        |
+        */
+
+        $chatUserState =
+            $this->chatUserState(
+                $user,
+                $booking
+            );
+
+        if ($chatUserState) {
+
+            $chatUserState->update([
+                'deleted_at' =>
+                    null,
+
+                'archived_at' =>
+                    null,
+            ]);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
         | CONVERSATION
         |--------------------------------------------------------------------------
         */
@@ -2780,6 +2809,61 @@ class WhisperlyChatController extends Controller
                         ),
                 ]);
 
+        /*
+        |--------------------------------------------------------------------------
+        | RESTORE ROOM SETELAH PESAN BARU
+        |--------------------------------------------------------------------------
+        |
+        | Jika room sebelumnya dihapus/diarsipkan, pesan baru harus
+        | membuat room aktif kembali untuk pengirim dan penerima.
+        | Dengan begitu index/updates dapat menampilkan room kembali
+        | tanpa logout, login, atau Tinker.
+        |--------------------------------------------------------------------------
+        */
+
+        $contactUserId =
+            $this->contactUserId(
+                $user,
+                $booking
+            );
+
+        if ($contactUserId) {
+
+            WhisperlyChatUserState::updateOrCreate(
+                [
+                    'user_id' =>
+                        $user->id,
+
+                    'contact_user_id' =>
+                        $contactUserId,
+                ],
+                [
+                    'deleted_at' =>
+                        null,
+
+                    'archived_at' =>
+                        null,
+                ]
+            );
+
+            WhisperlyChatUserState::updateOrCreate(
+                [
+                    'user_id' =>
+                        $contactUserId,
+
+                    'contact_user_id' =>
+                        $user->id,
+                ],
+                [
+                    'deleted_at' =>
+                        null,
+
+                    'archived_at' =>
+                        null,
+                ]
+            );
+        }
+
         if (
             $request->hasFile('image')
         ) {
@@ -3131,10 +3215,40 @@ class WhisperlyChatController extends Controller
                     )
                 );
 
+            /*
+            | Jika room sudah dihapus, tetapi setelah itu ada pesan baru
+            | pada conversation yang sama, room wajib muncul kembali.
+            | Ini juga menangani pesan baru dari lawan chat, bukan hanya
+            | pesan yang dikirim oleh user yang menghapus room.
+            */
+            $hasNewMessageAfterDelete = false;
+
+            if ($deletedAt) {
+
+                $latestMessage =
+                    $booking
+                        ->conversation()
+                        ->with('messages')
+                        ->first()?->messages
+                        ?->sortByDesc('created_at')
+                        ->first();
+
+                $hasNewMessageAfterDelete =
+                    $latestMessage?->created_at
+                    &&
+                    Carbon::parse(
+                        $latestMessage->created_at
+                    )->gt(
+                        Carbon::parse($deletedAt)
+                    );
+            }
+
             if (
                 $wasDeletedBeforeBooking
                 ||
                 $wasArchivedBeforeBooking
+                ||
+                $hasNewMessageAfterDelete
             ) {
 
                 $state->update([

@@ -4566,86 +4566,84 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
         }
     </style>
 
-<style>
+<style id="CUSTOM-BUBBLE-COLORS">
+    .bubble-color-panel {
+        margin: 2px 0 6px;
+        padding: 10px;
+        border-radius: 12px;
+        background: rgba(245, 247, 250, .96);
+        border: 1px solid #dceafb;
+    }
 
-        /* ==========================================================
-           CUSTOM CHAT BUBBLE COLORS
-        ========================================================== */
-        .bubble-color-panel {
-            margin: 2px 0 6px;
-            padding: 10px;
-            border-radius: 12px;
-            background: rgba(245, 247, 250, .96);
-            border: 1px solid #dceafb;
-        }
+    .bubble-color-panel[hidden] {
+        display: none !important;
+    }
 
-        .bubble-color-panel[hidden] { display: none !important; }
-        .bubble-color-title {
-            margin: 2px 2px 7px;
-            font-size: 11px;
-            font-weight: 700;
-            color: #5c7895;
-        }
-        .bubble-color-title-received { margin-top: 12px; }
-        .bubble-color-swatches {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 7px;
-        }
-        .bubble-color-swatch {
-            width: 25px;
-            height: 25px;
-            padding: 0;
-            border: 2px solid rgba(255,255,255,.9);
-            border-radius: 50%;
-            background: var(--swatch);
-            box-shadow: 0 0 0 1px rgba(0,0,0,.12);
-            cursor: pointer;
-        }
-        .bubble-color-swatch:hover { transform: scale(1.08); }
-        .bubble-color-custom {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 8px;
-            font-size: 11px;
-            color: #5c7895;
-        }
-        .bubble-color-custom input {
-            width: 34px;
-            height: 24px;
-            padding: 0;
-            border: 0;
-            background: transparent;
-            cursor: pointer;
-        }
-        .bubble-color-reset {
-            width: 100%;
-            margin-top: 10px;
-            padding: 7px 8px;
-            border: 1px solid #d6e6f8;
-            border-radius: 8px;
-            background: #fff;
-            color: #315e87;
-            font-size: 11px;
-            cursor: pointer;
-        }
-        .bubble-color-reset:hover { background: #eef7ff; }
+    .bubble-color-title {
+        margin: 2px 2px 7px;
+        font-size: 11px;
+        font-weight: 700;
+        color: #5c7895;
+    }
 
-        body .message-row.sent .message-bubble {
-            background: var(--whisperly-sent-bubble, #0a84ff) !important;
-            color: var(--whisperly-sent-text, #fff) !important;
-        }
-        body .message-row.received .message-bubble {
-            background: var(--whisperly-received-bubble, #2c2c2e) !important;
-            color: var(--whisperly-received-text, #f5f5f7) !important;
-        }
-        body.theme-light .message-row.received .message-bubble {
-            color: var(--whisperly-received-text, #111) !important;
-        }
-        body.theme-light .message-row.sent .message-bubble {
-            color: var(--whisperly-sent-text, #fff) !important;
-        }
+    .bubble-color-choice {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 8px;
+        padding: 8px 10px;
+        border: 1px solid #d6e6f8;
+        border-radius: 10px;
+        background: #fff;
+        box-sizing: border-box;
+    }
+
+    .bubble-color-choice-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: #315e87;
+    }
+
+    .bubble-color-input {
+        width: 42px;
+        height: 30px;
+        padding: 0;
+        margin: 0;
+        border: 0;
+        border-radius: 7px;
+        background: transparent;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    .bubble-color-input::-webkit-color-swatch-wrapper { padding: 0; }
+    .bubble-color-input::-webkit-color-swatch { border: 1px solid rgba(0,0,0,.18); border-radius: 7px; }
+    .bubble-color-input::-moz-color-swatch { border: 1px solid rgba(0,0,0,.18); border-radius: 7px; }
+
+    .bubble-color-reset {
+        width: 100%;
+        margin-top: 10px;
+        padding: 7px 8px;
+        border: 1px solid #d6e6f8;
+        border-radius: 8px;
+        background: #fff;
+        color: #315e87;
+        font-size: 11px;
+        cursor: pointer;
+    }
+
+    .bubble-color-reset:hover { background: #eef7ff; }
+
+    body .message-row.sent .message-bubble {
+        background: var(--whisperly-sent-bubble, #0a84ff) !important;
+        color: var(--whisperly-sent-text, #fff) !important;
+    }
+
+    body .message-row.received .message-bubble {
+        background: var(--whisperly-received-bubble, #2c2c2e) !important;
+        color: var(--whisperly-received-text, #f5f5f7) !important;
+    }
 </style>
 
 
@@ -4697,6 +4695,113 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
         background-repeat: no-repeat !important;
     }
 
+</style>
+
+
+
+<style id="FINAL-PLAIN-CHAT-THEME">
+    /* ==========================================================
+       FINAL PLAIN CHAT WALLPAPER
+       DARK  = hitam polos
+       LIGHT = putih polos
+       Tidak ada wallpaper gambar di area chat.
+    ========================================================== */
+
+    .room,
+    .messages {
+        background-image: none !important;
+        background-repeat: no-repeat !important;
+        background-position: initial !important;
+        background-size: auto !important;
+    }
+
+    body.theme-dark .room,
+    body.theme-dark .messages {
+        background-color: #000000 !important;
+        background-image: none !important;
+    }
+
+    body.theme-light .room,
+    body.theme-light .messages {
+        background-color: #ffffff !important;
+        background-image: none !important;
+    }
+
+    /* ==========================================================
+       FINAL BUBBLE TEXT COLOR
+       Warna teks mengikuti warna bubble:
+       - bubble terang -> teks hitam
+       - bubble gelap  -> teks putih
+       Nilai warnanya dihitung oleh JavaScript yang sudah ada.
+    ========================================================== */
+
+    body .message-row.sent .message-bubble {
+        color: var(--whisperly-sent-text, #ffffff) !important;
+    }
+
+    body .message-row.received .message-bubble {
+        color: var(--whisperly-received-text, #ffffff) !important;
+    }
+
+    body.theme-light .message-row.sent .message-bubble,
+    body.theme-light .message-row.received .message-bubble {
+        color: var(--whisperly-sent-text, #111111) !important;
+    }
+
+    body.theme-light .message-row.received .message-bubble {
+        color: var(--whisperly-received-text, #111111) !important;
+    }
+</style>
+
+
+<style id="FINAL-BUBBLE-COLOR-OVERRIDE">
+    /* ==========================================================
+       FINAL BUBBLE COLOR OVERRIDE
+       Custom bubble colors MUST win over all old theme CSS.
+    ========================================================== */
+
+    body.theme-light .room .messages .message-row.sent .message-bubble,
+    body.theme-dark .room .messages .message-row.sent .message-bubble,
+    body .room .messages .message-row.sent .message-bubble {
+        background: var(--whisperly-sent-bubble, #0a84ff) !important;
+        color: var(--whisperly-sent-text, #ffffff) !important;
+    }
+
+    body.theme-light .room .messages .message-row.received .message-bubble,
+    body.theme-dark .room .messages .message-row.received .message-bubble,
+    body .room .messages .message-row.received .message-bubble {
+        background: var(--whisperly-received-bubble, #2c2c2e) !important;
+        color: var(--whisperly-received-text, #ffffff) !important;
+    }
+
+    /* Jika bubble memiliki class tambahan */
+    body.theme-light .room .messages .message-row:not(.sent) .message-bubble,
+    body.theme-dark .room .messages .message-row:not(.sent) .message-bubble {
+        background: var(--whisperly-received-bubble, #2c2c2e) !important;
+        color: var(--whisperly-received-text, #ffffff) !important;
+    }
+</style>
+
+<style id="FINAL-PLAIN-ROOM-BACKGROUND">
+    .room, .messages {
+        background-image: none !important;
+    }
+    body.theme-dark .room, body.theme-dark .messages {
+        background-color: #000 !important;
+        background-image: none !important;
+    }
+    body.theme-light .room, body.theme-light .messages {
+        background-color: #fff !important;
+        background-image: none !important;
+    }
+    body .room .messages .message-row.sent .message-bubble {
+        background: var(--whisperly-sent-bubble, #0a84ff) !important;
+        color: var(--whisperly-sent-text, #fff) !important;
+    }
+    body .room .messages .message-row.received .message-bubble {
+        background: var(--whisperly-received-bubble, #2c2c2e) !important;
+        color: var(--whisperly-received-text, #fff) !important;
+    }
 </style>
 
 </head>
@@ -5070,6 +5175,7 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
                         "
                         data-name="{{ strtolower($itemName) }}"
                         data-unread="{{ $hasUnread ? '1' : '0' }}"
+                        data-booking-id="{{ $item->id }}"
                     >
 
                         @php
@@ -5166,12 +5272,14 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
 
                                 @if ($isLastMessageFromCurrentUser)
 
-                                    <span style="
-                                        font-size:11px;
-                                        font-weight:700;
-                                        color:#2388e8;
-                                        white-space:nowrap;
-                                    ">
+                                    <span
+                                        data-realtime-check="1"
+                                        style="
+                                            font-size:11px;
+                                            font-weight:700;
+                                            color:#2388e8;
+                                            white-space:nowrap;
+                                        ">
 
                                         @if ($lastMessageIsRead)
                                             ✓✓
@@ -5323,33 +5431,29 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
                         </button>
 
                         <div id="bubbleColorPanel" class="bubble-color-panel" hidden>
-                            <div class="bubble-color-title">Warna pesan saya</div>
-                            <div class="bubble-color-swatches" data-color-target="sent">
-                                <button type="button" class="bubble-color-swatch" data-color="#0a84ff" style="--swatch:#0a84ff" aria-label="Biru"></button>
-                                <button type="button" class="bubble-color-swatch" data-color="#34c759" style="--swatch:#34c759" aria-label="Hijau"></button>
-                                <button type="button" class="bubble-color-swatch" data-color="#ff9500" style="--swatch:#ff9500" aria-label="Oranye"></button>
-                                <button type="button" class="bubble-color-swatch" data-color="#ff2d55" style="--swatch:#ff2d55" aria-label="Pink"></button>
-                                <button type="button" class="bubble-color-swatch" data-color="#af52de" style="--swatch:#af52de" aria-label="Ungu"></button>
-                                <button type="button" class="bubble-color-swatch" data-color="#5856d6" style="--swatch:#5856d6" aria-label="Indigo"></button>
-                                <button type="button" class="bubble-color-swatch" data-color="#8e8e93" style="--swatch:#8e8e93" aria-label="Abu-abu"></button>
-                            </div>
-                            <label class="bubble-color-custom">
-                                Pilih sendiri
-                                <input type="color" id="sentBubbleColor" value="#0a84ff" aria-label="Pilih warna bubble saya">
-                            </label>
+                            <div class="bubble-color-title">Warna Bubble</div>
 
-                            <div class="bubble-color-title bubble-color-title-received">Warna pesan lawan</div>
-                            <div class="bubble-color-swatches" data-color-target="received">
-                                <button type="button" class="bubble-color-swatch" data-color="#2c2c2e" style="--swatch:#2c2c2e" aria-label="Abu gelap"></button>
-                                <button type="button" class="bubble-color-swatch" data-color="#e5e5ea" style="--swatch:#e5e5ea" aria-label="Abu terang"></button>
-                                <button type="button" class="bubble-color-swatch" data-color="#d1f7c4" style="--swatch:#d1f7c4" aria-label="Hijau muda"></button>
-                                <button type="button" class="bubble-color-swatch" data-color="#d9eaff" style="--swatch:#d9eaff" aria-label="Biru muda"></button>
-                                <button type="button" class="bubble-color-swatch" data-color="#ffe0b2" style="--swatch:#ffe0b2" aria-label="Oranye muda"></button>
+                            <div class="bubble-color-choice">
+                                <span class="bubble-color-choice-label">Bubble Saya</span>
+                                <input
+                                    type="color"
+                                    id="sentBubbleColor"
+                                    value="#0a84ff"
+                                    aria-label="Pilih warna bubble saya"
+                                    class="bubble-color-input"
+                                >
                             </div>
-                            <label class="bubble-color-custom">
-                                Pilih sendiri
-                                <input type="color" id="receivedBubbleColor" value="#2c2c2e" aria-label="Pilih warna bubble lawan">
-                            </label>
+
+                            <div class="bubble-color-choice">
+                                <span class="bubble-color-choice-label">Bubble Lawan</span>
+                                <input
+                                    type="color"
+                                    id="receivedBubbleColor"
+                                    value="#2c2c2e"
+                                    aria-label="Pilih warna bubble lawan"
+                                    class="bubble-color-input"
+                                >
+                            </div>
 
                             <button type="button" id="resetBubbleColors" class="bubble-color-reset">Kembalikan warna awal</button>
                         </div>
@@ -7094,6 +7198,91 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
            ENTER UNTUK MENGIRIM PESAN
         ========================================================== */
 
+        /* ==========================================================
+           CTRL + V / PASTE SCREENSHOT DARI CLIPBOARD
+
+           Screenshot dari Win + Shift + S / Snipping Tool biasanya
+           masuk ke clipboard sebagai file gambar. Saat gambar ditempel
+           ke composer, masukkan file tersebut ke imageInput yang sudah
+           dipakai sistem upload foto. Dengan begitu tombol Enter tetap
+           memakai submit form yang sama dan gambar benar-benar terkirim.
+        ========================================================== */
+
+        if (messageInput) {
+
+            messageInput.addEventListener(
+                'paste',
+                function (event) {
+
+                    const clipboard =
+                        event.clipboardData ||
+                        window.clipboardData;
+
+                    if (!clipboard) {
+                        return;
+                    }
+
+                    const items = clipboard.items || [];
+                    let imageItem = null;
+
+                    for (let i = 0; i < items.length; i++) {
+                        const item = items[i];
+
+                        if (
+                            item.kind === 'file' &&
+                            item.type &&
+                            item.type.startsWith('image/')
+                        ) {
+                            imageItem = item;
+                            break;
+                        }
+                    }
+
+                    /* Paste teks biasa tetap berjalan normal. */
+                    if (!imageItem) {
+                        return;
+                    }
+
+                    /* Jangan tempelkan screenshot sebagai <img> mentah
+                       ke contenteditable. */
+                    event.preventDefault();
+
+                    const file = imageItem.getAsFile();
+
+                    if (!file) {
+                        return;
+                    }
+
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('Ukuran screenshot maksimal 5 MB.');
+                        return;
+                    }
+
+                    if (!file.type.startsWith('image/')) {
+                        return;
+                    }
+
+                    /* Masukkan screenshot ke input file yang sudah ada. */
+                    if (imageInput) {
+                        const dataTransfer = new DataTransfer();
+                        dataTransfer.items.add(file);
+                        imageInput.files = dataTransfer.files;
+
+                        /* Trigger preview + validasi upload yang sudah ada. */
+                        imageInput.dispatchEvent(
+                            new Event('change', {
+                                bubbles: true
+                            })
+                        );
+                    }
+
+                    /* Kembalikan fokus ke composer. */
+                    messageInput.focus();
+                }
+            );
+        }
+
+
         if (messageInput) {
 
             messageInput.addEventListener(
@@ -7700,6 +7889,10 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
         const bubbleColorPanel = document.getElementById('bubbleColorPanel');
         const sentBubbleColor = document.getElementById('sentBubbleColor');
         const receivedBubbleColor = document.getElementById('receivedBubbleColor');
+        const sentBubbleColorPreview = document.getElementById('sentBubbleColorPreview');
+        const receivedBubbleColorPreview = document.getElementById('receivedBubbleColorPreview');
+        const sentBubbleColorHex = document.getElementById('sentBubbleColorHex');
+        const receivedBubbleColorHex = document.getElementById('receivedBubbleColorHex');
         const resetBubbleColors = document.getElementById('resetBubbleColors');
         const bubbleColorDefaults = {
             sent: '#0a84ff',
@@ -7716,28 +7909,92 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
             return luminance > 165 ? '#111111' : '#ffffff';
         }
 
+        function syncBubbleStyles() {
+            /*
+             * JANGAN membaca warna dari getComputedStyle().
+             * CSS tema gelap mempunyai aturan !important yang dapat membuat
+             * nilai computed kembali ke #2c2c2e, walaupun user sudah memilih
+             * warna lain. Sumber warna harus selalu localStorage.
+             */
+            const sentColor = localStorage.getItem('whisperly-sent-bubble') || bubbleColorDefaults.sent;
+            const receivedColor = localStorage.getItem('whisperly-received-bubble') || bubbleColorDefaults.received;
+            const sentText = colorToTextColor(sentColor);
+            const receivedText = colorToTextColor(receivedColor);
+            const root = document.documentElement;
+
+            /* Pakai !important pada custom property agar tema tidak dapat
+             * menimpanya ketika mode gelap/terang berubah. */
+            root.style.setProperty('--whisperly-sent-bubble', sentColor, 'important');
+            root.style.setProperty('--whisperly-received-bubble', receivedColor, 'important');
+            root.style.setProperty('--whisperly-sent-text', sentText, 'important');
+            root.style.setProperty('--whisperly-received-text', receivedText, 'important');
+
+            document.querySelectorAll('.message-row.sent .message-bubble').forEach(function (bubble) {
+                bubble.style.setProperty('background', sentColor, 'important');
+                bubble.style.setProperty('background-color', sentColor, 'important');
+                bubble.style.setProperty('color', sentText, 'important');
+            });
+
+            document.querySelectorAll('.message-row.received .message-bubble, .message-row:not(.sent) .message-bubble').forEach(function (bubble) {
+                if (bubble.closest('.message-row.sent')) return;
+                bubble.style.setProperty('background', receivedColor, 'important');
+                bubble.style.setProperty('background-color', receivedColor, 'important');
+                bubble.style.setProperty('color', receivedText, 'important');
+            });
+        }
+
         function applyBubbleColor(target, color, save = true) {
             const safeColor = /^#[0-9a-fA-F]{6}$/.test(String(color || ''))
                 ? String(color)
                 : bubbleColorDefaults[target];
+            const textColor = colorToTextColor(safeColor);
 
             if (target === 'sent') {
-                document.documentElement.style.setProperty('--whisperly-sent-bubble', safeColor);
-                document.documentElement.style.setProperty('--whisperly-sent-text', colorToTextColor(safeColor));
+                document.documentElement.style.setProperty('--whisperly-sent-bubble', safeColor, 'important');
+                document.documentElement.style.setProperty('--whisperly-sent-text', textColor, 'important');
                 if (sentBubbleColor) sentBubbleColor.value = safeColor;
+                if (sentBubbleColorPreview) sentBubbleColorPreview.style.backgroundColor = safeColor;
+                if (sentBubbleColorHex) sentBubbleColorHex.textContent = safeColor.toUpperCase();
                 if (save) localStorage.setItem('whisperly-sent-bubble', safeColor);
             }
 
             if (target === 'received') {
-                document.documentElement.style.setProperty('--whisperly-received-bubble', safeColor);
-                document.documentElement.style.setProperty('--whisperly-received-text', colorToTextColor(safeColor));
+                document.documentElement.style.setProperty('--whisperly-received-bubble', safeColor, 'important');
+                document.documentElement.style.setProperty('--whisperly-received-text', textColor, 'important');
                 if (receivedBubbleColor) receivedBubbleColor.value = safeColor;
+                if (receivedBubbleColorPreview) receivedBubbleColorPreview.style.backgroundColor = safeColor;
+                if (receivedBubbleColorHex) receivedBubbleColorHex.textContent = safeColor.toUpperCase();
                 if (save) localStorage.setItem('whisperly-received-bubble', safeColor);
             }
+
+            // Paksa warna yang dipilih berlaku pada tema terang DAN gelap.
+            syncBubbleStyles();
         }
 
         applyBubbleColor('sent', localStorage.getItem('whisperly-sent-bubble') || bubbleColorDefaults.sent, false);
         applyBubbleColor('received', localStorage.getItem('whisperly-received-bubble') || bubbleColorDefaults.received, false);
+
+        // Tema tidak boleh mengembalikan warna bubble ke default.
+        function reapplySavedBubbleColors() {
+            applyBubbleColor('sent', localStorage.getItem('whisperly-sent-bubble') || bubbleColorDefaults.sent, false);
+            applyBubbleColor('received', localStorage.getItem('whisperly-received-bubble') || bubbleColorDefaults.received, false);
+        }
+
+        if (themeToggleButton) {
+            themeToggleButton.addEventListener('click', function () {
+                setTimeout(reapplySavedBubbleColors, 0);
+            });
+        }
+
+        // Pesan baru/realtime juga langsung memakai warna custom yang sama.
+        const bubbleStyleObserver = new MutationObserver(function () {
+            syncBubbleStyles();
+        });
+        const messagesRoot = document.querySelector('.messages');
+        if (messagesRoot) {
+            bubbleStyleObserver.observe(messagesRoot, { childList: true, subtree: true });
+        }
+        syncBubbleStyles();
 
         if (bubbleColorToggle && bubbleColorPanel) {
             bubbleColorToggle.addEventListener('click', function (event) {
@@ -7758,16 +8015,34 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
             });
         });
 
-        if (sentBubbleColor) {
-            sentBubbleColor.addEventListener('input', function () {
-                applyBubbleColor('sent', this.value);
+        function handleBubbleColorInput(input, target) {
+            if (!input) return;
+
+            const update = function () {
+                const selectedColor = input.value;
+
+                // Terapkan langsung ke CSS + simpan ke localStorage.
+                applyBubbleColor(target, selectedColor, true);
+            };
+
+            // Chrome/Edge biasanya memicu input saat warna digeser/dipilih.
+            input.addEventListener('input', update);
+
+            // change memastikan warna tetap tersimpan setelah popup color picker ditutup.
+            input.addEventListener('change', update);
+
+            // Jangan biarkan klik color picker dianggap sebagai klik menu lain.
+            input.addEventListener('click', function (event) {
+                event.stopPropagation();
+            });
+
+            input.addEventListener('pointerdown', function (event) {
+                event.stopPropagation();
             });
         }
-        if (receivedBubbleColor) {
-            receivedBubbleColor.addEventListener('input', function () {
-                applyBubbleColor('received', this.value);
-            });
-        }
+
+        handleBubbleColorInput(sentBubbleColor, 'sent');
+        handleBubbleColorInput(receivedBubbleColor, 'received');
         if (resetBubbleColors) {
             resetBubbleColors.addEventListener('click', function (event) {
                 event.preventDefault();
@@ -8850,6 +9125,428 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
                 1000
             );
         }
+
+
+        /* ==========================================================
+           REALTIME SIDEBAR CHAT
+           Polling daftar room setiap 1 detik.
+        ========================================================== */
+
+        /* ==========================================================
+           REALTIME SIDEBAR CHAT
+
+           Halaman show.blade.php harus memperbarui daftar room sendiri.
+           Index sudah mempunyai polling, tetapi halaman room sebelumnya
+           hanya melakukan polling presence + pesan. Akibatnya room baru
+           baru terlihat setelah login/refresh.
+
+           Endpoint updates() mengembalikan daftar room terbaru. Polling
+           dilakukan setiap 1 detik supaya perilakunya sama seperti index.
+        ========================================================== */
+
+        const realtimeChatList =
+            document.querySelector('.chat-list');
+
+        let realtimeSidebarBusy = false;
+
+        function escapeRealtimeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function createRealtimeChatItem(chat) {
+
+            const item = document.createElement('a');
+
+            const unreadCount =
+                Number(chat.unread_count || 0);
+
+            const hasUnread =
+                unreadCount > 0 &&
+                !chat.last_message_from_me;
+
+            const name =
+                chat.name || 'User';
+
+            const initial =
+                name.trim().charAt(0).toUpperCase() || '?';
+
+            item.href =
+                "{{ url('/whisperly/chat') }}/" +
+                encodeURIComponent(chat.booking_id);
+
+            item.className =
+                'chat-item' +
+                (hasUnread ? ' unread' : '');
+
+            item.dataset.name =
+                name.toLowerCase();
+
+            item.dataset.unread =
+                hasUnread ? '1' : '0';
+
+            item.dataset.bookingId =
+                chat.booking_id;
+
+            const avatarHtml = chat.avatar
+                ? `
+                    <img
+                        src="${escapeRealtimeHtml(chat.avatar)}"
+                        alt="Profil ${escapeRealtimeHtml(name)}"
+                        loading="lazy"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                    >
+                    <span
+                        style="display:none;width:100%;height:100%;align-items:center;justify-content:center;"
+                    >${escapeRealtimeHtml(initial)}</span>
+                `
+                : escapeRealtimeHtml(initial);
+
+            const preview =
+                chat.last_message ||
+                'Belum ada pesan';
+
+            let rightHtml = `
+                <div class="chat-time">
+                    ${escapeRealtimeHtml(chat.time || '')}
+                </div>
+            `;
+
+            if (chat.last_message_from_me) {
+                rightHtml += `
+                    <span style="font-size:11px;font-weight:700;color:#2388e8;white-space:nowrap;">
+                        ${chat.last_message_is_read ? '✓✓' : '✓'}
+                    </span>
+                `;
+            } else if (hasUnread) {
+                rightHtml += `
+                    <div class="unread-badge">
+                        ${unreadCount > 99 ? '99+' : unreadCount}
+                    </div>
+                `;
+            }
+
+            item.innerHTML = `
+                <div class="avatar">
+                    ${avatarHtml}
+                </div>
+
+                <div class="chat-info">
+                    <div class="chat-name">
+                        ${escapeRealtimeHtml(name.charAt(0).toUpperCase() + name.slice(1))}
+                    </div>
+
+                    <div class="chat-preview">
+                        ${escapeRealtimeHtml(preview)}
+                    </div>
+                </div>
+
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:7px;">
+                    ${rightHtml}
+                </div>
+            `;
+
+            return item;
+        }
+
+        function updateRealtimeChatItem(item, chat) {
+
+            const unreadCount =
+                Number(chat.unread_count || 0);
+
+            const hasUnread =
+                unreadCount > 0 &&
+                !chat.last_message_from_me;
+
+            const name =
+                chat.name || 'User';
+
+            item.dataset.name =
+                name.toLowerCase();
+
+            item.dataset.unread =
+                hasUnread ? '1' : '0';
+
+            item.classList.toggle(
+                'unread',
+                hasUnread
+            );
+
+            const nameElement =
+                item.querySelector('.chat-name');
+
+            const previewElement =
+                item.querySelector('.chat-preview');
+
+            const timeElement =
+                item.querySelector('.chat-time');
+
+            if (nameElement) {
+                nameElement.textContent =
+                    name.charAt(0).toUpperCase() +
+                    name.slice(1);
+            }
+
+            /*
+             * ROOM YANG SEDANG DIBUKA TIDAK BOLEH DITIMPA PREVIEW DARI
+             * ENDPOINT updates() setiap 1 detik.
+             *
+             * show.blade.php sendiri sudah menghitung preview dari pesan
+             * terakhir yang benar-benar ada di #messages lewat
+             * syncActiveSidebarPreview().
+             *
+             * Kalau kita menimpa lagi dari server di sini, preview bisa
+             * bolak-balik antara:
+             *   - teks pesan asli (mis. 'woik')
+             *   - string reply mentah dari server (mis. '↪ Anda: ""\nwoik')
+             *
+             * Itu yang membuat sidebar terlihat kedip-kedip setelah Ctrl+V.
+             */
+            const isActiveRoom = item.classList.contains('active');
+
+            if (!isActiveRoom) {
+                if (previewElement) {
+                    const nextPreview =
+                        chat.last_message ||
+                        'Belum ada pesan';
+
+                    if (previewElement.textContent !== nextPreview) {
+                        previewElement.textContent = nextPreview;
+                    }
+                }
+
+                if (timeElement) {
+                    const nextTime = chat.time || '';
+                    if (timeElement.textContent !== nextTime) {
+                        timeElement.textContent = nextTime;
+                    }
+                }
+            }
+
+            const right =
+                item.querySelector(
+                    ':scope > div:last-child'
+                );
+
+            if (right) {
+                const oldBadge =
+                    right.querySelector('.unread-badge');
+
+                let oldCheck =
+                    right.querySelector('[data-realtime-check]');
+
+                /* Fallback untuk markup lama agar centang server-side
+                   tidak dibuat ulang sebagai centang kedua. */
+                if (!oldCheck) {
+                    oldCheck = right.querySelector('span');
+                    if (oldCheck) {
+                        oldCheck.dataset.realtimeCheck = '1';
+                    }
+                }
+
+                /*
+                 * Jangan hapus/tambahkan elemen setiap polling.
+                 * Itu yang membuat item sidebar terlihat berkedip.
+                 * Kita hanya mengubah DOM kalau statusnya memang berubah.
+                 */
+                if (chat.last_message_from_me) {
+                    if (oldBadge) {
+                        oldBadge.remove();
+                    }
+
+                    const checkText =
+                        chat.last_message_is_read ? '✓✓' : '✓';
+
+                    if (oldCheck) {
+                        if (oldCheck.textContent !== checkText) {
+                            oldCheck.textContent = checkText;
+                        }
+                    } else {
+                        const check =
+                            document.createElement('span');
+
+                        check.dataset.realtimeCheck = '1';
+                        check.style.cssText =
+                            'font-size:11px;font-weight:700;color:#2388e8;white-space:nowrap;';
+                        check.textContent = checkText;
+                        right.appendChild(check);
+                    }
+                } else {
+                    if (oldCheck) {
+                        oldCheck.remove();
+                    }
+
+                    if (hasUnread) {
+                        const badgeText =
+                            unreadCount > 99
+                                ? '99+'
+                                : String(unreadCount);
+
+                        if (oldBadge) {
+                            if (oldBadge.textContent !== badgeText) {
+                                oldBadge.textContent = badgeText;
+                            }
+                        } else {
+                            const badge =
+                                document.createElement('div');
+
+                            badge.className = 'unread-badge';
+                            badge.textContent = badgeText;
+                            right.appendChild(badge);
+                        }
+                    } else if (oldBadge) {
+                        oldBadge.remove();
+                    }
+                }
+            }
+
+            const avatar =
+                item.querySelector('.avatar');
+
+            if (avatar && chat.avatar) {
+                const image =
+                    avatar.querySelector('img');
+
+                if (image && image.getAttribute('src') !== chat.avatar) {
+                    image.src = chat.avatar;
+                    image.style.display = '';
+                }
+            }
+        }
+
+        async function updateShowChatSidebar() {
+
+            if (
+                realtimeSidebarBusy ||
+                !realtimeChatList
+            ) {
+                return;
+            }
+
+            realtimeSidebarBusy = true;
+
+            try {
+
+                const response = await fetch(
+                    "{{ route('whisperly.chat.updates') }}",
+                    {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        cache: 'no-store'
+                    }
+                );
+
+                if (!response.ok) {
+                    return;
+                }
+
+                const data =
+                    await response.json();
+
+                if (!Array.isArray(data.chats)) {
+                    return;
+                }
+
+                const incomingIds =
+                    new Set(
+                        data.chats.map(
+                            chat => String(chat.booking_id)
+                        )
+                    );
+
+                /*
+                 * Hapus room yang memang sudah tidak dikirim endpoint.
+                 * Room aktif tidak disentuh agar halaman yang sedang dibuka
+                 * tidak tiba-tiba hilang saat user masih berada di dalamnya.
+                 */
+                realtimeChatList
+                    .querySelectorAll('.chat-item[data-booking-id]')
+                    .forEach(function (item) {
+
+                        const id =
+                            String(item.dataset.bookingId || '');
+
+                        if (
+                            id &&
+                            !incomingIds.has(id) &&
+                            !item.classList.contains('active')
+                        ) {
+                            item.remove();
+                        }
+                    });
+
+                const empty =
+                    realtimeChatList.querySelector(
+                        '.empty-chat'
+                    );
+
+                if (empty && data.chats.length) {
+                    empty.remove();
+                }
+
+                data.chats.forEach(function (chat) {
+
+                    let item =
+                        realtimeChatList.querySelector(
+                            `.chat-item[data-booking-id="${CSS.escape(String(chat.booking_id))}"]`
+                        );
+
+                    if (!item) {
+                        item = createRealtimeChatItem(chat);
+                        realtimeChatList.appendChild(item);
+                    } else {
+                        updateRealtimeChatItem(item, chat);
+                    }
+
+                    /*
+                     * Untuk room aktif, preview harus selalu berasal dari
+                     * DOM pesan yang sedang dibuka, bukan dari last_message
+                     * mentah endpoint updates().
+                     */
+                    if (item.classList.contains('active')) {
+                        syncActiveSidebarPreview();
+                    }
+
+                    /*
+                     * Pindahkan hanya jika posisi room memang berubah.
+                     * Sebelumnya prepend() dipanggil SETIAP 1 detik untuk
+                     * room yang sama. Reflow/repaint berulang inilah yang
+                     * membuat sidebar terlihat berkedip.
+                     */
+                    if (!item.classList.contains('active')) {
+                        const firstItem =
+                            realtimeChatList.querySelector('.chat-item');
+
+                        if (firstItem !== item) {
+                            realtimeChatList.prepend(item);
+                        }
+                    }
+                });
+
+                applyChatFilter();
+
+            } catch (error) {
+                /* Jangan hentikan chat jika polling gagal sementara. */
+            } finally {
+                realtimeSidebarBusy = false;
+            }
+        }
+
+        updateShowChatSidebar();
+
+        setInterval(
+            updateShowChatSidebar,
+            1000
+        );
+
+
 
     </script>
 

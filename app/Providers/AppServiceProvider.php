@@ -6,10 +6,9 @@ use App\Listeners\LogSuccessfullLogin;
 use App\Modules\bookings\Models\WhisperlyBooking;
 use App\Modules\talents\Models\talents;
 use Illuminate\Auth\Events\Login;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\View;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -26,56 +25,100 @@ class AppServiceProvider extends ServiceProvider
      * Bootstrap any application services.
      */
     public function boot(): void
-{
-    Event::listen(Login::class, LogSuccessfullLogin::class);
+    {
+        View::composer('*', function ($view) {
 
-    Paginator::useBootstrapFive();
+            $user = auth('whisperly')->user();
 
-    View::composer('whisperly.navbar', function ($view) {
+            $notifications = collect();
 
-        $notifications = collect();
-        $notificationCount = 0;
+            if ($user) {
 
-        if (Auth::guard('whisperly')->check()) {
-
-            $user = Auth::guard('whisperly')->user();
-
-            if ($user->role === 'talent') {
-
-                $talent = talents::where('pengguna_id', $user->id)->first();
-
-                if ($talent) {
-
-                    $notifications = WhisperlyBooking::with([
+                $query = WhisperlyBooking::query()
+                    ->with([
                         'pengguna',
                         'talent.pengguna',
                         'schedule',
                     ])
-                    ->where('talent_id', $talent->id)
-                    ->latest()
-                    ->get();
+                    ->whereNull('deleted_at')
+                    ->whereHas('schedule', function ($query) {
+                        $query->whereDate(
+                            'schedule_date',
+                            today(config('app.timezone'))
+                        );
+                    });
+
+                /*
+                |--------------------------------------------------------------------------
+                | PENGGUNA
+                |--------------------------------------------------------------------------
+                */
+
+                if ($user->role === 'user') {
+
+                    $query->where(
+                        'pengguna_id',
+                        $user->id
+                    );
                 }
 
-            } else {
+                /*
+                |--------------------------------------------------------------------------
+                | TALENT
+                |--------------------------------------------------------------------------
+                */
 
-                $notifications = WhisperlyBooking::with([
-                    'pengguna',
-                    'talent.pengguna',
-                    'schedule',
-                ])
-                ->where('pengguna_id', $user->id)
-                ->latest()
-                ->get();
+                elseif ($user->role === 'talent') {
+
+                    $talent = talents::query()
+                        ->where(
+                            'pengguna_id',
+                            $user->id
+                        )
+                        ->first();
+
+                    if ($talent) {
+
+                        $query->where(
+                            'talent_id',
+                            $talent->id
+                        );
+                    } else {
+
+                        $query->whereRaw('0 = 1');
+                    }
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | SINKRON STATUS + BUANG YANG SUDAH SELESAI
+                |--------------------------------------------------------------------------
+                */
+
+                $notifications = $query
+                    ->orderByDesc('created_at')
+                    ->get()
+                    ->map(function ($booking) {
+
+                        $booking->syncChatStatus();
+
+                        return $booking;
+                    })
+                    ->filter(function ($booking) {
+
+                        return $booking->chatStatus() !== 'completed';
+                    })
+                    ->values();
             }
 
-            $notificationCount = $notifications->count();
-        }
+            $view->with([
+                'notifications' => $notifications,
+                'notificationCount' => $notifications->count(),
+            ]);
+        });
 
-        $view->with([
-            'notifications' => $notifications,
-            'notificationCount' => $notificationCount,
-        ]);
+        Event::listen(Login::class, LogSuccessfullLogin::class);
 
-    });
-}
+        Paginator::useBootstrapFive();
+    }
 }
