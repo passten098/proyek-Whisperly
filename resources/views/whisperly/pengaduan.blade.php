@@ -8,6 +8,19 @@
     <title>Ruang Pengaduan | Whisperly</title>
 
     <style>
+                /* =====================================================
+   RAPATKAN HEADER MENFESS KE ISI PESAN
+===================================================== */
+
+.card > .card-head {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.card > .message {
+    margin-top: -27px !important;
+    padding-top: 0 !important;
+}
 
         * {
             box-sizing: border-box;
@@ -944,6 +957,15 @@
            AVATAR COMMENT
         ===================================================== */
 
+        .comment .avatar img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+
         .comment .avatar {
             width: 29px !important;
             height: 29px !important;
@@ -1222,9 +1244,75 @@
             }
 
             .comment-delete-form {
-                display: inline;
+                display: none !important;
                 margin: 0;
                 padding: 0;
+            }
+
+            .comment-text-action {
+                cursor: pointer;
+                -webkit-user-select: text;
+                user-select: text;
+            }
+
+            .comment-options-menu {
+                position: fixed;
+                z-index: 99999;
+                display: none;
+                min-width: 128px;
+                padding: 5px;
+                background: rgba(255,255,255,.97);
+                border: 1px solid rgba(82,74,67,.10);
+                border-radius: 14px;
+                box-shadow: 0 14px 34px rgba(45,53,53,.18), 0 2px 7px rgba(45,53,53,.06);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                overflow: hidden;
+            }
+
+            .comment-options-menu.open {
+                display: block;
+                animation: commentMenuIn .14s ease-out;
+            }
+
+            @keyframes commentMenuIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-4px) scale(.97);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+            }
+
+            .comment-options-menu button {
+                width: 100%;
+                min-height: 34px;
+                border: none;
+                background: transparent;
+                padding: 7px 10px;
+                border-radius: 9px;
+                text-align: left;
+                color: #514a44;
+                font-family: "Segoe UI", Arial, sans-serif;
+                font-size: 12px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: background .15s ease, color .15s ease;
+            }
+
+            .comment-options-menu button:hover {
+                background: #f4f1ed;
+            }
+
+            .comment-options-menu .comment-option-delete {
+                color: #a65b5b;
+            }
+
+            .comment-options-menu .comment-option-delete:hover {
+                background: #faeeee;
+                color: #963f3f;
             }
 
             .comment-edit-form {
@@ -3214,7 +3302,14 @@ Ceritakan apa saja yang ingin kamu sampaikan...
 
 
                                                     <div class="avatar">
-                                                        {{ $commentInitial }}
+                                                        @if ($comment->pengguna?->avatar_url)
+                                                            <img
+                                                                src="{{ $comment->pengguna->avatar_url }}"
+                                                                alt="{{ $commentUsername }}"
+                                                            >
+                                                        @else
+                                                            {{ $commentInitial }}
+                                                        @endif
                                                     </div>
 
 
@@ -3250,7 +3345,13 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                                                             @endif
 
 
-                                                            <span class="comment-text">
+                                                            <span
+                                                                class="comment-text comment-text-action"
+                                                                data-comment-action="1"
+                                                                data-comment-id="{{ $comment->id }}"
+                                                                data-delete-form="delete-comment-{{ $comment->id }}"
+                                                                data-can-delete="{{ $isCommentOwner ? '1' : '0' }}"
+                                                            >
                                                                 {{ $comment->komentar }}
                                                             </span>
 
@@ -3266,76 +3367,17 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                                                         >
                                                             Balas
                                                         </button>
-
                                                         @if ($isCommentOwner || $isCurrentAdmin)
-
-                                                            <div class="comment-actions">
-
-                                                                @if ($isCommentOwner)
-                                                                    <button
-                                                                        type="button"
-                                                                        class="comment-action edit-comment-button"
-                                                                        data-comment-id="{{ $comment->id }}"
-                                                                    >
-                                                                        ✏️ Edit
-                                                                    </button>
-                                                                @endif
-
-                                                                <form
-                                                                    method="POST"
-                                                                    action="{{ route('pengaduan.comments.destroy', $comment->id) }}"
-                                                                    class="comment-delete-form"
-                                                                    onsubmit="return confirm('Yakin ingin menghapus komentar ini?')"
-                                                                >
-                                                                    @csrf
-                                                                    @method('DELETE')
-
-                                                                    <button
-                                                                        type="submit"
-                                                                        class="comment-action"
-                                                                    >
-                                                                        🗑️ Hapus
-                                                                    </button>
-                                                                </form>
-
-                                                            </div>
-
-                                                        @endif
-
-                                                        @if ($isCommentOwner)
 
                                                             <form
                                                                 method="POST"
-                                                                action="{{ route('pengaduan.comments.update', $comment->id) }}"
-                                                                class="comment-edit-form"
-                                                                id="edit-comment-{{ $comment->id }}"
+                                                                action="{{ route('pengaduan.comments.destroy', $comment->id) }}"
+                                                                class="comment-delete-form"
+                                                                id="delete-comment-{{ $comment->id }}"
+                                                                onsubmit="return confirm('Yakin ingin menghapus komentar ini?')"
                                                             >
                                                                 @csrf
-                                                                @method('PUT')
-
-                                                                <textarea
-                                                                    name="komentar"
-                                                                    required
-                                                                >{{ $comment->komentar }}</textarea>
-
-                                                                <div class="comment-edit-buttons">
-
-                                                                    <button
-                                                                        type="submit"
-                                                                        class="comment-edit-save"
-                                                                    >
-                                                                        Simpan
-                                                                    </button>
-
-                                                                    <button
-                                                                        type="button"
-                                                                        class="comment-edit-cancel"
-                                                                        data-comment-id="{{ $comment->id }}"
-                                                                    >
-                                                                        Batal
-                                                                    </button>
-
-                                                                </div>
+                                                                @method('DELETE')
                                                             </form>
 
                                                         @endif
@@ -3436,7 +3478,14 @@ Ceritakan apa saja yang ingin kamu sampaikan...
 
 
                                                                 <div class="avatar">
-                                                                    {{ $replyInitial }}
+                                                                    @if ($reply->pengguna?->avatar_url)
+                                                                        <img
+                                                                            src="{{ $reply->pengguna->avatar_url }}"
+                                                                            alt="{{ $replyUsername }}"
+                                                                        >
+                                                                    @else
+                                                                        {{ $replyInitial }}
+                                                                    @endif
                                                                 </div>
 
 
@@ -3472,7 +3521,13 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                                                                         @endif
 
 
-                                                                        <span class="comment-text">
+                                                                        <span
+                                                                            class="comment-text comment-text-action"
+                                                                            data-comment-action="1"
+                                                                            data-comment-id="{{ $reply->id }}"
+                                                                            data-delete-form="delete-comment-{{ $reply->id }}"
+                                                                            data-can-delete="{{ $isReplyOwner ? '1' : '0' }}"
+                                                                        >
                                                                             {{ $reply->komentar }}
                                                                         </span>
 
@@ -3488,76 +3543,17 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                                                                     >
                                                                         Balas
                                                                     </button>
-
                                                                     @if ($isReplyOwner || $isCurrentAdmin)
-
-                                                                        <div class="comment-actions">
-
-                                                                            @if ($isReplyOwner)
-                                                                                <button
-                                                                                    type="button"
-                                                                                    class="comment-action edit-comment-button"
-                                                                                    data-comment-id="{{ $reply->id }}"
-                                                                                >
-                                                                                    ✏️ Edit
-                                                                                </button>
-                                                                            @endif
-
-                                                                            <form
-                                                                                method="POST"
-                                                                                action="{{ route('pengaduan.comments.destroy', $reply->id) }}"
-                                                                                class="comment-delete-form"
-                                                                                onsubmit="return confirm('Yakin ingin menghapus komentar ini?')"
-                                                                            >
-                                                                                @csrf
-                                                                                @method('DELETE')
-
-                                                                                <button
-                                                                                    type="submit"
-                                                                                    class="comment-action"
-                                                                                >
-                                                                                    🗑️ Hapus
-                                                                                </button>
-                                                                            </form>
-
-                                                                        </div>
-
-                                                                    @endif
-
-                                                                    @if ($isReplyOwner)
 
                                                                         <form
                                                                             method="POST"
-                                                                            action="{{ route('pengaduan.comments.update', $reply->id) }}"
-                                                                            class="comment-edit-form"
-                                                                            id="edit-comment-{{ $reply->id }}"
+                                                                            action="{{ route('pengaduan.comments.destroy', $reply->id) }}"
+                                                                            class="comment-delete-form"
+                                                                            id="delete-comment-{{ $reply->id }}"
+                                                                            onsubmit="return confirm('Yakin ingin menghapus komentar ini?')"
                                                                         >
                                                                             @csrf
-                                                                            @method('PUT')
-
-                                                                            <textarea
-                                                                                name="komentar"
-                                                                                required
-                                                                            >{{ $reply->komentar }}</textarea>
-
-                                                                            <div class="comment-edit-buttons">
-
-                                                                                <button
-                                                                                    type="submit"
-                                                                                    class="comment-edit-save"
-                                                                                >
-                                                                                    Simpan
-                                                                                </button>
-
-                                                                                <button
-                                                                                    type="button"
-                                                                                    class="comment-edit-cancel"
-                                                                                    data-comment-id="{{ $reply->id }}"
-                                                                                >
-                                                                                    Batal
-                                                                                </button>
-
-                                                                            </div>
+                                                                            @method('DELETE')
                                                                         </form>
 
                                                                     @endif
@@ -4195,62 +4191,162 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // =====================================================
-// EDIT COMMENT
+// MENU KOMENTAR - DOUBLE CLICK
 // =====================================================
 
-document.querySelectorAll('.edit-comment-button').forEach(function (button) {
+(function () {
 
-    button.addEventListener('click', function () {
+    function initCommentMenu() {
 
-        const commentId = this.dataset.commentId;
-
-        const form = document.getElementById(
-            'edit-comment-' + commentId
-        );
-
-        if (!form) {
+        if (document.querySelector('.comment-options-menu')) {
             return;
         }
 
-        form.style.display = 'block';
+        const menu = document.createElement('div');
+        menu.className = 'comment-options-menu';
+        menu.innerHTML = `
+            <button type="button" class="comment-option-copy">Salin</button>
+            <button type="button" class="comment-option-delete">Hapus</button>
+        `;
 
-        const textarea = form.querySelector('textarea');
+        document.body.appendChild(menu);
 
-        if (textarea) {
-            textarea.focus();
+        let activeComment = null;
 
-            textarea.setSelectionRange(
-                textarea.value.length,
-                textarea.value.length
-            );
-        }
-    });
-
-});
-
-
-// =====================================================
-// CANCEL EDIT COMMENT
-// =====================================================
-
-document.querySelectorAll('.comment-edit-cancel').forEach(function (button) {
-
-    button.addEventListener('click', function () {
-
-        const commentId = this.dataset.commentId;
-
-        const form = document.getElementById(
-            'edit-comment-' + commentId
-        );
-
-        if (!form) {
-            return;
+        function closeMenu() {
+            menu.classList.remove('open');
+            menu.style.display = 'none';
+            activeComment = null;
         }
 
-        form.style.display = 'none';
-    });
+        function openMenu(comment, x, y) {
 
-});
+            activeComment = comment;
+
+            const deleteButton =
+                menu.querySelector('.comment-option-delete');
+
+            const canDelete =
+                comment.getAttribute('data-can-delete') === '1';
+
+            deleteButton.style.display =
+                canDelete ? 'block' : 'none';
+
+            menu.style.display = 'block';
+            menu.classList.add('open');
+
+            const rect = menu.getBoundingClientRect();
+
+            let left = x + 6;
+            let top = y + 6;
+
+            if (left + rect.width > window.innerWidth - 10) {
+                left = window.innerWidth - rect.width - 10;
+            }
+
+            if (top + rect.height > window.innerHeight - 10) {
+                top = window.innerHeight - rect.height - 10;
+            }
+
+            menu.style.left = Math.max(10, left) + 'px';
+            menu.style.top = Math.max(10, top) + 'px';
+        }
+
+        document.addEventListener('dblclick', function (e) {
+
+            const comment = e.target.closest('.comment-text');
+
+            if (!comment || !comment.hasAttribute('data-comment-action')) {
+                return;
+            }
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            openMenu(comment, e.clientX, e.clientY);
+
+        }, true);
+
+        menu.querySelector('.comment-option-copy')
+            .addEventListener('click', async function (e) {
+
+                e.preventDefault();
+                e.stopPropagation();
+
+                if (!activeComment) {
+                    return;
+                }
+
+                const text = activeComment.textContent.trim();
+
+                try {
+                    await navigator.clipboard.writeText(text);
+                } catch (error) {
+                    const helper = document.createElement('textarea');
+                    helper.value = text;
+                    helper.style.position = 'fixed';
+                    helper.style.left = '-9999px';
+                    helper.style.opacity = '0';
+                    document.body.appendChild(helper);
+                    helper.select();
+                    document.execCommand('copy');
+                    helper.remove();
+                }
+
+                closeMenu();
+            });
+
+        menu.querySelector('.comment-option-delete')
+            .addEventListener('click', function (e) {
+
+                e.preventDefault();
+                e.stopPropagation();
+
+                if (!activeComment) {
+                    return;
+                }
+
+                const formId =
+                    activeComment.getAttribute('data-delete-form');
+
+                const form = document.getElementById(formId);
+
+                closeMenu();
+
+                if (!form) {
+                    return;
+                }
+
+                if (typeof form.requestSubmit === 'function') {
+                    form.requestSubmit();
+                } else {
+                    form.submit();
+                }
+            });
+
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.comment-options-menu')) {
+                closeMenu();
+            }
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                closeMenu();
+            }
+        });
+
+        window.addEventListener('scroll', closeMenu, true);
+        window.addEventListener('resize', closeMenu);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initCommentMenu);
+    } else {
+        initCommentMenu();
+    }
+
+})();
 
 
 </script>

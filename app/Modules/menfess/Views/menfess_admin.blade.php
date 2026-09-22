@@ -681,6 +681,11 @@
         ========================================= */
 
         .message {
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
             margin: 0 0 12px 0 !important;
             padding: 0 !important;
 
@@ -919,6 +924,20 @@
 
             flex: 0 0 27px !important;
             box-sizing: border-box !important;
+            overflow: hidden !important;
+        }
+
+        .comments-section .comment-avatar img {
+            width: 100% !important;
+            height: 100% !important;
+            display: block !important;
+            object-fit: cover !important;
+            border-radius: 50% !important;
+        }
+
+        .comments-section .comment-avatar.has-photo {
+            background: transparent !important;
+            border-color: rgba(255,255,255,.9) !important;
         }
 
         .comments-section .comment-user-wrap {
@@ -2145,6 +2164,50 @@
             text-align: left !important;
         }
 
+        /* =========================================
+           MENU DOUBLE KLIK / DOUBLE TAP BALASAN
+        ========================================= */
+        .reply-context-menu {
+            position: fixed !important;
+            z-index: 999999 !important;
+            display: none !important;
+            min-width: 150px !important;
+            padding: 6px !important;
+            background: #ffffff !important;
+            border: 1px solid rgba(0, 0, 0, .10) !important;
+            border-radius: 12px !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .18) !important;
+        }
+
+        .reply-context-menu.show {
+            display: block !important;
+        }
+
+        .reply-context-menu button {
+            display: block !important;
+            width: 100% !important;
+            padding: 10px 12px !important;
+            border: 0 !important;
+            border-radius: 8px !important;
+            background: transparent !important;
+            color: #303735 !important;
+            font-size: 14px !important;
+            text-align: left !important;
+            cursor: pointer !important;
+        }
+
+        .reply-context-menu button:hover {
+            background: #f2f4f3 !important;
+        }
+
+        .reply-context-menu .delete-reply-option {
+            color: #c0392b !important;
+        }
+
+        .reply-context-menu .delete-reply-option:hover {
+            background: #fff0ee !important;
+        }
+
 </style>
 </head>
 
@@ -2657,6 +2720,25 @@
                                                         )
                                                     );
 
+                                                // Foto profil orang yang memberikan komentar.
+                                                $commentPhoto =
+                                                    $comment->pengguna?->avatar_url
+                                                    ?? $comment->pengguna?->photo
+                                                    ?? $comment->pengguna?->foto
+                                                    ?? null;
+
+                                                if ($commentPhoto) {
+                                                    if (preg_match('/^(https?:\/\/|\/\/)/i', $commentPhoto)) {
+                                                        $commentPhotoUrl = $commentPhoto;
+                                                    } elseif (str_starts_with($commentPhoto, 'storage/')) {
+                                                        $commentPhotoUrl = asset($commentPhoto);
+                                                    } else {
+                                                        $commentPhotoUrl = asset('storage/' . ltrim($commentPhoto, '/'));
+                                                    }
+                                                } else {
+                                                    $commentPhotoUrl = null;
+                                                }
+
                                                 $isTalent =
                                                     $commentRole === 'talent';
 
@@ -2693,12 +2775,22 @@
                                             <div
                                                 class="comment-item"
                                                 data-comment-id="{{ $comment->id }}"
+                                                data-own="{{ (int) $comment->pengguna_id === (int) auth('whisperly')->id() ? '1' : '0' }}"
                                             >
 
                                                 <div class="comment-top">
 
-                                                    <div class="comment-avatar">
-                                                        {{ strtoupper(mb_substr($commentUsername, 0, 1)) }}
+                                                    <div class="comment-avatar {{ $commentPhotoUrl ? 'has-photo' : '' }}">
+                                                        @if ($commentPhotoUrl)
+                                                            <img
+                                                                src="{{ $commentPhotoUrl }}"
+                                                                alt="Foto profil {{ $commentUsername }}"
+                                                                loading="lazy"
+                                                                onerror="this.style.display='none'; this.parentElement.classList.remove('has-photo'); this.parentElement.innerHTML='{{ strtoupper(mb_substr($commentUsername, 0, 1)) }}';"
+                                                            >
+                                                        @else
+                                                            {{ strtoupper(mb_substr($commentUsername, 0, 1)) }}
+                                                        @endif
                                                     </div>
 
                                                     <div class="comment-user-wrap">
@@ -2824,18 +2916,47 @@
                                                                 $replyIsAdmin =
                                                                     $replyRole === 'admin';
 
+                                                                // Foto profil orang yang memberikan balasan.
+                                                                $replyPhoto =
+                                                                    $reply->pengguna?->avatar_url
+                                                                    ?? $reply->pengguna?->photo
+                                                                    ?? $reply->pengguna?->foto
+                                                                    ?? null;
+
+                                                                if ($replyPhoto) {
+                                                                    if (preg_match('/^(https?:\/\/|\/\/)/i', $replyPhoto)) {
+                                                                        $replyPhotoUrl = $replyPhoto;
+                                                                    } elseif (str_starts_with($replyPhoto, 'storage/')) {
+                                                                        $replyPhotoUrl = asset($replyPhoto);
+                                                                    } else {
+                                                                        $replyPhotoUrl = asset('storage/' . ltrim($replyPhoto, '/'));
+                                                                    }
+                                                                } else {
+                                                                    $replyPhotoUrl = null;
+                                                                }
+
                                                             @endphp
 
 
                                                             <div
                                                                 class="comment-item"
                                                                 data-comment-id="{{ $reply->id }}"
+                                                                data-own="{{ (int) $reply->pengguna_id === (int) auth('whisperly')->id() ? '1' : '0' }}"
                                                             >
 
                                                                 <div class="comment-top">
 
-                                                                    <div class="comment-avatar">
-                                                                        {{ strtoupper(mb_substr($replyUsername, 0, 1)) }}
+                                                                    <div class="comment-avatar {{ $replyPhotoUrl ? 'has-photo' : '' }}">
+                                                                        @if ($replyPhotoUrl)
+                                                                            <img
+                                                                                src="{{ $replyPhotoUrl }}"
+                                                                                alt="Foto profil {{ $replyUsername }}"
+                                                                                loading="lazy"
+                                                                                onerror="this.style.display='none'; this.parentElement.classList.remove('has-photo'); this.parentElement.innerHTML='{{ strtoupper(mb_substr($replyUsername, 0, 1)) }}';"
+                                                                            >
+                                                                        @else
+                                                                            {{ strtoupper(mb_substr($replyUsername, 0, 1)) }}
+                                                                        @endif
                                                                     </div>
 
                                                                     <div class="comment-user-wrap">
@@ -2944,7 +3065,7 @@
                                         <textarea
                                             name="komentar"
                                             class="comment-input"
-                                            placeholder="Tulis balasan sebagai admin..."
+                                            placeholder="Tulis balasan..."
                                             required
                                         ></textarea>
 
@@ -3016,6 +3137,15 @@
     <!-- =========================================
          SCRIPT
     ========================================= -->
+
+
+    <!-- =========================================
+         MENU DOUBLE KLIK / DOUBLE TAP BALASAN
+    ========================================= -->
+    <div id="replyContextMenu" class="reply-context-menu">
+        <button type="button" id="copyReplyButton">📋 Salin</button>
+        <button type="button" id="deleteReplyButton" class="delete-reply-option" style="display:none;">🗑 Hapus</button>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -3485,6 +3615,189 @@
                     );
 
                 });
+
+
+            /* =========================================
+               DOUBLE KLIK / DOUBLE TAP BALASAN
+               Orang lain  = Salin
+               Balasan kita = Salin + Hapus
+            ========================================= */
+
+            const replyContextMenu =
+                document.getElementById('replyContextMenu');
+
+            const copyReplyButton =
+                document.getElementById('copyReplyButton');
+
+            const deleteReplyButton =
+                document.getElementById('deleteReplyButton');
+
+            let selectedReply = null;
+
+            function closeReplyContextMenu() {
+                if (replyContextMenu) {
+                    replyContextMenu.classList.remove('show');
+                }
+                selectedReply = null;
+            }
+
+            function getReplyText(commentItem) {
+                if (!commentItem) return '';
+
+                const textElement =
+                    commentItem.querySelector(':scope > .comment-text');
+
+                return textElement
+                    ? textElement.textContent.trim()
+                    : '';
+            }
+
+            document.addEventListener('dblclick', function (e) {
+                const commentItem =
+                    e.target.closest('.comments-section .comment-item');
+
+                if (!commentItem) return;
+
+                if (
+                    e.target.closest('button') ||
+                    e.target.closest('a') ||
+                    e.target.closest('textarea') ||
+                    e.target.closest('input')
+                ) {
+                    return;
+                }
+
+                const text = getReplyText(commentItem);
+                if (!text) return;
+
+                e.preventDefault();
+
+                selectedReply = commentItem;
+
+                const isMine =
+                    commentItem.getAttribute('data-own') === '1';
+
+                if (deleteReplyButton) {
+                    deleteReplyButton.style.display =
+                        isMine ? 'block' : 'none';
+                }
+
+                let x = e.clientX;
+                let y = e.clientY;
+
+                const menuWidth = 145;
+                const menuHeight = isMine ? 92 : 50;
+
+                if (x + menuWidth > window.innerWidth) {
+                    x = window.innerWidth - menuWidth - 10;
+                }
+
+                if (y + menuHeight > window.innerHeight) {
+                    y = window.innerHeight - menuHeight - 10;
+                }
+
+                x = Math.max(10, x);
+                y = Math.max(10, y);
+
+                replyContextMenu.style.left = x + 'px';
+                replyContextMenu.style.top = y + 'px';
+                replyContextMenu.classList.add('show');
+            });
+
+            if (copyReplyButton) {
+                copyReplyButton.addEventListener('click', async function () {
+                    if (!selectedReply) return;
+
+                    const text = getReplyText(selectedReply);
+                    if (!text) {
+                        closeReplyContextMenu();
+                        return;
+                    }
+
+                    try {
+                        if (navigator.clipboard && window.isSecureContext) {
+                            await navigator.clipboard.writeText(text);
+                        } else {
+                            const temp = document.createElement('textarea');
+                            temp.value = text;
+                            temp.style.position = 'fixed';
+                            temp.style.left = '-9999px';
+                            document.body.appendChild(temp);
+                            temp.focus();
+                            temp.select();
+                            document.execCommand('copy');
+                            temp.remove();
+                        }
+                    } catch (error) {
+                        console.error('Gagal menyalin balasan:', error);
+                    }
+
+                    closeReplyContextMenu();
+                });
+            }
+
+            if (deleteReplyButton) {
+                deleteReplyButton.addEventListener('click', function () {
+                    if (!selectedReply) return;
+
+                    const isMine =
+                        selectedReply.getAttribute('data-own') === '1';
+
+                    if (!isMine) {
+                        closeReplyContextMenu();
+                        return;
+                    }
+
+                    const commentId =
+                        selectedReply.getAttribute('data-comment-id');
+
+                    if (!commentId) {
+                        closeReplyContextMenu();
+                        return;
+                    }
+
+                    const confirmed = confirm(
+                        'Yakin ingin menghapus balasan ini?'
+                    );
+
+                    if (!confirmed) return;
+
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action =
+                        "{{ url('/pengaduan/comments') }}/" + commentId;
+
+                    const csrf = document.createElement('input');
+                    csrf.type = 'hidden';
+                    csrf.name = '_token';
+                    csrf.value = "{{ csrf_token() }}";
+                    form.appendChild(csrf);
+
+                    const method = document.createElement('input');
+                    method.type = 'hidden';
+                    method.name = '_method';
+                    method.value = 'DELETE';
+                    form.appendChild(method);
+
+                    document.body.appendChild(form);
+                    form.submit();
+                });
+            }
+
+            document.addEventListener('click', function (e) {
+                if (
+                    replyContextMenu &&
+                    !replyContextMenu.contains(e.target)
+                ) {
+                    closeReplyContextMenu();
+                }
+            });
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    closeReplyContextMenu();
+                }
+            });
 
         });
     </script>
