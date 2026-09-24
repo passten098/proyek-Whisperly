@@ -3377,6 +3377,8 @@
 
                 <!-- NOTIFICATION -->
 
+                @if ($currentUser->role !== 'admin')
+
 <div class="notification-wrapper">
 
     <button
@@ -3522,6 +3524,9 @@
     </div>
 
 </div>
+
+
+                @endif
 
 
                 <!-- USER -->

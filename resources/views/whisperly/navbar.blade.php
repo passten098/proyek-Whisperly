@@ -28,7 +28,6 @@
         box-sizing: border-box;
     }
 
-
     /* =========================================================
        NAVBAR
     ========================================================== */
@@ -62,7 +61,6 @@
             Helvetica,
             sans-serif;
     }
-
 
     /* =========================================================
        BRAND
@@ -117,11 +115,8 @@
 
     .whisperly-brand:hover {
         color: #ded5f6;
-
-        transform:
-            translateY(-1px);
+        transform: translateY(-1px);
     }
-
 
     /* =========================================================
        RIGHT NAVIGATION
@@ -135,7 +130,6 @@
 
         flex-shrink: 0;
     }
-
 
     /* =========================================================
        USER PROFILE LINK
@@ -167,7 +161,6 @@
 
         outline-offset: 3px;
     }
-
 
     /* =========================================================
        USER PILL
@@ -214,7 +207,6 @@
         transform:
             translateY(-1px);
     }
-
 
     /* =========================================================
        USER AVATAR
@@ -276,7 +268,6 @@
         border-radius: 50% !important;
     }
 
-
     /* =========================================================
        USER INFORMATION
     ========================================================== */
@@ -321,7 +312,6 @@
         text-transform: uppercase;
     }
 
-
     /* =========================================================
        MENU WRAPPER
     ========================================================== */
@@ -329,7 +319,6 @@
     .whisperly-menu-wrapper {
         position: relative;
     }
-
 
     /* =========================================================
        MENU BUTTON
@@ -395,7 +384,6 @@
             rgba(0, 0, 0, 0.20);
     }
 
-
     /* =========================================================
        THREE DOTS
     ========================================================== */
@@ -449,7 +437,6 @@
             translate(-3px, 0)
             rotate(-45deg);
     }
-
 
     /* =========================================================
        DROPDOWN
@@ -517,7 +504,6 @@
             scale(1);
     }
 
-
     /* =========================================================
        DECORATIVE GLOW
     ========================================================== */
@@ -565,7 +551,6 @@
 
         pointer-events: none;
     }
-
 
     /* =========================================================
        MINI PROFILE
@@ -684,7 +669,6 @@
         text-transform: uppercase;
     }
 
-
     /* =========================================================
        DIVIDER
     ========================================================== */
@@ -704,7 +688,6 @@
 
         z-index: 2;
     }
-
 
     /* =========================================================
        DROPDOWN ITEM
@@ -756,7 +739,6 @@
             translateX(3px);
     }
 
-
     /* =========================================================
        ACTIVE LINE
     ========================================================== */
@@ -798,7 +780,6 @@
         transform:
             scaleY(1);
     }
-
 
     /* =========================================================
        ICON BOX
@@ -854,7 +835,6 @@
             scale(1.06);
     }
 
-
     /* =========================================================
        TEXT
     ========================================================== */
@@ -898,7 +878,6 @@
             rgba(255, 255, 255, 0.54);
     }
 
-
     /* =========================================================
        ARROW
     ========================================================== */
@@ -925,7 +904,6 @@
         transform:
             translateX(4px);
     }
-
 
     /* =========================================================
        EDIT PROFILE SPECIAL
@@ -965,7 +943,6 @@
         border-color:
             rgba(220, 184, 102, 0.28);
     }
-
 
     /* =========================================================
        LOGOUT
@@ -1044,7 +1021,6 @@
         height: 18px;
     }
 
-
     /* =========================================================
        LOGOUT DIVIDER
     ========================================================== */
@@ -1061,9 +1037,8 @@
             rgba(255, 255, 255, 0.07);
     }
 
-        /* =========================================================
+    /* =========================================================
        CHAT THEME - LIGHT MODE
-       Mengikuti tema chat dari show.blade.php
     ========================================================== */
 
     body.theme-light .whisperly-nav {
@@ -1079,11 +1054,6 @@
             rgba(0, 0, 0, 0.08);
     }
 
-
-    /* =========================================================
-       BRAND - LIGHT
-    ========================================================== */
-
     body.theme-light .whisperly-brand {
         color: #17233f;
     }
@@ -1091,11 +1061,6 @@
     body.theme-light .whisperly-brand:hover {
         color: #334a78;
     }
-
-
-    /* =========================================================
-       USER PROFILE - LIGHT
-    ========================================================== */
 
     body.theme-light .whisperly-user-pill {
         border-color:
@@ -1115,7 +1080,6 @@
             rgba(0, 0, 0, 0.15);
     }
 
-
     body.theme-light .whisperly-username {
         color:
             rgba(23, 35, 63, 0.92);
@@ -1125,11 +1089,6 @@
         color:
             rgba(23, 35, 63, 0.45);
     }
-
-
-    /* =========================================================
-       MENU BUTTON - LIGHT
-    ========================================================== */
 
     body.theme-light .whisperly-menu-button {
         color: #17233f;
@@ -1165,11 +1124,6 @@
             rgba(0, 0, 0, 0.10);
     }
 
-
-    /* =========================================================
-       DROPDOWN - LIGHT
-    ========================================================== */
-
     body.theme-light .whisperly-dropdown {
         border-color:
             rgba(0, 0, 0, 0.10);
@@ -1186,11 +1140,6 @@
             rgba(0, 0, 0, 0.18);
     }
 
-
-    /* =========================================================
-       DROPDOWN DECORATIVE GLOW - LIGHT
-    ========================================================== */
-
     body.theme-light .whisperly-dropdown::before {
         background:
             rgba(201, 185, 239, 0.16);
@@ -1200,11 +1149,6 @@
         background:
             rgba(231, 162, 182, 0.10);
     }
-
-
-    /* =========================================================
-       MINI PROFILE - LIGHT
-    ========================================================== */
 
     body.theme-light .whisperly-menu-profile-name {
         color:
@@ -1216,21 +1160,11 @@
             rgba(23, 35, 63, 0.42);
     }
 
-
-    /* =========================================================
-       DIVIDER - LIGHT
-    ========================================================== */
-
     body.theme-light .whisperly-divider,
     body.theme-light .whisperly-logout-divider {
         background:
             rgba(0, 0, 0, 0.08);
     }
-
-
-    /* =========================================================
-       DROPDOWN ITEM - LIGHT
-    ========================================================== */
 
     body.theme-light .whisperly-dropdown-item {
         color: #17233f;
@@ -1240,11 +1174,6 @@
         background:
             rgba(0, 0, 0, 0.045);
     }
-
-
-    /* =========================================================
-       ICON BOX - LIGHT
-    ========================================================== */
 
     body.theme-light .whisperly-dropdown-icon {
         color: #6675a0;
@@ -1268,11 +1197,6 @@
             rgba(231, 162, 182, 0.20);
     }
 
-
-    /* =========================================================
-       DROPDOWN TEXT - LIGHT
-    ========================================================== */
-
     body.theme-light .whisperly-dropdown-text strong {
         color:
             rgba(23, 35, 63, 0.95);
@@ -1290,11 +1214,6 @@
             rgba(23, 35, 63, 0.66);
     }
 
-
-    /* =========================================================
-       ARROW - LIGHT
-    ========================================================== */
-
     body.theme-light .whisperly-dropdown-arrow {
         color:
             rgba(23, 35, 63, 0.30);
@@ -1305,11 +1224,6 @@
     .whisperly-dropdown-arrow {
         color: #b06d86;
     }
-
-
-    /* =========================================================
-       LOGOUT - LIGHT
-    ========================================================== */
 
     body.theme-light .whisperly-logout {
         color: #b06d86;
@@ -1336,6 +1250,7 @@
 
         .whisperly-nav {
             pointer-events: auto;
+
             padding:
                 13px
                 24px;
@@ -1349,7 +1264,6 @@
             width: 315px;
         }
     }
-
 
     /* =========================================================
        MOBILE
@@ -1396,7 +1310,6 @@
         }
     }
 
-
     /* =========================================================
        SMALL MOBILE
     ========================================================== */
@@ -1437,7 +1350,6 @@
         }
     }
 
-
     /* =========================================================
        EXTRA SMALL PHONE
     ========================================================== */
@@ -1475,215 +1387,256 @@
     }
 
     /* =========================================================
-        NOTIFICATION
-        ========================================================= */
+       NOTIFICATION
+       
+       CSS tetap dipertahankan karena notification masih
+       digunakan oleh USER dan TALENT.
+       
+       ADMIN TIDAK MERENDER HTML notification.
+    ========================================================== */
 
-        .notification-wrapper {
-            position: relative;
-            margin-right: 2px;
-        }
+    .notification-wrapper {
+        position: relative;
+        margin-right: 2px;
+    }
 
-        .notification-btn {
-            width: 45px;
-            height: 45px;
+    .notification-btn {
+        width: 45px;
+        height: 45px;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 15px;
+        border:
+            1px solid
+            rgba(255, 255, 255, 0.12);
 
-            background: rgba(255, 255, 255, 0.055);
+        border-radius: 15px;
 
-            color: #fffaf7;
+        background:
+            rgba(255, 255, 255, 0.055);
 
-            cursor: pointer;
+        color: #fffaf7;
 
-            position: relative;
+        cursor: pointer;
 
-            font-size: 19px;
+        position: relative;
 
-            transition:
-                background 0.25s ease,
-                border-color 0.25s ease,
-                transform 0.25s ease;
-        }
+        font-size: 19px;
 
-        .notification-btn:hover {
-            background: rgba(201, 185, 239, 0.13);
-            border-color: rgba(201, 185, 239, 0.34);
-            transform: translateY(-2px);
-        }
+        transition:
+            background 0.25s ease,
+            border-color 0.25s ease,
+            transform 0.25s ease;
+    }
 
-        .badge {
-            position: absolute;
+    .notification-btn:hover {
+        background:
+            rgba(201, 185, 239, 0.13);
 
-            top: -5px;
-            right: -5px;
+        border-color:
+            rgba(201, 185, 239, 0.34);
 
-            min-width: 18px;
-            height: 18px;
+        transform:
+            translateY(-2px);
+    }
 
-            padding: 0 4px;
+    .badge {
+        position: absolute;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        top: -5px;
+        right: -5px;
 
-            border-radius: 50%;
+        min-width: 18px;
+        height: 18px;
 
-            background: #ff3b30;
-            color: #fff;
+        padding: 0 4px;
 
-            font: 700 10px Arial, sans-serif;
-        }
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-        .notification-dropdown {
-            position: absolute;
+        border-radius: 50%;
 
-            top: calc(100% + 14px);
-            right: 0;
+        background: #ff3b30;
+        color: #fff;
 
-            width: 320px;
-            max-height: 400px;
+        font:
+            700 10px Arial,
+            sans-serif;
+    }
 
-            overflow-y: auto;
+    .notification-dropdown {
+        position: absolute;
 
-            padding: 10px;
+        top: calc(100% + 14px);
+        right: 0;
 
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 18px;
+        width: 320px;
+        max-height: 400px;
 
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(37, 35, 65, 0.97),
-                    rgba(14, 13, 30, 0.99)
-                );
+        overflow-y: auto;
 
-            box-shadow:
-                0 30px 80px rgba(0, 0, 0, 0.48);
+        padding: 10px;
 
-            z-index: 10000;
+        border:
+            1px solid
+            rgba(255, 255, 255, 0.12);
 
-            display: none;
-        }
+        border-radius: 18px;
 
-        .notification-dropdown.show {
-            display: block;
-        }
+        background:
+            linear-gradient(
+                145deg,
+                rgba(37, 35, 65, 0.97),
+                rgba(14, 13, 30, 0.99)
+            );
 
-        .notification-item {
-            padding: 13px;
+        box-shadow:
+            0 30px 80px
+            rgba(0, 0, 0, 0.48);
 
-            border-bottom:
-                1px solid
-                rgba(255, 255, 255, 0.07);
+        z-index: 10000;
 
-            color: rgba(255, 250, 247, 0.85);
+        display: none;
+    }
 
-            font: 400 11px Arial, sans-serif;
+    .notification-dropdown.show {
+        display: block;
+    }
 
-            line-height: 1.5;
-        }
+    .notification-item {
+        padding: 13px;
 
-        .notification-item:last-child {
-            border-bottom: none;
-        }
+        border-bottom:
+            1px solid
+            rgba(255, 255, 255, 0.07);
 
-        .notification-item strong {
-            color: #fffaf7;
-        }
+        color:
+            rgba(255, 250, 247, 0.85);
 
-        .chat-status-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+        font:
+            400 11px Arial,
+            sans-serif;
 
-            padding: 8px 14px;
+        line-height: 1.5;
+    }
 
-            border-radius: 10px;
+    .notification-item:last-child {
+        border-bottom: none;
+    }
 
-            font: 600 11px Arial, sans-serif;
+    .notification-item strong {
+        color: #fffaf7;
+    }
 
-            text-decoration: none;
+    .chat-status-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
 
-            transition: .2s ease;
-        }
+        padding: 8px 14px;
 
-        .chat-status-waiting {
-            color: #fff3cd;
-            background: rgba(245, 180, 60, .18);
-            border: 1px solid rgba(245, 180, 60, .3);
+        border-radius: 10px;
 
-            cursor: not-allowed;
-        }
+        font:
+            600 11px Arial,
+            sans-serif;
 
-        .chat-status-active {
-            color: #d9ffe8;
-            background: rgba(40, 190, 105, .20);
-            border: 1px solid rgba(40, 190, 105, .35);
+        text-decoration: none;
 
-            cursor: pointer;
-        }
+        transition: .2s ease;
+    }
 
-        .chat-status-active:hover {
-            background: rgba(40, 190, 105, .32);
-            transform: translateY(-1px);
-        }
+    .chat-status-waiting {
+        color: #fff3cd;
 
-        /* ============================
-        PENYESUAIAN DROPDOWN
-        ============================ */
+        background:
+            rgba(245, 180, 60, .18);
 
-        .whisperly-dropdown {
-            width: 320px !important;
-            right: 0 !important;
-        }
+        border:
+            1px solid
+            rgba(245, 180, 60, .3);
 
-        .notification-dropdown {
+        cursor: not-allowed;
+    }
+
+    .chat-status-active {
+        color: #d9ffe8;
+
+        background:
+            rgba(40, 190, 105, .20);
+
+        border:
+            1px solid
+            rgba(40, 190, 105, .35);
+
+        cursor: pointer;
+    }
+
+    .chat-status-active:hover {
+        background:
+            rgba(40, 190, 105, .32);
+
+        transform:
+            translateY(-1px);
+    }
+
+    /* =========================================================
+       PENYESUAIAN DROPDOWN
+    ========================================================== */
+
+    .whisperly-dropdown {
+        width: 320px !important;
+        right: 0 !important;
+    }
+
+    .notification-dropdown {
         width: 250px !important;
         min-width: 250px !important;
         max-width: calc(100vw - 20px);
     }
 
     .notification-profile {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    margin-bottom: 8px;
-}
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 8px;
+    }
 
-.notification-avatar {
-    width: 32px;
-    height: 32px;
-    min-width: 32px;
-    border-radius: 50%;
-    overflow: hidden;
+    .notification-avatar {
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+        border-radius: 50%;
 
-    background: #e7a2b6;
-    color: #fff;
+        overflow: hidden;
 
-    font-weight: 700;
-    font-size: 13px;
-}
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-.notification-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
+        background: #e7a2b6;
+        color: #fff;
 
-.notification-profile strong {
-    font-size: 14px;
-}
+        font-weight: 700;
+        font-size: 13px;
+    }
 
+    .notification-avatar img {
+        width: 100%;
+        height: 100%;
+
+        object-fit: cover;
+
+        display: block;
+    }
+
+    .notification-profile strong {
+        font-size: 14px;
+    }
 </style>
 
 
@@ -1713,189 +1666,208 @@
 
         @if ($currentUser)
 
-        {{-- =================================================
-     NOTIFICATION
-================================================== --}}
+            {{-- =================================================
+                 NOTIFICATION
 
-<div class="notification-wrapper">
+                 PENTING:
+                 NOTIFIKASI HANYA UNTUK USER DAN TALENT.
+                 ADMIN TIDAK AKAN MERENDER BLOK INI.
+            ================================================== --}}
 
-    <button
-        type="button"
-        class="notification-btn"
-        id="notificationButton"
-        aria-label="Notifikasi"
-    >
-        🔔
+            @if (in_array($currentUser->role, ['user', 'talent']))
 
-        @if(isset($notificationCount) && $notificationCount > 0)
-            <span class="badge">
-                {{ $notificationCount }}
-            </span>
-        @endif
-    </button>
+                <div class="notification-wrapper">
 
-    <div
-        class="notification-dropdown"
-        id="notificationDropdown"
-    >
+                    <button
+                        type="button"
+                        class="notification-btn"
+                        id="notificationButton"
+                        aria-label="Notifikasi"
+                    >
+                        🔔
 
-        @forelse(($notifications ?? []) as $booking)
+                        @if(isset($notificationCount) && $notificationCount > 0)
+                            <span class="badge">
+                                {{ $notificationCount }}
+                            </span>
+                        @endif
+                    </button>
 
-    @php
-        $status = $booking->chatStatus();
-        $currentUser = auth('whisperly')->user();
-    @endphp
+                    <div
+                        class="notification-dropdown"
+                        id="notificationDropdown"
+                    >
 
-    @if($status === 'completed')
-        @continue
-    @endif
+                        @forelse(($notifications ?? []) as $booking)
 
-    <div class="notification-item">
+                            @php
+                                $status = $booking->chatStatus();
+                            @endphp
 
-        @if($currentUser->role == 'talent')
+                            @if($status === 'completed')
+                                @continue
+                            @endif
 
-            <div class="notification-profile">
+                            <div class="notification-item">
 
-    <div class="notification-avatar">
+                                @if($currentUser->role === 'talent')
 
-        @if($booking->pengguna->avatar_url)
+                                    <div class="notification-profile">
 
-            <img
-                src="{{ $booking->pengguna->avatar_url }}"
-                alt="{{ $booking->pengguna->username }}"
-                onerror="this.onerror=null; this.src='{{ asset('assets/images/faces/1.jpg') }}';"
-            >
+                                        <div class="notification-avatar">
 
-        @else
+                                            @if($booking->pengguna->avatar_url)
 
-            {{ strtoupper(
-                substr(
-                    $booking->pengguna->username,
-                    0,
-                    1
-                )
-            ) }}
+                                                <img
+                                                    src="{{ $booking->pengguna->avatar_url }}"
+                                                    alt="{{ $booking->pengguna->username }}"
+                                                    onerror="this.onerror=null; this.src='{{ asset('assets/images/faces/1.jpg') }}';"
+                                                >
 
-        @endif
+                                            @else
 
-    </div>
+                                                {{ strtoupper(
+                                                    substr(
+                                                        $booking->pengguna->username,
+                                                        0,
+                                                        1
+                                                    )
+                                                ) }}
 
-    <strong>
-        {{ $booking->pengguna->username }}
-    </strong>
+                                            @endif
 
-</div>
+                                        </div>
 
-            <br>
+                                        <strong>
+                                            {{ $booking->pengguna->username }}
+                                        </strong>
 
-            {{ $booking->schedule->start_time }}
-            -
-            {{ $booking->schedule->end_time }}
+                                    </div>
 
-            <br><br>
+                                    <br>
 
-        @else
+                                    {{ $booking->schedule->start_time }}
+                                    -
+                                    {{ $booking->schedule->end_time }}
 
-    <div class="notification-profile">
+                                    <br><br>
 
-        <div class="notification-avatar">
+                                @else
 
-            @if($booking->talent->pengguna->avatar_url)
+                                    <div class="notification-profile">
 
-                <img
-                    src="{{ $booking->talent->pengguna->avatar_url }}"
-                    alt="{{ $booking->talent->pengguna->username }}"
-                >
+                                        <div class="notification-avatar">
 
-            @else
+                                            @if($booking->talent->pengguna->avatar_url)
 
-                {{ strtoupper(
-                    substr(
-                        $booking->talent->pengguna->username,
-                        0,
-                        1
-                    )
-                ) }}
+                                                <img
+                                                    src="{{ $booking->talent->pengguna->avatar_url }}"
+                                                    alt="{{ $booking->talent->pengguna->username }}"
+                                                >
+
+                                            @else
+
+                                                {{ strtoupper(
+                                                    substr(
+                                                        $booking->talent->pengguna->username,
+                                                        0,
+                                                        1
+                                                    )
+                                                ) }}
+
+                                            @endif
+
+                                        </div>
+
+                                        <strong>
+                                            Booking dengan
+                                            {{ $booking->talent->pengguna->username }}
+                                        </strong>
+
+                                    </div>
+
+                                    <br>
+
+                                    {{ $booking->schedule->start_time }}
+                                    -
+                                    {{ $booking->schedule->end_time }}
+
+                                    <br><br>
+
+                                @endif
+
+                                @if($status === 'upcoming')
+
+                                    <button
+                                        type="button"
+                                        class="chat-status-btn chat-status-waiting"
+                                        disabled
+                                    >
+                                        Belum Bisa Chat
+                                    </button>
+
+                                @elseif($status === 'active')
+
+                                    <a
+                                        href="{{ route('whisperly.chat.show', $booking->id) }}"
+                                        class="chat-status-btn chat-status-active"
+                                    >
+                                        Chat Sekarang
+                                    </a>
+
+                                @endif
+
+                            </div>
+
+                        @empty
+
+                            <div class="notification-item">
+                                Belum ada notifikasi.
+                            </div>
+
+                        @endforelse
+
+                    </div>
+
+                </div>
 
             @endif
 
-        </div>
-
-        <strong>
-            Booking dengan
-            {{ $booking->talent->pengguna->username }}
-        </strong>
-
-    </div>
-
-    <br>
-
-    {{ $booking->schedule->start_time }}
-    -
-    {{ $booking->schedule->end_time }}
-
-    <br><br>
-
-@endif
-
-        @if($status == 'upcoming')
-
-            <button
-                type="button"
-                class="chat-status-btn chat-status-waiting"
-                disabled
-            >
-                Belum Bisa Chat
-            </button>
-
-        @elseif($status == 'active')
-
-            <a
-                href="{{ route('whisperly.chat.show', $booking->id) }}"
-                class="chat-status-btn chat-status-active"
-            >
-                Chat Sekarang
-            </a>
-
-        @endif
-
-    </div>
-
-@empty
-
-    <div class="notification-item">
-        Belum ada notifikasi.
-    </div>
-
-@endforelse
-
-    </div>
-
-</div>
 
             {{-- =================================================
                  USER PROFILE
-                 KLIK UNTUK MEMBUKA HALAMAN PROFIL
             ================================================== --}}
 
-            {{-- PROFIL ADMIN --}}
             <a
-                href="{{ $currentUser->role === 'admin' ? route('admin.profile') : route('whisperly.profile') }}"
+                href="{{ $currentUser->role === 'admin'
+                    ? route('admin.profile')
+                    : route('whisperly.profile') }}"
                 class="whisperly-user-profile-link"
                 aria-label="Buka profil {{ $currentUser->username }}"
             >
+
                 <div class="whisperly-user-pill">
 
                     <div class="whisperly-user-avatar">
 
                         @if ($currentUser->avatar_url)
+
                             <img
                                 src="{{ $currentUser->avatar_url }}"
                                 alt="{{ $currentUser->username }}"
                                 onerror="this.onerror=null; this.src='{{ asset('assets/images/faces/1.jpg') }}';"
                             >
+
                         @else
-                            {{ strtoupper(substr($currentUser->username, 0, 1)) }}
+
+                            {{ strtoupper(
+                                substr(
+                                    $currentUser->username,
+                                    0,
+                                    1
+                                )
+                            ) }}
+
                         @endif
 
                     </div>
@@ -1913,6 +1885,7 @@
                     </div>
 
                 </div>
+
             </a>
 
 
@@ -1961,16 +1934,26 @@
                         <div class="whisperly-menu-profile-avatar">
 
                             @if ($currentUser->avatar_url)
+
                                 <img
                                     src="{{ $currentUser->avatar_url }}"
                                     alt="{{ $currentUser->username }}"
                                     onerror="this.onerror=null; this.src='{{ asset('assets/images/faces/1.jpg') }}';"
                                 >
-                            @else
-                                {{ strtoupper(substr($currentUser->username, 0, 1)) }}
-                            @endif
-                        </div>
 
+                            @else
+
+                                {{ strtoupper(
+                                    substr(
+                                        $currentUser->username,
+                                        0,
+                                        1
+                                    )
+                                ) }}
+
+                            @endif
+
+                        </div>
 
                         <div class="whisperly-menu-profile-info">
 
@@ -2442,7 +2425,6 @@
 
                             </span>
 
-
                             <span class="whisperly-dropdown-text">
 
                                 <strong>
@@ -2455,7 +2437,6 @@
 
                             </span>
 
-
                             <span class="whisperly-dropdown-arrow">
                                 →
                             </span>
@@ -2467,11 +2448,15 @@
 
                     {{-- =================================================
                          ADMIN MENU
+
+                         ADMIN HANYA:
+                         1. Home
+                         2. Pengaduan
                     ================================================== --}}
 
                     @if ($currentUser->role === 'admin')
 
-                        {{-- HOME --}}
+                        {{-- HOME ADMIN --}}
 
                         <a
                             href="{{ route('whisperly.home') }}"
@@ -2502,56 +2487,6 @@
 
                                 <small>
                                     Kembali ke Whisperly
-                                </small>
-
-                            </span>
-
-                            <span class="whisperly-dropdown-arrow">
-                                →
-                            </span>
-
-                        </a>
-
-
-                        {{-- LIHAT TALENT --}}
-
-                        <a
-                            href="{{ route('whisperly.talents.index') }}"
-                            class="whisperly-dropdown-item"
-                        >
-
-                            <span class="whisperly-dropdown-icon">
-
-                                <svg
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                >
-                                    <circle
-                                        cx="12"
-                                        cy="8"
-                                        r="3"
-                                        stroke="currentColor"
-                                        stroke-width="1.6"
-                                    />
-
-                                    <path
-                                        d="M5.5 20C5.9 16.1 8 14 12 14C16 14 18.1 16.1 18.5 20"
-                                        stroke="currentColor"
-                                        stroke-width="1.6"
-                                        stroke-linecap="round"
-                                    />
-                                </svg>
-
-                            </span>
-
-                            <span class="whisperly-dropdown-text">
-
-                                <strong>
-                                    Lihat Talent
-                                </strong>
-
-                                <small>
-                                    Kelola daftar talent
                                 </small>
 
                             </span>
@@ -2692,7 +2627,7 @@
 
 
 {{-- ============================================================
-     JAVASCRIPT
+     JAVASCRIPT - MENU
 ============================================================ --}}
 
 <script>
@@ -2717,7 +2652,6 @@
                 return;
             }
 
-
             function openMenu() {
 
                 dropdown.classList.add('show');
@@ -2729,7 +2663,6 @@
                     'true'
                 );
             }
-
 
             function closeMenu() {
 
@@ -2743,7 +2676,6 @@
                 );
             }
 
-
             function toggleMenu() {
 
                 const isOpen =
@@ -2756,7 +2688,6 @@
                 }
             }
 
-
             menuButton.addEventListener(
                 'click',
                 function (event) {
@@ -2767,7 +2698,6 @@
                 }
             );
 
-
             dropdown.addEventListener(
                 'click',
                 function (event) {
@@ -2775,7 +2705,6 @@
                     event.stopPropagation();
                 }
             );
-
 
             document.addEventListener(
                 'click',
@@ -2795,7 +2724,6 @@
                 }
             );
 
-
             document.addEventListener(
                 'keydown',
                 function (event) {
@@ -2811,12 +2739,10 @@
                 }
             );
 
-
             const menuItems =
                 dropdown.querySelectorAll(
                     '.whisperly-dropdown-item'
                 );
-
 
             menuItems.forEach(
                 function (item) {
@@ -2836,58 +2762,100 @@
         }
     );
 </script>
+
+
+{{-- ============================================================
+     JAVASCRIPT - NOTIFICATION
+     
+     Script ini aman untuk ADMIN karena:
+     tombol notificationButton dan dropdown notification
+     tidak dibuat sama sekali ketika role admin.
+============================================================ --}}
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-    const btn = document.getElementById("notificationButton");
+    const btn =
+        document.getElementById(
+            "notificationButton"
+        );
+
     const notificationDropdown =
-        document.getElementById("notificationDropdown");
+        document.getElementById(
+            "notificationDropdown"
+        );
 
     const menuButton =
-        document.getElementById("whisperlyMenuButton");
+        document.getElementById(
+            "whisperlyMenuButton"
+        );
 
     const menuDropdown =
-        document.getElementById("whisperlyDropdown");
+        document.getElementById(
+            "whisperlyDropdown"
+        );
 
+    /*
+     * Untuk ADMIN:
+     *
+     * btn === null
+     * notificationDropdown === null
+     *
+     * sehingga blok ini tidak dijalankan.
+     */
 
     if (btn && notificationDropdown) {
 
-        btn.addEventListener("click", function (e) {
+        btn.addEventListener(
+            "click",
+            function (e) {
 
-            e.stopPropagation();
+                e.stopPropagation();
 
-            // Tutup menu titik tiga kalau sedang terbuka
-            if (menuDropdown) {
-                menuDropdown.classList.remove("show");
-            }
+                // Tutup menu titik tiga
+                if (menuDropdown) {
 
-            if (menuButton) {
-                menuButton.classList.remove("active");
-                menuButton.setAttribute(
-                    "aria-expanded",
-                    "false"
+                    menuDropdown.classList.remove(
+                        "show"
+                    );
+                }
+
+                if (menuButton) {
+
+                    menuButton.classList.remove(
+                        "active"
+                    );
+
+                    menuButton.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+                }
+
+                // Buka / tutup notifikasi
+                notificationDropdown.classList.toggle(
+                    "show"
                 );
+
             }
-
-            // Buka / tutup notifikasi
-            notificationDropdown.classList.toggle("show");
-
-        });
-
+        );
 
         notificationDropdown.addEventListener(
             "click",
             function (e) {
+
                 e.stopPropagation();
+
             }
         );
-
 
         document.addEventListener(
             "click",
             function () {
 
-                notificationDropdown.classList.remove("show");
+                notificationDropdown.classList.remove(
+                    "show"
+                );
 
             }
         );
@@ -2895,8 +2863,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    // Kalau tombol titik tiga diklik,
-    // notifikasi juga langsung ditutup
+    /*
+     * Kalau tombol titik tiga diklik,
+     * notifikasi juga langsung ditutup.
+     */
+
     if (menuButton && menuDropdown) {
 
         menuButton.addEventListener(
@@ -2904,7 +2875,11 @@ document.addEventListener("DOMContentLoaded", function () {
             function () {
 
                 if (notificationDropdown) {
-                    notificationDropdown.classList.remove("show");
+
+                    notificationDropdown.classList.remove(
+                        "show"
+                    );
+
                 }
 
             }
