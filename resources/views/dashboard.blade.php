@@ -1,4 +1,3 @@
-```php
 @extends('layouts.app')
 
 @section('page-css')
@@ -406,36 +405,36 @@
                  PROFIL USER
             ====================================================== --}}
             <div class="avatar avatar-xl">
-    @if(Auth::user()->profil)
-        <img src="{{ asset('storage/profil/' . Auth::user()->profil) }}"
-             alt="Foto Profil"
-             style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
-    @else
-        <div class="avatar-content bg-primary">
-            {{ Auth::user()->initials() }}
-        </div>
-    @endif
-</div>
 
+                @if(Auth::user()->profil)
 
-                        <div class="ms-3 name">
+                    <img src="{{ asset('storage/profil/' . Auth::user()->profil) }}"
+                         alt="Foto Profil"
+                         style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
 
-                            <h5 class="font-bold">
-                                {{ Auth::user()->name }}
-                            </h5>
+                @else
 
-                            <h6 class="text-muted mb-0">
-
-                                Logged in as
-                                {{ session('active_role')['role'] ?? '-' }}
-
-                            </h6>
-
-                        </div>
-
+                    <div class="avatar-content bg-primary">
+                        {{ Auth::user()->initials() }}
                     </div>
 
-                </div>
+                @endif
+
+            </div>
+
+
+            <div class="ms-3 name">
+
+                <h5 class="font-bold">
+                    {{ Auth::user()->name }}
+                </h5>
+
+                <h6 class="text-muted mb-0">
+
+                    Logged in as
+                    {{ session('active_role')['role'] ?? '-' }}
+
+                </h6>
 
             </div>
 
@@ -444,13 +443,14 @@
                  TOMBOL MODERASI MENFESS
                  HANYA MUNCUL UNTUK ADMIN
             ====================================================== --}}
+
             @if (strtolower(session('active_role')['role'] ?? '') === 'admin')
 
                 <div class="card">
 
                     <div class="card-body">
 
-                        <a href="{{ route('menfess.admin') }}"
+                        <a href="{{ route('admin.menfess.index') }}"
                            class="btn btn-primary w-100">
 
                             <i class="bi bi-chat-left-text me-2"></i>
@@ -592,6 +592,7 @@
 
 </div>
 
+
 @endsection
 
 
@@ -600,4 +601,3 @@
     <script src="{{ asset('assets/js/pages/dashboard.js') }}"></script>
 
 @endsection
-```

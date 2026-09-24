@@ -21,15 +21,26 @@ class commentsController extends Controller
         $this->log = $log;
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | INDEX
+    |--------------------------------------------------------------------------
+    */
+
     public function index(Request $request)
     {
-        $query = comments::with(['menfess', 'pengguna']);
+        $query = comments::with([
+            'menfess',
+            'pengguna',
+        ]);
 
         if ($request->has('search')) {
             $search = $request->get('search');
         }
 
-        $data['data'] = $query->paginate(10)->withQueryString();
+        $data['data'] = $query
+            ->paginate(10)
+            ->withQueryString();
 
         $this->log(
             $request,
@@ -38,49 +49,69 @@ class commentsController extends Controller
 
         return view(
             'comments::comments',
-            array_merge($data, ['title' => $this->title])
+            array_merge($data, [
+                'title' => $this->title,
+            ])
         );
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | CREATE
+    |--------------------------------------------------------------------------
+    */
 
     public function create(Request $request)
     {
         $data['forms'] = [
+
             'id_menfess' => [
                 'label' => 'Menfess',
                 'type' => 'number',
-                'value' => old("id_menfess"),
-                'required' => true
+                'value' => old('id_menfess'),
+                'required' => true,
             ],
 
             'id_pengguna' => [
                 'label' => 'Pengguna',
                 'type' => 'number',
-                'value' => old("id_pengguna"),
-                'required' => true
+                'value' => old('id_pengguna'),
+                'required' => true,
             ],
 
             'komentar' => [
                 'label' => 'Komentar',
                 'type' => 'textarea',
-                'value' => old("komentar"),
-                'required' => true
+                'value' => old('komentar'),
+                'required' => true,
             ],
 
             'status' => [
                 'label' => 'Status',
                 'type' => 'text',
-                'value' => old("status"),
-                'required' => true
+                'value' => old('status'),
+                'required' => true,
             ],
         ];
 
-        $this->log($request, 'membuka form tambah ' . $this->title);
+        $this->log(
+            $request,
+            'membuka form tambah ' . $this->title
+        );
 
         return view(
             'comments::comments_create',
-            array_merge($data, ['title' => $this->title])
+            array_merge($data, [
+                'title' => $this->title,
+            ])
         );
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | STORE
+    |--------------------------------------------------------------------------
+    */
 
     public function store(Request $request)
     {
@@ -93,20 +124,21 @@ class commentsController extends Controller
 
         $comments = new comments();
 
-        $comments->id_menfess = $request->input("id_menfess");
-        $comments->id_pengguna = $request->input("id_pengguna");
-        $comments->komentar = $request->input("komentar");
-        $comments->status = $request->input("status");
+        $comments->id_menfess = $request->input('id_menfess');
+        $comments->id_pengguna = $request->input('id_pengguna');
+        $comments->komentar = $request->input('komentar');
+        $comments->status = $request->input('status');
 
         $comments->created_by = Auth::id();
-        $comments->save();
 
-        $text = 'membuat ' . $this->title;
+        $comments->save();
 
         $this->log(
             $request,
-            $text,
-            ['comments.id' => $comments->id]
+            'membuat ' . $this->title,
+            [
+                'comments.id' => $comments->id,
+            ]
         );
 
         return redirect()
@@ -117,27 +149,40 @@ class commentsController extends Controller
             );
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | SHOW
+    |--------------------------------------------------------------------------
+    */
+
     public function show(Request $request, comments $comments)
     {
-        $data['comments'] = $comments;
+        $comments->load([
+            'menfess',
+            'pengguna',
+        ]);
 
-        $text = 'melihat detail ' . $this->title;
+        $data['comments'] = $comments;
 
         $this->log(
             $request,
-            $text,
-            ['comments.id' => $comments->id]
+            'melihat detail ' . $this->title,
+            [
+                'comments.id' => $comments->id,
+            ]
         );
 
         return view(
             'comments::comments_detail',
-            array_merge($data, ['title' => $this->title])
+            array_merge($data, [
+                'title' => $this->title,
+            ])
         );
     }
 
     /*
     |--------------------------------------------------------------------------
-    | EDIT COMMENT
+    | EDIT
     |--------------------------------------------------------------------------
     */
 
@@ -150,13 +195,28 @@ class commentsController extends Controller
         }
 
         /*
+        | Ambil role aktif dari session.
+        | Jika tidak ada, gunakan role dari user.
+        */
+
+        $activeRole = strtolower(
+            trim(
+                (string) (
+                    session('active_role')['role']
+                    ?? $user->role
+                    ?? ''
+                )
+            )
+        );
+
+        /*
         | Admin boleh edit semua komentar.
-        | Pengguna biasa hanya boleh edit komentar miliknya sendiri.
+        | Selain admin hanya boleh edit komentar sendiri.
         */
 
         if (
-            $user->role !== 'admin' &&
-            $comments->id_pengguna != $user->id
+            $activeRole !== 'admin' &&
+            (string) $comments->id_pengguna !== (string) $user->id
         ) {
             abort(403);
         }
@@ -164,12 +224,13 @@ class commentsController extends Controller
         $data['comments'] = $comments;
 
         $data['forms'] = [
+
             'id_menfess' => [
                 'label' => 'Menfess',
                 'type' => 'number',
                 'value' => $comments->id_menfess,
                 'required' => true,
-                'id' => 'id_menfess'
+                'id' => 'id_menfess',
             ],
 
             'id_pengguna' => [
@@ -177,7 +238,7 @@ class commentsController extends Controller
                 'type' => 'number',
                 'value' => $comments->id_pengguna,
                 'required' => true,
-                'id' => 'id_pengguna'
+                'id' => 'id_pengguna',
             ],
 
             'komentar' => [
@@ -185,7 +246,7 @@ class commentsController extends Controller
                 'type' => 'textarea',
                 'value' => $comments->komentar,
                 'required' => true,
-                'id' => 'komentar'
+                'id' => 'komentar',
             ],
 
             'status' => [
@@ -193,27 +254,29 @@ class commentsController extends Controller
                 'type' => 'text',
                 'value' => $comments->status,
                 'required' => true,
-                'id' => 'status'
+                'id' => 'status',
             ],
         ];
 
-        $text = 'membuka form edit ' . $this->title;
-
         $this->log(
             $request,
-            $text,
-            ['comments.id' => $comments->id]
+            'membuka form edit ' . $this->title,
+            [
+                'comments.id' => $comments->id,
+            ]
         );
 
         return view(
             'comments::comments_update',
-            array_merge($data, ['title' => $this->title])
+            array_merge($data, [
+                'title' => $this->title,
+            ])
         );
     }
 
     /*
     |--------------------------------------------------------------------------
-    | UPDATE COMMENT
+    | UPDATE
     |--------------------------------------------------------------------------
     */
 
@@ -228,13 +291,27 @@ class commentsController extends Controller
         $comments = comments::findOrFail($id);
 
         /*
+        | Ambil role aktif dari session.
+        */
+
+        $activeRole = strtolower(
+            trim(
+                (string) (
+                    session('active_role')['role']
+                    ?? $user->role
+                    ?? ''
+                )
+            )
+        );
+
+        /*
         | Admin boleh mengubah semua komentar.
-        | Pengguna biasa hanya boleh mengubah komentar miliknya sendiri.
+        | Selain admin hanya boleh mengubah komentar sendiri.
         */
 
         if (
-            $user->role !== 'admin' &&
-            $comments->id_pengguna != $user->id
+            $activeRole !== 'admin' &&
+            (string) $comments->id_pengguna !== (string) $user->id
         ) {
             abort(403);
         }
@@ -247,28 +324,29 @@ class commentsController extends Controller
         ]);
 
         /*
-        | Pengguna biasa tidak boleh mengganti pemilik komentar.
+        | User biasa tidak boleh mengganti pemilik komentar.
         */
 
-        if ($user->role !== 'admin') {
+        if ($activeRole !== 'admin') {
             $comments->id_pengguna = $user->id;
         } else {
-            $comments->id_pengguna = $request->input("id_pengguna");
+            $comments->id_pengguna = $request->input('id_pengguna');
         }
 
-        $comments->id_menfess = $request->input("id_menfess");
-        $comments->komentar = $request->input("komentar");
-        $comments->status = $request->input("status");
+        $comments->id_menfess = $request->input('id_menfess');
+        $comments->komentar = $request->input('komentar');
+        $comments->status = $request->input('status');
 
         $comments->updated_by = $user->id;
-        $comments->save();
 
-        $text = 'mengedit ' . $this->title;
+        $comments->save();
 
         $this->log(
             $request,
-            $text,
-            ['comments.id' => $comments->id]
+            'mengedit ' . $this->title,
+            [
+                'comments.id' => $comments->id,
+            ]
         );
 
         return back()->with(
@@ -279,28 +357,61 @@ class commentsController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | DELETE COMMENT
+    | DESTROY
     |--------------------------------------------------------------------------
     */
 
     public function destroy(Request $request, $id)
     {
+        /*
+        | Ambil user dari guard Whisperly.
+        */
+
         $user = Auth::guard('whisperly')->user();
 
         if (!$user) {
             abort(403);
         }
 
+        /*
+        | Ambil komentar.
+        */
+
         $comments = comments::findOrFail($id);
 
         /*
-        | ADMIN
-        | Admin boleh menghapus komentar siapa saja.
+        |--------------------------------------------------------------------------
+        | ROLE AKTIF
+        |--------------------------------------------------------------------------
+        |
+        | Prioritaskan role aktif di session Laralag.
+        | Jika tidak tersedia, gunakan role user.
+        |
         */
 
-        if ($user->role === 'admin') {
+        $activeRole = strtolower(
+            trim(
+                (string) (
+                    session('active_role')['role']
+                    ?? $user->role
+                    ?? ''
+                )
+            )
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | ADMIN
+        |--------------------------------------------------------------------------
+        |
+        | Admin boleh menghapus komentar siapa pun.
+        |
+        */
+
+        if ($activeRole === 'admin') {
 
             $comments->deleted_by = $user->id;
+
             $comments->save();
 
             $comments->delete();
@@ -308,25 +419,43 @@ class commentsController extends Controller
             $this->log(
                 $request,
                 'menghapus ' . $this->title . ' sebagai admin',
-                ['comments.id' => $comments->id]
+                [
+                    'comments.id' => $comments->id,
+                ]
             );
 
-            return back()->with(
-                'message_success',
-                'Komentar berhasil dihapus!'
-            );
+            return redirect()
+                ->route('comments.index')
+                ->with(
+                    'message_success',
+                    'Komentar berhasil dihapus!'
+                );
         }
 
         /*
-        | USER BIASA
-        | Hanya boleh menghapus komentar miliknya sendiri.
+        |--------------------------------------------------------------------------
+        | USER / TALENT
+        |--------------------------------------------------------------------------
+        |
+        | Selain admin hanya boleh menghapus komentar miliknya sendiri.
+        |
         */
 
-        if ($comments->id_pengguna != $user->id) {
+        if (
+            (string) $comments->id_pengguna !==
+            (string) $user->id
+        ) {
             abort(403);
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | HAPUS KOMENTAR MILIK SENDIRI
+        |--------------------------------------------------------------------------
+        */
+
         $comments->deleted_by = $user->id;
+
         $comments->save();
 
         $comments->delete();
@@ -334,12 +463,16 @@ class commentsController extends Controller
         $this->log(
             $request,
             'menghapus ' . $this->title,
-            ['comments.id' => $comments->id]
+            [
+                'comments.id' => $comments->id,
+            ]
         );
 
-        return back()->with(
-            'message_success',
-            'Komentar berhasil dihapus!'
-        );
+        return redirect()
+            ->route('comments.index')
+            ->with(
+                'message_success',
+                'Komentar berhasil dihapus!'
+            );
     }
 }
