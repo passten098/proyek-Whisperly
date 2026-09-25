@@ -1,333 +1,143 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="csrf-token"
+        content="{{ csrf_token() }}"
+    >
+
     <title>Profil Admin | Whisperly</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet"
     >
 
     <style>
+
         :root {
-            --bg: #080714;
-            --bg-2: #100c21;
 
-            --pink: #e7a2b6;
-            --pink-light: #f4c4d4;
+            --bg-dark: #11101f;
+            --bg-soft: #1b1930;
 
-            --lavender: #c9b9ef;
-            --lavender-light: #e3d9ff;
+            --white: #ffffff;
+            --text-main: #f5f3ff;
+            --text-soft: #b9b4cc;
+            --text-muted: #88829d;
 
-            --gold: #e8c27a;
-            --gold-light: #f7dfa6;
+            --purple: #a78bfa;
+            --purple-soft: #c4b5fd;
+            --purple-dark: #7c3aed;
 
-            --white: #fffafc;
-            --muted: rgba(255, 250, 252, .62);
+            --pink: #f0abfc;
 
-            --border: rgba(255, 255, 255, .1);
+            --border: rgba(255,255,255,.10);
+            --border-soft: rgba(255,255,255,.06);
 
-            --glass:
-                rgba(18, 15, 36, .72);
+            --shadow:
+                0 30px 80px rgba(0,0,0,.35);
 
-            --gradient:
-                linear-gradient(
-                    135deg,
-                    #e7a2b6 0%,
-                    #c9b9ef 48%,
-                    #e8c27a 100%
-                );
+            --radius-lg: 28px;
+            --radius-md: 20px;
+            --radius-sm: 14px;
+
         }
 
-
-        /* =========================================================
-           RESET
-        ========================================================= */
 
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
+
 
         html {
             scroll-behavior: smooth;
         }
 
-        body {
-            margin: 0;
-            min-height: 100vh;
 
-            color: var(--white);
+        body {
+
+            min-height: 100vh;
 
             font-family:
                 'Plus Jakarta Sans',
                 sans-serif;
 
-            -webkit-font-smoothing: antialiased;
-
-            overflow-x: hidden;
+            color: var(--text-main);
 
             background:
                 radial-gradient(
-                    circle at 10% 10%,
-                    rgba(231, 162, 182, .18),
-                    transparent 28%
+                    circle at 15% 15%,
+                    rgba(124,58,237,.20),
+                    transparent 32%
                 ),
                 radial-gradient(
-                    circle at 90% 5%,
-                    rgba(201, 185, 239, .22),
+                    circle at 85% 20%,
+                    rgba(240,171,252,.12),
                     transparent 30%
                 ),
                 radial-gradient(
                     circle at 50% 100%,
-                    rgba(232, 194, 122, .11),
+                    rgba(167,139,250,.10),
                     transparent 35%
                 ),
-                radial-gradient(
-                    circle at 30% 60%,
-                    rgba(125, 92, 190, .10),
-                    transparent 30%
-                ),
-                linear-gradient(
-                    135deg,
-                    #080714,
-                    #100b20 45%,
-                    #0b0918
-                );
+                var(--bg-dark);
 
-            position: relative;
+            overflow-x: hidden;
+
         }
 
-
-        /* =========================================================
-           BACKGROUND AURORA
-        ========================================================= */
 
         body::before {
+
             content: "";
 
             position: fixed;
 
-            width: 700px;
-            height: 700px;
-
-            top: -280px;
-            right: -200px;
-
-            border-radius: 50%;
-
-            background:
-                radial-gradient(
-                    circle,
-                    rgba(201, 185, 239, .20),
-                    rgba(231, 162, 182, .08) 35%,
-                    transparent 70%
-                );
-
-            filter: blur(30px);
-
-            animation:
-                auroraFloat 12s ease-in-out infinite alternate;
-
-            pointer-events: none;
-
-            z-index: 0;
-        }
-
-
-        body::after {
-            content: "";
-
-            position: fixed;
-
-            width: 650px;
-            height: 650px;
-
-            bottom: -320px;
-            left: -220px;
-
-            border-radius: 50%;
-
-            background:
-                radial-gradient(
-                    circle,
-                    rgba(231, 162, 182, .16),
-                    rgba(232, 194, 122, .06) 40%,
-                    transparent 70%
-                );
-
-            filter: blur(35px);
-
-            animation:
-                auroraFloat2 15s ease-in-out infinite alternate;
-
-            pointer-events: none;
-
-            z-index: 0;
-        }
-
-
-        @keyframes auroraFloat {
-            from {
-                transform: translate(0, 0) scale(1);
-            }
-
-            to {
-                transform: translate(-90px, 70px) scale(1.15);
-            }
-        }
-
-
-        @keyframes auroraFloat2 {
-            from {
-                transform: translate(0, 0) scale(1);
-            }
-
-            to {
-                transform: translate(100px, -80px) scale(1.2);
-            }
-        }
-
-
-        /* =========================================================
-           PARTICLES
-        ========================================================= */
-
-        .particles {
-            position: fixed;
             inset: 0;
 
-            overflow: hidden;
-
             pointer-events: none;
 
-            z-index: 1;
+            background:
+                linear-gradient(
+                    120deg,
+                    transparent 0%,
+                    rgba(167,139,250,.035) 40%,
+                    transparent 70%
+                );
+
+            z-index: -1;
+
         }
 
 
-        .particle {
-            position: absolute;
+        .profile-container {
 
-            width: 3px;
-            height: 3px;
-
-            border-radius: 50%;
-
-            background: var(--lavender-light);
-
-            box-shadow:
-                0 0 8px var(--lavender),
-                0 0 18px rgba(201, 185, 239, .5);
-
-            opacity: .45;
-
-            animation:
-                particleFloat linear infinite;
-        }
-
-
-        .particle:nth-child(1) {
-            left: 8%;
-            top: 25%;
-            animation-duration: 13s;
-        }
-
-        .particle:nth-child(2) {
-            left: 18%;
-            top: 75%;
-            animation-duration: 18s;
-        }
-
-        .particle:nth-child(3) {
-            left: 32%;
-            top: 15%;
-            animation-duration: 15s;
-        }
-
-        .particle:nth-child(4) {
-            left: 48%;
-            top: 82%;
-            animation-duration: 20s;
-        }
-
-        .particle:nth-child(5) {
-            left: 62%;
-            top: 20%;
-            animation-duration: 16s;
-        }
-
-        .particle:nth-child(6) {
-            left: 76%;
-            top: 70%;
-            animation-duration: 14s;
-        }
-
-        .particle:nth-child(7) {
-            left: 88%;
-            top: 30%;
-            animation-duration: 19s;
-        }
-
-        .particle:nth-child(8) {
-            left: 94%;
-            top: 85%;
-            animation-duration: 17s;
-        }
-
-
-        @keyframes particleFloat {
-            0% {
-                transform:
-                    translateY(40px)
-                    scale(.7);
-
-                opacity: 0;
-            }
-
-            20% {
-                opacity: .6;
-            }
-
-            50% {
-                transform:
-                    translateY(-80px)
-                    scale(1);
-            }
-
-            80% {
-                opacity: .35;
-            }
-
-            100% {
-                transform:
-                    translateY(-160px)
-                    scale(.5);
-
-                opacity: 0;
-            }
-        }
-
-
-        /* =========================================================
-           MAIN
-        ========================================================= */
-
-        .admin-profile {
-            position: relative;
-
-            z-index: 2;
-
-            width: min(1080px, 100%);
+            width:
+                min(
+                    calc(100% - 40px),
+                    820px
+                );
 
             margin: 0 auto;
 
             padding:
-                70px 24px 100px;
+                60px 0
+                80px;
+
         }
 
 
@@ -335,282 +145,169 @@
            HEADER
         ========================================================= */
 
-        .admin-header {
+        .profile-header {
+
             text-align: center;
 
-            margin-bottom: 48px;
+            margin-bottom: 34px;
 
-            animation:
-                fadeUp .8s ease both;
         }
 
 
-        .admin-eyebrow {
+        .profile-badge {
+
             display: inline-flex;
 
             align-items: center;
-            gap: 12px;
 
-            color: var(--lavender-light);
+            gap: 8px;
 
-            font-size: 10px;
+            padding:
+                8px 14px;
+
+            margin-bottom: 18px;
+
+            border:
+                1px solid
+                rgba(167,139,250,.22);
+
+            border-radius: 999px;
+
+            background:
+                rgba(167,139,250,.08);
+
+            color:
+                var(--purple-soft);
+
+            font-size: 11px;
+
             font-weight: 800;
 
-            letter-spacing: .28em;
+            letter-spacing: .13em;
 
             text-transform: uppercase;
+
         }
 
 
-        .admin-eyebrow::before,
-        .admin-eyebrow::after {
+        .profile-badge::before {
+
             content: "";
 
-            width: 34px;
-            height: 1px;
+            width: 7px;
+
+            height: 7px;
+
+            border-radius: 50%;
 
             background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    var(--pink)
-                );
+                var(--purple);
+
+            box-shadow:
+                0 0 12px
+                rgba(167,139,250,.65);
+
         }
 
 
-        .admin-eyebrow::after {
-            background:
-                linear-gradient(
-                    90deg,
-                    var(--lavender),
-                    transparent
-                );
-        }
-
-
-        h1 {
-            margin:
-                18px 0 12px;
+        .profile-title {
 
             font-family:
                 'Playfair Display',
-                Georgia,
                 serif;
 
             font-size:
-                clamp(42px, 7vw, 64px);
+                clamp(38px, 6vw, 56px);
+
+            line-height: 1.05;
 
             font-weight: 600;
 
             letter-spacing: -.025em;
 
-            background:
-                linear-gradient(
-                    120deg,
-                    #fff 10%,
-                    var(--pink-light) 42%,
-                    var(--lavender-light) 70%,
-                    var(--gold-light)
-                );
+            margin-bottom: 12px;
 
-            -webkit-background-clip: text;
-            background-clip: text;
-
-            color: transparent;
-
-            filter:
-                drop-shadow(
-                    0 8px 30px rgba(201,185,239,.12)
-                );
         }
 
 
-        .admin-header p {
+        .profile-subtitle {
+
             max-width: 560px;
 
             margin: 0 auto;
 
-            color: var(--muted);
+            color:
+                var(--text-soft);
 
-            font-size: 13px;
+            font-size: 14px;
 
             line-height: 1.8;
+
         }
 
 
         /* =========================================================
-           CARD
+           PROFILE CARD
         ========================================================= */
 
-        .admin-card {
+        .profile-card {
+
             position: relative;
 
-            display: grid;
-
-            grid-template-columns:
-                310px
-                1fr;
-
-            overflow: hidden;
-
-            border-radius: 34px;
+            padding: 34px;
 
             border:
                 1px solid
-                rgba(255,255,255,.1);
+                var(--border);
+
+            border-radius:
+                var(--radius-lg);
 
             background:
                 linear-gradient(
                     145deg,
-                    rgba(35,30,62,.78),
-                    rgba(13,11,28,.82)
+                    rgba(255,255,255,.075),
+                    rgba(255,255,255,.035)
                 );
 
             box-shadow:
-                0 50px 120px rgba(0,0,0,.55),
-                0 0 0 1px rgba(255,255,255,.02),
-                inset 0 1px 0 rgba(255,255,255,.07);
+                var(--shadow);
 
             backdrop-filter:
+                blur(22px);
+
+            -webkit-backdrop-filter:
+                blur(22px);
+
+            overflow: hidden;
+
+        }
+
+
+        .profile-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 260px;
+
+            height: 260px;
+
+            top: -140px;
+
+            right: -100px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(167,139,250,.08);
+
+            filter:
                 blur(30px);
 
-            transform-style: preserve-3d;
-
-            transition:
-                transform .25s ease,
-                box-shadow .3s ease;
-
-            animation:
-                fadeUp .9s .1s ease both;
-        }
-
-
-        .admin-card:hover {
-            box-shadow:
-                0 60px 140px rgba(0,0,0,.6),
-                0 0 80px rgba(201,185,239,.07),
-                inset 0 1px 0 rgba(255,255,255,.1);
-        }
-
-
-        /* TOP LIGHT */
-
-        .admin-card::before {
-            content: "";
-
-            position: absolute;
-
-            top: 0;
-            left: 8%;
-            right: 8%;
-
-            height: 2px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    var(--pink),
-                    var(--lavender),
-                    var(--gold),
-                    transparent
-                );
-
-            box-shadow:
-                0 0 18px rgba(231,162,182,.5);
-
-            z-index: 5;
-        }
-
-
-        /* SHIMMER */
-
-        .admin-card::after {
-            content: "";
-
-            position: absolute;
-
-            width: 180px;
-            height: 500px;
-
-            top: -150px;
-            left: -300px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    rgba(255,255,255,.06),
-                    transparent
-                );
-
-            transform:
-                rotate(25deg);
-
-            animation:
-                shimmer 7s ease-in-out infinite;
-
             pointer-events: none;
-        }
 
-
-        @keyframes shimmer {
-            0% {
-                left: -300px;
-            }
-
-            45%,
-            100% {
-                left: 120%;
-            }
-        }
-
-
-        /* =========================================================
-           IDENTITY
-        ========================================================= */
-
-        .identity {
-            position: relative;
-
-            padding:
-                52px 32px;
-
-            text-align: center;
-
-            border-right:
-                1px solid
-                rgba(255,255,255,.08);
-
-            background:
-                radial-gradient(
-                    circle at 50% 25%,
-                    rgba(201,185,239,.09),
-                    transparent 40%
-                );
-        }
-
-
-        .identity::before {
-            content: "";
-
-            position: absolute;
-
-            top: 15%;
-            left: 0;
-
-            width: 2px;
-            height: 70%;
-
-            background:
-                linear-gradient(
-                    transparent,
-                    var(--pink),
-                    var(--lavender),
-                    transparent
-                );
-
-            opacity: .45;
         }
 
 
@@ -618,95 +315,52 @@
            AVATAR
         ========================================================= */
 
-        .avatar-wrap {
+        .avatar-section {
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            text-align: center;
+
+            padding-bottom: 12px;
+
+            margin-bottom: 0;
+
+            border-bottom:
+                1px solid
+                var(--border-soft);
+
+        }
+
+
+        .avatar-wrapper {
+
             position: relative;
 
-            width: 190px;
-            height: 190px;
+            width: 138px;
 
-            margin:
-                0 auto 25px;
+            height: 138px;
+
+            margin-bottom: 18px;
+
+            cursor: pointer;
+
         }
 
 
-        /* OUTER GLOW */
+        .avatar {
 
-        .avatar-wrap::before {
-            content: "";
+            width: 100%;
 
-            position: absolute;
-
-            inset: -10px;
-
-            border-radius: 50%;
-
-            background:
-                conic-gradient(
-                    from 0deg,
-                    var(--pink),
-                    var(--lavender),
-                    var(--gold),
-                    var(--pink)
-                );
-
-            filter:
-                blur(18px);
-
-            opacity: .45;
-
-            animation:
-                pulseGlow 4s ease-in-out infinite;
-        }
-
-
-        /* ROTATING RING */
-
-        .avatar-ring {
-            position: absolute;
-
-            inset: 0;
-
-            border-radius: 50%;
-
-            background:
-                conic-gradient(
-                    from 0deg,
-                    transparent 0deg,
-                    var(--pink) 60deg,
-                    var(--lavender) 150deg,
-                    var(--gold) 230deg,
-                    transparent 310deg
-                );
-
-            animation:
-                rotateRing 7s linear infinite;
-        }
-
-
-        .avatar-ring::before {
-            content: "";
-
-            position: absolute;
-
-            inset: 5px;
-
-            border-radius: 50%;
-
-            background:
-                #0c0a19;
-        }
-
-
-        .avatar-inner {
-            position: absolute;
-
-            inset: 14px;
-
-            z-index: 2;
+            height: 100%;
 
             display: flex;
 
             align-items: center;
+
             justify-content: center;
 
             overflow: hidden;
@@ -714,750 +368,783 @@
             border-radius: 50%;
 
             border:
-                3px solid
-                rgba(255,255,255,.1);
+                2px solid
+                rgba(255,255,255,.15);
 
             background:
-                radial-gradient(
-                    circle at 30% 20%,
-                    #292248,
-                    #121024 70%
+                linear-gradient(
+                    145deg,
+                    rgba(167,139,250,.20),
+                    rgba(124,58,237,.12)
                 );
 
-            color:
-                var(--lavender-light);
-
-            font:
-                700 54px
-                'Playfair Display',
-                Georgia,
-                serif;
-
             box-shadow:
-                inset 0 0 30px rgba(0,0,0,.5),
-                0 15px 40px rgba(0,0,0,.4);
+                0 18px 45px
+                rgba(0,0,0,.28);
+
+            color:
+                var(--purple-soft);
+
+            font-size: 42px;
+
+            font-weight: 800;
+
         }
 
 
-        .avatar-inner img {
+        .avatar img {
+
             width: 100%;
+
             height: 100%;
 
             object-fit: cover;
 
-            transition:
-                transform .6s ease;
+            display: block;
+
         }
 
 
-        .avatar-wrap:hover .avatar-inner img {
-            transform:
-                scale(1.08);
-        }
+        .avatar-overlay {
 
-
-        /* ORBIT */
-
-        .orbit {
             position: absolute;
 
-            inset: -9px;
+            inset: 0;
 
-            border:
-                1px dashed
-                rgba(201,185,239,.35);
+            display: flex;
 
-            border-radius: 50%;
+            align-items: center;
 
-            animation:
-                rotateRing 14s linear infinite reverse;
-        }
-
-
-        .orbit-dot {
-            position: absolute;
-
-            top: 7px;
-            left: 50%;
-
-            width: 8px;
-            height: 8px;
-
-            margin-left: -4px;
+            justify-content: center;
 
             border-radius: 50%;
 
             background:
-                var(--gold);
+                rgba(17,16,31,.68);
 
-            box-shadow:
-                0 0 15px var(--gold);
+            color: white;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            opacity: 0;
+
+            transition:
+                opacity .2s ease;
+
         }
 
 
-        @keyframes rotateRing {
-            to {
-                transform:
-                    rotate(360deg);
-            }
+        .avatar-wrapper:hover
+        .avatar-overlay {
+
+            opacity: 1;
+
         }
 
 
-        @keyframes pulseGlow {
-            0%,
-            100% {
-                transform: scale(.95);
-                opacity: .35;
-            }
+        .avatar-edit-badge {
 
-            50% {
-                transform: scale(1.08);
-                opacity: .7;
-            }
-        }
-
-
-        .avatar-status {
             position: absolute;
 
-            right: 9px;
-            bottom: 18px;
+            right: 2px;
 
-            width: 20px;
-            height: 20px;
+            bottom: 4px;
+
+            width: 34px;
+
+            height: 34px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 50%;
 
             border:
                 3px solid
-                #0c0a19;
-
-            border-radius: 50%;
+                var(--bg-dark);
 
             background:
-                linear-gradient(
-                    135deg,
-                    #f4c4d4,
-                    #e8c27a
-                );
+                var(--purple-dark);
+
+            color: white;
+
+            font-size: 14px;
 
             box-shadow:
-                0 0 18px
-                rgba(232,194,122,.65);
+                0 8px 20px
+                rgba(124,58,237,.35);
 
-            z-index: 4;
         }
 
 
-        .avatar-status::after {
-            content: "";
+        .avatar-name {
 
-            position: absolute;
-
-            inset: 5px;
-
-            border-radius: 50%;
-
-            background:
-                #211a2c;
-
-            animation:
-                statusPulse 2s ease-in-out infinite;
-        }
-
-
-        @keyframes statusPulse {
-            0%,
-            100% {
-                opacity: .3;
-            }
-
-            50% {
-                opacity: 1;
-            }
-        }
-
-
-        /* =========================================================
-           IDENTITY TEXT
-        ========================================================= */
-
-        .identity-tag {
-            display: block;
-
-            margin-bottom: 8px;
-
-            color:
-                var(--pink);
-
-            font-size: 9px;
+            font-size: 18px;
 
             font-weight: 800;
 
-            letter-spacing: .25em;
+            margin-bottom: 5px;
 
-            text-transform:
-                uppercase;
         }
 
 
-        .identity h2 {
-            margin:
-                0 0 9px;
-
-            font:
-                600 25px
-                'Playfair Display',
-                Georgia,
-                serif;
-        }
-
-
-        .identity p {
-            margin:
-                0 0 19px;
+        .avatar-role {
 
             color:
-                var(--muted);
+                var(--purple-soft);
 
-            font-size:
-                12px;
+            font-size: 12px;
 
-            overflow-wrap:
-                anywhere;
+            font-weight: 700;
+
+            letter-spacing: .08em;
+
+            text-transform: uppercase;
+
         }
 
 
-        .role {
+        /* =========================================================
+           PHOTO ACTIONS
+        ========================================================= */
+
+        .photo-actions {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 14px;
+
+        }
+
+
+        .photo-button {
+
+            border: 0;
+
+            padding:
+                10px 16px;
+
+            border-radius:
+                12px;
+
+            font-family:
+                inherit;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                transform .2s ease,
+                background .2s ease,
+                border-color .2s ease;
+
+        }
+
+
+        .photo-button:hover {
+
+            transform:
+                translateY(-2px);
+
+        }
+
+
+        .photo-button.primary {
+
+            background:
+                rgba(167,139,250,.14);
+
+            border:
+                1px solid
+                rgba(167,139,250,.20);
+
+            color:
+                var(--purple-soft);
+
+        }
+
+
+        .photo-button.primary:hover {
+
+            background:
+                rgba(167,139,250,.20);
+
+        }
+
+
+        .photo-button.danger {
+
+            background:
+                rgba(248,113,113,.08);
+
+            border:
+                1px solid
+                rgba(248,113,113,.15);
+
+            color:
+                #fca5a5;
+
+        }
+
+
+        .photo-button.danger:hover {
+
+            background:
+                rgba(248,113,113,.14);
+
+        }
+
+
+        #photoInput {
+            display: none;
+        }
+
+
+        /* =========================================================
+           STATUS
+        ========================================================= */
+
+        .status-message {
+
+            display: none;
+
+            margin-top: 8px;
+
+            color:
+                var(--text-muted);
+
+            font-size: 11px;
+
+            line-height: 1.4;
+
+        }
+
+
+        .status-message:not(:empty) {
+            display: block;
+        }
+
+
+        .status-message.success {
+            color: #86efac;
+        }
+
+
+        .status-message.error {
+            color: #fca5a5;
+        }
+
+
+        /* =========================================================
+           INFO GRID
+        ========================================================= */
+
+        .info-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 14px;
+
+            margin-top: 12px;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .info-item {
+
+            min-width: 0;
+
+            padding: 18px;
+
+            border:
+                1px solid
+                var(--border-soft);
+
+            border-radius:
+                var(--radius-sm);
+
+            background:
+                rgba(255,255,255,.025);
+
+        }
+
+
+        .info-label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color:
+                var(--text-muted);
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: .10em;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .info-value {
+
+            display: block;
+
+            color:
+                var(--text-main);
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            word-break: break-word;
+
+        }
+
+
+        /* =========================================================
+           BIO
+        ========================================================= */
+
+        .bio-card {
+
+            padding: 22px;
+
+            border:
+                1px solid
+                var(--border-soft);
+
+            border-radius:
+                var(--radius-md);
+
+            background:
+                rgba(255,255,255,.025);
+
+        }
+
+
+        .bio-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 14px;
+
+        }
+
+
+        .bio-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+        }
+
+
+        .bio-icon {
+
+            width: 34px;
+
+            height: 34px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background:
+                rgba(167,139,250,.10);
+
+            color:
+                var(--purple-soft);
+
+            font-size: 14px;
+
+        }
+
+
+        .bio-title {
+
+            font-size: 14px;
+
+            font-weight: 800;
+
+        }
+
+
+        .bio-edit-button {
+
+            border: 0;
+
+            background: transparent;
+
+            color:
+                var(--purple-soft);
+
+            font-family:
+                inherit;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+        }
+
+
+        .bio-edit-button:hover {
+            color: white;
+        }
+
+
+        .bio-text {
+
+            color:
+                var(--text-soft);
+
+            font-size: 13px;
+
+            line-height: 1.8;
+
+            white-space: pre-wrap;
+
+        }
+
+
+        .bio-empty {
+
+            color:
+                var(--text-muted);
+
+            font-style: italic;
+
+        }
+
+
+        .bio-form {
+            display: none;
+        }
+
+
+        .bio-form.active {
+            display: block;
+        }
+
+
+        .bio-input {
+
+            width: 100%;
+
+            min-height: 130px;
+
+            resize: vertical;
+
+            padding: 15px;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius:
+                14px;
+
+            outline: none;
+
+            background:
+                rgba(0,0,0,.14);
+
+            color:
+                var(--text-main);
+
+            font-family:
+                inherit;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+        }
+
+
+        .bio-input:focus {
+
+            border-color:
+                rgba(167,139,250,.42);
+
+            background:
+                rgba(0,0,0,.20);
+
+        }
+
+
+        .bio-input::placeholder {
+            color: var(--text-muted);
+        }
+
+
+        .bio-footer {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-top: 10px;
+
+        }
+
+
+        .char-counter {
+
+            color:
+                var(--text-muted);
+
+            font-size: 10px;
+
+        }
+
+
+        .bio-actions {
+
+            display: flex;
+
+            gap: 8px;
+
+        }
+
+
+        .bio-button {
+
+            border: 0;
+
+            padding:
+                9px 14px;
+
+            border-radius:
+                10px;
+
+            font-family:
+                inherit;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+        }
+
+
+        .bio-button.cancel {
+
+            background:
+                rgba(255,255,255,.06);
+
+            color:
+                var(--text-soft);
+
+        }
+
+
+        .bio-button.save {
+
+            background:
+                var(--purple-dark);
+
+            color: white;
+
+            box-shadow:
+                0 8px 20px
+                rgba(124,58,237,.22);
+
+        }
+
+
+        .bio-button:hover {
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================================================
+           BACK
+        ========================================================= */
+
+        .back-section {
+
+            display: flex;
+
+            justify-content: center;
+
+            margin-top: 24px;
+
+        }
+
+
+        .back-button {
+
             display: inline-flex;
 
             align-items: center;
-            gap: 7px;
+
+            gap: 8px;
 
             padding:
-                8px 15px;
+                11px 18px;
 
             border:
                 1px solid
-                rgba(231,162,182,.3);
+                var(--border);
 
             border-radius:
-                999px;
-
-            color:
-                var(--pink-light);
+                12px;
 
             background:
-                rgba(231,162,182,.06);
+                rgba(255,255,255,.035);
 
-            box-shadow:
-                inset 0 1px 0 rgba(255,255,255,.05);
+            color:
+                var(--text-soft);
 
-            font-size:
-                9px;
+            text-decoration: none;
 
-            font-weight:
-                800;
+            font-size: 12px;
 
-            letter-spacing:
-                .16em;
+            font-weight: 700;
 
-            text-transform:
-                uppercase;
+            transition:
+                transform .2s ease,
+                background .2s ease,
+                color .2s ease;
+
         }
 
 
-        .role::before {
-            content: "";
+        .back-button:hover {
 
-            width: 6px;
-            height: 6px;
-
-            border-radius: 50%;
+            transform:
+                translateY(-2px);
 
             background:
-                var(--gold);
+                rgba(255,255,255,.07);
 
-            box-shadow:
-                0 0 9px
-                var(--gold);
+            color:
+                white;
+
         }
 
 
         /* =========================================================
-           FORM PANEL
+           TOAST
         ========================================================= */
 
-        .form-panel {
-            min-width: 0;
+        .toast {
+
+            position: fixed;
+
+            left: 50%;
+
+            bottom: 26px;
+
+            z-index: 9999;
+
+            transform:
+                translate(-50%, 30px);
+
+            opacity: 0;
+
+            pointer-events: none;
 
             padding:
-                52px 48px;
-        }
-
-
-        .form-panel h2 {
-            margin:
-                0 0 7px;
-
-            font:
-                600 27px
-                'Playfair Display',
-                Georgia,
-                serif;
-        }
-
-
-        .subheading {
-            margin:
-                0 0 28px;
-
-            color:
-                var(--muted);
-
-            font-size:
-                12px;
-
-            line-height:
-                1.7;
-        }
-
-
-        /* SUCCESS */
-
-        .success {
-            margin-bottom:
-                20px;
-
-            padding:
-                13px 16px;
+                13px 18px;
 
             border:
                 1px solid
-                rgba(167,243,208,.2);
-
-            border-radius:
-                13px;
-
-            color:
-                #a7f3d0;
-
-            background:
-                rgba(167,243,208,.05);
-
-            box-shadow:
-                inset 0 1px 0 rgba(255,255,255,.03);
-
-            font-size:
-                12px;
-
-            animation:
-                fadeUp .4s ease both;
-        }
-
-
-        /* =========================================================
-           FIELD
-        ========================================================= */
-
-        .field {
-            margin-bottom:
-                20px;
-
-            animation:
-                fadeUp .55s ease both;
-        }
-
-
-        .field:nth-of-type(1) {
-            animation-delay: .1s;
-        }
-
-        .field:nth-of-type(2) {
-            animation-delay: .17s;
-        }
-
-        .field:nth-of-type(3) {
-            animation-delay: .24s;
-        }
-
-        .field:nth-of-type(4) {
-            animation-delay: .31s;
-        }
-
-        .field:nth-of-type(5) {
-            animation-delay: .38s;
-        }
-
-
-        label {
-            display: block;
-
-            margin-bottom:
-                8px;
-
-            color:
-                rgba(255,250,252,.58);
-
-            font-size:
-                10px;
-
-            font-weight:
-                800;
-
-            letter-spacing:
-                .1em;
-
-            text-transform:
-                uppercase;
-        }
-
-
-        .field-shell {
-            position:
-                relative;
-
-            padding:
-                1px;
+                rgba(255,255,255,.10);
 
             border-radius:
                 14px;
 
             background:
-                linear-gradient(
-                    110deg,
-                    rgba(231,162,182,.25),
-                    rgba(201,185,239,.12),
-                    rgba(232,194,122,.2)
-                );
+                rgba(27,25,48,.94);
 
-            transition:
-                transform .2s ease,
-                box-shadow .2s ease,
-                background .2s ease;
-        }
-
-
-        .field-shell:hover {
-            transform:
-                translateY(-1px);
-
-            background:
-                linear-gradient(
-                    110deg,
-                    rgba(231,162,182,.55),
-                    rgba(201,185,239,.35),
-                    rgba(232,194,122,.45)
-                );
+            color:
+                var(--text-main);
 
             box-shadow:
-                0 8px 25px
-                rgba(0,0,0,.18);
-        }
+                0 20px 50px
+                rgba(0,0,0,.35);
 
+            backdrop-filter:
+                blur(18px);
 
-        .field-shell:focus-within {
-            background:
-                linear-gradient(
-                    110deg,
-                    var(--pink),
-                    var(--lavender),
-                    var(--gold)
-                );
+            -webkit-backdrop-filter:
+                blur(18px);
 
-            box-shadow:
-                0 0 25px
-                rgba(201,185,239,.12);
-        }
+            font-size: 12px;
 
-
-        input,
-        textarea {
-            width:
-                100%;
-
-            border:
-                none;
-
-            outline:
-                none;
-
-            border-radius:
-                13px;
-
-            padding:
-                14px 16px;
-
-            color:
-                var(--white);
-
-            background:
-                rgba(12,10,26,.94);
-
-            font:
-                inherit;
-
-            font-size:
-                13px;
-        }
-
-
-        input::placeholder,
-        textarea::placeholder {
-            color:
-                rgba(255,255,255,.3);
-        }
-
-
-        input[readonly] {
-            color:
-                rgba(255,255,255,.55);
-
-            cursor:
-                not-allowed;
-        }
-
-
-        textarea {
-            min-height:
-                125px;
-
-            resize:
-                vertical;
-
-            line-height:
-                1.7;
-        }
-
-
-        input[type="file"] {
-            padding:
-                11px 12px;
-
-            color:
-                rgba(255,255,255,.55);
-
-            cursor:
-                pointer;
-        }
-
-
-        input[type="file"]::file-selector-button {
-            margin-right:
-                12px;
-
-            padding:
-                8px 13px;
-
-            border:
-                none;
-
-            border-radius:
-                8px;
-
-            color:
-                #17142a;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    var(--pink),
-                    var(--lavender)
-                );
-
-            font:
-                700 10px
-                'Plus Jakarta Sans',
-                sans-serif;
-
-            cursor:
-                pointer;
-        }
-
-
-        .error {
-            margin-top:
-                7px;
-
-            color:
-                #fca5a5;
-
-            font-size:
-                11px;
-        }
-
-
-        /* =========================================================
-           BUTTON
-        ========================================================= */
-
-        .actions {
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            gap:
-                18px;
-
-            flex-wrap:
-                wrap;
-
-            margin-top:
-                28px;
-        }
-
-
-        .save-button {
-            position:
-                relative;
-
-            overflow:
-                hidden;
-
-            border:
-                none;
-
-            border-radius:
-                999px;
-
-            padding:
-                14px 25px;
-
-            color:
-                #17142a;
-
-            background:
-                linear-gradient(
-                    110deg,
-                    var(--pink),
-                    var(--lavender),
-                    var(--gold)
-                );
-
-            font:
-                800 10px
-                'Plus Jakarta Sans',
-                sans-serif;
-
-            letter-spacing:
-                .08em;
-
-            text-transform:
-                uppercase;
-
-            cursor:
-                pointer;
-
-            box-shadow:
-                0 15px 35px
-                rgba(201,185,239,.2);
+            font-weight: 600;
 
             transition:
-                transform .2s ease,
-                box-shadow .2s ease;
+                opacity .25s ease,
+                transform .25s ease;
+
         }
 
 
-        .save-button::before {
-            content: "";
+        .toast.show {
 
-            position:
-                absolute;
-
-            top:
-                0;
-
-            left:
-                -100%;
-
-            width:
-                60%;
-
-            height:
-                100%;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    rgba(255,255,255,.55),
-                    transparent
-                );
+            opacity: 1;
 
             transform:
-                skewX(-20deg);
+                translate(-50%, 0);
 
-            transition:
-                left .5s ease;
         }
 
 
-        .save-button:hover {
-            transform:
-                translateY(-3px);
+        .is-loading {
 
-            box-shadow:
-                0 20px 45px
-                rgba(201,185,239,.3);
-        }
+            opacity: .65;
 
+            pointer-events: none;
 
-        .save-button:hover::before {
-            left:
-                140%;
-        }
-
-
-        .save-button:active {
-            transform:
-                translateY(0)
-                scale(.98);
-        }
-
-
-        .back-link {
-            color:
-                var(--muted);
-
-            font-size:
-                11px;
-
-            text-decoration:
-                none;
-
-            transition:
-                color .2s ease,
-                transform .2s ease;
-        }
-
-
-        .back-link:hover {
-            color:
-                var(--white);
-
-            transform:
-                translateX(3px);
-        }
-
-
-        /* =========================================================
-           ANIMATION
-        ========================================================= */
-
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-
-                transform:
-                    translateY(22px);
-            }
-
-            to {
-                opacity: 1;
-
-                transform:
-                    translateY(0);
-            }
         }
 
 
@@ -1465,477 +1152,1201 @@
            RESPONSIVE
         ========================================================= */
 
-        @media (max-width: 820px) {
+        @media (max-width: 700px) {
 
-            .admin-profile {
-                padding:
-                    45px 16px 70px;
-            }
-
-
-            .admin-card {
-                grid-template-columns:
-                    1fr;
-            }
-
-
-            .identity {
-                padding:
-                    42px 25px;
-
-                border-right:
-                    none;
-
-                border-bottom:
-                    1px solid
-                    rgba(255,255,255,.08);
-            }
-
-
-            .identity::before {
-                top:
-                    auto;
-
-                bottom:
-                    0;
+            .profile-container {
 
                 width:
-                    100%;
-
-                height:
-                    1px;
-
-                background:
-                    linear-gradient(
-                        90deg,
-                        transparent,
-                        var(--pink),
-                        var(--lavender),
-                        transparent
+                    min(
+                        calc(100% - 24px),
+                        820px
                     );
-            }
 
-
-            .form-panel {
                 padding:
-                    38px 26px 42px;
+                    35px 0 55px;
+
             }
+
+
+            .profile-card {
+
+                padding: 22px;
+
+                border-radius:
+                    22px;
+
+            }
+
+
+            .profile-title {
+                font-size: 38px;
+            }
+
+
+            .profile-subtitle {
+                font-size: 13px;
+            }
+
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .bio-header {
+                align-items: flex-start;
+            }
+
         }
 
 
         @media (max-width: 480px) {
 
-            .admin-profile {
-                padding-top:
-                    35px;
+            .profile-card {
+                padding: 18px;
             }
 
 
-            h1 {
-                font-size:
-                    40px;
+            .avatar-wrapper {
+
+                width: 120px;
+
+                height: 120px;
+
             }
 
 
-            .admin-card {
-                border-radius:
-                    25px;
+            .avatar {
+                font-size: 36px;
             }
 
 
-            .form-panel h2 {
-                font-size:
-                    23px;
+            .bio-card {
+                padding: 18px;
             }
 
 
-            .avatar-wrap {
-                width:
-                    170px;
+            .bio-footer {
 
-                height:
-                    170px;
+                align-items: flex-start;
+
+                flex-direction: column;
+
             }
 
 
-            .actions {
-                align-items:
-                    flex-start;
+            .bio-actions {
 
-                flex-direction:
-                    column;
+                width: 100%;
+
             }
+
+
+            .bio-button {
+                flex: 1;
+            }
+
         }
 
-
-        /* =========================================================
-           REDUCE MOTION
-        ========================================================= */
-
-        @media (prefers-reduced-motion: reduce) {
-
-            *,
-            *::before,
-            *::after {
-                animation-duration:
-                    .01ms !important;
-
-                animation-iteration-count:
-                    1 !important;
-
-                scroll-behavior:
-                    auto !important;
-
-                transition-duration:
-                    .01ms !important;
-            }
-        }
     </style>
+
 </head>
 
 
 <body>
 
-    {{-- BACKGROUND PARTICLES --}}
-    <div class="particles">
-
-        <span class="particle"></span>
-        <span class="particle"></span>
-        <span class="particle"></span>
-        <span class="particle"></span>
-        <span class="particle"></span>
-        <span class="particle"></span>
-        <span class="particle"></span>
-        <span class="particle"></span>
-
-    </div>
-
 
     @include('whisperly.navbar')
 
 
-    <main class="admin-profile">
+    <main class="profile-container">
 
 
-        {{-- HEADER --}}
-        <header class="admin-header">
+        <!-- HEADER -->
 
-            <span class="admin-eyebrow">
-                Whisperly Administrator
-            </span>
+        <header class="profile-header">
 
-            <h1>
+            <div class="profile-badge">
+                Profil Admin
+            </div>
+
+            <h1 class="profile-title">
                 Profil Admin
             </h1>
 
-            <p>
-                Kelola identitas dan informasi akun administrator
-                dengan mudah melalui halaman profil kamu.
+            <p class="profile-subtitle">
+                Kelola foto profil, informasi akun,
+                dan bio singkat tentang dirimu sebagai
+                Admin Whisperly.
             </p>
 
         </header>
 
 
-        {{-- MAIN CARD --}}
-        <section class="admin-card" id="adminCard">
+        <!-- MAIN CARD -->
+
+        <section class="profile-card">
 
 
-            {{-- =====================================================
-                 IDENTITY
-            ====================================================== --}}
+            <!-- AVATAR -->
 
-            <aside class="identity">
+            <div class="avatar-section">
 
-                <div class="avatar-wrap">
 
-                    <div class="avatar-ring"></div>
+                <div
+                    class="avatar-wrapper"
+                    id="avatarWrapper"
+                    title="Klik untuk mengganti foto"
+                >
 
-                    <div class="orbit">
-                        <span class="orbit-dot"></span>
-                    </div>
+                    <div
+                        class="avatar"
+                        id="avatarContainer"
+                    >
 
-                    <div class="avatar-inner">
+                        @if (!empty($currentUser->profil))
 
-                        @if ($currentUser->avatar_url)
+                            @php
+
+                                $adminPhoto =
+                                    trim(
+                                        (string) $currentUser->profil
+                                    );
+
+                                if (
+                                    filter_var(
+                                        $adminPhoto,
+                                        FILTER_VALIDATE_URL
+                                    )
+                                ) {
+
+                                    $adminAvatarUrl =
+                                        $adminPhoto;
+
+                                } else {
+
+                                    $adminAvatarUrl =
+                                        asset(
+                                            'storage/profil/' .
+                                            ltrim(
+                                                preg_replace(
+                                                    '#^storage/profil/#',
+                                                    '',
+                                                    $adminPhoto
+                                                ),
+                                                '/'
+                                            )
+                                        );
+
+                                }
+
+                            @endphp
 
                             <img
-                                src="{{ $currentUser->avatar_url }}"
-                                alt="Foto {{ $currentUser->username }}"
+                                src="{{ $adminAvatarUrl }}"
+                                alt="Foto profil {{ $currentUser->username }}"
+                                id="avatarImage"
                             >
 
                         @else
 
-                            {{ strtoupper(substr($currentUser->username, 0, 1)) }}
+                            <span id="avatarInitial">
+                                {{ strtoupper(substr($currentUser->username ?? 'A', 0, 1)) }}
+                            </span>
 
                         @endif
 
                     </div>
 
-                    <span class="avatar-status"></span>
+
+                    <div class="avatar-overlay">
+                        Ubah
+                    </div>
+
+
+                    <div class="avatar-edit-badge">
+                        ✎
+                    </div>
 
                 </div>
 
 
-                <span class="identity-tag">
-                    Whisperly Admin
-                </span>
-
-
-                <h2>
+                <div class="avatar-name">
                     {{ $currentUser->username }}
-                </h2>
+                </div>
 
 
-                <p>
-                    {{ $currentUser->email }}
-                </p>
+                <div class="avatar-role">
+                    Admin
+                </div>
 
 
-                <span class="role">
-                    Administrator
-                </span>
-
-            </aside>
-
-
-            {{-- =====================================================
-                 FORM
-            ====================================================== --}}
-
-            <div class="form-panel">
-
-
-                <h2>
-                    Informasi Administrator
-                </h2>
-
-
-                <p class="subheading">
-                    Perbarui bio dan foto profil akun administrator kamu.
-                </p>
-
-
-                {{-- SUCCESS --}}
-                @if (session('success'))
-
-                    <div class="success">
-                        ✦ {{ session('success') }}
-                    </div>
-
-                @endif
-
-
-                <form
-                    action="{{ route('admin.profile.update') }}"
-                    method="POST"
-                    enctype="multipart/form-data"
+                <input
+                    type="file"
+                    id="photoInput"
+                    accept="image/jpeg,image/png,image/jpg,image/webp,image/gif"
                 >
 
-                    @csrf
-                    @method('PATCH')
+
+                <div class="photo-actions">
+
+                    <button
+                        type="button"
+                        class="photo-button primary"
+                        id="changePhotoButton"
+                    >
+                        Ganti Foto
+                    </button>
 
 
-                    {{-- USERNAME --}}
-                    <div class="field">
-
-                        <label for="username">
-                            Username
-                        </label>
-
-                        <div class="field-shell">
-
-                            <input
-                                id="username"
-                                type="text"
-                                value="{{ $currentUser->username }}"
-                                readonly
-                            >
-
-                        </div>
-
-                    </div>
-
-
-                    {{-- EMAIL --}}
-                    <div class="field">
-
-                        <label for="email">
-                            Email
-                        </label>
-
-                        <div class="field-shell">
-
-                            <input
-                                id="email"
-                                type="email"
-                                value="{{ $currentUser->email }}"
-                                readonly
-                            >
-
-                        </div>
-
-                    </div>
-
-
-                    {{-- ROLE --}}
-                    <div class="field">
-
-                        <label for="role">
-                            Role Akun
-                        </label>
-
-                        <div class="field-shell">
-
-                            <input
-                                id="role"
-                                type="text"
-                                value="Administrator"
-                                readonly
-                            >
-
-                        </div>
-
-                    </div>
-
-
-                    {{-- BIO --}}
-                    <div class="field">
-
-                        <label for="bio">
-                            Bio Admin
-                        </label>
-
-                        <div class="field-shell">
-
-                            <textarea
-                                id="bio"
-                                name="bio"
-                                maxlength="500"
-                                placeholder="Tuliskan bio admin..."
-                            >{{ old('bio', $currentUser->bio ?? '') }}</textarea>
-
-                        </div>
-
-
-                        @error('bio')
-
-                            <div class="error">
-                                {{ $message }}
-                            </div>
-
-                        @enderror
-
-                    </div>
-
-
-                    {{-- PHOTO --}}
-                    <div class="field">
-
-                        <label for="photo">
-                            Foto Profil
-                        </label>
-
-                        <div class="field-shell">
-
-                            <input
-                                id="photo"
-                                name="photo"
-                                type="file"
-                                accept="image/jpeg,image/png,image/webp,image/gif"
-                            >
-
-                        </div>
-
-
-                        @error('photo')
-
-                            <div class="error">
-                                {{ $message }}
-                            </div>
-
-                        @enderror
-
-                    </div>
-
-
-                    {{-- ACTIONS --}}
-                    <div class="actions">
+                    @if (!empty($currentUser->profil))
 
                         <button
-                            class="save-button"
-                            type="submit"
+                            type="button"
+                            class="photo-button danger"
+                            id="deletePhotoButton"
                         >
-                            ✦ &nbsp; Simpan Profil Admin
+                            Hapus Foto
                         </button>
 
+                    @endif
 
-                        <a
-    class="back-link"
-    href="{{ url('/whisperly') }}"
->
-    Kembali ke dashboard →
-</a>
-
-                    </div>
+                </div>
 
 
-                </form>
+                <div
+                    class="status-message"
+                    id="photoStatus"
+                ></div>
+
 
             </div>
 
+
+            <!-- ACCOUNT INFO -->
+
+            <div class="info-grid">
+
+
+                <div class="info-item">
+
+                    <span class="info-label">
+                        Nama
+                    </span>
+
+                    <span class="info-value">
+                        {{ $currentUser->username }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <span class="info-label">
+                        Email
+                    </span>
+
+                    <span class="info-value">
+                        {{ $currentUser->email }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <span class="info-label">
+                        Bergabung
+                    </span>
+
+                    <span class="info-value">
+
+                        @if ($currentUser->created_at)
+
+                            {{ $currentUser->created_at->translatedFormat('d M Y') }}
+
+                        @else
+
+                            -
+
+                        @endif
+
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- ADMIN BIO -->
+
+            <div class="bio-card">
+
+
+                <div class="bio-header">
+
+
+                    <div class="bio-heading">
+
+                        <div class="bio-icon">
+                            ✦
+                        </div>
+
+                        <div class="bio-title">
+                            Bio Admin
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="bio-edit-button"
+                        id="editBioButton"
+                    >
+                        Edit
+                    </button>
+
+
+                </div>
+
+
+                <div id="bioDisplay">
+
+                    @if (!empty($currentUser->bio))
+
+                        <div class="bio-text">
+                            {{ $currentUser->bio }}
+                        </div>
+
+                    @else
+
+                        <div class="bio-text bio-empty">
+                            Belum ada bio.
+                            Tambahkan sedikit informasi
+                            tentang dirimu sebagai Admin
+                            Whisperly.
+                        </div>
+
+                    @endif
+
+                </div>
+
+
+                <div
+                    class="bio-form"
+                    id="bioForm"
+                >
+
+                    <textarea
+                        id="bioInput"
+                        class="bio-input"
+                        maxlength="500"
+                        placeholder="Tulis bio singkat tentang dirimu sebagai Admin Whisperly..."
+                    >{{ $currentUser->bio ?? '' }}</textarea>
+
+
+                    <div class="bio-footer">
+
+
+                        <div
+                            class="char-counter"
+                            id="charCounter"
+                        >
+                            {{ strlen($currentUser->bio ?? '') }}/500
+                        </div>
+
+
+                        <div class="bio-actions">
+
+                            <button
+                                type="button"
+                                class="bio-button cancel"
+                                id="cancelBioButton"
+                            >
+                                Batal
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="bio-button save"
+                                id="saveBioButton"
+                            >
+                                Simpan
+                            </button>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
         </section>
+
+
+        <!-- BACK -->
+
+        <div class="back-section">
+
+            <a
+                href="{{ route('whisperly.home') }}"
+                class="back-button"
+            >
+                ← Kembali ke Home
+            </a>
+
+        </div>
+
 
     </main>
 
 
+    <div
+        class="toast"
+        id="toast"
+    ></div>
+
+
     <script>
-        /*
-         * Efek 3D ringan mengikuti posisi mouse.
-         * Tidak mengubah fungsi form.
-         */
-        const card = document.getElementById('adminCard');
 
-        if (card && window.matchMedia('(pointer: fine)').matches) {
+        /* =========================================================
+           CSRF
+        ========================================================= */
 
-            card.addEventListener('mousemove', function (event) {
-
-                const rect = card.getBoundingClientRect();
-
-                const x =
-                    event.clientX - rect.left;
-
-                const y =
-                    event.clientY - rect.top;
-
-                const centerX =
-                    rect.width / 2;
-
-                const centerY =
-                    rect.height / 2;
-
-                const rotateY =
-                    ((x - centerX) / centerX) * 2;
-
-                const rotateX =
-                    ((centerY - y) / centerY) * 2;
-
-                card.style.transform =
-                    `perspective(1400px)
-                     rotateX(${rotateX}deg)
-                     rotateY(${rotateY}deg)
-                     translateY(-2px)`;
-            });
+        const csrfToken =
+            document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute('content');
 
 
-            card.addEventListener('mouseleave', function () {
+        /* =========================================================
+           ELEMENTS
+        ========================================================= */
 
-                card.style.transform =
-                    'perspective(1400px) rotateX(0deg) rotateY(0deg) translateY(0)';
+        const photoInput =
+            document.getElementById('photoInput');
 
-            });
+        const avatarWrapper =
+            document.getElementById('avatarWrapper');
+
+        const avatarContainer =
+            document.getElementById('avatarContainer');
+
+        const changePhotoButton =
+            document.getElementById('changePhotoButton');
+
+        const photoStatus =
+            document.getElementById('photoStatus');
+
+        const toast =
+            document.getElementById('toast');
+
+        const editBioButton =
+            document.getElementById('editBioButton');
+
+        const cancelBioButton =
+            document.getElementById('cancelBioButton');
+
+        const saveBioButton =
+            document.getElementById('saveBioButton');
+
+        const bioDisplay =
+            document.getElementById('bioDisplay');
+
+        const bioForm =
+            document.getElementById('bioForm');
+
+        const bioInput =
+            document.getElementById('bioInput');
+
+        const charCounter =
+            document.getElementById('charCounter');
+
+
+        /* =========================================================
+           TOAST
+        ========================================================= */
+
+        function showToast(message) {
+
+            toast.textContent = message;
+
+            toast.classList.add('show');
+
+            setTimeout(() => {
+
+                toast.classList.remove('show');
+
+            }, 2500);
 
         }
+
+
+        /* =========================================================
+           PHOTO STATUS
+        ========================================================= */
+
+        function setPhotoStatus(
+            message,
+            type = ''
+        ) {
+
+            photoStatus.textContent =
+                message;
+
+            photoStatus.className =
+                'status-message';
+
+            if (type) {
+
+                photoStatus.classList.add(
+                    type
+                );
+
+            }
+
+        }
+
+
+        /* =========================================================
+           OPEN FILE PICKER
+        ========================================================= */
+
+        avatarWrapper.addEventListener(
+            'click',
+            function () {
+
+                photoInput.click();
+
+            }
+        );
+
+
+        changePhotoButton.addEventListener(
+            'click',
+            function () {
+
+                photoInput.click();
+
+            }
+        );
+
+
+        /* =========================================================
+           PHOTO UPLOAD
+        ========================================================= */
+
+        photoInput.addEventListener(
+            'change',
+            async function () {
+
+                const file =
+                    this.files[0];
+
+                if (!file) {
+                    return;
+                }
+
+
+                const allowedTypes = [
+                    'image/jpeg',
+                    'image/png',
+                    'image/jpg',
+                    'image/webp',
+                    'image/gif'
+                ];
+
+
+                if (!allowedTypes.includes(file.type)) {
+
+                    setPhotoStatus(
+                        'Format foto harus JPG, PNG, WEBP, atau GIF.',
+                        'error'
+                    );
+
+                    this.value = '';
+
+                    return;
+
+                }
+
+
+                if (file.size > 3 * 1024 * 1024) {
+
+                    setPhotoStatus(
+                        'Ukuran foto maksimal 3 MB.',
+                        'error'
+                    );
+
+                    this.value = '';
+
+                    return;
+
+                }
+
+
+                const formData =
+                    new FormData();
+
+
+                formData.append(
+                    'photo',
+                    file
+                );
+
+
+                formData.append(
+                    '_token',
+                    csrfToken
+                );
+
+
+                setPhotoStatus(
+                    'Mengunggah foto...'
+                );
+
+
+                changePhotoButton.classList.add(
+                    'is-loading'
+                );
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            "{{ route('whisperly.profile.photo.update') }}",
+                            {
+
+                                method: 'POST',
+
+                                headers: {
+
+                                    'X-CSRF-TOKEN':
+                                        csrfToken,
+
+                                    'Accept':
+                                        'application/json'
+
+                                },
+
+                                body:
+                                    formData
+
+                            }
+                        );
+
+
+                    const data =
+                        await response.json();
+
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            data.message ||
+                            'Gagal mengunggah foto.'
+                        );
+
+                    }
+
+
+                    const avatarUrl =
+                        data.avatar_url ||
+                        data.url;
+
+
+                    if (avatarUrl) {
+
+                        avatarContainer.innerHTML = '';
+
+
+                        const img =
+                            document.createElement('img');
+
+
+                        img.src =
+                            avatarUrl;
+
+
+                        img.alt =
+                            'Foto profil {{ $currentUser->username }}';
+
+
+                        img.id =
+                            'avatarImage';
+
+
+                        avatarContainer.appendChild(
+                            img
+                        );
+
+
+                        const navAvatar =
+                            document.querySelector(
+                                '.whisperly-user-avatar'
+                            );
+
+
+                        if (navAvatar) {
+
+                            navAvatar.innerHTML =
+                                `<img src="${avatarUrl}" alt="Avatar">`;
+
+                        }
+
+                    }
+
+
+                    setPhotoStatus(
+                        data.message ||
+                        'Foto profil berhasil diperbarui.',
+                        'success'
+                    );
+
+
+                    showToast(
+                        data.message ||
+                        'Foto profil berhasil diperbarui.'
+                    );
+
+
+                    if (
+                        !document.getElementById(
+                            'deletePhotoButton'
+                        )
+                    ) {
+
+                        const button =
+                            document.createElement('button');
+
+
+                        button.type =
+                            'button';
+
+
+                        button.className =
+                            'photo-button danger';
+
+
+                        button.id =
+                            'deletePhotoButton';
+
+
+                        button.textContent =
+                            'Hapus Foto';
+
+
+                        document
+                            .querySelector('.photo-actions')
+                            .appendChild(button);
+
+
+                        bindDeletePhotoButton();
+
+                    }
+
+
+                } catch (error) {
+
+                    setPhotoStatus(
+                        error.message ||
+                        'Terjadi kesalahan saat mengunggah foto.',
+                        'error'
+                    );
+
+
+                    showToast(
+                        'Foto gagal diperbarui.'
+                    );
+
+                } finally {
+
+                    changePhotoButton.classList.remove(
+                        'is-loading'
+                    );
+
+                    photoInput.value = '';
+
+                }
+
+            }
+        );
+
+
+        /* =========================================================
+           DELETE PHOTO
+        ========================================================= */
+
+        function bindDeletePhotoButton() {
+
+            const button =
+                document.getElementById(
+                    'deletePhotoButton'
+                );
+
+
+            if (!button) {
+                return;
+            }
+
+
+            button.onclick =
+                async function () {
+
+                    const confirmed =
+                        confirm(
+                            'Hapus foto profil admin?'
+                        );
+
+
+                    if (!confirmed) {
+                        return;
+                    }
+
+
+                    button.classList.add(
+                        'is-loading'
+                    );
+
+
+                    setPhotoStatus(
+                        'Menghapus foto...'
+                    );
+
+
+                    try {
+
+                        const response =
+                            await fetch(
+                                "{{ route('whisperly.profile.photo.delete') }}",
+                                {
+
+                                    method: 'DELETE',
+
+                                    headers: {
+
+                                        'X-CSRF-TOKEN':
+                                            csrfToken,
+
+                                        'Accept':
+                                            'application/json'
+
+                                    }
+
+                                }
+                            );
+
+
+                        const data =
+                            await response.json();
+
+
+                        if (!response.ok) {
+
+                            throw new Error(
+                                data.message ||
+                                'Gagal menghapus foto.'
+                            );
+
+                        }
+
+
+                        avatarContainer.innerHTML =
+                            `<span id="avatarInitial">
+                                {{ strtoupper(substr($currentUser->username ?? 'A', 0, 1)) }}
+                            </span>`;
+
+
+                        const navAvatar =
+                            document.querySelector(
+                                '.whisperly-user-avatar'
+                            );
+
+
+                        if (navAvatar) {
+
+                            navAvatar.innerHTML =
+                                `{{ strtoupper(substr($currentUser->username ?? 'A', 0, 1)) }}`;
+
+                        }
+
+
+                        button.remove();
+
+
+                        setPhotoStatus(
+                            data.message ||
+                            'Foto profil berhasil dihapus.',
+                            'success'
+                        );
+
+
+                        showToast(
+                            data.message ||
+                            'Foto profil berhasil dihapus.'
+                        );
+
+
+                    } catch (error) {
+
+                        setPhotoStatus(
+                            error.message ||
+                            'Gagal menghapus foto.',
+                            'error'
+                        );
+
+
+                        showToast(
+                            'Foto gagal dihapus.'
+                        );
+
+
+                        button.classList.remove(
+                            'is-loading'
+                        );
+
+                    }
+
+                };
+
+        }
+
+
+        bindDeletePhotoButton();
+
+
+        /* =========================================================
+           BIO EDIT
+        ========================================================= */
+
+        editBioButton.addEventListener(
+            'click',
+            function () {
+
+                bioDisplay.style.display =
+                    'none';
+
+                bioForm.classList.add(
+                    'active'
+                );
+
+                editBioButton.style.display =
+                    'none';
+
+                bioInput.focus();
+
+            }
+        );
+
+
+        /* =========================================================
+           BIO CANCEL
+        ========================================================= */
+
+        cancelBioButton.addEventListener(
+            'click',
+            function () {
+
+                bioForm.classList.remove(
+                    'active'
+                );
+
+                bioDisplay.style.display =
+                    '';
+
+                editBioButton.style.display =
+                    '';
+
+                bioInput.value =
+                    @json($currentUser->bio ?? '');
+
+                updateCounter();
+
+            }
+        );
+
+
+        /* =========================================================
+           BIO COUNTER
+        ========================================================= */
+
+        function updateCounter() {
+
+            const length =
+                bioInput.value.length;
+
+            charCounter.textContent =
+                `${length}/500`;
+
+        }
+
+
+        bioInput.addEventListener(
+            'input',
+            updateCounter
+        );
+
+
+        /* =========================================================
+           BIO SAVE
+        ========================================================= */
+
+        saveBioButton.addEventListener(
+            'click',
+            async function () {
+
+                const bio =
+                    bioInput.value.trim();
+
+
+                if (bio.length > 500) {
+
+                    showToast(
+                        'Bio maksimal 500 karakter.'
+                    );
+
+                    return;
+
+                }
+
+
+                saveBioButton.classList.add(
+                    'is-loading'
+                );
+
+
+                try {
+
+                    const formData =
+                        new FormData();
+
+
+                    formData.append(
+                        'bio',
+                        bio
+                    );
+
+
+                    formData.append(
+                        '_token',
+                        csrfToken
+                    );
+
+
+                    const response =
+                        await fetch(
+                            "{{ route('whisperly.profile.bio.update') }}",
+                            {
+
+                                method: 'POST',
+
+                                headers: {
+
+                                    'X-CSRF-TOKEN':
+                                        csrfToken,
+
+                                    'Accept':
+                                        'application/json'
+
+                                },
+
+                                body:
+                                    formData
+
+                            }
+                        );
+
+
+                    const data =
+                        await response.json();
+
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            data.message ||
+                            'Gagal menyimpan bio.'
+                        );
+
+                    }
+
+
+                    if (bio) {
+
+                        bioDisplay.innerHTML =
+                            `<div class="bio-text"></div>`;
+
+
+                        bioDisplay
+                            .querySelector('.bio-text')
+                            .textContent =
+                                bio;
+
+                    } else {
+
+                        bioDisplay.innerHTML =
+                            `<div class="bio-text bio-empty">
+                                Belum ada bio.
+                                Tambahkan sedikit informasi
+                                tentang dirimu sebagai Admin
+                                Whisperly.
+                            </div>`;
+
+                    }
+
+
+                    bioForm.classList.remove(
+                        'active'
+                    );
+
+
+                    bioDisplay.style.display =
+                        '';
+
+
+                    editBioButton.style.display =
+                        '';
+
+
+                    showToast(
+                        data.message ||
+                        'Bio Admin berhasil diperbarui.'
+                    );
+
+
+                } catch (error) {
+
+                    showToast(
+                        error.message ||
+                        'Gagal menyimpan bio.'
+                    );
+
+                } finally {
+
+                    saveBioButton.classList.remove(
+                        'is-loading'
+                    );
+
+                }
+
+            }
+        );
+
+
+        updateCounter();
+
     </script>
 
+
 </body>
+
 </html>

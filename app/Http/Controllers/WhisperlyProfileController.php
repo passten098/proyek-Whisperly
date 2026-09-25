@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 class WhisperlyProfileController extends Controller
 {
     /**
-     * Tampilkan halaman profil pengguna Whisperly.
+     * Tampilkan halaman profil Talent.
      */
     public function show(Request $request)
     {
@@ -29,15 +29,15 @@ class WhisperlyProfileController extends Controller
                 ->first();
         }
 
-        return view('whisperly.profile', compact(
-            'currentUser',
-            'currentTalentProfile'
-        ));
+        return view('whisperly.profile', [
+            'currentUser' => $currentUser,
+            'currentTalentProfile' => $currentTalentProfile,
+        ]);
     }
 
 
     /**
-     * Tampilkan halaman profil admin Whisperly.
+     * Tampilkan halaman profil Admin.
      */
     public function adminProfile()
     {
@@ -54,10 +54,7 @@ class WhisperlyProfileController extends Controller
 
 
     /**
-     * Perbarui profil admin Whisperly.
-     *
-     * Username dan email hanya ditampilkan,
-     * yang dapat diubah adalah bio dan foto profil.
+     * Perbarui profil Admin.
      */
     public function updateAdminProfile(Request $request)
     {
@@ -72,31 +69,61 @@ class WhisperlyProfileController extends Controller
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif|max:3072',
         ]);
 
-        $currentUser->bio = $validated['bio'] ?? null;
+        $currentUser->bio = !empty($validated['bio'])
+            ? trim($validated['bio'])
+            : null;
 
         if ($request->hasFile('photo')) {
+
             $file = $request->file('photo');
 
-            // Hapus foto lama jika ada
+            /*
+             * Hapus foto Admin lama
+             */
             if (
                 !empty($currentUser->profil) &&
                 !filter_var($currentUser->profil, FILTER_VALIDATE_URL)
             ) {
                 $oldFilename = ltrim(
-                    preg_replace('#^storage/#', '', $currentUser->profil),
+                    preg_replace(
+                        '#^storage/#',
+                        '',
+                        $currentUser->profil
+                    ),
                     '/'
                 );
 
-                if (Storage::disk('public')->exists('profil/' . $oldFilename)) {
-                    Storage::disk('public')->delete('profil/' . $oldFilename);
-                } elseif (Storage::disk('public')->exists($oldFilename)) {
-                    Storage::disk('public')->delete($oldFilename);
+                if (
+                    Storage::disk('public')->exists(
+                        'profil/' . $oldFilename
+                    )
+                ) {
+                    Storage::disk('public')->delete(
+                        'profil/' . $oldFilename
+                    );
+                } elseif (
+                    Storage::disk('public')->exists(
+                        $oldFilename
+                    )
+                ) {
+                    Storage::disk('public')->delete(
+                        $oldFilename
+                    );
                 }
             }
 
-            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $filename =
+                time() .
+                '_' .
+                uniqid() .
+                '.' .
+                $file->getClientOriginalExtension();
 
-            $file->storeAs('profil', $filename, 'public');
+            $file->storeAs(
+                'profil',
+                $filename,
+                'public'
+            );
 
             $currentUser->profil = $filename;
         }
@@ -105,235 +132,543 @@ class WhisperlyProfileController extends Controller
 
         return redirect()
             ->route('admin.profile')
-            ->with('success', 'Profil admin berhasil diperbarui.');
+            ->with(
+                'success',
+                'Profil admin berhasil diperbarui.'
+            );
     }
 
 
     /**
-     * Perbarui teks bio pengguna.
+     * Perbarui deskripsi profil.
+     *
+     * Admin  -> pengguna.bio
+     * Talent -> talents.deskripsi
      */
     public function updateBio(Request $request)
     {
         $currentUser = Auth::guard('whisperly')->user();
 
         if (!$currentUser) {
-            if ($request->expectsJson() || $request->ajax()) {
+
+            if (
+                $request->expectsJson() ||
+                $request->ajax()
+            ) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Sesi login telah berakhir.'
+                    'message' => 'Sesi login telah berakhir.',
                 ], 401);
             }
 
             return redirect()->route('login.baru');
         }
 
-        $validated = $request->validate([
-            'bio' => 'nullable|string|max:500',
-        ], [
-            'bio.max' => 'Bio tidak boleh lebih dari 500 karakter.',
-        ]);
+        $validated = $request->validate(
+            [
+                'bio' => 'nullable|string|max:500',
+            ],
+            [
+                'bio.max' =>
+                    'Deskripsi tidak boleh lebih dari 500 karakter.',
+            ]
+        );
 
-        $currentUser->bio = !empty($validated['bio'])
+        $bio = !empty($validated['bio'])
             ? trim($validated['bio'])
             : null;
 
-        $currentUser->save();
 
-        if ($request->expectsJson() || $request->ajax()) {
+        /*
+         * =========================================================
+         * TALENT
+         * =========================================================
+         */
+
+        if ($currentUser->role === 'talent') {
+
+            $talent = talents::query()
+                ->where(
+                    'pengguna_id',
+                    $currentUser->id
+                )
+                ->first();
+
+            if (!$talent) {
+
+                if (
+                    $request->expectsJson() ||
+                    $request->ajax()
+                ) {
+                    return response()->json([
+                        'success' => false,
+                        'message' =>
+                            'Data Talent tidak ditemukan.',
+                    ], 404);
+                }
+
+                return redirect()
+                    ->route('whisperly.profile')
+                    ->with(
+                        'error',
+                        'Data Talent tidak ditemukan.'
+                    );
+            }
+
+            $talent->deskripsi = $bio;
+            $talent->updated_by = $currentUser->id;
+            $talent->save();
+
+        }
+
+
+        /*
+         * =========================================================
+         * ADMIN / USER
+         * =========================================================
+         */
+
+        else {
+
+            $currentUser->bio = $bio;
+            $currentUser->save();
+        }
+
+
+        if (
+            $request->expectsJson() ||
+            $request->ajax()
+        ) {
             return response()->json([
                 'success' => true,
-                'message' => 'Bio berhasil diperbarui!',
-                'bio' => $currentUser->bio,
+                'message' =>
+                    $currentUser->role === 'talent'
+                        ? 'Deskripsi Talent berhasil diperbarui!'
+                        : 'Bio berhasil diperbarui!',
+                'bio' => $bio,
             ]);
         }
 
+
         return redirect()
-            ->route('whisperly.profile')
-            ->with('success', 'Bio berhasil diperbarui!');
+            ->route(
+                $currentUser->role === 'talent'
+                    ? 'whisperly.profile'
+                    : 'admin.profile'
+            )
+            ->with(
+                'success',
+                $currentUser->role === 'talent'
+                    ? 'Deskripsi Talent berhasil diperbarui!'
+                    : 'Bio berhasil diperbarui!'
+            );
     }
 
 
     /**
-     * Unggah / ganti foto profil pengguna.
+     * Upload / ganti foto profil.
+     *
+     * Talent -> talents.photo
+     * Admin/User -> pengguna.profil
      */
     public function updatePhoto(Request $request)
     {
         $currentUser = Auth::guard('whisperly')->user();
 
         if (!$currentUser) {
-            if ($request->expectsJson() || $request->ajax()) {
+
+            if (
+                $request->expectsJson() ||
+                $request->ajax()
+            ) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Sesi login telah berakhir.'
+                    'message' => 'Sesi login telah berakhir.',
                 ], 401);
             }
 
             return redirect()->route('login.baru');
         }
 
-        $request->validate([
-            'photo' => 'required|image|mimes:jpeg,png,jpg,webp,gif|max:3072',
-        ], [
-            'photo.required' => 'Pilih foto terlebih dahulu.',
-            'photo.image' => 'File yang diunggah harus berupa gambar.',
-            'photo.mimes' => 'Format gambar harus jpeg, png, jpg, webp, atau gif.',
-            'photo.max' => 'Ukuran gambar maksimal 3 MB.',
-        ]);
+        $request->validate(
+            [
+                'photo' =>
+                    'required|image|mimes:jpeg,png,jpg,webp,gif|max:3072',
+            ],
+            [
+                'photo.required' =>
+                    'Pilih foto terlebih dahulu.',
+                'photo.image' =>
+                    'File yang diunggah harus berupa gambar.',
+                'photo.mimes' =>
+                    'Format gambar harus jpeg, png, jpg, webp, atau gif.',
+                'photo.max' =>
+                    'Ukuran gambar maksimal 3 MB.',
+            ]
+        );
 
         $file = $request->file('photo');
 
-        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $filename =
+            time() .
+            '_' .
+            uniqid() .
+            '.' .
+            $file->getClientOriginalExtension();
 
 
         /*
          * =========================================================
-         * JIKA USER ADALAH TALENT
+         * TALENT
          * =========================================================
          */
+
         if ($currentUser->role === 'talent') {
 
             $talent = talents::query()
-                ->where('pengguna_id', $currentUser->id)
+                ->where(
+                    'pengguna_id',
+                    $currentUser->id
+                )
                 ->first();
 
             if (!$talent) {
-                if ($request->expectsJson() || $request->ajax()) {
+
+                if (
+                    $request->expectsJson() ||
+                    $request->ajax()
+                ) {
                     return response()->json([
                         'success' => false,
-                        'message' => 'Data Talent tidak ditemukan.'
+                        'message' =>
+                            'Data Talent tidak ditemukan.',
                     ], 404);
                 }
 
                 return redirect()
                     ->route('whisperly.profile')
-                    ->with('error', 'Data Talent tidak ditemukan.');
+                    ->with(
+                        'error',
+                        'Data Talent tidak ditemukan.'
+                    );
             }
 
-            // Hapus foto Talent lama jika ada
+
+            /*
+             * Hapus foto Talent lama
+             */
+
             if (!empty($talent->photo)) {
+
                 $oldPhoto = ltrim(
-                    preg_replace('#^storage/#', '', $talent->photo),
+                    preg_replace(
+                        '#^storage/#',
+                        '',
+                        $talent->photo
+                    ),
                     '/'
                 );
 
-                if (Storage::disk('public')->exists($oldPhoto)) {
-                    Storage::disk('public')->delete($oldPhoto);
+                if (
+                    Storage::disk('public')->exists(
+                        $oldPhoto
+                    )
+                ) {
+                    Storage::disk('public')->delete(
+                        $oldPhoto
+                    );
                 }
             }
 
-            // Simpan foto baru ke folder talent-profiles
+
+            /*
+             * Simpan foto Talent
+             */
+
             $file->storeAs(
                 'talent-profiles',
                 $filename,
                 'public'
             );
 
-            // Simpan path foto baru ke tabel talents
-            $talent->photo = 'talent-profiles/' . $filename;
-            $talent->updated_by = $currentUser->id;
-            $talent->save();
+            $talent->photo =
+                'talent-profiles/' . $filename;
 
-        } else {
+            $talent->updated_by =
+                $currentUser->id;
+
+            $talent->save();
+        }
+
+
+        /*
+         * =========================================================
+         * ADMIN / USER
+         * =========================================================
+         */
+
+        else {
 
             /*
-             * =========================================================
-             * JIKA USER BUKAN TALENT
-             * =========================================================
+             * Hapus foto lama
              */
 
-            // Hapus foto lama jika ada
             if (
                 !empty($currentUser->profil) &&
-                !filter_var($currentUser->profil, FILTER_VALIDATE_URL)
+                !filter_var(
+                    $currentUser->profil,
+                    FILTER_VALIDATE_URL
+                )
             ) {
+
                 $oldFilename = ltrim(
-                    preg_replace('#^storage/#', '', $currentUser->profil),
+                    preg_replace(
+                        '#^storage/#',
+                        '',
+                        $currentUser->profil
+                    ),
                     '/'
                 );
 
-                if (Storage::disk('public')->exists('profil/' . $oldFilename)) {
-                    Storage::disk('public')->delete('profil/' . $oldFilename);
-                } elseif (Storage::disk('public')->exists($oldFilename)) {
-                    Storage::disk('public')->delete($oldFilename);
+                if (
+                    Storage::disk('public')->exists(
+                        'profil/' . $oldFilename
+                    )
+                ) {
+                    Storage::disk('public')->delete(
+                        'profil/' . $oldFilename
+                    );
+                } elseif (
+                    Storage::disk('public')->exists(
+                        $oldFilename
+                    )
+                ) {
+                    Storage::disk('public')->delete(
+                        $oldFilename
+                    );
                 }
             }
 
-            // Simpan foto ke folder profil
+
+            /*
+             * Simpan foto Admin/User
+             */
+
             $file->storeAs(
                 'profil',
                 $filename,
                 'public'
             );
 
-            // Simpan nama file ke tabel pengguna
-            $currentUser->profil = $filename;
+            $currentUser->profil =
+                $filename;
+
             $currentUser->save();
         }
 
 
-        if ($request->expectsJson() || $request->ajax()) {
+        if (
+            $request->expectsJson() ||
+            $request->ajax()
+        ) {
+
             return response()->json([
                 'success' => true,
-                'message' => 'Foto profil berhasil diperbarui!',
-                'avatar_url' => $currentUser->avatar_url,
+                'message' =>
+                    'Foto profil berhasil diperbarui!',
+                'avatar_url' =>
+                    $currentUser->fresh()->avatar_url,
             ]);
         }
 
+
         return redirect()
-            ->route('whisperly.profile')
-            ->with('success', 'Foto profil berhasil diperbarui!');
+            ->route(
+                $currentUser->role === 'talent'
+                    ? 'whisperly.profile'
+                    : 'admin.profile'
+            )
+            ->with(
+                'success',
+                'Foto profil berhasil diperbarui!'
+            );
     }
 
 
     /**
-     * Hapus foto profil pengguna (kembali ke avatar inisial).
+     * Hapus foto profil.
+     *
+     * Talent -> talents.photo
+     * Admin/User -> pengguna.profil
      */
     public function deletePhoto(Request $request)
     {
         $currentUser = Auth::guard('whisperly')->user();
 
         if (!$currentUser) {
-            if ($request->expectsJson() || $request->ajax()) {
+
+            if (
+                $request->expectsJson() ||
+                $request->ajax()
+            ) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Sesi login telah berakhir.'
+                    'message' =>
+                        'Sesi login telah berakhir.',
                 ], 401);
             }
 
             return redirect()->route('login.baru');
         }
 
-        if (
-            !empty($currentUser->profil) &&
-            !filter_var($currentUser->profil, FILTER_VALIDATE_URL)
-        ) {
-            $oldFilename = ltrim(
-                preg_replace('#^storage/#', '', $currentUser->profil),
-                '/'
-            );
 
-            if (Storage::disk('public')->exists('profil/' . $oldFilename)) {
-                Storage::disk('public')->delete('profil/' . $oldFilename);
-            } elseif (Storage::disk('public')->exists($oldFilename)) {
-                Storage::disk('public')->delete($oldFilename);
+        /*
+         * =========================================================
+         * TALENT
+         * =========================================================
+         */
+
+        if ($currentUser->role === 'talent') {
+
+            $talent = talents::query()
+                ->where(
+                    'pengguna_id',
+                    $currentUser->id
+                )
+                ->first();
+
+            if (!$talent) {
+
+                if (
+                    $request->expectsJson() ||
+                    $request->ajax()
+                ) {
+                    return response()->json([
+                        'success' => false,
+                        'message' =>
+                            'Data Talent tidak ditemukan.',
+                    ], 404);
+                }
+
+                return redirect()
+                    ->route('whisperly.profile')
+                    ->with(
+                        'error',
+                        'Data Talent tidak ditemukan.'
+                    );
             }
+
+
+            if (!empty($talent->photo)) {
+
+                $oldPhoto = ltrim(
+                    preg_replace(
+                        '#^storage/#',
+                        '',
+                        $talent->photo
+                    ),
+                    '/'
+                );
+
+                if (
+                    Storage::disk('public')->exists(
+                        $oldPhoto
+                    )
+                ) {
+                    Storage::disk('public')->delete(
+                        $oldPhoto
+                    );
+                }
+            }
+
+
+            $talent->photo = null;
+            $talent->updated_by =
+                $currentUser->id;
+
+            $talent->save();
         }
 
-        $currentUser->profil = null;
 
-        $currentUser->save();
+        /*
+         * =========================================================
+         * ADMIN / USER
+         * =========================================================
+         */
 
-        if ($request->expectsJson() || $request->ajax()) {
+        else {
+
+            if (
+                !empty($currentUser->profil) &&
+                !filter_var(
+                    $currentUser->profil,
+                    FILTER_VALIDATE_URL
+                )
+            ) {
+
+                $oldFilename = ltrim(
+                    preg_replace(
+                        '#^storage/#',
+                        '',
+                        $currentUser->profil
+                    ),
+                    '/'
+                );
+
+                if (
+                    Storage::disk('public')->exists(
+                        'profil/' . $oldFilename
+                    )
+                ) {
+                    Storage::disk('public')->delete(
+                        'profil/' . $oldFilename
+                    );
+                } elseif (
+                    Storage::disk('public')->exists(
+                        $oldFilename
+                    )
+                ) {
+                    Storage::disk('public')->delete(
+                        $oldFilename
+                    );
+                }
+            }
+
+            $currentUser->profil = null;
+            $currentUser->save();
+        }
+
+
+        if (
+            $request->expectsJson() ||
+            $request->ajax()
+        ) {
             return response()->json([
                 'success' => true,
-                'message' => 'Foto profil berhasil dihapus.',
+                'message' =>
+                    'Foto profil berhasil dihapus.',
                 'avatar_url' => null,
-                'initial' => strtoupper(substr($currentUser->username, 0, 1)),
+                'initial' =>
+                    strtoupper(
+                        substr(
+                            $currentUser->username,
+                            0,
+                            1
+                        )
+                    ),
             ]);
         }
 
+
         return redirect()
-            ->route('whisperly.profile')
-            ->with('success', 'Foto profil berhasil dihapus.');
+            ->route(
+                $currentUser->role === 'talent'
+                    ? 'whisperly.profile'
+                    : 'admin.profile'
+            )
+            ->with(
+                'success',
+                'Foto profil berhasil dihapus.'
+            );
     }
 }

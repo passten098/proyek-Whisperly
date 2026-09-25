@@ -1949,20 +1949,21 @@
         ========================================================= */
 
         .premium-visual {
+    position: relative;
+    min-height: 520px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+}
 
-            position: relative;
+.premium-visual.role-talent {
+    transform: translateX(45px);
+}
 
-            min-height: 520px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            z-index: 3;
-
-        }
+.premium-visual.role-admin {
+    transform: translateY(-35px);
+}
 
 
         /* =========================================================
@@ -2244,6 +2245,29 @@
                 );
 
         }
+
+        .crystal-talent .crystal {
+    clip-path: polygon(
+        50% 0%,
+        82% 18%,
+        100% 55%,
+        72% 100%,
+        28% 100%,
+        0% 55%,
+        18% 18%
+    );
+}
+
+.crystal-admin .crystal {
+    clip-path: polygon(
+        50% 0%,
+        88% 28%,
+        78% 78%,
+        50% 100%,
+        22% 78%,
+        12% 28%
+    );
+}
 
 
         .crystal::before {
@@ -4386,20 +4410,48 @@
 
 
                 <div class="premium-label">
-                    PRIVATE SPACE
-                </div>
+
+    @if ($currentUser && $currentUser->role === 'talent')
+
+        TALENT SPACE
+
+    @elseif ($currentUser && $currentUser->role === 'admin')
+
+        ADMIN SPACE
+
+    @else
+
+        PRIVATE SPACE
+
+    @endif
+
+</div>
 
 
-                @if ($currentUser)
+@if ($currentUser)
 
-                    <p class="premium-welcome">
+    <p class="premium-welcome">
 
-                        Selamat datang,
-                        {{ ucfirst($currentUser->username) }}
+        @if ($currentUser->role === 'talent')
 
-                    </p>
+            Selamat Datang Kembali,
+            Talent {{ ucfirst($currentUser->username) }}
 
-                @endif
+        @elseif ($currentUser->role === 'admin')
+
+            Selamat Datang Kembali,
+            Admin {{ ucfirst($currentUser->username) }}
+
+        @else
+
+            Selamat Datang,
+            {{ ucfirst($currentUser->username) }}
+
+        @endif
+
+    </p>
+
+@endif
 
 
                 <h1 class="premium-title">
@@ -4433,58 +4485,57 @@
 
                 <div class="premium-actions">
 
+    @if ($currentUser && $currentUser->role === 'talent')
 
-                    @if (
-                        $currentUser &&
-                        $currentUser->role === 'admin'
-                    )
+        <a
+            class="premium-action primary"
+            href="{{ route('bookings.index') }}"
+        >
+            Kelola Booking
+        </a>
 
-                        <!-- ADMIN -->
+        <a
+            class="premium-action secondary"
+            href="{{ route('whisperly.profile') }}"
+        >
+            Profil Talent
+        </a>
 
-                        <a
-                            class="premium-action primary"
-                            href="{{ route('admin.menfess.index') }}"
-                        >
+    @elseif ($currentUser && $currentUser->role === 'admin')
 
-                            Kelola Pengaduan
+        <a
+            class="premium-action primary"
+            href="{{ route('admin.menfess.index') }}"
+        >
+            Kelola Pengaduan
+        </a>
 
-                        </a>
+        <a
+            class="premium-action secondary"
+            href="{{ route('admin.profile') }}"
+        >
+            Profil Admin
+        </a>
 
+    @else
 
-                    @else
+        <a
+            class="premium-action primary"
+            href="{{ route('whisperly.talents.index') }}"
+        >
+            Lihat Talent
+        </a>
 
-                        <!-- USER & TALENT -->
+        <a
+            class="premium-action secondary"
+            href="{{ route('pengaduan') }}"
+        >
+            Ruang Pengaduan
+        </a>
 
-                        <a
-                            class="premium-action primary"
-                            href="{{ route('whisperly.talents.index') }}"
-                        >
+    @endif
 
-                            Lihat Talent
-
-                        </a>
-
-
-                        <a
-                            class="premium-action secondary"
-                            href="{{ route('pengaduan') }}"
-                        >
-
-                            Ruang Pengaduan
-
-                        </a>
-
-                    @endif
-
-
-                </div>
-
-
-                <div class="premium-note">
-
-                    Tempat tenang untuk setiap suara.
-
-                </div>
+</div>
 
 
             </section>
@@ -4495,7 +4546,14 @@
                  RIGHT SIDE
             ====================================================== -->
 
-            <section class="premium-visual">
+            <section
+    class="premium-visual
+        @if ($currentUser && $currentUser->role === 'talent')
+            role-talent
+        @elseif ($currentUser && $currentUser->role === 'admin')
+            role-admin
+        @endif"
+>
 
 
                 <!-- ORBIT -->
@@ -4521,21 +4579,37 @@
 
                 <div class="floating-badge">
 
-                    <small>
-                        RUANG UNTUK DIDENGAR
-                    </small>
+    @if ($currentUser && $currentUser->role === 'talent')
 
-                    <strong>
-                        Ceritamu berarti.
-                    </strong>
+        <small>RUANG UNTUK TALENT</small>
+        <strong>Siap menemani cerita.</strong>
 
-                </div>
+    @elseif ($currentUser && $currentUser->role === 'admin')
+
+        <small>RUANG ADMIN</small>
+        <strong>Kelola Whisperly.</strong>
+
+    @else
+
+        <small>RUANG UNTUK DIDENGAR</small>
+        <strong>Ceritamu berarti.</strong>
+
+    @endif
+
+</div>
 
 
 
                 <!-- CRYSTAL -->
 
-                <div class="crystal-wrapper">
+                <div
+    class="crystal-wrapper
+        @if ($currentUser && $currentUser->role === 'talent')
+            crystal-talent
+        @elseif ($currentUser && $currentUser->role === 'admin')
+            crystal-admin
+        @endif"
+>
 
                     <div class="crystal-glow"></div>
 
@@ -4557,13 +4631,25 @@
 
                         <div class="dashboard-brand">
 
-                            <span
-                                class="dashboard-brand-dot"
-                            ></span>
+    <span
+        class="dashboard-brand-dot"
+    ></span>
 
-                            WHISPERLY SPACE
+    @if ($currentUser && $currentUser->role === 'talent')
 
-                        </div>
+        TALENT SPACE
+
+    @elseif ($currentUser && $currentUser->role === 'admin')
+
+        ADMIN SPACE
+
+    @else
+
+        WHISPERLY SPACE
+
+    @endif
+
+</div>
 
 
                         <div class="dashboard-status">
@@ -4578,16 +4664,40 @@
 
                     <div class="dashboard-title">
 
-                        Ruang pribadimu
+    @if ($currentUser && $currentUser->role === 'talent')
 
-                    </div>
+        Ruang talentmu
+
+    @elseif ($currentUser && $currentUser->role === 'admin')
+
+        Ruang kendali admin
+
+    @else
+
+        Ruang pribadimu
+
+    @endif
+
+</div>
 
 
-                    <div class="dashboard-subtitle">
+<div class="dashboard-subtitle">
 
-                        Tempat di mana setiap suara berarti.
+    @if ($currentUser && $currentUser->role === 'talent')
 
-                    </div>
+        Tempat untuk menemani dan mendengarkan.
+
+    @elseif ($currentUser && $currentUser->role === 'admin')
+
+        Tempat untuk mengelola Whisperly.
+
+    @else
+
+        Tempat di mana setiap suara berarti.
+
+    @endif
+
+</div>
 
 
                     <div class="dashboard-line">
