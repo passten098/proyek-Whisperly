@@ -3181,6 +3181,15 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                                 $commentsPanelId =
                                     'comments-panel-' . $item->id;
 
+                                $openCommentsId =
+                                    session('open_comments');
+
+                                $openReplyParent =
+                                    session('open_reply_parent');
+
+                                $isCommentsOpen =
+                                    (string) ($openCommentsId ?? '') === (string) $item->id;
+
                             @endphp
 
 
@@ -3193,10 +3202,10 @@ Ceritakan apa saja yang ingin kamu sampaikan...
 
                                 <button
                                     type="button"
-                                    class="comment-visibility-toggle"
+                                    class="comment-visibility-toggle {{ $isCommentsOpen ? 'open' : '' }}"
                                     data-target="{{ $commentsPanelId }}"
                                     data-count="{{ $totalComments }}"
-                                    aria-expanded="false"
+                                    aria-expanded="{{ $isCommentsOpen ? 'true' : 'false' }}"
                                 >
 
                                     <span class="comment-visibility-line"></span>
@@ -3213,7 +3222,7 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                                 ================================================== -->
 
                                 <div
-                                    class="comments-content"
+                                    class="comments-content {{ $isCommentsOpen ? 'open' : '' }}"
                                     id="{{ $commentsPanelId }}"
                                 >
 
@@ -3395,12 +3404,17 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                                                 @if ($replyCount > 0)
 
 
+                                                    @php
+                                                        $isReplyThreadOpen =
+                                                            (string) ($openReplyParent ?? '') === (string) $comment->id;
+                                                    @endphp
+
                                                     <button
                                                         type="button"
-                                                        class="toggle-replies"
+                                                        class="toggle-replies {{ $isReplyThreadOpen ? 'open' : '' }}"
                                                         data-target="{{ $replyContainerId }}"
                                                         data-count="{{ $replyCount }}"
-                                                        aria-expanded="false"
+                                                        aria-expanded="{{ $isReplyThreadOpen ? 'true' : 'false' }}"
                                                     >
 
                                                         <span class="reply-line"></span>
@@ -3417,7 +3431,7 @@ Ceritakan apa saja yang ingin kamu sampaikan...
                                                     ====================================== -->
 
                                                     <div
-                                                        class="nested-replies"
+                                                        class="nested-replies {{ $isReplyThreadOpen ? 'open' : '' }}"
                                                         id="{{ $replyContainerId }}"
                                                     >
 

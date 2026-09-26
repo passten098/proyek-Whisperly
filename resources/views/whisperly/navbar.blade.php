@@ -6,10 +6,11 @@
 
 @php
     $currentUser = auth('whisperly')->user();
+    $currentRole = $currentUser ? strtolower(trim((string) $currentUser->role)) : '';
 
     $currentTalentProfile = null;
 
-    if ($currentUser && $currentUser->role === 'talent') {
+    if ($currentUser && $currentRole === 'talent') {
         $currentTalentProfile = \App\Modules\talents\Models\talents::query()
             ->where('pengguna_id', $currentUser->id)
             ->first();
@@ -1473,8 +1474,9 @@
         top: calc(100% + 14px);
         right: 0;
 
-        width: 320px;
-        max-height: 400px;
+        width: 360px;
+        max-width: calc(100vw - 20px);
+        max-height: 420px;
 
         overflow-y: auto;
 
@@ -1506,12 +1508,17 @@
         display: block;
     }
 
-    .notification-item {
-        padding: 13px;
+    .notification-dropdown .notification-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
 
-        border-bottom:
-            1px solid
-            rgba(255, 255, 255, 0.07);
+        width: 100%;
+        padding: 12px 10px;
+
+        border-radius: 14px;
+
+        text-decoration: none;
 
         color:
             rgba(255, 250, 247, 0.85);
@@ -1520,14 +1527,107 @@
             400 11px Arial,
             sans-serif;
 
-        line-height: 1.5;
+        line-height: 1.45;
+
+        transition:
+            background 0.2s ease,
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
     }
 
-    .notification-item:last-child {
-        border-bottom: none;
+    .notification-dropdown .notification-item:hover {
+        background:
+            rgba(255, 255, 255, 0.055);
+
+        transform:
+            translateX(2px);
     }
 
-    .notification-item strong {
+    .notification-dropdown .notification-item.is-unread {
+        background:
+            rgba(231, 162, 182, 0.08);
+
+        box-shadow:
+            inset 0 0 0 1px
+            rgba(231, 162, 182, 0.12);
+    }
+
+    .notification-dropdown .notification-item.is-read {
+        opacity: 0.9;
+    }
+
+    .notification-avatar {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+
+        border-radius: 50%;
+
+        overflow: hidden;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: linear-gradient(135deg, #f2c8d4, #c9b9ef);
+        color: #fff;
+
+        font-weight: 700;
+        font-size: 13px;
+
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+    }
+
+    .notification-avatar img {
+        width: 100%;
+        height: 100%;
+
+        object-fit: cover;
+
+        display: block;
+    }
+
+    .notification-content {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+
+        min-width: 0;
+        flex: 1;
+    }
+
+    .notification-username {
+        color: #fffaf7;
+        font:
+            700 13px Arial,
+            sans-serif;
+
+        line-height: 1.3;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .notification-message {
+        color: rgba(255, 255, 255, 0.8);
+        font:
+            500 11px Arial,
+            sans-serif;
+
+        line-height: 1.35;
+        white-space: normal;
+    }
+
+    .notification-time {
+        color: rgba(255, 255, 255, 0.62);
+        font:
+            400 10px Arial,
+            sans-serif;
+
+        line-height: 1.3;
+    }
+
+    .notification-dropdown .notification-item strong {
         color: #fffaf7;
     }
 
@@ -1535,8 +1635,9 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        flex-shrink: 0;
 
-        padding: 8px 14px;
+        padding: 6px 10px;
 
         border-radius: 10px;
 
@@ -1593,45 +1694,34 @@
     }
 
     .notification-dropdown {
-        width: 250px !important;
-        min-width: 250px !important;
+        width: 350px !important;
+        min-width: 350px !important;
         max-width: calc(100vw - 20px);
     }
 
     .notification-profile {
         display: flex;
         align-items: center;
-        gap: 9px;
+        justify-content: space-between;
+        gap: 10px;
+        width: 100%;
         margin-bottom: 8px;
     }
 
-    .notification-avatar {
-        width: 32px;
-        height: 32px;
-        min-width: 32px;
-
-        border-radius: 50%;
-
-        overflow: hidden;
-
+    .notification-profile-left {
         display: flex;
         align-items: center;
-        justify-content: center;
-
-        background: #e7a2b6;
-        color: #fff;
-
-        font-weight: 700;
-        font-size: 13px;
+        gap: 9px;
+        min-width: 0;
+        flex: 1;
     }
 
-    .notification-avatar img {
-        width: 100%;
-        height: 100%;
-
-        object-fit: cover;
-
-        display: block;
+    .notification-profile-left strong {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 14px;
     }
 
     .notification-profile strong {
@@ -1666,15 +1756,104 @@
 
         @if ($currentUser)
 
-            {{-- =================================================
-                 NOTIFICATION
+            @if ($currentRole === 'admin')
 
-                 PENTING:
-                 NOTIFIKASI HANYA UNTUK USER DAN TALENT.
-                 ADMIN TIDAK AKAN MERENDER BLOK INI.
-            ================================================== --}}
+                <div class="notification-wrapper">
 
-            @if (in_array($currentUser->role, ['user', 'talent']))
+                    <a
+                        href="{{ route('admin.menfess.index') }}"
+                        class="notification-btn"
+                        id="notificationButton"
+                        aria-label="Notifikasi admin"
+                    >
+                        🔔
+
+                        @if(isset($adminNotificationCount) && $adminNotificationCount > 0)
+                            <span class="badge">
+                                {{ $adminNotificationCount }}
+                            </span>
+                        @endif
+                    </a>
+
+                    <div
+                        class="notification-dropdown"
+                        id="notificationDropdown"
+                    >
+
+                        @forelse(($adminNotifications ?? []) as $notification)
+
+                            @php
+                                $notificationData = is_array($notification->data) ? $notification->data : [];
+                                $notificationMenfessId = $notificationData['menfess_id'] ?? null;
+                                $notificationUsername = trim((string) ($notificationData['username'] ?? ''));
+                                $resolvedUser = null;
+
+                                if (!empty($notificationMenfessId)) {
+                                    $resolvedUser = \App\Modules\menfess\Models\menfess::query()
+                                        ->with('pengguna')
+                                        ->whereKey($notificationMenfessId)
+                                        ->first()?->pengguna;
+                                }
+
+                                if (!$resolvedUser && $notificationUsername !== '') {
+                                    $resolvedUser = \App\Modules\pengguna\Models\pengguna::query()
+                                        ->where('username', $notificationUsername)
+                                        ->first();
+                                }
+
+                                $username = $resolvedUser?->username ?: ($notificationUsername ?: 'Pengguna');
+                                $avatarUrl = $resolvedUser?->avatar_url
+                                    ?: (!empty($notificationData['avatar_url']) ? $notificationData['avatar_url'] : asset('assets/images/faces/1.jpg'));
+                                $category = (string) ($notificationData['category'] ?? 'random');
+                                $createdAt = $notification->created_at
+                                    ? \Carbon\Carbon::parse($notification->created_at)->diffForHumans()
+                                    : 'baru saja';
+                                $notificationHref = route('admin.menfess.index', [
+                                    'notification_id' => $notification->id,
+                                    'menfess_id' => $notificationData['menfess_id'] ?? '',
+                                ]);
+                            @endphp
+
+                            <a
+                                href="{{ $notificationHref }}"
+                                class="notification-item {{ $notification->read_at ? 'is-read' : 'is-unread' }}"
+                            >
+                                <div class="notification-avatar">
+                                    <img
+                                        src="{{ $avatarUrl }}"
+                                        alt="{{ $username }}"
+                                        onerror="this.onerror=null; this.src='{{ asset('assets/images/faces/1.jpg') }}';"
+                                    >
+                                </div>
+
+                                <div class="notification-content">
+                                    <div class="notification-username">
+                                        {{ $username }}
+                                    </div>
+
+                                    <div class="notification-message">
+                                        Mengirim menfess • {{ $category }}
+                                    </div>
+
+                                    <div class="notification-time">
+                                        {{ $createdAt }}
+                                    </div>
+                                </div>
+                            </a>
+
+                        @empty
+
+                            <div class="notification-item is-read">
+                                Belum ada notifikasi menfess baru.
+                            </div>
+
+                        @endforelse
+
+                    </div>
+
+                </div>
+
+            @elseif (in_array($currentRole, ['user', 'talent'], true))
 
                 <div class="notification-wrapper">
 
@@ -1710,7 +1889,7 @@
 
                             <div class="notification-item">
 
-                                @if($currentUser->role === 'talent')
+                                @if($currentRole === 'talent')
 
                                     <div class="notification-profile">
 
@@ -1756,64 +1935,68 @@
 
                                     <div class="notification-profile">
 
-                                        <div class="notification-avatar">
+                                        <div class="notification-profile-left">
 
-                                            @if($booking->talent->pengguna->avatar_url)
+                                            <div class="notification-avatar">
 
-                                                <img
-                                                    src="{{ $booking->talent->pengguna->avatar_url }}"
-                                                    alt="{{ $booking->talent->pengguna->username }}"
-                                                >
+                                                @if($booking->talent->pengguna->avatar_url)
 
-                                            @else
+                                                    <img
+                                                        src="{{ $booking->talent->pengguna->avatar_url }}"
+                                                        alt="{{ $booking->talent->pengguna->username }}"
+                                                        onerror="this.onerror=null; this.src='{{ asset('assets/images/faces/1.jpg') }}';"
+                                                    >
 
-                                                {{ strtoupper(
-                                                    substr(
-                                                        $booking->talent->pengguna->username,
-                                                        0,
-                                                        1
-                                                    )
-                                                ) }}
+                                                @else
 
-                                            @endif
+                                                    {{ strtoupper(
+                                                        substr(
+                                                            $booking->talent->pengguna->username,
+                                                            0,
+                                                            1
+                                                        )
+                                                    ) }}
+
+                                                @endif
+
+                                            </div>
+
+                                            <strong>
+                                                {{ $booking->talent->pengguna->username }}
+                                            </strong>
 
                                         </div>
 
-                                        <strong>
-                                            Booking dengan
-                                            {{ $booking->talent->pengguna->username }}
-                                        </strong>
+                                        @if($status === 'upcoming')
+
+                                            <button
+                                                type="button"
+                                                class="chat-status-btn chat-status-waiting"
+                                                disabled
+                                            >
+                                                Tunggu
+                                            </button>
+
+                                        @elseif($status === 'active')
+
+                                            <a
+                                                href="{{ route('whisperly.chat.show', $booking->id) }}"
+                                                class="chat-status-btn chat-status-active"
+                                            >
+                                                Chat
+                                            </a>
+
+                                        @endif
 
                                     </div>
 
-                                    <br>
+                                    <div class="notification-time">
 
-                                    {{ $booking->schedule->start_time }}
-                                    -
-                                    {{ $booking->schedule->end_time }}
+                                        {{ $booking->schedule->start_time }}
+                                        -
+                                        {{ $booking->schedule->end_time }}
 
-                                    <br><br>
-
-                                @endif
-
-                                @if($status === 'upcoming')
-
-                                    <button
-                                        type="button"
-                                        class="chat-status-btn chat-status-waiting"
-                                        disabled
-                                    >
-                                        Belum Bisa Chat
-                                    </button>
-
-                                @elseif($status === 'active')
-
-                                    <a
-                                        href="{{ route('whisperly.chat.show', $booking->id) }}"
-                                        class="chat-status-btn chat-status-active"
-                                    >
-                                        Chat Sekarang
-                                    </a>
+                                    </div>
 
                                 @endif
 
@@ -1839,7 +2022,7 @@
             ================================================== --}}
 
             <a
-                href="{{ $currentUser->role === 'admin'
+                href="{{ $currentRole === 'admin'
                     ? route('admin.profile')
                     : route('whisperly.profile') }}"
                 class="whisperly-user-profile-link"
@@ -1879,7 +2062,7 @@
                         </span>
 
                         <span class="whisperly-user-role">
-                            {{ $currentUser->role }}
+                            {{ ucfirst(strtolower((string) $currentUser->role)) }}
                         </span>
 
                     </div>
@@ -1962,7 +2145,7 @@
                             </span>
 
                             <span class="whisperly-menu-profile-role">
-                                {{ $currentUser->role }}
+                                {{ ucfirst(strtolower((string) $currentUser->role)) }}
                             </span>
 
                         </div>
@@ -1977,7 +2160,7 @@
                          USER MENU
                     ================================================== --}}
 
-                    @if ($currentUser->role === 'user')
+                    @if ($currentRole === 'user')
 
                         {{-- HOME --}}
 
@@ -2189,7 +2372,7 @@
                          TALENT MENU
                     ================================================== --}}
 
-                    @if ($currentUser->role === 'talent')
+                    @if ($currentRole === 'talent')
 
                         {{-- HOME --}}
 
@@ -2454,7 +2637,7 @@
                          2. Pengaduan
                     ================================================== --}}
 
-                    @if ($currentUser->role === 'admin')
+                    @if ($currentRole === 'admin')
 
                         {{-- HOME ADMIN --}}
 
@@ -2773,119 +2956,68 @@
 ============================================================ --}}
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener('DOMContentLoaded', function () {
+    const notificationWrappers = document.querySelectorAll('.notification-wrapper');
 
-    const btn =
-        document.getElementById(
-            "notificationButton"
-        );
+    function closeAllNotifications() {
+        notificationWrappers.forEach(function (wrapper) {
+            const button = wrapper.querySelector('.notification-btn');
+            const dropdown = wrapper.querySelector('.notification-dropdown');
 
-    const notificationDropdown =
-        document.getElementById(
-            "notificationDropdown"
-        );
-
-    const menuButton =
-        document.getElementById(
-            "whisperlyMenuButton"
-        );
-
-    const menuDropdown =
-        document.getElementById(
-            "whisperlyDropdown"
-        );
-
-    /*
-     * Untuk ADMIN:
-     *
-     * btn === null
-     * notificationDropdown === null
-     *
-     * sehingga blok ini tidak dijalankan.
-     */
-
-    if (btn && notificationDropdown) {
-
-        btn.addEventListener(
-            "click",
-            function (e) {
-
-                e.stopPropagation();
-
-                // Tutup menu titik tiga
-                if (menuDropdown) {
-
-                    menuDropdown.classList.remove(
-                        "show"
-                    );
-                }
-
-                if (menuButton) {
-
-                    menuButton.classList.remove(
-                        "active"
-                    );
-
-                    menuButton.setAttribute(
-                        "aria-expanded",
-                        "false"
-                    );
-                }
-
-                // Buka / tutup notifikasi
-                notificationDropdown.classList.toggle(
-                    "show"
-                );
-
+            if (dropdown) {
+                dropdown.classList.remove('show');
             }
-        );
 
-        notificationDropdown.addEventListener(
-            "click",
-            function (e) {
-
-                e.stopPropagation();
-
+            if (button) {
+                button.setAttribute('aria-expanded', 'false');
             }
-        );
-
-        document.addEventListener(
-            "click",
-            function () {
-
-                notificationDropdown.classList.remove(
-                    "show"
-                );
-
-            }
-        );
-
+        });
     }
 
+    notificationWrappers.forEach(function (wrapper) {
+        const notificationButton = wrapper.querySelector('.notification-btn');
+        const notificationDropdown = wrapper.querySelector('.notification-dropdown');
 
-    /*
-     * Kalau tombol titik tiga diklik,
-     * notifikasi juga langsung ditutup.
-     */
+        if (!notificationButton || !notificationDropdown) {
+            return;
+        }
 
-    if (menuButton && menuDropdown) {
+        notificationButton.addEventListener('click', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
 
-        menuButton.addEventListener(
-            "click",
-            function () {
+            const isOpen = notificationDropdown.classList.contains('show');
 
-                if (notificationDropdown) {
-
-                    notificationDropdown.classList.remove(
-                        "show"
-                    );
-
-                }
-
+            if (isOpen) {
+                notificationDropdown.classList.remove('show');
+                notificationButton.setAttribute('aria-expanded', 'false');
+                return;
             }
-        );
 
-    }
+            closeAllNotifications();
+            notificationDropdown.classList.add('show');
+            notificationButton.setAttribute('aria-expanded', 'true');
+        });
 
+        notificationDropdown.addEventListener('click', function (event) {
+            event.stopPropagation();
+        });
+    });
+
+    document.addEventListener('click', function (event) {
+        const clickedInsideNotification = Array.from(notificationWrappers).some(function (wrapper) {
+            return wrapper.contains(event.target);
+        });
+
+        if (!clickedInsideNotification) {
+            closeAllNotifications();
+        }
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            closeAllNotifications();
+        }
+    });
 });
 </script>

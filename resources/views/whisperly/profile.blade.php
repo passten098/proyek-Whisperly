@@ -1294,17 +1294,17 @@
         <header class="profile-header">
 
             <div class="profile-badge">
-                Profil Talent
+                Profil {{ ucfirst($currentUser->role ?? 'User') }}
             </div>
 
             <h1 class="profile-title">
-                Profil Talent
+                Profil {{ ucfirst($currentUser->role ?? 'User') }}
             </h1>
 
             <p class="profile-subtitle">
                 Kelola foto profil, informasi akun,
                 dan deskripsi singkat tentang dirimu sebagai
-                Talent Whisperly.
+                {{ strtolower($currentUser->role ?? 'user') }} Whisperly.
             </p>
 
         </header>
@@ -1335,48 +1335,36 @@
                         id="avatarContainer"
                     >
 
-                        @if ($currentTalentProfile && !empty($currentTalentProfile->photo))
+                        @php
+                            /*
+                             * PENTING:
+                             * Avatar profil harus memakai sumber yang sama
+                             * dengan navbar Whisperly, yaitu avatar_url.
+                             *
+                             * Navbar saat ini menggunakan:
+                             *     $currentUser->avatar_url
+                             *
+                             * Jadi halaman profil JANGAN lagi membaca
+                             * $currentTalentProfile->photo atau $currentUser->profil
+                             * untuk avatar utama.
+                             */
+                            $profileAvatarUrl =
+                                $currentUser->avatar_url ?? null;
+                        @endphp
 
-                            @php
-
-                                $talentPhoto = trim(
-                                    (string) $currentTalentProfile->photo
-                                );
-
-                                if (filter_var($talentPhoto, FILTER_VALIDATE_URL)) {
-
-                                    $talentAvatarUrl = $talentPhoto;
-
-                                } else {
-
-                                    $talentAvatarUrl = asset(
-                                        'storage/' .
-                                        ltrim(
-                                            preg_replace(
-                                                '#^public/#',
-                                                '',
-                                                $talentPhoto
-                                            ),
-                                            '/'
-                                        )
-                                    );
-
-                                }
-
-                            @endphp
+                        @if ($profileAvatarUrl)
 
                             <img
-                                src="{{ $talentAvatarUrl }}"
-                                alt="Foto profil {{ $currentUser->username }}"
+                                src="{{ $profileAvatarUrl }}"
+                                alt="{{ $currentUser->username }}"
                                 id="avatarImage"
+                                onerror="this.onerror=null; this.src='{{ asset('assets/images/faces/1.jpg') }}';"
                             >
 
                         @else
 
                             <span id="avatarInitial">
-
-                                {{ strtoupper(substr($currentUser->username ?? 'T', 0, 1)) }}
-
+                                {{ strtoupper(substr($currentUser->username ?? 'U', 0, 1)) }}
                             </span>
 
                         @endif
@@ -1405,7 +1393,7 @@
 
                 <div class="avatar-role">
 
-                    Talent
+                    {{ strtoupper(trim((string) ($currentUser->role ?? 'user'))) }}
 
                 </div>
 
@@ -1428,7 +1416,7 @@
                     </button>
 
 
-                    @if ($currentTalentProfile && !empty($currentTalentProfile->photo))
+                    @if (!empty($currentUser->avatar_url))
 
                         <button
                             type="button"
@@ -1528,7 +1516,7 @@
                         </div>
 
                         <div class="bio-title">
-                            Deskripsi Talent
+                            Deskripsi {{ ucfirst($currentUser->role ?? 'User') }}
                         </div>
 
                     </div>
@@ -2076,7 +2064,7 @@
 
                     const confirmed =
                         confirm(
-                            'Hapus foto profil talent?'
+                            'Hapus foto profil akun ini?'
                         );
 
 
@@ -2136,7 +2124,7 @@
 
                         avatarContainer.innerHTML =
                             `<span id="avatarInitial">
-                                {{ strtoupper(substr($currentUser->username ?? 'T', 0, 1)) }}
+                                {{ strtoupper(substr($currentUser->username ?? 'U', 0, 1)) }}
                             </span>`;
 
 
@@ -2149,7 +2137,7 @@
                         if (navAvatar) {
 
                             navAvatar.innerHTML =
-                                `{{ strtoupper(substr($currentUser->username ?? 'T', 0, 1)) }}`;
+                                `{{ strtoupper(substr($currentUser->username ?? 'U', 0, 1)) }}`;
 
                         }
 

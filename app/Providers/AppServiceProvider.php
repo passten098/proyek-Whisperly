@@ -31,8 +31,22 @@ class AppServiceProvider extends ServiceProvider
             $user = auth('whisperly')->user();
 
             $notifications = collect();
+            $adminNotifications = collect();
+            $adminNotificationCount = 0;
 
             if ($user) {
+                $role = strtolower(trim((string) ($user->role ?? '')));
+
+                if ($role === 'admin') {
+                    $adminNotifications = $user
+                        ->notifications()
+                        ->latest()
+                        ->get();
+
+                    $adminNotificationCount = $user
+                        ->unreadNotifications()
+                        ->count();
+                }
 
                 $query = WhisperlyBooking::query()
                     ->with([
@@ -54,7 +68,7 @@ class AppServiceProvider extends ServiceProvider
                 |--------------------------------------------------------------------------
                 */
 
-                if ($user->role === 'user') {
+                if ($role === 'user') {
 
                     $query->where(
                         'pengguna_id',
@@ -68,7 +82,7 @@ class AppServiceProvider extends ServiceProvider
                 |--------------------------------------------------------------------------
                 */
 
-                elseif ($user->role === 'talent') {
+                elseif ($role === 'talent') {
 
                     $talent = talents::query()
                         ->where(
@@ -114,6 +128,8 @@ class AppServiceProvider extends ServiceProvider
             $view->with([
                 'notifications' => $notifications,
                 'notificationCount' => $notifications->count(),
+                'adminNotifications' => $adminNotifications,
+                'adminNotificationCount' => $adminNotificationCount,
             ]);
         });
 

@@ -90,11 +90,14 @@ Route::middleware([
     Route::get('/whisperly', function () {
 
     $currentUser = Auth::guard('whisperly')->user();
+    $currentRole = $currentUser ? strtolower(trim((string) $currentUser->role)) : '';
 
     $currentTalentProfile = null;
 
     $notifications = collect();
     $notificationCount = 0;
+    $adminNotifications = collect();
+    $adminNotificationCount = 0;
 
     if ($currentUser) {
 
@@ -102,7 +105,18 @@ Route::middleware([
             ->where('pengguna_id', $currentUser->id)
             ->first();
 
-        if ($currentUser->role == 'talent') {
+        if ($currentRole === 'admin') {
+            $adminNotifications = $currentUser
+                ->notifications()
+                ->latest()
+                ->get();
+
+            $adminNotificationCount = $currentUser
+                ->unreadNotifications()
+                ->count();
+        }
+
+        if ($currentRole === 'talent') {
 
             $notifications = WhisperlyBooking::with([
                 'pengguna',
@@ -130,7 +144,9 @@ Route::middleware([
         'currentUser',
         'currentTalentProfile',
         'notifications',
-        'notificationCount'
+        'notificationCount',
+        'adminNotifications',
+        'adminNotificationCount'
     ));
 
 })->name('whisperly.home');
@@ -201,33 +217,9 @@ Route::middleware([
     ])->name('pengaduan.comments.store');
 
     Route::put('/pengaduan/comments/{comment}', [
-    menfessController::class,
-    'editComment'
-    ])->name('pengaduan.comments.update');
-
-
-    Route::delete('/pengaduan/comments/{comment}', [
-        menfessController::class,
-        'destroyComment'
-    ])->name('pengaduan.comments.destroy');
-
-        /*
-    |--------------------------------------------------------------------------
-    | EDIT KOMENTAR
-    |--------------------------------------------------------------------------
-    */
-
-    Route::put('/pengaduan/comments/{comment}', [
         menfessController::class,
         'editComment'
     ])->name('pengaduan.comments.update');
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | HAPUS KOMENTAR
-    |--------------------------------------------------------------------------
-    */
 
     Route::delete('/pengaduan/comments/{comment}', [
         menfessController::class,

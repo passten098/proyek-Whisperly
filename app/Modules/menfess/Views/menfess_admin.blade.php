@@ -2541,6 +2541,9 @@
                             $commentCount =
                                 $allComments->count();
 
+                            $openCommentsId = session('open_comments');
+                            $openReplyParent = session('open_reply_parent');
+
                         @endphp
 
 
@@ -2655,12 +2658,16 @@
                                  TOGGLE BUKA/TUTUP KOMENTAR
                             ================================== -->
 
+                            @php
+                                $isCommentsOpen = (string) ($openCommentsId ?? '') === (string) $item->id;
+                            @endphp
+
                             <button
                                 type="button"
-                                class="comments-toggle"
+                                class="comments-toggle {{ $isCommentsOpen ? 'open' : '' }}"
                                 data-target="comments-{{ $item->id }}"
                                 data-count="{{ $commentCount }}"
-                                aria-expanded="false"
+                                aria-expanded="{{ $isCommentsOpen ? 'true' : 'false' }}"
                             >
 
                                 <span class="toggle-label">
@@ -2690,7 +2697,7 @@
 
                             <div
                                 id="comments-{{ $item->id }}"
-                                class="comments-section"
+                                class="comments-section {{ $isCommentsOpen ? 'open' : '' }}"
                             >
 
                                 <div class="comments-title">
@@ -2862,12 +2869,16 @@
 
                                                 @if ($replyCount > 0)
 
+                                                    @php
+                                                        $isReplyThreadOpen = (string) ($openReplyParent ?? '') === (string) $comment->id;
+                                                    @endphp
+
                                                     <button
                                                         type="button"
-                                                        class="toggle-replies"
+                                                        class="toggle-replies {{ $isReplyThreadOpen ? 'open' : '' }}"
                                                         data-target="{{ $replyTargetId }}"
                                                         data-count="{{ $replyCount }}"
-                                                        aria-expanded="false"
+                                                        aria-expanded="{{ $isReplyThreadOpen ? 'true' : 'false' }}"
                                                     >
 
                                                         <span class="toggle-replies-line"></span>
@@ -2889,7 +2900,7 @@
 
                                                     <div
                                                         id="{{ $replyTargetId }}"
-                                                        class="nested-replies"
+                                                        class="nested-replies {{ $isReplyThreadOpen ? 'open' : '' }}"
                                                     >
 
                                                         @foreach ($commentReplies as $reply)
@@ -3618,10 +3629,32 @@
 
 
             /* =========================================
-               DOUBLE KLIK / DOUBLE TAP BALASAN
-               Orang lain  = Salin
-               Balasan kita = Salin + Hapus
+               DOUBLE KLIK / DOUBLE TAP KOMENTAR / BALASAN
+               USER/TALENT:
+                   Komentar sendiri = Salin + Hapus
+                   Komentar orang lain = Salin
+
+               ADMIN:
+                   Semua komentar/reply = Salin + Hapus
+
+               Backend tetap melakukan pengecekan hak akses.
             ========================================= */
+
+            const currentWhisperlyRole =
+                @json(
+                    strtolower(
+                        trim(
+                            (string) (
+                                auth('whisperly')->user()?->role
+                                ?? ''
+                            )
+                        )
+                    )
+                );
+
+            const currentUserIsAdmin =
+                currentWhisperlyRole === 'admin';
+
 
             const replyContextMenu =
                 document.getElementById('replyContextMenu');
@@ -3677,16 +3710,19 @@
                 const isMine =
                     commentItem.getAttribute('data-own') === '1';
 
+                const canDelete =
+                    currentUserIsAdmin || isMine;
+
                 if (deleteReplyButton) {
                     deleteReplyButton.style.display =
-                        isMine ? 'block' : 'none';
+                        canDelete ? 'block' : 'none';
                 }
 
                 let x = e.clientX;
                 let y = e.clientY;
 
                 const menuWidth = 145;
-                const menuHeight = isMine ? 92 : 50;
+                const menuHeight = canDelete ? 92 : 50;
 
                 if (x + menuWidth > window.innerWidth) {
                     x = window.innerWidth - menuWidth - 10;
@@ -3743,7 +3779,10 @@
                     const isMine =
                         selectedReply.getAttribute('data-own') === '1';
 
-                    if (!isMine) {
+                    const canDelete =
+                        currentUserIsAdmin || isMine;
+
+                    if (!canDelete) {
                         closeReplyContextMenu();
                         return;
                     }

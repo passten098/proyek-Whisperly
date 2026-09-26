@@ -8,6 +8,8 @@ use App\Modules\categories\Models\categories;
 use App\Modules\comments\Models\comments;
 use App\Modules\Log\Models\Log;
 use App\Modules\menfess\Models\menfess;
+use App\Modules\pengguna\Models\pengguna;
+use App\Notifications\MenfessSubmittedNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +27,45 @@ class menfessController extends Controller
         $this->log = $log;
     }
 
+    private function normalizeMenfessCategoryKey($value): string
+    {
+        $category = strtolower(trim((string) $value));
+
+        return match ($category) {
+            'love', 'cinta' => 'love',
+            'horror', 'horor' => 'horror',
+            'sad', 'sedih' => 'sad',
+            'random', 'campuran' => 'random',
+            default => 'random',
+        };
+    }
+
+    private function createAdminMenfessNotification(menfess $menfess): void
+    {
+        $admins = pengguna::query()
+            ->where('role', 'admin')
+            ->get();
+
+        foreach ($admins as $admin) {
+            $admin->notify(new MenfessSubmittedNotification($menfess));
+        }
+    }
+
+    private function markAdminMenfessNotificationRead(Request $request): void
+    {
+        $notificationId = (string) ($request->query('notification_id') ?? '');
+
+        if ($notificationId === '') {
+            return;
+        }
+
+        $request->user('whisperly')
+            ?->unreadNotifications()
+            ->where('id', $notificationId)
+            ->update([
+                'read_at' => now(),
+            ]);
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -221,6 +262,9 @@ class menfessController extends Controller
             'Hanya admin yang dapat mengakses moderasi menfess.'
         );
 
+        $focusMenfessId = (string) ($request->query('menfess_id') ?? '');
+
+        $this->markAdminMenfessNotificationRead($request);
 
         $pendingItems = menfess::with([
             'pengguna',
@@ -271,6 +315,9 @@ class menfessController extends Controller
 
                 'approvedItems' =>
                     $approvedItems,
+
+                'focusMenfessId' =>
+                    $focusMenfessId,
             ]
         );
     }
@@ -438,6 +485,7 @@ class menfessController extends Controller
                 'pending',
         ]);
 
+        $this->createAdminMenfessNotification($menfess->loadMissing('pengguna', 'kategori'));
 
         $this->log(
             $request,
@@ -448,9 +496,14 @@ class menfessController extends Controller
             ]
         );
 
+        $redirectCategory = $this->normalizeMenfessCategoryKey(
+            $category->jenis_kategori
+        );
 
         return redirect()
-            ->route('pengaduan')
+            ->route('pengaduan', [
+                'kategori' => $redirectCategory,
+            ])
             ->with(
                 'message_success',
                 'Menfess berhasil dikirim. Tunggu persetujuan admin.'
@@ -584,7 +637,7 @@ class menfessController extends Controller
 
 
         return redirect()
-            ->route('menfess.admin')
+            ->route('admin.menfess.index')
             ->with(
                 'message_success',
                 'Menfess berhasil ditolak.'
@@ -922,32 +975,33 @@ class menfessController extends Controller
         |--------------------------------------------------------------------------
         | CEK PARENT COMMENT
         |--------------------------------------------------------------------------
-        |
-        | Kalau reply_to diisi, pastikan komentar tersebut:
-        |
-        | 1. benar-benar ada
-        | 2. berasal dari menfess yang sama
-        |
         */
 
         $parentComment = null;
         $rootComment = null;
 
         if ($replyTo) {
+
             /*
             |--------------------------------------------------------------------------
             | AMBIL KOMENTAR YANG DIKLIK
             |--------------------------------------------------------------------------
-            | Tombol Balas boleh diklik pada komentar utama maupun reply.
-            | Semua reply dalam satu percakapan akan disimpan ke root yang sama.
             */
 
             $parentComment = comments::with('pengguna')
-                ->where('id', $replyTo)
-                ->where('id_menfess', $menfess->id)
+                ->where(
+                    'id',
+                    $replyTo
+                )
+                ->where(
+                    'id_menfess',
+                    $menfess->id
+                )
                 ->first();
 
+
             if (!$parentComment) {
+
                 return back()
                     ->with(
                         'message_error',
@@ -955,44 +1009,84 @@ class menfessController extends Controller
                     );
             }
 
-            /* Cari komentar utama/root percakapan. */
+
+            /*
+            |--------------------------------------------------------------------------
+            | CARI KOMENTAR UTAMA / ROOT
+            |--------------------------------------------------------------------------
+            |
+            | Semua reply diarahkan ke komentar induk.
+            |
+            */
+
             $rootComment = $parentComment;
+
             $visited = [];
 
             while (!empty($rootComment->reply_to)) {
+
                 if (isset($visited[$rootComment->id])) {
                     break;
                 }
 
                 $visited[$rootComment->id] = true;
 
-                $nextParent = comments::where('id', $rootComment->reply_to)
-                    ->where('id_menfess', $menfess->id)
+
+                $nextParent = comments::where(
+                    'id',
+                    $rootComment->reply_to
+                )
+                    ->where(
+                        'id_menfess',
+                        $menfess->id
+                    )
                     ->first();
+
 
                 if (!$nextParent) {
                     break;
                 }
 
+
                 $rootComment = $nextParent;
             }
 
-            /* Mention tetap menuju user yang tombol Balas-nya diklik. */
+
+            /*
+            |--------------------------------------------------------------------------
+            | MENTION USER YANG DIBALAS
+            |--------------------------------------------------------------------------
+            */
+
             $targetUsername =
                 $parentComment->pengguna?->username
                 ?? 'Pengguna';
 
-            $mention = '@' . $targetUsername;
+
+            $mention =
+                '@' . $targetUsername;
+
 
             if (!str_starts_with(
                 strtolower($komentar),
                 strtolower($mention)
             )) {
-                $komentar = $mention . ' ' . $komentar;
+
+                $komentar =
+                    $mention
+                    . ' '
+                    . $komentar;
             }
 
-            /* PENTING: reply_to selalu diarahkan ke root. */
-            $replyTo = $rootComment->id;
+
+            /*
+            |--------------------------------------------------------------------------
+            | SIMPAN reply_to KE ROOT
+            |--------------------------------------------------------------------------
+            */
+
+            $replyTo =
+                $rootComment->id;
         }
 
 
@@ -1000,17 +1094,6 @@ class menfessController extends Controller
         |--------------------------------------------------------------------------
         | SIMPAN KOMENTAR
         |--------------------------------------------------------------------------
-        |
-        | BAGIAN PENTING:
-        |
-        | reply_to sekarang BENAR-BENAR disimpan.
-        |
-        | Kalau komentar utama:
-        |     reply_to = null
-        |
-        | Kalau membalas komentar atau reply:
-        |     reply_to = ID komentar utama/root percakapan
-        |
         */
 
         comments::create([
@@ -1051,7 +1134,6 @@ class menfessController extends Controller
                     $replyTo,
             ]
         );
-    
 
 
         /*
@@ -1060,14 +1142,21 @@ class menfessController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        return back()
-            ->with(
-                'message_success',
+        $flashData = [
+            'message_success' =>
                 $parentComment
                     ? 'Balasan berhasil dikirim.'
-                    : 'Komentar berhasil dikirim.'
-            );
-    
+                    : 'Komentar berhasil dikirim.',
+        ];
+
+        if ($parentComment) {
+            $flashData['open_reply_parent'] = (string) $rootComment->id;
+        }
+
+        return back()
+            ->with($flashData)
+            ->with('open_comments', (string) $menfess->id);
+    }
 
 
     /*
@@ -1075,40 +1164,70 @@ class menfessController extends Controller
     | EDIT COMMENT
     |--------------------------------------------------------------------------
     */
-    }
+
     public function editComment(
         Request $request,
         $id
     ): RedirectResponse {
 
-        $user = Auth::guard('whisperly')->user();
+        $user =
+            Auth::guard('whisperly')->user();
+
 
         if (!$user) {
+
             return back()->with(
                 'message_error',
                 'Silakan login terlebih dahulu.'
             );
         }
 
-        $comment = comments::find($id);
+
+        $comment =
+            comments::find($id);
+
 
         if (!$comment) {
+
             return back()->with(
                 'message_error',
                 'Komentar tidak ditemukan.'
             );
         }
 
-        $isAdmin = strtolower(
-            trim((string) ($user->role ?? ''))
-        ) === 'admin';
+
+        /*
+        |--------------------------------------------------------------------------
+        | ADMIN BOLEH EDIT SEMUA
+        |--------------------------------------------------------------------------
+        */
+
+        $isAdmin =
+            strtolower(
+                trim(
+                    (string) ($user->role ?? '')
+                )
+            ) === 'admin';
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | USER / TALENT HANYA BOLEH EDIT MILIK SENDIRI
+        |--------------------------------------------------------------------------
+        */
 
         if (
             !$isAdmin &&
-            (string) $comment->id_pengguna !== (string) $user->id
+            (string) $comment->id_pengguna !==
+            (string) $user->id
         ) {
-            abort(403, 'Kamu tidak dapat mengedit komentar ini.');
+
+            abort(
+                403,
+                'Kamu tidak dapat mengedit komentar ini.'
+            );
         }
+
 
         $request->validate([
             'komentar' => [
@@ -1119,16 +1238,38 @@ class menfessController extends Controller
             ],
         ]);
 
-        $comment->komentar = trim(
-            (string) $request->input('komentar')
-        );
+
+        $comment->komentar =
+            trim(
+                (string) $request->input(
+                    'komentar'
+                )
+            );
+
 
         $comment->save();
+
+        $rootCommentId = $comment->reply_to;
+
+        if ($rootCommentId) {
+            $rootComment = comments::where('id', $rootCommentId)
+                ->first();
+
+            while ($rootComment && $rootComment->reply_to) {
+                $rootComment = comments::where('id', $rootComment->reply_to)
+                    ->first();
+            }
+
+            if ($rootComment) {
+                $rootCommentId = $rootComment->id;
+            }
+        }
 
         return back()->with(
             'message_success',
             'Komentar berhasil diedit.'
-        );
+        )->with('open_comments', (string) $comment->id_menfess)
+            ->with('open_reply_parent', $rootCommentId ? (string) $rootCommentId : null);
     }
 
 
@@ -1143,40 +1284,147 @@ class menfessController extends Controller
         $id
     ): RedirectResponse {
 
-        $user = Auth::guard('whisperly')->user();
+        /*
+        |--------------------------------------------------------------------------
+        | CEK LOGIN
+        |--------------------------------------------------------------------------
+        */
+
+        $user =
+            Auth::guard('whisperly')->user();
+
 
         if (!$user) {
+
             return back()->with(
                 'message_error',
                 'Silakan login terlebih dahulu.'
             );
         }
 
-        $comment = comments::find($id);
+
+        /*
+        |--------------------------------------------------------------------------
+        | CARI KOMENTAR
+        |--------------------------------------------------------------------------
+        */
+
+        $comment =
+            comments::find($id);
+
 
         if (!$comment) {
+
             return back()->with(
                 'message_error',
                 'Komentar tidak ditemukan.'
             );
         }
 
-        $isAdmin = strtolower(
-            trim((string) ($user->role ?? ''))
-        ) === 'admin';
+
+        /*
+        |--------------------------------------------------------------------------
+        | CEK ADMIN
+        |--------------------------------------------------------------------------
+        */
+
+        $isAdmin =
+            strtolower(
+                trim(
+                    (string) ($user->role ?? '')
+                )
+            ) === 'admin';
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | CEK PEMILIK KOMENTAR
+        |--------------------------------------------------------------------------
+        */
+
+        $isOwner =
+            (string) $comment->id_pengguna ===
+            (string) $user->id;
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | AUTHORIZATION
+        |--------------------------------------------------------------------------
+        |
+        | Admin:
+        |   boleh menghapus komentar siapa saja.
+        |
+        | User/Talent:
+        |   hanya boleh menghapus komentarnya sendiri.
+        |
+        */
 
         if (
             !$isAdmin &&
-            (string) $comment->id_pengguna !== (string) $user->id
+            !$isOwner
         ) {
-            abort(403, 'Kamu tidak dapat menghapus komentar ini.');
+
+            abort(
+                403,
+                'Kamu tidak dapat menghapus komentar ini.'
+            );
         }
 
-        $comment->delete();
+
+        /*
+        |--------------------------------------------------------------------------
+        | JIKA YANG DIHAPUS ADALAH KOMENTAR INDUK
+        |--------------------------------------------------------------------------
+        |
+        | Komentar induk:
+        |
+        |     reply_to = null
+        |
+        | Contoh:
+        |
+        |     Komentar A
+        |       ├── Balasan B
+        |       ├── Balasan C
+        |       └── Balasan D
+        |
+        | Jika A dihapus:
+        |
+        |     A
+        |     B
+        |     C
+        |     D
+        |
+        | semuanya ikut dihapus.
+        |
+        */
+
+        $rootCommentId = null;
+
+        if (empty($comment->reply_to)) {
+            comments::deleteTree($comment->id);
+        } else {
+            $rootCommentId = $comment->reply_to;
+
+            $rootComment = comments::where('id', $rootCommentId)->first();
+
+            while ($rootComment && $rootComment->reply_to) {
+                $rootComment = comments::where('id', $rootComment->reply_to)
+                    ->first();
+            }
+
+            if ($rootComment) {
+                $rootCommentId = $rootComment->id;
+            }
+
+            $comment->delete();
+        }
+
 
         return back()->with(
             'message_success',
             'Komentar berhasil dihapus.'
-        );
+        )->with('open_comments', (string) $comment->id_menfess)
+            ->with('open_reply_parent', $rootCommentId ? (string) $rootCommentId : null);
     }
 }

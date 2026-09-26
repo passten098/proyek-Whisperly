@@ -91,6 +91,53 @@ class comments extends Model
 
     /*
     |--------------------------------------------------------------------------
+    | DELETE COMMENT TREE
+    |--------------------------------------------------------------------------
+    |
+    | Menghapus komentar utama beserta semua child reply-nya, baik langsung
+    | maupun bersarang di bawahnya, tanpa meninggalkan reply yatim.
+    |--------------------------------------------------------------------------
+    */
+
+    public static function deleteTree($commentId): void
+    {
+        if (empty($commentId)) {
+            return;
+        }
+
+        $ids = collect();
+        $stack = [(string) $commentId];
+
+        while (!empty($stack)) {
+            $currentId = array_pop($stack);
+
+            if (empty($currentId) || $ids->contains($currentId)) {
+                continue;
+            }
+
+            $ids->push((string) $currentId);
+
+            $children = static::query()
+                ->where('reply_to', $currentId)
+                ->pluck('id')
+                ->all();
+
+            foreach ($children as $childId) {
+                $stack[] = (string) $childId;
+            }
+        }
+
+        if ($ids->isEmpty()) {
+            return;
+        }
+
+        static::query()
+            ->whereIn('id', $ids->all())
+            ->delete();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | COMMENT USERNAME
     |--------------------------------------------------------------------------
     */
