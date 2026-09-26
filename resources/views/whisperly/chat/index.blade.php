@@ -274,7 +274,6 @@
 
 
         .search-box::placeholder {
-
             color:
                 #7890a8;
         }
@@ -398,6 +397,8 @@
 
         /* =========================================================
            CHAT LIST
+           PENTING:
+           GRID TIDAK BOLEH MEMBESARKAN ITEM
         ========================================================= */
 
         .chat-list {
@@ -1244,7 +1245,6 @@
         @media (max-width: 700px) {
 
             body {
-
                 overflow:
                     auto;
             }
@@ -1485,459 +1485,12 @@
             }
         }
 
-
-        /* =========================================================
-           =========================================================
-           TEMA DARK
-           =========================================================
-        ========================================================= */
-
-
-        /*
-         * SIDEBAR DARK
-         *
-         * Karena background sidebar gelap,
-         * semua tulisan utama sidebar dibuat PUTIH.
-         */
-
-        body.theme-dark .chat-sidebar {
-
-            background:
-                #0b0b0d !important;
-
-            color:
-                #ffffff !important;
-
-            border-right-color:
-                #252529 !important;
-        }
-
-
-        body.theme-dark .chat-title {
-
-            color:
-                #ffffff !important;
-        }
-
-
-        body.theme-dark .chat-item {
-
-            background:
-                #0b0b0d !important;
-
-            color:
-                #ffffff !important;
-
-            border-color:
-                #252529 !important;
-        }
-
-
-        body.theme-dark .chat-item:hover {
-
-            background:
-                #171719 !important;
-
-            border-color:
-                #333337 !important;
-
-            transform:
-                translateX(2px);
-        }
-
-
-        body.theme-dark .chat-item.active {
-
-            background:
-                #1c1c1e !important;
-
-            border-color:
-                #303036 !important;
-
-            box-shadow:
-                inset 3px 0 0 #2388e8,
-                0 6px 18px
-                rgba(0,0,0,.20);
-        }
-
-
-        body.theme-dark .chat-item.unread {
-
-            background:
-                #111b27 !important;
-
-            border-color:
-                #263c53 !important;
-        }
-
-
-        body.theme-dark .chat-item.unread:hover {
-
-            background:
-                #162638 !important;
-        }
-
-
-        body.theme-dark .chat-item-name {
-
-            color:
-                #ffffff !important;
-        }
-
-
-        body.theme-dark .chat-item.unread
-        .chat-item-name {
-
-            color:
-                #ffffff !important;
-        }
-
-
-        body.theme-dark .chat-item-preview {
-
-            color:
-                #b7bdc7 !important;
-        }
-
-
-        body.theme-dark .chat-item-time {
-
-            color:
-                #9da4af !important;
-        }
-
-
-        body.theme-dark .filter-btn {
-
-            color:
-                #d0d5dd !important;
-        }
-
-
-        body.theme-dark .filter-btn:hover {
-
-            background:
-                rgba(35,136,232,.12) !important;
-
-            color:
-                #58aaff !important;
-        }
-
-
-        body.theme-dark .filter-btn.active {
-
-            background:
-                #111e2c !important;
-
-            color:
-                #4ca9ff !important;
-
-            box-shadow:
-                inset 0 0 0 1px
-                rgba(35,136,232,.20);
-        }
-
-
-        body.theme-dark .empty-chat {
-
-            color:
-                #aeb4bf !important;
-        }
-
-
-        /*
-         * SEARCH TETAP TERANG
-         * seperti tampilan screenshot.
-         */
-
-        body.theme-dark .search-box {
-
-            background:
-                #dfe5ec !important;
-
-            color:
-                #23466d !important;
-
-            border-color:
-                #cbd5e1 !important;
-        }
-
-
-        body.theme-dark .search-box::placeholder {
-
-            color:
-                #718096 !important;
-        }
-
-
-        body.theme-dark .search-icon {
-
-            color:
-                #2388e8 !important;
-        }
-
-
-        /*
-         * AREA CHAT
-         */
-
-        body.theme-dark .chat-content {
-
-            background-color:
-                #000000 !important;
-
-            /*
-             * JANGAN mengubah warna semua child
-             * menjadi putih.
-             *
-             * Kotak Chat Saya sendiri tetap punya
-             * warna teks navy.
-             */
-        }
-
-
-        /*
-         * =====================================================
-         * KOTAK CHAT SAYA
-         * =====================================================
-         *
-         * Background kotak tetap PUTIH.
-         * Jadi tulisan harus NAVY/HITAM,
-         * baik ketika tema dark maupun light.
-         */
-
-        body.theme-dark .chat-empty-content {
-
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .91
-                ) !important;
-
-            color:
-                #182b4a !important;
-        }
-
-
-        body.theme-dark .chat-empty-content h1 {
-
-            color:
-                #182b4a !important;
-        }
-
-
-        body.theme-dark .chat-empty-content p {
-
-            color:
-                #587491 !important;
-        }
-
-
-        body.theme-dark .chat-icon {
-
-            color:
-                #1976d2 !important;
-        }
-
-
-        /* =========================================================
-           TEMA LIGHT
-        ========================================================= */
-
-        body.theme-light .chat-content {
-
-            background-color:
-                #a9d2f5 !important;
-        }
-
-
-        body.theme-light .chat-sidebar {
-
-            background:
-                #ffffff !important;
-
-            color:
-                #111111 !important;
-
-            border-right-color:
-                #dceafb !important;
-        }
-
-
-        body.theme-light .chat-title {
-
-            color:
-                #102b4d !important;
-        }
-
-
-        body.theme-light .chat-item {
-
-            background:
-                #ffffff !important;
-
-            color:
-                #111111 !important;
-        }
-
-
-        body.theme-light .chat-item:hover {
-
-            background:
-                #f2f2f7 !important;
-        }
-
-
-        body.theme-light .chat-item.active {
-
-            background:
-                #dceeff !important;
-        }
-
-
-        body.theme-light .chat-item-name {
-
-            color:
-                #173a5e !important;
-        }
-
-
-        body.theme-light .chat-item-preview {
-
-            color:
-                #6c87a2 !important;
-        }
-
-
-        body.theme-light .chat-item-time {
-
-            color:
-                #7691ab !important;
-        }
-
-
-        body.theme-light .filter-btn {
-
-            color:
-                #55718e !important;
-        }
-
-
-        body.theme-light .filter-btn.active {
-
-            color:
-                #126bc0 !important;
-        }
-
-
-        /*
-         * KOTAK CHAT SAYA PADA LIGHT
-         */
-
-        body.theme-light .chat-empty-content {
-
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .91
-                ) !important;
-
-            color:
-                #182b4a !important;
-        }
-
-
-        body.theme-light .chat-empty-content h1 {
-
-            color:
-                #182b4a !important;
-        }
-
-
-        body.theme-light .chat-empty-content p {
-
-            color:
-                #587491 !important;
-        }
-
-
-        body.theme-light .chat-icon {
-
-            color:
-                #1976d2 !important;
-        }
-
     </style>
-
-
-    {{-- =========================================================
-         SET TEMA SEBELUM BODY TAMPIL
-    ========================================================= --}}
-
-    <script>
-
-        (function () {
-
-            const savedTheme =
-                localStorage.getItem(
-                    'whisperly-chat-theme'
-                ) || 'dark';
-
-
-            document.documentElement.classList.toggle(
-                'theme-dark',
-                savedTheme === 'dark'
-            );
-
-
-            document.documentElement.classList.toggle(
-                'theme-light',
-                savedTheme === 'light'
-            );
-
-
-        })();
-
-    </script>
 
 </head>
 
 
 <body>
-
-
-    {{-- =========================================================
-         SINKRONISASI TEMA KE BODY
-    ========================================================= --}}
-
-    <script>
-
-        (function () {
-
-            const savedTheme =
-                localStorage.getItem(
-                    'whisperly-chat-theme'
-                ) || 'dark';
-
-
-            document.body.classList.toggle(
-                'theme-dark',
-                savedTheme === 'dark'
-            );
-
-
-            document.body.classList.toggle(
-                'theme-light',
-                savedTheme === 'light'
-            );
-
-        })();
-
-    </script>
 
 
     {{-- =========================================================
@@ -2028,9 +1581,20 @@
 
 
                             /*
-                            |------------------------------------------------------------------
-                            | NAMA LAWAN CHAT + FOTO PROFIL
-                            |------------------------------------------------------------------
+                            |--------------------------------------------------------------------------
+                            | NAMA LAWAN CHAT
+                            |--------------------------------------------------------------------------
+                            */
+
+                            /*
+                            |--------------------------------------------------------------------------
+                            | NAMA + FOTO PROFIL LAWAN CHAT
+                            |--------------------------------------------------------------------------
+                            |
+                            | User melihat foto Talent dari talents.photo.
+                            | Talent melihat foto User dari pengguna.avatar_url/profil.
+                            | Jangan gunakan pengguna.photo karena kolom foto pengguna adalah profil.
+                            |
                             */
 
                             if ($userRole === 'user') {
@@ -2058,67 +1622,89 @@
                                 $profilePhoto =
                                     $booking
                                         ->pengguna
-                                        ?->photo;
+                                        ?->avatar_url
+                                        ?? $booking
+                                            ->pengguna
+                                            ?->profil;
                             }
 
 
                             /*
-                            |------------------------------------------------------------------
-                            | AVATAR FALLBACK
-                            |------------------------------------------------------------------
+                            |--------------------------------------------------------------------------
+                            | FALLBACK HURUF
+                            |--------------------------------------------------------------------------
                             */
 
                             $avatar =
                                 strtoupper(
                                     substr(
-                                        $otherName,
+                                        trim($otherName),
                                         0,
                                         1
                                     )
                                 );
 
+                            if (!$avatar) {
+                                $avatar = '?';
+                            }
+
 
                             /*
-                            |------------------------------------------------------------------
-                            | URL FOTO PROFIL
-                            |------------------------------------------------------------------
+                            |--------------------------------------------------------------------------
+                            | BENTUK URL FOTO
+                            |--------------------------------------------------------------------------
+                            | avatar_url biasanya sudah berupa URL lengkap.
+                            | Jika yang tersimpan masih path relatif, normalkan sekali.
                             */
 
-                            $avatarUrl =
-                                $profilePhoto
-                                    ? asset(
-                                        'storage/' .
-                                        $profilePhoto
-                                    )
-                                    : '';
+                            $avatarUrl = '';
+
+                            if ($profilePhoto) {
+
+                                if (filter_var($profilePhoto, FILTER_VALIDATE_URL)) {
+
+                                    $avatarUrl = $profilePhoto;
+
+                                } else {
+
+                                    $cleanPhoto = str_replace(
+                                        [
+                                            'public/',
+                                            'storage/'
+                                        ],
+                                        '',
+                                        ltrim($profilePhoto, '/')
+                                    );
+
+                                    $avatarUrl = asset(
+                                        'storage/' . $cleanPhoto
+                                    );
+                                }
+                            }
 
 
                             /*
-                            |------------------------------------------------------------------
-                            | PESAN TERAKHIR
-                            |------------------------------------------------------------------
+                            |--------------------------------------------------------------------------
+                            | CONVERSATION ROOM
+                            |--------------------------------------------------------------------------
                             */
 
                             $lastMessage =
                                 $booking->last_message;
 
-
                             $unreadCount =
                                 $booking->unread_count ?? 0;
 
-
                             $isLastMessageFromCurrentUser =
                                 $lastMessage &&
-                                (string)
-                                $lastMessage->sender_id ===
-                                (string)
-                                auth('whisperly')->id();
+                                (string) $lastMessage->sender_id ===
+                                (string) auth('whisperly')->id();
 
 
                             /*
-                            |------------------------------------------------------------------
+                            |--------------------------------------------------------------------------
                             | STATUS BOOKING
-                            |------------------------------------------------------------------
+                            |--------------------------------------------------------------------------
                             */
 
                             $status =
@@ -2126,9 +1712,9 @@
 
 
                             /*
-                            |------------------------------------------------------------------
+                            |--------------------------------------------------------------------------
                             | WAKTU PESAN TERAKHIR
-                            |------------------------------------------------------------------
+                            |--------------------------------------------------------------------------
                             */
 
                             if ($lastMessage) {
@@ -2153,9 +1739,9 @@
 
 
                             /*
-                            |------------------------------------------------------------------
+                            |--------------------------------------------------------------------------
                             | STATUS PESAN TERAKHIR
-                            |------------------------------------------------------------------
+                            |--------------------------------------------------------------------------
                             */
 
                             $lastMessageIsRead =
@@ -2168,6 +1754,11 @@
 
                         {{-- =================================================
                              ITEM CHAT
+                             CATATAN PERBAIKAN:
+                             Ditambahkan atribut data-booking-id agar
+                             JavaScript realtime update bisa menemukan
+                             item ini secara akurat, terlepas dari
+                             format ID (numeric / UUID).
                         ================================================== --}}
 
                         <a
@@ -2195,6 +1786,7 @@
                                     <img
                                         src="{{ $avatarUrl }}"
                                         alt="Profil {{ $otherName }}"
+                                        onerror="this.style.display='none'; this.parentElement.textContent='{{ $avatar }}';"
                                     >
 
                                 @else
@@ -2389,6 +1981,11 @@
 
         /* =========================================================
            SEARCH CHAT
+
+           CATATAN PERBAIKAN:
+           Logika search sekarang didelegasikan ke applyChatFilter()
+           supaya konsisten dengan filter "Semua / Belum Dibaca"
+           dan tidak bentrok dengan update DOM dari polling.
         ========================================================= */
 
         const searchInput =
@@ -2418,16 +2015,19 @@
 
 
         /* =========================================================
-           FILTER
+           FILTER BELUM DIBACA
+
+           CATATAN PERBAIKAN:
+           Tombol filter sekarang hanya mengubah state
+           currentFilter, lalu memanggil applyChatFilter()
+           supaya search & filter selalu sinkron, baik saat
+           interaksi user maupun setelah polling update DOM.
         ========================================================= */
 
         const filterButtons =
             document.querySelectorAll(
                 '.filter-btn'
             );
-
-
-        let currentFilter = 'all';
 
 
         filterButtons.forEach(
@@ -2437,6 +2037,10 @@
                     'click',
                     function () {
 
+
+                        /* =================================================
+                           BUTTON AKTIF
+                        ================================================= */
 
                         filterButtons.forEach(
                             function (btn) {
@@ -2469,10 +2073,19 @@
 
         /* =========================================================
            REALTIME CHAT LIST
+
+           CATATAN PERBAIKAN (baru):
+           Blok ini menambahkan mekanisme update otomatis tanpa
+           refresh: polling ke endpoint /whisperly/chat/updates
+           setiap 2.5 detik, lalu memperbarui preview pesan, jam,
+           badge unread, indikator centang, dan urutan chat
+           (chat dengan pesan terbaru naik ke atas). Desain HTML/CSS
+           yang sudah ada TIDAK diubah — hanya konten & urutan DOM
+           yang di-refresh lewat JavaScript.
         ========================================================= */
 
+        let currentFilter = 'all';
         let isUpdatingChatList = false;
-
 
         function escapeHtml(value) {
 
@@ -2482,9 +2095,7 @@
                 .replace(/>/g, '&gt;')
                 .replace(/\"/g, '&quot;')
                 .replace(/'/g, '&#039;');
-
         }
-
 
         async function updateChatList() {
 
@@ -2492,9 +2103,7 @@
                 return;
             }
 
-
             isUpdatingChatList = true;
-
 
             try {
 
@@ -2502,417 +2111,254 @@
                     "{{ route('whisperly.chat.updates') }}",
                     {
                         method: 'GET',
-
                         headers: {
                             'Accept': 'application/json',
                             'X-Requested-With': 'XMLHttpRequest'
                         },
-
                         cache: 'no-store'
                     }
                 );
-
 
                 if (!response.ok) {
                     return;
                 }
 
-
-                const data =
-                    await response.json();
-
+                const data = await response.json();
 
                 if (!data.chats) {
                     return;
                 }
 
+                data.chats.forEach(function (chat) {
 
-                data.chats.forEach(
-                    function (chat) {
+                    let item = document.querySelector(
+                        `.chat-item[data-booking-id="${chat.booking_id}"]`
+                    );
 
+                    if (!item) {
 
-                        let item =
-                            document.querySelector(
-                                `.chat-item[data-booking-id="${chat.booking_id}"]`
-                            );
+                        const chatList =
+                            document.getElementById('chat-list');
 
-
-                        if (!item) {
-
-                            const chatList =
-                                document.getElementById(
-                                    'chat-list'
-                                );
-
-
-                            if (!chatList) {
-                                return;
-                            }
-
-
-                            const emptyChat =
-                                chatList.querySelector(
-                                    '.empty-chat'
-                                );
-
-
-                            if (emptyChat) {
-                                emptyChat.remove();
-                            }
-
-
-                            const name =
-                                chat.name || 'User';
-
-
-                            const avatar =
-                                name.trim()
-                                    .charAt(0)
-                                    .toUpperCase()
-                                || '?';
-
-
-                            const avatarUrl =
-                                chat.avatar ||
-                                chat.avatar_url ||
-                                '';
-
-
-                            const hasUnread =
-                                Number(
-                                    chat.unread_count || 0
-                                ) > 0;
-
-
-                            item =
-                                document.createElement('a');
-
-
-                            item.href =
-                                "{{ url('/whisperly/chat') }}/" +
-                                encodeURIComponent(
-                                    chat.booking_id
-                                );
-
-
-                            item.className =
-                                'chat-item' +
-                                (
-                                    hasUnread
-                                        ? ' unread'
-                                        : ''
-                                );
-
-
-                            item.dataset.name =
-                                name.toLowerCase();
-
-
-                            item.dataset.unread =
-                                hasUnread
-                                    ? 'true'
-                                    : 'false';
-
-
-                            item.dataset.bookingId =
-                                chat.booking_id;
-
-
-                            item.dataset.avatar =
-                                avatarUrl;
-
-
-                            item.innerHTML = `
-
-                                <div class="chat-avatar">
-
-                                    ${
-                                        avatarUrl
-                                            ? `
-                                                <img
-                                                    src="${escapeHtml(avatarUrl)}"
-                                                    alt="Profil ${escapeHtml(name)}"
-                                                >
-                                              `
-                                            : escapeHtml(avatar)
-                                    }
-
-                                </div>
-
-
-                                <div class="chat-main">
-
-                                    <span class="chat-item-name">
-                                        ${escapeHtml(name)}
-                                    </span>
-
-
-                                    <div class="chat-item-preview">
-
-                                        ${
-                                            escapeHtml(
-                                                chat.last_message ||
-                                                'Belum ada pesan'
-                                            )
-                                        }
-
-                                    </div>
-
-                                </div>
-
-
-                                <div class="chat-item-right">
-
-                                    <span class="chat-item-time">
-                                        ${escapeHtml(chat.time || '')}
-                                    </span>
-
-                                </div>
-
-                            `;
-
-
-                            chatList.appendChild(item);
-
+                        if (!chatList) {
+                            return;
                         }
 
+                        const emptyChat =
+                            chatList.querySelector('.empty-chat');
 
-                        /* =================================================
-                           UPDATE PREVIEW
-                        ================================================= */
+                        if (emptyChat) {
+                            emptyChat.remove();
+                        }
 
-                        const preview =
-                            item.querySelector(
-                                '.chat-item-preview'
-                            );
+                        const name =
+                            chat.name || 'User';
 
-
-                        const time =
-                            item.querySelector(
-                                '.chat-item-time'
-                            );
-
-
-                        const right =
-                            item.querySelector(
-                                '.chat-item-right'
-                            );
-
-
-                        /* =================================================
-                           UPDATE FOTO PROFIL
-                        ================================================= */
-
-                        const avatarContainer =
-                            item.querySelector(
-                                '.chat-avatar'
-                            );
-
+                        const avatar =
+                            name.trim().charAt(0).toUpperCase() || '?';
 
                         const avatarUrl =
                             chat.avatar ||
                             chat.avatar_url ||
                             '';
 
+                        const hasUnread =
+                            Number(chat.unread_count || 0) > 0;
+
+                        item = document.createElement('a');
+
+                        item.href =
+                            "{{ url('/whisperly/chat') }}/" +
+                            encodeURIComponent(chat.booking_id);
+
+                        item.className =
+                            'chat-item' +
+                            (hasUnread ? ' unread' : '');
+
+                        item.dataset.name =
+                            name.toLowerCase();
+
+                        item.dataset.unread =
+                            hasUnread ? 'true' : 'false';
+
+                        item.dataset.bookingId =
+                            chat.booking_id;
+
+                        item.dataset.avatar =
+                            avatarUrl;
+
+                        item.innerHTML = `
+                            <div class="chat-avatar">
+                                ${avatarUrl
+                                    ? `<img src="${escapeHtml(avatarUrl)}" alt="Profil ${escapeHtml(name)}" onerror="this.style.display='none'; this.parentElement.textContent='${escapeHtml(avatar)}';">`
+                                    : escapeHtml(avatar)}
+                            </div>
+
+                            <div class="chat-main">
+                                <span class="chat-item-name">
+                                    ${escapeHtml(name)}
+                                </span>
+
+                                <div class="chat-item-preview">
+                                    ${escapeHtml(
+                                        chat.last_message ||
+                                        'Belum ada pesan'
+                                    )}
+                                </div>
+                            </div>
+
+                            <div class="chat-item-right">
+                                <span class="chat-item-time">
+                                    ${escapeHtml(chat.time || '')}
+                                </span>
+                            </div>
+                        `;
+
+                        chatList.appendChild(item);
+                    }
+
+                    const preview = item.querySelector(
+                        '.chat-item-preview'
+                    );
+
+                    const time = item.querySelector(
+                        '.chat-item-time'
+                    );
+
+                    const right = item.querySelector(
+                        '.chat-item-right'
+                    );
+
+                    if (preview) {
+                        preview.textContent = chat.last_message;
+                    }
+
+                    if (time) {
+                        time.textContent = chat.time;
+                    }
+
+                    /*
+                     * Update avatar hanya jika endpoint realtime memang mengirim
+                     * URL avatar. Jika backend belum mengirim avatar, jangan
+                     * hapus foto yang sudah berhasil dirender oleh Blade.
+                     */
+                    const realtimeAvatarUrl =
+                        chat.avatar ||
+                        chat.avatar_url ||
+                        '';
+
+                    if (realtimeAvatarUrl) {
+
+                        const avatarContainer =
+                            item.querySelector('.chat-avatar');
 
                         if (avatarContainer) {
 
-                            const name =
+                            const currentName =
                                 chat.name ||
                                 item.dataset.name ||
                                 'User';
 
-
                             const fallbackAvatar =
-                                name.trim()
-                                    .charAt(0)
-                                    .toUpperCase()
-                                || '?';
-
+                                currentName.trim().charAt(0).toUpperCase() ||
+                                '?';
 
                             item.dataset.avatar =
-                                avatarUrl;
+                                realtimeAvatarUrl;
 
+                            avatarContainer.innerHTML =
+                                `<img src="${escapeHtml(realtimeAvatarUrl)}" alt="Profil ${escapeHtml(currentName)}">`;
 
-                            if (avatarUrl) {
+                            const avatarImage =
+                                avatarContainer.querySelector('img');
 
-                                avatarContainer.innerHTML = `
-
-                                    <img
-                                        src="${escapeHtml(avatarUrl)}"
-                                        alt="Profil ${escapeHtml(name)}"
-                                    >
-
-                                `;
-
-                            } else {
-
-                                avatarContainer.textContent =
-                                    fallbackAvatar;
-
+                            if (avatarImage) {
+                                avatarImage.addEventListener('error', function () {
+                                    avatarContainer.textContent = fallbackAvatar;
+                                }, { once: true });
                             }
-
                         }
-
-
-                        /* =================================================
-                           UPDATE PESAN TERAKHIR
-                        ================================================= */
-
-                        if (preview) {
-
-                            preview.textContent =
-                                chat.last_message ||
-                                'Belum ada pesan';
-
-                        }
-
-
-                        /* =================================================
-                           UPDATE JAM
-                        ================================================= */
-
-                        if (time) {
-
-                            time.textContent =
-                                chat.time || '';
-
-                        }
-
-
-                        /* =================================================
-                           HAPUS BADGE LAMA
-                        ================================================= */
-
-                        const oldBadge =
-                            item.querySelector(
-                                '.unread-badge'
-                            );
-
-
-                        if (oldBadge) {
-                            oldBadge.remove();
-                        }
-
-
-                        /* =================================================
-                           UPDATE UNREAD
-                        ================================================= */
-
-                        if (
-                            Number(
-                                chat.unread_count || 0
-                            ) > 0
-                        ) {
-
-                            item.classList.add(
-                                'unread'
-                            );
-
-
-                            item.dataset.unread =
-                                'true';
-
-
-                            if (right) {
-
-                                const badge =
-                                    document.createElement(
-                                        'span'
-                                    );
-
-
-                                badge.className =
-                                    'unread-badge';
-
-
-                                badge.textContent =
-                                    chat.unread_count > 99
-                                        ? '99+'
-                                        : chat.unread_count;
-
-
-                                right.appendChild(
-                                    badge
-                                );
-
-                            }
-
-                        } else {
-
-                            item.classList.remove(
-                                'unread'
-                            );
-
-
-                            item.dataset.unread =
-                                'false';
-
-                        }
-
-
-                        /* =================================================
-                           UPDATE INDIKATOR PESAN
-                        ================================================= */
-
-                        const oldIndicator =
-                            item.querySelector(
-                                '.message-indicator'
-                            );
-
-
-                        if (oldIndicator) {
-                            oldIndicator.remove();
-                        }
-
-
-                        if (
-                            chat.last_message &&
-                            chat.last_message_from_me &&
-                            right
-                        ) {
-
-                            const indicator =
-                                document.createElement(
-                                    'span'
-                                );
-
-
-                            indicator.className =
-                                'message-indicator';
-
-
-                            indicator.textContent =
-                                chat.last_message_is_read
-                                    ? '✓✓'
-                                    : '✓';
-
-
-                            right.appendChild(
-                                indicator
-                            );
-
-                        }
-
                     }
-                );
 
+                    /*
+                     * Hapus badge unread lama
+                     */
+                    const oldBadge = item.querySelector(
+                        '.unread-badge'
+                    );
 
-                /* =================================================
-                   SORT CHAT TERBARU
-                ================================================= */
+                    if (oldBadge) {
+                        oldBadge.remove();
+                    }
 
-                sortChatList(
-                    data.chats
-                );
+                    /*
+                     * Update class unread
+                     */
+                    if (chat.unread_count > 0) {
 
+                        item.classList.add('unread');
+                        item.dataset.unread = 'true';
 
-                /* =================================================
-                   TERAPKAN FILTER
-                ================================================= */
+                        if (right) {
 
+                            const badge = document.createElement('span');
+
+                            badge.className = 'unread-badge';
+
+                            badge.textContent =
+                                chat.unread_count > 99
+                                    ? '99+'
+                                    : chat.unread_count;
+
+                            right.appendChild(badge);
+                        }
+
+                    } else {
+
+                        item.classList.remove('unread');
+                        item.dataset.unread = 'false';
+                    }
+
+                    /*
+                     * Update indikator pesan terakhir
+                     */
+                    const oldIndicator = item.querySelector(
+                        '.message-indicator'
+                    );
+
+                    if (oldIndicator) {
+                        oldIndicator.remove();
+                    }
+
+                    if (
+                        chat.last_message &&
+                        chat.last_message_from_me &&
+                        right
+                    ) {
+
+                        const indicator = document.createElement('span');
+
+                        indicator.className = 'message-indicator';
+
+                        indicator.textContent =
+                            chat.last_message_is_read
+                                ? '✓✓'
+                                : '✓';
+
+                        right.appendChild(indicator);
+                    }
+
+                });
+
+                /*
+                 * Pindahkan chat yang punya pesan terbaru ke atas.
+                 */
+                sortChatList(data.chats);
+
+                /*
+                 * Terapkan kembali filter & search.
+                 */
                 applyChatFilter();
-
 
             } catch (error) {
 
@@ -2924,143 +2370,91 @@
             } finally {
 
                 isUpdatingChatList = false;
-
             }
-
         }
 
 
         /* =========================================================
-           SORT CHAT LIST
+           SORT CHAT
         ========================================================= */
 
         function sortChatList(chats) {
 
             const chatList =
-                document.getElementById(
-                    'chat-list'
-                );
-
+                document.getElementById('chat-list');
 
             if (!chatList) {
                 return;
             }
 
-
-            const items =
-                Array.from(
-                    chatList.querySelectorAll(
-                        '.chat-item'
-                    )
-                );
-
+            const items = Array.from(
+                chatList.querySelectorAll('.chat-item')
+            );
 
             const order = {};
 
+            chats.forEach(function (chat, index) {
+                order[String(chat.booking_id)] = index;
+            });
 
-            chats.forEach(
-                function (chat, index) {
+            items.sort(function (a, b) {
 
-                    order[
-                        String(chat.booking_id)
-                    ] = index;
+                const aId =
+                    a.dataset.bookingId || '';
 
-                }
-            );
+                const bId =
+                    b.dataset.bookingId || '';
 
+                const aOrder =
+                    order[String(aId)] ?? 999999;
 
-            items.sort(
-                function (a, b) {
+                const bOrder =
+                    order[String(bId)] ?? 999999;
 
-                    const aId =
-                        a.dataset.bookingId || '';
+                return aOrder - bOrder;
+            });
 
-
-                    const bId =
-                        b.dataset.bookingId || '';
-
-
-                    const aOrder =
-                        order[String(aId)] ??
-                        999999;
-
-
-                    const bOrder =
-                        order[String(bId)] ??
-                        999999;
-
-
-                    return aOrder - bOrder;
-
-                }
-            );
-
-
-            items.forEach(
-                function (item) {
-
-                    chatList.appendChild(
-                        item
-                    );
-
-                }
-            );
-
+            items.forEach(function (item) {
+                chatList.appendChild(item);
+            });
         }
 
 
         /* =========================================================
-           FILTER SEARCH + UNREAD
+           FILTER (SEARCH + BELUM DIBACA)
         ========================================================= */
 
         function applyChatFilter() {
 
             const keyword =
                 searchInput
-                    ? searchInput.value
-                        .toLowerCase()
-                        .trim()
+                    ? searchInput.value.toLowerCase().trim()
                     : '';
 
-
             document
-                .querySelectorAll(
-                    '.chat-item'
-                )
-                .forEach(
-                    function (item) {
+                .querySelectorAll('.chat-item')
+                .forEach(function (item) {
 
+                    const name =
+                        item.dataset.name || '';
 
-                        const name =
-                            item.dataset.name || '';
+                    const matchesSearch =
+                        name.includes(keyword);
 
-
-                        const matchesSearch =
-                            name.includes(
-                                keyword
-                            );
-
-
-                        const matchesFilter =
-                            currentFilter === 'all'
+                    const matchesFilter =
+                        currentFilter === 'all'
                             ||
-                            (
-                                currentFilter === 'unread'
-                                &&
-                                item.dataset.unread ===
-                                'true'
-                            );
+                        (
+                            currentFilter === 'unread'
+                            &&
+                            item.dataset.unread === 'true'
+                        );
 
-
-                        item.style.display =
-                            matchesSearch &&
-                            matchesFilter
-                                ? 'grid'
-                                : 'none';
-
-                    }
-                );
-
+                    item.style.display =
+                        matchesSearch && matchesFilter
+                            ? 'grid'
+                            : 'none';
+                });
         }
 
 
@@ -3075,36 +2469,11 @@
 
 
         /*
-         * Jalankan langsung saat halaman dibuka.
+         * Jalankan sekali saat halaman selesai dibuka,
+         * supaya data langsung fresh tanpa menunggu interval
+         * pertama (2.5 detik).
          */
-
         updateChatList();
-
-
-        /* =========================================================
-           SINKRONISASI TEMA
-        ========================================================= */
-
-        (function () {
-
-            const savedTheme =
-                localStorage.getItem(
-                    'whisperly-chat-theme'
-                ) || 'dark';
-
-
-            document.body.classList.toggle(
-                'theme-dark',
-                savedTheme === 'dark'
-            );
-
-
-            document.body.classList.toggle(
-                'theme-light',
-                savedTheme === 'light'
-            );
-
-        })();
 
     </script>
 

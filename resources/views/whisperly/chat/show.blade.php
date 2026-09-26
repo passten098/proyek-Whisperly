@@ -4825,6 +4825,16 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
             $currentUser->role === 'user';
 
 
+        /*
+         * Identitas ROOM, bukan identitas booking.
+         * Satu user dan satu talent bisa mempunyai beberapa booking,
+         * tetapi semuanya tetap satu room chat.
+         */
+        $currentRoomKey = $isUser
+            ? 'user:' . $currentUser->id . ':talent:' . $booking->talent_id
+            : 'talent:' . $currentUser->id . ':user:' . $booking->pengguna_id;
+
+
         $otherName =
             $isUser
                 ? (
@@ -5146,8 +5156,13 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
                         }
 
 
+                        $itemRoomKey = $isUser
+                            ? 'user:' . $currentUser->id . ':talent:' . $item->talent_id
+                            : 'talent:' . $currentUser->id . ':user:' . $item->pengguna_id;
+
+
                         $isActive =
-                            $item->id === $booking->id;
+                            $itemRoomKey === $currentRoomKey;
 
 
                         $unreadCount =
@@ -5176,6 +5191,7 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
                         data-name="{{ strtolower($itemName) }}"
                         data-unread="{{ $hasUnread ? '1' : '0' }}"
                         data-booking-id="{{ $item->id }}"
+                        data-room-key="{{ $itemRoomKey }}"
                     >
 
                         @php
@@ -9192,6 +9208,9 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
             item.dataset.bookingId =
                 chat.booking_id;
 
+            item.dataset.roomKey =
+                chat.room_key || '';
+
             const avatarHtml = chat.avatar
                 ? `
                     <img
@@ -9270,6 +9289,10 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
 
             item.dataset.unread =
                 hasUnread ? '1' : '0';
+
+            if (chat.room_key) {
+                item.dataset.roomKey = chat.room_key;
+            }
 
             item.classList.toggle(
                 'unread',
@@ -9447,88 +9470,151 @@ body.theme-light [style*="background: rgb(0, 0, 0)"] {
                     return;
                 }
 
-                const data =
-                    await response.json();
+                const data = await response.json();
 
                 if (!Array.isArray(data.chats)) {
                     return;
                 }
 
-                const incomingIds =
-                    new Set(
-                        data.chats.map(
-                            chat => String(chat.booking_id)
-                        )
-                    );
+                const incomingIds = new Set(
+                    data.chats.map(function (chat) {
+                        return String(chat.booking_id || '');
+                    })
+                );
+
+                const incomingRoomKeys = new Set(
+                    data.chats
+                        .map(function (chat) {
+                            return String(chat.room_key || '');
+                        })
+                        .filter(Boolean)
+                );
 
                 /*
-                 * Hapus room yang memang sudah tidak dikirim endpoint.
-                 * Room aktif tidak disentuh agar halaman yang sedang dibuka
-                 * tidak tiba-tiba hilang saat user masih berada di dalamnya.
+                 * Hapus room yang memang sudah tidak dikirim server.
+                 * Room aktif tidak dihapus agar pengguna tidak kehilangan
+                 * halaman yang sedang dibuka ketika state berubah.
                  */
                 realtimeChatList
                     .querySelectorAll('.chat-item[data-booking-id]')
                     .forEach(function (item) {
 
-                        const id =
-                            String(item.dataset.bookingId || '');
+                        const id = String(
+                            item.dataset.bookingId || ''
+                        );
+
+                        const roomKey = String(
+                            item.dataset.roomKey || ''
+                        );
+
+                        const stillExists =
+                            (id && incomingIds.has(id)) ||
+                            (roomKey && incomingRoomKeys.has(roomKey));
 
                         if (
-                            id &&
-                            !incomingIds.has(id) &&
+                            !stillExists &&
                             !item.classList.contains('active')
                         ) {
                             item.remove();
                         }
                     });
 
-                const empty =
-                    realtimeChatList.querySelector(
-                        '.empty-chat'
-                    );
+                const empty = realtimeChatList.querySelector('.empty-chat');
 
                 if (empty && data.chats.length) {
                     empty.remove();
                 }
 
+                /*
+                 * Bangun/update setiap room berdasarkan ROOM KEY.
+                 * Jangan mencari hanya berdasarkan booking_id karena satu
+                 * pasangan user+talent dapat memiliki beberapa booking.
+                 */
+                const orderedItems = [];
+
                 data.chats.forEach(function (chat) {
 
-                    let item =
-                        realtimeChatList.querySelector(
-                            `.chat-item[data-booking-id="${CSS.escape(String(chat.booking_id))}"]`
+                    const roomKey = String(chat.room_key || '');
+                    const bookingId = String(chat.booking_id || '');
+
+                    let item = null;
+
+                    if (roomKey) {
+                        item = Array.from(
+                            realtimeChatList.querySelectorAll(
+                                '.chat-item[data-room-key]'
+                            )
+                        ).find(function (candidate) {
+                            return String(candidate.dataset.roomKey || '') === roomKey;
+                        }) || null;
+                    }
+
+                    if (!item && bookingId) {
+                        item = realtimeChatList.querySelector(
+                            `.chat-item[data-booking-id="${CSS.escape(bookingId)}"]`
                         );
+                    }
 
                     if (!item) {
                         item = createRealtimeChatItem(chat);
-                        realtimeChatList.appendChild(item);
                     } else {
                         updateRealtimeChatItem(item, chat);
                     }
 
                     /*
-                     * Untuk room aktif, preview harus selalu berasal dari
-                     * DOM pesan yang sedang dibuka, bukan dari last_message
-                     * mentah endpoint updates().
+                     * Pastikan URL selalu menunjuk ke booking representatif
+                     * dari room yang dikirim endpoint. Isi room tetap sama,
+                     * tetapi link tidak boleh mengarah ke room lain.
                      */
-                    if (item.classList.contains('active')) {
-                        syncActiveSidebarPreview();
+                    if (bookingId) {
+                        item.href =
+                            "{{ url('/whisperly/chat') }}/" +
+                            encodeURIComponent(bookingId);
                     }
 
-                    /*
-                     * Pindahkan hanya jika posisi room memang berubah.
-                     * Sebelumnya prepend() dipanggil SETIAP 1 detik untuk
-                     * room yang sama. Reflow/repaint berulang inilah yang
-                     * membuat sidebar terlihat berkedip.
-                     */
-                    if (!item.classList.contains('active')) {
-                        const firstItem =
-                            realtimeChatList.querySelector('.chat-item');
-
-                        if (firstItem !== item) {
-                            realtimeChatList.prepend(item);
-                        }
+                    if (roomKey) {
+                        item.dataset.roomKey = roomKey;
                     }
+
+                    orderedItems.push(item);
                 });
+
+                /*
+                 * PENTING:
+                 * Jangan prepend() satu per satu. Itu membalik urutan array
+                 * server. Misalnya server mengirim [Raden, 05, Maka],
+                 * prepend menghasilkan [Maka, 05, Raden].
+                 *
+                 * appendChild() pada node yang sudah ada hanya memindahkan
+                 * node tanpa membuat ulang HTML, jadi tidak menyebabkan
+                 * kedipan seperti sebelumnya.
+                 */
+                orderedItems.forEach(function (item) {
+                    realtimeChatList.appendChild(item);
+                });
+
+                /*
+                 * Room yang sedang dibuka harus aktif berdasarkan ROOM KEY.
+                 * Jika endpoint mengganti booking representatif, active tetap
+                 * berada pada orang yang sama.
+                 */
+                const currentRoomItem =
+                    realtimeChatList.querySelector(
+                        '.chat-item[data-room-key="{{ $currentRoomKey }}"]'
+                    );
+
+                realtimeChatList
+                    .querySelectorAll('.chat-item.active')
+                    .forEach(function (item) {
+                        if (item !== currentRoomItem) {
+                            item.classList.remove('active');
+                        }
+                    });
+
+                if (currentRoomItem) {
+                    currentRoomItem.classList.add('active');
+                    syncActiveSidebarPreview();
+                }
 
                 applyChatFilter();
 

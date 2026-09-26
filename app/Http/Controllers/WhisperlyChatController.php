@@ -206,12 +206,7 @@ class WhisperlyChatController extends Controller
 
                 $unreadCount = 0;
 
-                $lastMessage =
-                    $this->latestVisibleRoomMessage(
-                        $roomBookings,
-                        $userChatState?->cleared_at,
-                        $user->id
-                    );
+                $lastMessage = null;
 
                 foreach (
                     $roomBookings
@@ -242,12 +237,40 @@ class WhisperlyChatController extends Controller
                                     );
                                 }
                             )
+                            ->whereNotIn(
+                                'id',
+                                DB::table(
+                                    'whisperly_message_user_deletions'
+                                )
+                                    ->where(
+                                        'user_id',
+                                        (string) $user->id
+                                    )
+                                    ->pluck(
+                                        'message_id'
+                                    )
+                            )
                             ->get();
 
                     foreach (
                         $messages
                         as $message
                     ) {
+
+                        if (
+                            ! $lastMessage
+                            ||
+                            (
+                                $message->created_at
+                                &&
+                                $message->created_at->gt(
+                                    $lastMessage->created_at
+                                )
+                            )
+                        ) {
+
+                            $lastMessage = $message;
+                        }
 
                         if (
                             (string) $message->sender_id
@@ -308,6 +331,41 @@ class WhisperlyChatController extends Controller
                 return $booking;
             }
         );
+
+        /*
+        |--------------------------------------------------------------------------
+        | URUTKAN BERDASARKAN PESAN TERAKHIR SEBENARNYA
+        |--------------------------------------------------------------------------
+        | Jangan menggunakan created_at booking sebagai urutan utama.
+        | Booking lama bisa memiliki pesan baru, sehingga preview dan urutan
+        | sidebar harus mengikuti pesan terakhir yang benar-benar terlihat.
+        |--------------------------------------------------------------------------
+        */
+
+        $bookings = $bookings
+            ->sort(function (
+                WhisperlyBooking $a,
+                WhisperlyBooking $b
+            ) {
+
+                $aTime = $a->last_message?->created_at;
+                $bTime = $b->last_message?->created_at;
+
+                if ($aTime && $bTime) {
+                    return $bTime->valueOf() <=> $aTime->valueOf();
+                }
+
+                if ($aTime && ! $bTime) {
+                    return -1;
+                }
+
+                if (! $aTime && $bTime) {
+                    return 1;
+                }
+
+                return $b->created_at?->valueOf() <=> $a->created_at?->valueOf();
+            })
+            ->values();
 
         return view(
             'whisperly.chat.index',
@@ -466,12 +524,7 @@ class WhisperlyChatController extends Controller
 
                 $unreadCount = 0;
 
-                $lastMessage =
-                    $this->latestVisibleRoomMessage(
-                        $roomBookings,
-                        $userChatState?->cleared_at,
-                        $user->id
-                    );
+                $lastMessage = null;
 
                 foreach (
                     $roomBookings
@@ -502,12 +555,40 @@ class WhisperlyChatController extends Controller
                                     );
                                 }
                             )
+                            ->whereNotIn(
+                                'id',
+                                DB::table(
+                                    'whisperly_message_user_deletions'
+                                )
+                                    ->where(
+                                        'user_id',
+                                        (string) $user->id
+                                    )
+                                    ->pluck(
+                                        'message_id'
+                                    )
+                            )
                             ->get();
 
                     foreach (
                         $messages
                         as $message
                     ) {
+
+                        if (
+                            ! $lastMessage
+                            ||
+                            (
+                                $message->created_at
+                                &&
+                                $message->created_at->gt(
+                                    $lastMessage->created_at
+                                )
+                            )
+                        ) {
+
+                            $lastMessage = $message;
+                        }
 
                         if (
                             (string) $message->sender_id
@@ -563,12 +644,86 @@ class WhisperlyChatController extends Controller
                 $lastMessageTime =
                     $lastMessage?->created_at;
 
+                /*
+                |--------------------------------------------------------------------------
+                | FOTO PROFIL LAWAN CHAT
+                |--------------------------------------------------------------------------
+                |
+                | Untuk USER, foto lawan chat berasal dari foto talent.
+                | Ini harus dikirim oleh endpoint realtime karena chat baru
+                | belum memiliki elemen HTML di sidebar saat halaman pertama
+                | kali dibuka.
+                |
+                |--------------------------------------------------------------------------
+                */
+
+                $avatar = null;
+
+                if ($user->role === 'user') {
+
+                    // USER login -> lihat foto TALENT.
+                    // Utamakan avatar milik pengguna talent, lalu fallback
+                    // ke kolom photo pada profil talent.
+                    $avatar =
+                        $booking->talent?->pengguna?->avatar_url
+                        ?? $booking->talent?->pengguna?->photo
+                        ?? null;
+
+                    if (!$avatar && $booking->talent?->photo) {
+                        $avatar = asset(
+                            'storage/' .
+                            ltrim(
+                                $booking->talent->photo,
+                                '/'
+                            )
+                        );
+                    }
+
+                } elseif ($user->role === 'talent') {
+
+                    // TALENT login -> lihat foto USER.
+                    $avatar =
+                        $booking->pengguna?->avatar_url
+                        ?? $booking->pengguna?->photo
+                        ?? null;
+                }
+
+                // Pastikan path relatif dari database menjadi URL yang bisa
+                // langsung dipakai oleh JavaScript.
+                if ($avatar) {
+
+                    $avatar = trim((string) $avatar);
+
+                    if (
+                        ! str_starts_with($avatar, 'http://')
+                        && ! str_starts_with($avatar, 'https://')
+                        && ! str_starts_with($avatar, '//')
+                        && ! str_starts_with($avatar, '/')
+                    ) {
+
+                        if (str_starts_with($avatar, 'storage/')) {
+                            $avatar = asset($avatar);
+                        } else {
+                            $avatar = asset(
+                                'storage/' .
+                                ltrim($avatar, '/')
+                            );
+                        }
+                    }
+                }
+
                 return [
                     'booking_id' =>
                         (string) $booking->id,
 
+                    'room_key' =>
+                        $roomKey,
+
                     'name' =>
                         $otherName,
+
+                    'avatar' =>
+                        $avatar,
 
                     'last_message' =>
                         $lastMessage?->message
@@ -757,6 +912,35 @@ class WhisperlyChatController extends Controller
                     return $item;
                 }
             );
+
+        /*
+        |--------------------------------------------------------------------------
+        | PULIHKAN ROOM CHAT YANG SEBELUMNYA DIHAPUS
+        |--------------------------------------------------------------------------
+        |
+        | Jika user/talent pernah menekan "Hapus Chat", state chat menyimpan
+        | deleted_at sehingga room disembunyikan dari sidebar. Begitu pesan baru
+        | dikirim, room harus otomatis aktif kembali tanpa Tinker dan tanpa
+        | menghapus riwayat/fungsi chat lainnya.
+        |
+        */
+
+        $chatUserState =
+            $this->chatUserState(
+                $user,
+                $booking
+            );
+
+        if ($chatUserState) {
+
+            $chatUserState->update([
+                'deleted_at' =>
+                    null,
+
+                'archived_at' =>
+                    null,
+            ]);
+        }
 
         /*
         |--------------------------------------------------------------------------
@@ -1271,12 +1455,7 @@ class WhisperlyChatController extends Controller
 
                     $unread = 0;
 
-                    $lastMessage =
-                        $this->latestVisibleRoomMessage(
-                            $roomBookings,
-                            $userChatState?->cleared_at,
-                            $user->id
-                        );
+                    $lastMessage = null;
 
                     foreach (
                         $roomBookings
@@ -1310,12 +1489,41 @@ class WhisperlyChatController extends Controller
                                         );
                                     }
                                 )
+                                ->whereNotIn(
+                                    'id',
+                                    DB::table(
+                                        'whisperly_message_user_deletions'
+                                    )
+                                        ->where(
+                                            'user_id',
+                                            (string) $user->id
+                                        )
+                                        ->pluck(
+                                            'message_id'
+                                        )
+                                )
                                 ->get();
 
                         foreach (
                             $roomMessages
                             as $message
                         ) {
+
+                            if (
+                                ! $lastMessage
+                                ||
+                                (
+                                    $message->created_at
+                                    &&
+                                    $message->created_at->gt(
+                                        $lastMessage->created_at
+                                    )
+                                )
+                            ) {
+
+                                $lastMessage =
+                                    $message;
+                            }
 
                             if (
                                 (string)
@@ -1392,6 +1600,37 @@ class WhisperlyChatController extends Controller
         | RETURN VIEW
         |--------------------------------------------------------------------------
         */
+
+        /*
+        |--------------------------------------------------------------------------
+        | URUTKAN SIDEBAR DENGAN ATURAN YANG SAMA SEPERTI INDEX
+        |--------------------------------------------------------------------------
+        */
+
+        $bookings = $bookings
+            ->sort(function (
+                WhisperlyBooking $a,
+                WhisperlyBooking $b
+            ) {
+
+                $aTime = $a->last_message?->created_at;
+                $bTime = $b->last_message?->created_at;
+
+                if ($aTime && $bTime) {
+                    return $bTime->valueOf() <=> $aTime->valueOf();
+                }
+
+                if ($aTime && ! $bTime) {
+                    return -1;
+                }
+
+                if (! $aTime && $bTime) {
+                    return 1;
+                }
+
+                return $b->created_at?->valueOf() <=> $a->created_at?->valueOf();
+            })
+            ->values();
 
         return view(
             'whisperly.chat.show',
@@ -2678,6 +2917,61 @@ class WhisperlyChatController extends Controller
                         ),
                 ]);
 
+        /*
+        |--------------------------------------------------------------------------
+        | RESTORE ROOM SETELAH PESAN BARU
+        |--------------------------------------------------------------------------
+        |
+        | Jika room sebelumnya dihapus/diarsipkan, pesan baru harus
+        | membuat room aktif kembali untuk pengirim dan penerima.
+        | Dengan begitu index/updates dapat menampilkan room kembali
+        | tanpa logout, login, atau Tinker.
+        |--------------------------------------------------------------------------
+        */
+
+        $contactUserId =
+            $this->contactUserId(
+                $user,
+                $booking
+            );
+
+        if ($contactUserId) {
+
+            WhisperlyChatUserState::updateOrCreate(
+                [
+                    'user_id' =>
+                        $user->id,
+
+                    'contact_user_id' =>
+                        $contactUserId,
+                ],
+                [
+                    'deleted_at' =>
+                        null,
+
+                    'archived_at' =>
+                        null,
+                ]
+            );
+
+            WhisperlyChatUserState::updateOrCreate(
+                [
+                    'user_id' =>
+                        $contactUserId,
+
+                    'contact_user_id' =>
+                        $user->id,
+                ],
+                [
+                    'deleted_at' =>
+                        null,
+
+                    'archived_at' =>
+                        null,
+                ]
+            );
+        }
+
         if (
             $request->hasFile('image')
         ) {
@@ -2955,126 +3249,6 @@ class WhisperlyChatController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | AMBIL PESAN TERAKHIR YANG BENAR UNTUK SIDEBAR
-    |--------------------------------------------------------------------------
-    |
-    | Jangan menentukan pesan terakhir dari urutan hasil get().
-    | Sidebar harus mengambil pesan terbaru dari SETIAP conversation
-    | dalam room, lalu memilih satu yang paling baru.
-    | Pesan yang sudah dihapus hanya untuk user ini juga tidak dihitung.
-    |--------------------------------------------------------------------------
-    */
-
-    private function latestVisibleRoomMessage(
-        Collection $roomBookings,
-        $clearedAt = null,
-        $userId = null
-    ) {
-
-        $latestMessage = null;
-
-        $deletedMessageIds = collect();
-
-        if ($userId !== null) {
-            $deletedMessageIds =
-                DB::table(
-                    'whisperly_message_user_deletions'
-                )
-                    ->where(
-                        'user_id',
-                        (string) $userId
-                    )
-                    ->pluck(
-                        'message_id'
-                    )
-                    ->map(
-                        fn ($id) => (string) $id
-                    );
-        }
-
-        foreach ($roomBookings as $roomBooking) {
-
-            $conversation =
-                $roomBooking->conversation;
-
-            if (! $conversation) {
-                continue;
-            }
-
-            $query =
-                $conversation
-                    ->messages()
-                    ->when(
-                        $clearedAt,
-                        function ($query) use ($clearedAt) {
-                            $query->where(
-                                'created_at',
-                                '>',
-                                $clearedAt
-                            );
-                        }
-                    );
-
-            if ($deletedMessageIds->isNotEmpty()) {
-                $query->whereNotIn(
-                    'id',
-                    $deletedMessageIds
-                );
-            }
-
-            $candidate =
-                $query
-                    ->orderByDesc('created_at')
-                    ->orderByDesc('id')
-                    ->first();
-
-            if (! $candidate) {
-                continue;
-            }
-
-            if (! $latestMessage) {
-                $latestMessage = $candidate;
-                continue;
-            }
-
-            $candidateTime =
-                $candidate->created_at;
-
-            $latestTime =
-                $latestMessage->created_at;
-
-            if (
-                $candidateTime
-                &&
-                (
-                    ! $latestTime
-                    ||
-                    $candidateTime->gt(
-                        $latestTime
-                    )
-                    ||
-                    (
-                        $candidateTime->equalTo(
-                            $latestTime
-                        )
-                        &&
-                        strcmp(
-                            (string) $candidate->id,
-                            (string) $latestMessage->id
-                        ) > 0
-                    )
-                )
-            ) {
-                $latestMessage = $candidate;
-            }
-        }
-
-        return $latestMessage;
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
     | CHAT USER STATE
     |--------------------------------------------------------------------------
     */
@@ -3149,10 +3323,40 @@ class WhisperlyChatController extends Controller
                     )
                 );
 
+            /*
+            | Jika room sudah dihapus, tetapi setelah itu ada pesan baru
+            | pada conversation yang sama, room wajib muncul kembali.
+            | Ini juga menangani pesan baru dari lawan chat, bukan hanya
+            | pesan yang dikirim oleh user yang menghapus room.
+            */
+            $hasNewMessageAfterDelete = false;
+
+            if ($deletedAt) {
+
+                $latestMessage =
+                    $booking
+                        ->conversation()
+                        ->with('messages')
+                        ->first()?->messages
+                        ?->sortByDesc('created_at')
+                        ->first();
+
+                $hasNewMessageAfterDelete =
+                    $latestMessage?->created_at
+                    &&
+                    Carbon::parse(
+                        $latestMessage->created_at
+                    )->gt(
+                        Carbon::parse($deletedAt)
+                    );
+            }
+
             if (
                 $wasDeletedBeforeBooking
                 ||
                 $wasArchivedBeforeBooking
+                ||
+                $hasNewMessageAfterDelete
             ) {
 
                 $state->update([

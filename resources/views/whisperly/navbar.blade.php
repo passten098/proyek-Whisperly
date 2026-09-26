@@ -1893,43 +1893,68 @@
 
                                     <div class="notification-profile">
 
-                                        <div class="notification-avatar">
+                                        <div class="notification-profile-left">
 
-                                            @if($booking->pengguna->avatar_url)
+                                            <div class="notification-avatar">
 
-                                                <img
-                                                    src="{{ $booking->pengguna->avatar_url }}"
-                                                    alt="{{ $booking->pengguna->username }}"
-                                                    onerror="this.onerror=null; this.src='{{ asset('assets/images/faces/1.jpg') }}';"
-                                                >
+                                                @if($booking->pengguna?->avatar_url)
 
-                                            @else
+                                                    <img
+                                                        src="{{ $booking->pengguna->avatar_url }}"
+                                                        alt="{{ $booking->pengguna->username ?? 'User' }}"
+                                                        onerror="this.onerror=null; this.src='{{ asset('assets/images/faces/1.jpg') }}';"
+                                                    >
 
-                                                {{ strtoupper(
-                                                    substr(
-                                                        $booking->pengguna->username,
-                                                        0,
-                                                        1
-                                                    )
-                                                ) }}
+                                                @else
 
-                                            @endif
+                                                    {{ strtoupper(
+                                                        substr(
+                                                            $booking->pengguna?->username ?? 'U',
+                                                            0,
+                                                            1
+                                                        )
+                                                    ) }}
+
+                                                @endif
+
+                                            </div>
+
+                                            <strong>
+                                                {{ $booking->pengguna?->username ?? 'User' }}
+                                            </strong>
 
                                         </div>
 
-                                        <strong>
-                                            {{ $booking->pengguna->username }}
-                                        </strong>
+                                        @if($status === 'active')
+
+                                            <a
+                                                href="{{ route('whisperly.chat.show', $booking->id) }}"
+                                                class="chat-status-btn chat-status-active"
+                                            >
+                                                Chat
+                                            </a>
+
+                                        @else
+
+                                            <button
+                                                type="button"
+                                                class="chat-status-btn chat-status-waiting"
+                                                disabled
+                                            >
+                                                Tunggu
+                                            </button>
+
+                                        @endif
 
                                     </div>
 
-                                    <br>
+                                    <div class="notification-time">
 
-                                    {{ $booking->schedule->start_time }}
-                                    -
-                                    {{ $booking->schedule->end_time }}
+                                        {{ $booking->schedule->start_time }}
+                                        -
+                                        {{ $booking->schedule->end_time }}
 
-                                    <br><br>
+                                    </div>
 
                                 @else
 
