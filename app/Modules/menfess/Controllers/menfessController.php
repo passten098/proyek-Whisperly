@@ -13,6 +13,7 @@ use App\Notifications\MenfessSubmittedNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class menfessController extends Controller
@@ -49,6 +50,14 @@ class menfessController extends Controller
         foreach ($admins as $admin) {
             $admin->notify(new MenfessSubmittedNotification($menfess));
         }
+    }
+
+    private function deleteAdminMenfessNotification(menfess $menfess): void
+    {
+        DB::table('notifications')
+            ->where('type', MenfessSubmittedNotification::class)
+            ->where('data->menfess_id', (string) $menfess->id)
+            ->delete();
     }
 
     private function markAdminMenfessNotificationRead(Request $request): void
@@ -576,6 +585,9 @@ class menfessController extends Controller
             'status' => 'approved'
         ]);
 
+        // Hapus notification menfess ini setelah ACC.
+        $this->deleteAdminMenfessNotification($menfess);
+
 
         $this->log(
             $request,
@@ -624,6 +636,9 @@ class menfessController extends Controller
         $menfess->update([
             'status' => 'rejected'
         ]);
+
+        // Hapus notification menfess ini setelah TOLAK.
+        $this->deleteAdminMenfessNotification($menfess);
 
 
         $this->log(
