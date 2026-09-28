@@ -15,6 +15,62 @@
             ->where('pengguna_id', $currentUser->id)
             ->first();
     }
+
+    /* ============================================================
+       ADMIN MENFESS NOTIFICATION
+       Hanya notifikasi untuk menfess yang MASIH pending yang
+       ditampilkan. Notifikasi lama untuk menfess yang sudah
+       approved/rejected tidak boleh membuat badge tetap muncul.
+    ============================================================ */
+    $adminNotifications = collect();
+    $adminNotificationCount = 0;
+
+    if ($currentUser && $currentRole === 'admin') {
+        $adminNotifications = $currentUser
+            ->notifications()
+            ->where('type', \App\Notifications\MenfessSubmittedNotification::class)
+            ->latest()
+            ->get();
+
+        $menfessIds = $adminNotifications
+            ->map(function ($notification) {
+                $data = is_array($notification->data)
+                    ? $notification->data
+                    : [];
+
+                return (string) ($data['menfess_id'] ?? '');
+            })
+            ->filter()
+            ->unique()
+            ->values();
+
+        if ($menfessIds->isNotEmpty()) {
+            $pendingIds = \App\Modules\menfess\Models\menfess::query()
+                ->whereIn('id', $menfessIds->all())
+                ->where('status', 'pending')
+                ->pluck('id')
+                ->map(fn ($id) => (string) $id)
+                ->flip();
+
+            $adminNotifications = $adminNotifications
+                ->filter(function ($notification) use ($pendingIds) {
+                    $data = is_array($notification->data)
+                        ? $notification->data
+                        : [];
+
+                    $menfessId = (string) ($data['menfess_id'] ?? '');
+
+                    return $menfessId !== '' && $pendingIds->has($menfessId);
+                })
+                ->values();
+        } else {
+            $adminNotifications = collect();
+        }
+
+        $adminNotificationCount = $adminNotifications
+            ->whereNull('read_at')
+            ->count();
+    }
 @endphp
 
 <style>
